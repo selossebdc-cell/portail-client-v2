@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace Client — CS Consulting Strategique</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0f0f0f;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container {
+    width: 100%;
+    max-width: 440px;
+    padding: 24px;
+  }
+  .box {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 20px;
+    padding: 48px 36px;
+    text-align: center;
+  }
+  .brand {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #C27A5A;
+    margin-bottom: 28px;
+  }
+  .logo-icon {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(194,122,90,0.15), rgba(194,122,90,0.05));
+    border: 2px solid rgba(194,122,90,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 28px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
+  .form-group {
+    margin-bottom: 16px;
+    text-align: left;
+  }
+  .form-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+  .form-input {
+    width: 100%;
+    padding: 14px 20px;
+    background: #0f0f0f;
+    border: 2px solid #2a2a2a;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-input:focus { border-color: #C27A5A; }
+  .form-input::placeholder { color: #444; font-size: 0.9rem; }
+  .form-input[type="password"] { letter-spacing: 2px; }
+  .btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 14px;
+    background: #C27A5A;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: #a8654a; }
+  .btn:disabled { opacity: 0.5; cursor: wait; }
+  .error {
+    margin-top: 16px;
+    padding: 10px 16px;
+    background: rgba(248,113,113,0.1);
+    border: 1px solid rgba(248,113,113,0.3);
+    border-radius: 8px;
+    color: #f87171;
+    font-size: 0.85rem;
+    display: none;
+  }
+  .secure {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 20px;
+    font-size: 0.75rem;
+    color: #555;
+  }
+  .footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #444;
+  }
+  .footer span { color: #C27A5A; }
+  .help-link {
+    display: block;
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: #666;
+  }
+  .help-link a {
+    color: #C27A5A;
+    text-decoration: none;
+  }
+  .help-link a:hover { text-decoration: underline; }
+
+  /* Welcome state */
+  .welcome {
+    display: none;
+    text-align: center;
+  }
+  .welcome.show { display: block; }
+  .welcome-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  .welcome-msg {
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 24px;
+  }
+  .spinner {
+    display: inline-block;
+    width: 20px; height: 20px;
+    border: 2px solid rgba(194,122,90,0.3);
+    border-top-color: #C27A5A;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 480px) {
+    .box { padding: 36px 24px; }
+    h1 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="box">
+    <div class="brand">CS Consulting Strategique</div>
+    <div class="logo-icon">CS</div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-form">
+      <h1>Mon Espace Client</h1>
+      <p class="subtitle">Connecte-toi pour acceder a tes actions,<br>tutos et documents.</p>
+      <form onsubmit="return handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Adresse email</label>
+          <input type="email" class="form-input" id="email" placeholder="ton@email.fr" autocomplete="email" autofocus required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mot de passe</label>
+          <input type="password" class="form-input" id="pwd" placeholder="Mot de passe" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn" id="btn">Se connecter</button>
+      </form>
+      <div class="error" id="error">Email ou mot de passe incorrect.<br>Contacte Catherine si tu as besoin d'aide.</div>
+      <div class="secure">&#x1f512; Connexion chiffree et securisee</div>
+    </div>
+
+    <!-- WELCOME + REDIRECT -->
+    <div class="welcome" id="welcome">
+      <div class="welcome-name" id="welcome-name"></div>
+      <div class="welcome-msg"><span class="spinner"></span> Ouverture de ton espace...</div>
+    </div>
+  </div>
+
+  <div class="help-link">
+    Un souci de connexion ? <a href="mailto:catherine@csbusiness.fr">Contacte Catherine</a>
+  </div>
+
+  <div class="footer">
+    <span>CS Consulting Strategique</span> — Espace client securise
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// REGISTRE CLIENTS
+// Chaque entree : SHA-256(email en minuscules) → chemin du portail
+// Les emails ne sont JAMAIS stockes en clair
+// ═══════════════════════════════════════════════
+const CLIENTS = {
+  "3694d0e912cc2fda09eb433f5161602674043f6e5c44a4c03ac55a419a750586": {
+    path: "clients/fred/",
+    name: "Fred"
+  }
+  // Ajouter ici les nouveaux clients :
+  // "sha256_du_email": { path: "clients/prenom/", name: "Prenom" }
+};
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest("SHA-256",
+    new TextEncoder().encode(str.toLowerCase().trim())
+  );
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const pwd = document.getElementById("pwd").value;
+  const btn = document.getElementById("btn");
+  const err = document.getElementById("error");
+
+  if (!email || !pwd) return false;
+  btn.disabled = true;
+  btn.textContent = "Verification...";
+  err.style.display = "none";
+
+  try {
+    const hash = await sha256(email);
+    const client = CLIENTS[hash];
+
+    if (!client) {
+      throw new Error("unknown");
+    }
+
+    // Stocker le mot de passe en sessionStorage pour auto-unlock du portail
+    try { sessionStorage.setItem("cs-portal-key", pwd); } catch(_) {}
+
+    // Afficher le message de bienvenue
+    document.getElementById("login-form").style.display = "none";
+    document.getElementById("welcome").classList.add("show");
+    document.getElementById("welcome-name").textContent = "Bienvenue " + client.name;
+
+    // Rediriger vers le portail
+    setTimeout(() => {
+      window.location.href = client.path;
+    }, 1200);
+
+  } catch (_) {
+    err.style.display = "block";
+    btn.disabled = false;
+    btn.textContent = "Se connecter";
+    document.getElementById("pwd").value = "";
+    document.getElementById("pwd").focus();
+  }
+  return false;
+}
+</script>
+
+</body>
+</html>
