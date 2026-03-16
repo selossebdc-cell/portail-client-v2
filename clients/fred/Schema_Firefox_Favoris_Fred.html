@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tes favoris Firefox — Rangés par activité</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; padding: 40px 20px; }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  h1 { text-align: center; color: #FF6B00; font-size: 26px; margin-bottom: 6px; font-weight: 800; }
+  .subtitle { text-align: center; color: #888; font-size: 15px; margin-bottom: 36px; }
+
+  /* ===== AVANT / APRES ===== */
+  .comparison { display: flex; gap: 24px; margin-bottom: 48px; }
+  .panel { flex: 1; border-radius: 16px; padding: 24px; position: relative; }
+  .panel-before { background: #FFF0F0; border: 2px solid #E57373; }
+  .panel-after  { background: #F0FFF4; border: 2px solid #66BB6A; }
+  .panel-tag {
+    position: absolute; top: -14px; left: 20px;
+    padding: 4px 16px; border-radius: 20px; font-weight: 800; font-size: 13px; color: white;
+  }
+  .tag-before { background: #E57373; }
+  .tag-after  { background: #66BB6A; }
+  .panel h2 { font-size: 16px; margin-bottom: 14px; color: #333; font-weight: 700; }
+
+  .chaos-list { display: flex; flex-direction: column; gap: 6px; }
+  .chaos-item {
+    background: white; border: 1px solid #ddd; border-radius: 8px;
+    padding: 7px 11px; font-size: 12px; color: #555;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .chaos-item .badge {
+    margin-left: auto; padding: 2px 7px; border-radius: 6px;
+    font-size: 10px; font-weight: 700; white-space: nowrap;
+  }
+  .b-red    { background: #FFCDD2; color: #C62828; }
+  .b-orange { background: #FFE0B2; color: #E65100; }
+  .b-purple { background: #EDE7F6; color: #6A1B9A; }
+
+  .stress-list { margin-top: 12px; }
+  .stress-item { font-size: 12px; color: #C62828; margin-bottom: 4px; }
+
+  /* Barre Firefox after */
+  .ff-bar {
+    background: #2B2B33; border-radius: 10px; overflow: hidden; margin: 12px 0;
+  }
+  .ff-bar-top {
+    background: #38383D; padding: 6px 10px;
+    display: flex; gap: 5px; align-items: center;
+  }
+  .ff-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .ff-bookmarks {
+    padding: 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .ff-bk {
+    padding: 5px 12px; border-radius: 6px; font-size: 11px;
+    font-weight: 700; color: white;
+  }
+  .bk-v8    { background: #2E7D32; }
+  .bk-fu    { background: #B71C1C; }
+  .bk-src   { background: #E65100; }
+  .bk-perso { background: #1A237E; }
+  .bk-outils { background: #4A4A4A; }
+
+  .benefit-list { margin-top: 12px; }
+  .benefit-item { font-size: 12px; color: #2E7D32; margin-bottom: 4px; }
+
+  /* ===== SCHEMA STRUCTURE ===== */
+  .section-title {
+    text-align: center; font-size: 20px; font-weight: 800; color: #FF6B00;
+    margin: 40px 0 24px 0;
+  }
+
+  .structure-box {
+    background: white; border-radius: 18px; padding: 32px 28px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    margin-bottom: 36px;
+  }
+
+  /* Folder columns */
+  .folders-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+    margin-bottom: 28px;
+  }
+  .folder-col {
+    border-radius: 12px; padding: 14px; border-top: 5px solid;
+  }
+  .fc-v8    { background: #E8F5E9; border-color: #4CAF50; }
+  .fc-fu    { background: #FFEBEE; border-color: #EF5350; }
+  .fc-src   { background: #FFF3E0; border-color: #FF9800; }
+  .fc-perso { background: #E8EAF6; border-color: #5C6BC0; }
+  .fc-tools { background: #ECEFF1; border-color: #78909C; }
+
+  .fc-header {
+    font-weight: 800; font-size: 13px; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .fc-dot {
+    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+  }
+  .dot-green  { background: #4CAF50; }
+  .dot-red    { background: #EF5350; }
+  .dot-orange { background: #FF9800; }
+  .dot-blue   { background: #5C6BC0; }
+  .dot-grey   { background: #78909C; }
+
+  .fc-link {
+    font-size: 11px; color: #555; padding: 4px 6px;
+    background: white; border-radius: 6px; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 5px;
+    border-left: 3px solid transparent;
+  }
+  .fc-link.v8-l  { border-color: #4CAF50; }
+  .fc-link.fu-l  { border-color: #EF5350; }
+  .fc-link.src-l { border-color: #FF9800; }
+  .fc-link.ps-l  { border-color: #5C6BC0; }
+  .fc-link.tl-l  { border-color: #78909C; }
+  .fc-link .emoji { font-size: 13px; flex-shrink: 0; }
+
+  /* Règle d'or */
+  .golden-rule {
+    background: #FFFDE7; border: 2px dashed #FFB300; border-radius: 12px;
+    padding: 16px 20px; margin-top: 8px;
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .golden-rule .icon { font-size: 28px; flex-shrink: 0; }
+  .golden-rule .text { font-size: 13px; color: #555; line-height: 1.7; }
+  .golden-rule .text strong { color: #F57F17; }
+
+  /* ===== INTERDICTIONS ===== */
+  .forbidden-box {
+    background: #FFF3E0; border: 2px solid #FF9800; border-radius: 14px;
+    padding: 20px 24px; margin-bottom: 36px;
+  }
+  .forbidden-title { font-size: 15px; font-weight: 800; color: #E65100; margin-bottom: 14px; }
+  .forbidden-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .forbidden-item {
+    background: white; border-radius: 10px; padding: 12px;
+    display: flex; gap: 10px; align-items: flex-start; border-left: 3px solid #FF9800;
+  }
+  .forbidden-item .fi-icon { font-size: 20px; flex-shrink: 0; }
+  .forbidden-item .fi-text { font-size: 12px; color: #555; line-height: 1.5; }
+  .forbidden-item .fi-text strong { color: #333; display: block; margin-bottom: 2px; }
+
+  /* ===== TIPS ===== */
+  .tips-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 36px; }
+  .tip-card {
+    background: white; border-radius: 14px; padding: 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border-top: 4px solid;
+  }
+  .tip-card:nth-child(1) { border-color: #FF6B00; }
+  .tip-card:nth-child(2) { border-color: #4CAF50; }
+  .tip-card:nth-child(3) { border-color: #2196F3; }
+  .tip-icon { font-size: 28px; margin-bottom: 8px; }
+  .tip-title { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 6px; }
+  .tip-text { font-size: 12px; color: #666; line-height: 1.6; }
+
+  /* ===== BOTTOM ===== */
+  .bottom-box {
+    text-align: center; padding: 24px;
+    background: linear-gradient(135deg, #FF6B00 0%, #FF9500 100%);
+    border-radius: 16px; color: white;
+  }
+  .bottom-box .icon { font-size: 36px; margin-bottom: 10px; }
+  .bottom-box .title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+  .bottom-box .text { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  @media (max-width: 750px) {
+    .comparison { flex-direction: column; }
+    .folders-grid { grid-template-columns: 1fr 1fr; }
+    .forbidden-grid, .tips-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>🦊 Tes favoris Firefox — organisés</h1>
+  <p class="subtitle">Fini le bazar. Une couleur = une activité. Tu trouves tout en 5 secondes.</p>
+
+  <!-- AVANT / APRES -->
+  <div class="comparison">
+
+    <div class="panel panel-before">
+      <div class="panel-tag tag-before">❌ TES FAVORIS MAINTENANT (Chrome)</div>
+      <h2>Tout est mélangé</h2>
+      <div class="chaos-list">
+        <div class="chaos-item">📧 Re: MA040 Delavay ski boot — Gmail
+          <span class="badge b-red">MAIL EN FAVORI !</span>
+        </div>
+        <div class="chaos-item">📧 Re: QYELD accessories — Gmail
+          <span class="badge b-red">MAIL EN FAVORI !</span>
+        </div>
+        <div class="chaos-item">📄 Grands livres 2025.pdf — C:\Users\fredf
+          <span class="badge b-red">FICHIER LOCAL !</span>
+        </div>
+        <div class="chaos-item">📄 immo Fu solutions 2025.pdf — C:\Downloads
+          <span class="badge b-red">FICHIER LOCAL !</span>
+        </div>
+        <div class="chaos-item">🔗 Lien PDF Google Viewer temporaire
+          <span class="badge b-orange">LIEN MORT</span>
+        </div>
+        <div class="chaos-item">💬 ChatbotGPT (lien pub avec tracking)
+          <span class="badge b-orange">PAS UTILE</span>
+        </div>
+        <div class="chaos-item">🏋️ 15 Minutes Challenge (×2 fois !)
+          <span class="badge b-purple">DOUBLON</span>
+        </div>
+        <div class="chaos-item">🏠 ASUS E-Service importé de IE
+          <span class="badge b-purple">ZOMBIE</span>
+        </div>
+      </div>
+      <div class="stress-list">
+        <div class="stress-item">😰 Des mails bookmarkés = introuvables le lendemain</div>
+        <div class="stress-item">😰 Des fichiers locaux = ne s'ouvrent sur aucun autre appareil</div>
+        <div class="stress-item">😰 Des liens morts ou inutiles qui encombrent tout</div>
+        <div class="stress-item">😰 Pas de logique = on rajoute au tas chaque fois</div>
+      </div>
+    </div>
+
+    <div class="panel panel-after">
+      <div class="panel-tag tag-after">✅ APRÈS — Firefox bien rangé</div>
+      <h2>Une couleur, une activité</h2>
+      <div class="ff-bar">
+        <div class="ff-bar-top">
+          <div class="ff-dot" style="background:#FF5F57"></div>
+          <div class="ff-dot" style="background:#FFBD2E"></div>
+          <div class="ff-dot" style="background:#27C93F"></div>
+          <span style="color:#999; font-size:11px; margin-left:8px;">Barre de favoris Firefox</span>
+        </div>
+        <div class="ff-bookmarks">
+          <span class="ff-bk bk-v8">🟢 V8</span>
+          <span class="ff-bk bk-fu">🔴 Fu-Fight</span>
+          <span class="ff-bk bk-src">🟠 Sourcing</span>
+          <span class="ff-bk bk-perso">🔵 Perso</span>
+          <span class="ff-bk bk-outils">⚙️ Outils</span>
+        </div>
+      </div>
+      <div class="benefit-list">
+        <div class="benefit-item">✅ 5 dossiers dans la barre — pas un de plus</div>
+        <div class="benefit-item">✅ Tu cliques sur 🟢 V8 → tout V8 est là</div>
+        <div class="benefit-item">✅ Plus de mails en favoris (= utilise OneDrive)</div>
+        <div class="benefit-item">✅ Plus de fichiers locaux en favoris</div>
+        <div class="benefit-item">✅ Tu retrouves n'importe quel site en 5 secondes</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STRUCTURE DÉTAILLÉE -->
+  <div class="section-title">📁 Ce que tu mets dans chaque dossier</div>
+
+  <div class="structure-box">
+    <div class="folders-grid">
+
+      <!-- V8 -->
+      <div class="folder-col fc-v8">
+        <div class="fc-header"><div class="fc-dot dot-green"></div>🟢 V8</div>
+        <div class="fc-link v8-l"><span class="emoji">🏦</span>CIC Pro</div>
+        <div class="fc-link v8-l"><span class="emoji">🌐</span>v8-equipment.com</div>
+        <div class="fc-link v8-l"><span class="emoji">📧</span>Gmail V8</div>
+        <div class="fc-link v8-l"><span class="emoji">📊</span>Suivi ventes tentes</div>
+        <div class="fc-link v8-l"><span class="emoji">📦</span>Dropbox → OneDrive V8</div>
+        <div class="fc-link v8-l"><span class="emoji">🔑</span>MDP V8 (Google Sheet)</div>
+      </div>
+
+      <!-- FU-FIGHT -->
+      <div class="folder-col fc-fu">
+        <div class="fc-header"><div class="fc-dot dot-red"></div>🔴 Fu-Fight</div>
+        <div class="fc-link fu-l"><span class="emoji">🏦</span>HSBC HK</div>
+        <div class="fc-link fu-l"><span class="emoji">📧</span>Gmail Fu-Fight</div>
+        <div class="fc-link fu-l"><span class="emoji">📊</span>fufu Google Sheet</div>
+        <div class="fc-link fu-l"><span class="emoji">🥊</span>Fournisseurs combat</div>
+        <div class="fc-link fu-l"><span class="emoji">📦</span>OneDrive Fu-Fight</div>
+      </div>
+
+      <!-- SOURCING -->
+      <div class="folder-col fc-src">
+        <div class="fc-header"><div class="fc-dot dot-orange"></div>🟠 Sourcing</div>
+        <div class="fc-link src-l"><span class="emoji">📧</span>Gmail Sourcing</div>
+        <div class="fc-link src-l"><span class="emoji">💬</span>Lark / Feishu</div>
+        <div class="fc-link src-l"><span class="emoji">🏦</span>Banque Sourcing</div>
+        <div class="fc-link src-l"><span class="emoji">📦</span>OneDrive Sourcing</div>
+        <div class="fc-link src-l"><span class="emoji">🇨🇳</span>Fournisseurs Chine</div>
+      </div>
+
+      <!-- PERSO -->
+      <div class="folder-col fc-perso">
+        <div class="fc-header"><div class="fc-dot dot-blue"></div>🔵 Perso</div>
+        <div class="fc-link ps-l"><span class="emoji">📧</span>Gmail perso</div>
+        <div class="fc-link ps-l"><span class="emoji">💊</span>Mutuelles du Soleil</div>
+        <div class="fc-link ps-l"><span class="emoji">📺</span>Formation Natty</div>
+        <div class="fc-link ps-l"><span class="emoji">🏠</span>Perso / Impôts</div>
+        <div class="fc-link ps-l"><span class="emoji">📱</span>Réseaux perso</div>
+      </div>
+
+      <!-- OUTILS -->
+      <div class="folder-col fc-tools">
+        <div class="fc-header"><div class="fc-dot dot-grey"></div>⚙️ Outils</div>
+        <div class="fc-link tl-l"><span class="emoji">🤖</span>ChatGPT</div>
+        <div class="fc-link tl-l"><span class="emoji">🎨</span>Canva</div>
+        <div class="fc-link tl-l"><span class="emoji">📋</span>Notion (dashboard)</div>
+        <div class="fc-link tl-l"><span class="emoji">💬</span>Slack</div>
+        <div class="fc-link tl-l"><span class="emoji">📑</span>Modes opératoires</div>
+        <div class="fc-link tl-l"><span class="emoji">📊</span>Pub RS (Google Sheet)</div>
+      </div>
+
+    </div>
+
+    <!-- Règle d'or -->
+    <div class="golden-rule">
+      <div class="icon">💡</div>
+      <div class="text">
+        <strong>La règle d'or : si tu ne sais pas où le mettre, demande-toi → "c'est pour quelle activité ?"</strong><br>
+        V8 = camping/outdoor 🟢 &nbsp;|&nbsp; Fu-Fight = arts martiaux 🔴 &nbsp;|&nbsp; Sourcing = Chine 🟠 &nbsp;|&nbsp; Perso = toi 🔵 &nbsp;|&nbsp; Outils = tes applis du quotidien ⚙️<br>
+        <strong>Les mails ne vont PAS en favoris. Les fichiers locaux ne vont PAS en favoris.</strong> Pour les retrouver → utilise OneDrive.
+      </div>
+    </div>
+  </div>
+
+  <!-- CE QU'ON SUPPRIME -->
+  <div class="forbidden-box">
+    <div class="forbidden-title">🗑️ Ce qu'on supprime de tes favoris (et pourquoi)</div>
+    <div class="forbidden-grid">
+      <div class="forbidden-item">
+        <div class="fi-icon">📧</div>
+        <div class="fi-text">
+          <strong>Les mails bookmarkés</strong>
+          Un mail mis en favori = introuvable le lendemain. Si c'est important, mets le document dans OneDrive. Sinon, laisse-le dans ta boîte mail.
+        </div>
+      </div>
+      <div class="forbidden-item">
+        <div class="fi-icon">📄</div>
+        <div class="fi-text">
+          <strong>Les fichiers locaux (C:\Users\fredf\...)</strong>
+          Ces liens ne fonctionnent que sur TON PC. Sur ton iPad ou un autre ordi → erreur. Solution : mettre le fichier dans OneDrive.
+        </div>
+      </div>
+      <div class="forbidden-item">
+        <div class="fi-icon">🔗</div>
+        <div class="fi-text">
+          <strong>Les liens PDF Google Viewer temporaires</strong>
+          Ces URLs meurent après quelques heures. Inutile. Le vrai fichier doit être dans OneDrive.
+        </div>
+      </div>
+      <div class="forbidden-item">
+        <div class="fi-icon">💀</div>
+        <div class="fi-text">
+          <strong>Les liens zombies (ASUS IE, ChatbotGPT tracking, doublons)</strong>
+          Des vieux favoris importés depuis Internet Explorer, des liens pub. Ça encombre. On nettoie.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 TIPS -->
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-icon">🎨</div>
+      <div class="tip-title">Même couleur que tes containers</div>
+      <div class="tip-text">V8 = vert, Fu-Fight = rouge, Sourcing = orange, Perso = bleu. C'est TOUJOURS les mêmes couleurs — dans Firefox, dans OneDrive, partout. Un seul système à retenir.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📌</div>
+      <div class="tip-title">Barre de favoris = raccourcis rapides</div>
+      <div class="tip-text">Dans chaque dossier, mets MAXIMUM 8-10 liens. Ce que tu ouvres plusieurs fois par semaine seulement. Le reste → dans OneDrive ou dans ta boîte mail.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🔄</div>
+      <div class="tip-title">Nettoyage 1x par mois (5 min)</div>
+      <div class="tip-text">Chaque début de mois : supprimer les favoris que tu n'as pas utilisés. Si ça fait 30 jours que tu ne l'as pas ouvert, c'est que t'en as pas besoin en favori.</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="bottom-box">
+    <div class="icon">🏆</div>
+    <div class="title">Ce que tu gagnes avec ça</div>
+    <div class="text">
+      Fini les 50 onglets ouverts parce que "sinon je retrouve plus".<br>
+      Tout est dans le bon dossier, avec la bonne couleur. Tu ouvres Firefox, tu cliques sur le dossier de l'activité,<br>
+      tu trouves ton lien en 5 secondes. C'est tout ce qu'on te demande.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

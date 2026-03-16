@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outlook — Catégories couleurs pour Fred</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap');
+
+  :root {
+    --v8:      #2E7D32;
+    --v8-bg:   #E8F5E9;
+    --v8-lt:   #F1FBF2;
+    --fu:      #C62828;
+    --fu-bg:   #FFEBEE;
+    --fu-lt:   #FFF5F5;
+    --src:     #E65100;
+    --src-bg:  #FFF3E0;
+    --src-lt:  #FFFAF5;
+    --perso:   #283593;
+    --perso-bg:#E8EAF6;
+    --perso-lt:#F4F5FB;
+    --info:    #546E7A;
+    --info-bg: #ECEFF1;
+    --blue:    #0078D4;
+    --text:    #1C1C2E;
+    --muted:   #666;
+    --border:  #E0E0E0;
+    --bg:      #F2F4F8;
+    --white:   #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Nunito Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 36px 20px 60px;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--blue);
+    border-radius: 20px;
+    padding: 30px 36px;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: white;
+  }
+  .header-icon { font-size: 52px; flex-shrink: 0; }
+  .header h1 { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 900; margin-bottom: 6px; }
+  .header p { font-size: 14px; opacity: 0.85; line-height: 1.6; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 19px;
+    font-weight: 900;
+    color: var(--text);
+    margin: 36px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+  }
+
+  /* ── CATÉGORIES ── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .cat-card {
+    border-radius: 14px;
+    padding: 16px 13px;
+    border-top: 5px solid;
+  }
+  .cat-card.v8    { background: var(--v8-bg);    border-color: var(--v8); }
+  .cat-card.fu    { background: var(--fu-bg);    border-color: var(--fu); }
+  .cat-card.src   { background: var(--src-bg);   border-color: var(--src); }
+  .cat-card.perso { background: var(--perso-bg); border-color: var(--perso); }
+  .cat-card.info  { background: var(--info-bg);  border-color: var(--info); }
+
+  .cat-name {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .cat-dot {
+    width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0;
+  }
+  .cat-color-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .cat-item {
+    background: white;
+    border-radius: 7px;
+    padding: 5px 8px;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.3;
+  }
+
+  /* ── ÉTAPES ── */
+  .steps-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .step-block {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    color: var(--text);
+    flex: 1;
+  }
+  .step-duration {
+    background: #EBF5FF;
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .step-body { padding: 18px 20px; }
+
+  /* Chemin clics */
+  .click-path {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+    padding: 12px 16px;
+    background: #F8F9FF;
+    border: 1.5px dashed #0078D4;
+    border-radius: 10px;
+  }
+  .click-step {
+    background: var(--blue);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .click-arrow {
+    color: #0078D4;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .click-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  /* Actions liste */
+  .action-list { display: flex; flex-direction: column; gap: 7px; }
+  .action-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    padding: 8px 12px;
+    background: var(--bg);
+    border-radius: 8px;
+  }
+  .action-item .a-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .action-item strong { color: var(--blue); }
+
+  /* Cat mini pills dans les actions */
+  .pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    vertical-align: middle;
+    margin: 0 2px;
+  }
+  .pill-v8    { background: var(--v8-bg);    color: var(--v8); }
+  .pill-fu    { background: var(--fu-bg);    color: var(--fu); }
+  .pill-src   { background: var(--src-bg);   color: var(--src); }
+  .pill-perso { background: var(--perso-bg); color: var(--perso); }
+  .pill-info  { background: var(--info-bg);  color: var(--info); }
+
+  /* Tip/warning inline */
+  .inline-tip {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    font-size: 12px;
+    line-height: 1.6;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .tip-yellow { background: #FFFDE7; border-left: 3px solid #FFB300; color: #5D4037; }
+  .tip-green  { background: #E8F5E9; border-left: 3px solid #4CAF50; color: #2E7D32; }
+  .tip-red    { background: #FFEBEE; border-left: 3px solid #EF5350; color: #C62828; }
+
+  /* Mockup boîte de réception */
+  .inbox-mockup {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+    border: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+  .inbox-bar {
+    background: var(--blue);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .inbox-subbar {
+    background: #F5F5F5;
+    border-bottom: 1px solid var(--border);
+    padding: 8px 16px;
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .inbox-tab {
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: default;
+  }
+  .inbox-tab.active { background: var(--blue); color: white; }
+  .inbox-tab:not(.active) { color: var(--muted); }
+
+  /* Grouped view */
+  .group-header {
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .group-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .group-count {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 700;
+    color: white;
+    padding: 1px 7px;
+    border-radius: 10px;
+  }
+
+  .inbox-mail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 16px 9px 28px;
+    border-bottom: 1px solid #FAFAFA;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .inbox-mail:hover { background: #F9F9F9; }
+  .inbox-mail.unread { background: #EBF5FF; color: var(--text); }
+  .inbox-mail .m-sender { font-weight: 700; min-width: 110px; font-size: 12px; }
+  .inbox-mail .m-subject { flex: 1; }
+  .inbox-mail .m-date { font-size: 10px; color: #aaa; white-space: nowrap; }
+  .inbox-mail .m-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Règles auto */
+  .rules-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+  .rule-row {
+    display: grid;
+    grid-template-columns: 1fr 32px 1fr;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+  }
+  .rule-if {
+    background: #EBF5FF;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 12px;
+    color: #0D47A1;
+    line-height: 1.5;
+  }
+  .rule-if .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #90A4AE; margin-bottom: 3px; }
+  .rule-arrow { text-align: center; font-size: 18px; color: var(--blue); }
+  .rule-then {
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 12px;
+    color: white;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .rule-then .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; margin-bottom: 3px; }
+  .rt-v8    { background: var(--v8); }
+  .rt-fu    { background: var(--fu); }
+  .rt-src   { background: var(--src); }
+  .rt-perso { background: var(--perso); }
+  .rt-info  { background: var(--info); }
+
+  /* Bottom recap */
+  .recap {
+    background: var(--blue);
+    border-radius: 18px;
+    padding: 28px 32px;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  .recap-item { text-align: center; }
+  .recap-item .r-num {
+    font-family: 'Nunito', sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+  .recap-item .r-label { font-size: 13px; opacity: 0.85; line-height: 1.5; }
+
+  /* Warning catherine */
+  .cath-note {
+    background: #FFF8E1;
+    border: 2px solid #FFB300;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 36px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .cath-note .cn-icon { font-size: 28px; flex-shrink: 0; }
+  .cath-note .cn-text { font-size: 13px; color: #5D4037; line-height: 1.7; }
+  .cath-note .cn-text strong { color: #E65100; display: block; font-size: 14px; margin-bottom: 4px; }
+
+  @media (max-width: 700px) {
+    .cat-grid { grid-template-columns: 1fr 1fr; }
+    .recap { grid-template-columns: 1fr; }
+    .rule-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-icon">📬</div>
+    <div>
+      <h1>Outlook Desktop — Tes catégories couleurs</h1>
+      <p>On va classer tes mails par activité en 3 étapes.<br>
+      Même couleurs que Firefox et OneDrive. Un seul système, partout.</p>
+    </div>
+  </div>
+
+  <!-- NOTE CATHERINE -->
+  <div class="cath-note">
+    <div class="cn-icon">🧭</div>
+    <div class="cn-text">
+      <strong>Pour Catherine — déroulé de séance</strong>
+      Fred clique, toi tu guides. Étape 1 ensemble → Étape 2, Fred fait seul 2-3 mails → Étape 3, 2 règles auto max.
+      Ce qui reste = action Fred pour la semaine. Ne pas tout finir aujourd'hui.
+    </div>
+  </div>
+
+  <!-- CATÉGORIES -->
+  <div class="section-label">🎨 Les 5 catégories à créer</div>
+  <div class="cat-grid">
+
+    <div class="cat-card v8">
+      <div class="cat-name"><div class="cat-dot" style="background:var(--v8)"></div>🟢 V8</div>
+      <div class="cat-color-label">Couleur → Vert</div>
+      <div class="cat-item">🧾 Factures V8</div>
+      <div class="cat-item">📦 Fournisseurs camping</div>
+      <div class="cat-item">👤 Clients V8</div>
+      <div class="cat-item">🏦 CIC Pro</div>
+    </div>
+
+    <div class="cat-card fu">
+      <div class="cat-name"><div class="cat-dot" style="background:var(--fu)"></div>🔴 Fu-Fight</div>
+      <div class="cat-color-label">Couleur → Rouge</div>
+      <div class="cat-item">🧾 Factures Fu-Fight</div>
+      <div class="cat-item">🥊 Fournisseurs combat</div>
+      <div class="cat-item">📦 Commandes HK</div>
+      <div class="cat-item">🏦 HSBC</div>
+    </div>
+
+    <div class="cat-card src">
+      <div class="cat-name"><div class="cat-dot" style="background:var(--src)"></div>🟠 Sourcing</div>
+      <div class="cat-color-label">Couleur → Orange</div>
+      <div class="cat-item">🇨🇳 Fournisseurs Chine</div>
+      <div class="cat-item">📋 Devis & négo</div>
+      <div class="cat-item">🚢 Expéditions</div>
+      <div class="cat-item">💬 Lark / assistants</div>
+    </div>
+
+    <div class="cat-card perso">
+      <div class="cat-name"><div class="cat-dot" style="background:var(--perso)"></div>🔵 Perso</div>
+      <div class="cat-color-label">Couleur → Bleu foncé</div>
+      <div class="cat-item">🏦 Banque perso</div>
+      <div class="cat-item">💊 Mutuelle / santé</div>
+      <div class="cat-item">🏛️ Impôts / admin</div>
+      <div class="cat-item">👨‍👩‍👦 Famille</div>
+    </div>
+
+    <div class="cat-card info">
+      <div class="cat-name"><div class="cat-dot" style="background:var(--info)"></div>⚙️ Infos</div>
+      <div class="cat-color-label">Couleur → Gris</div>
+      <div class="cat-item">📰 Newsletters</div>
+      <div class="cat-item">🔔 Notifications outils</div>
+      <div class="cat-item">🎓 Formations</div>
+      <div class="cat-item">🛒 Confirmations achats</div>
+    </div>
+
+  </div>
+
+  <!-- ÉTAPES -->
+  <div class="section-label">👆 Les 3 étapes — Fred, tu cliques</div>
+  <div class="steps-wrapper">
+
+    <!-- ÉTAPE 1 : Créer les catégories -->
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <div class="step-title">Créer les 5 catégories couleurs</div>
+        <div class="step-duration">⏱ ~10 min</div>
+      </div>
+      <div class="step-body">
+        <div class="click-label">📍 Le chemin dans Outlook :</div>
+        <div class="click-path">
+          <span class="click-step">Onglet Accueil</span>
+          <span class="click-arrow">→</span>
+          <span class="click-step">Catégoriser</span>
+          <span class="click-arrow">→</span>
+          <span class="click-step">Toutes les catégories</span>
+          <span class="click-arrow">→</span>
+          <span class="click-step">Nouveau</span>
+        </div>
+        <div class="action-list">
+          <div class="action-item">
+            <span class="a-icon">1️⃣</span>
+            <span>Dans la fenêtre qui s'ouvre → clic sur <strong>"Nouveau"</strong></span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">✏️</span>
+            <span>Tape le nom : <strong>"V8"</strong> → choisis la couleur <strong>Verte</strong> → OK</span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">🔁</span>
+            <span>Répète pour chaque activité :
+              <span class="pill pill-fu">🔴 Fu-Fight → Rouge</span>
+              <span class="pill pill-src">🟠 Sourcing → Orange</span>
+              <span class="pill pill-perso">🔵 Perso → Bleu foncé</span>
+              <span class="pill pill-info">⚙️ Infos → Gris</span>
+            </span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">✅</span>
+            <span>Quand les 5 sont créées → clic <strong>"OK"</strong> pour fermer la fenêtre</span>
+          </div>
+        </div>
+        <div class="inline-tip tip-yellow">
+          <span>💡</span>
+          <span>Si tu ne vois pas l'onglet "Accueil" → clique d'abord sur un mail dans ta boîte de réception. L'onglet apparaît automatiquement.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 : Appliquer sur les mails existants -->
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <div class="step-title">Appliquer les catégories sur tes mails</div>
+        <div class="step-duration">⏱ ~15 min</div>
+      </div>
+      <div class="step-body">
+        <div class="click-label">📍 Sur chaque mail à classer :</div>
+        <div class="click-path">
+          <span class="click-step">Clic droit sur le mail</span>
+          <span class="click-arrow">→</span>
+          <span class="click-step">Catégoriser</span>
+          <span class="click-arrow">→</span>
+          <span class="click-step">Choisir la couleur</span>
+        </div>
+        <div class="action-list">
+          <div class="action-item">
+            <span class="a-icon">🖱️</span>
+            <span><strong>Clic droit</strong> sur un mail → <strong>"Catégoriser"</strong> → clique sur la bonne catégorie</span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">🎯</span>
+            <span>Exemple : mail de ton fournisseur V8 → <span class="pill pill-v8">🟢 V8</span>. Mail de HSBC → <span class="pill pill-fu">🔴 Fu-Fight</span></span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">📦</span>
+            <span>Pour classer <strong>plusieurs mails d'un coup</strong> : tiens <strong>Ctrl</strong> enfoncé + clic sur chaque mail → puis clic droit → Catégoriser</span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">👀</span>
+            <span>Tu vois une <strong>pastille couleur</strong> apparaître à gauche du mail ? C'est bon, c'est classé ✅</span>
+          </div>
+        </div>
+        <div class="inline-tip tip-red">
+          <span>🚨</span>
+          <span><strong>Pour Catherine :</strong> Fred fait les 2-3 premiers seul pendant que tu guides à voix. Ce qui reste = son action pour la semaine. Ne pas tout finir aujourd'hui.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 3 : Regrouper par catégorie -->
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num">3</div>
+        <div class="step-title">Regrouper les mails par catégorie dans l'affichage</div>
+        <div class="step-duration">⏱ ~2 min</div>
+      </div>
+      <div class="step-body">
+        <div class="click-label">📍 Le chemin dans Outlook :</div>
+        <div class="click-path">
+          <span class="click-step">Onglet Affichage</span>
+          <span class="click-arrow">→</span>
+          <span class="click-step">groupe "Organisation"</span>
+          <span class="click-arrow">→</span>
+          <span class="click-step">Catégories</span>
+        </div>
+        <div class="action-list">
+          <div class="action-item">
+            <span class="a-icon">🖱️</span>
+            <span>Clique sur l'onglet <strong>"Affichage"</strong> en haut → cherche le bouton <strong>"Catégories"</strong> dans la barre → clique dessus</span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">✨</span>
+            <span>Tes mails se regroupent <strong>automatiquement</strong> : tous les verts ensemble, tous les rouges ensemble, etc.</span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">▶️</span>
+            <span>Tu peux <strong>réduire ou ouvrir</strong> chaque groupe en cliquant sur la petite flèche à gauche du nom du groupe</span>
+          </div>
+        </div>
+        <div class="inline-tip tip-green">
+          <span>🏆</span>
+          <span>C'est le moment "waouh" à montrer à Fred. 1 clic et tout se range par activité. Prends 30 secondes pour qu'il voit le résultat avant de passer à la suite.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BONUS : Règles automatiques -->
+    <div class="step-block">
+      <div class="step-header">
+        <div class="step-num" style="background:#FF9800">+</div>
+        <div class="step-title">BONUS — Règles automatiques (2 max en séance)</div>
+        <div class="step-duration">⏱ ~10 min</div>
+      </div>
+      <div class="step-body">
+        <div class="click-label">📍 Le chemin dans Outlook :</div>
+        <div class="click-path">
+          <span class="click-step">Onglet Accueil</span>
+          <span class="click-arrow">→</span>
+          <span class="click-step">Règles</span>
+          <span class="click-arrow">→</span>
+          <span class="click-step">Gérer les règles et alertes</span>
+          <span class="click-arrow">→</span>
+          <span class="click-step">Nouvelle règle</span>
+        </div>
+        <div class="action-list">
+          <div class="action-item">
+            <span class="a-icon">1️⃣</span>
+            <span>Choisis <strong>"Appliquer la règle aux messages que je reçois"</strong> → Suivant</span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">2️⃣</span>
+            <span>Condition : <strong>"De personnes ou groupe public"</strong> → clique sur le lien souligné → saisis l'adresse mail du fournisseur → OK</span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">3️⃣</span>
+            <span>Action : <strong>"Affecter à la catégorie"</strong> → clique sur le lien souligné → choisis la bonne catégorie → OK</span>
+          </div>
+          <div class="action-item">
+            <span class="a-icon">4️⃣</span>
+            <span>Clic <strong>"Terminer"</strong>. La règle s'applique automatiquement à tous les prochains mails de cet expéditeur.</span>
+          </div>
+        </div>
+        <div class="inline-tip tip-yellow">
+          <span>⚠️</span>
+          <span><strong>2 règles max en séance</strong> (ex: ton fournisseur V8 principal + HSBC). Le reste = Fred le fait seul dans la semaine en répétant le même chemin. Le mécanisme est compris, c'est l'essentiel.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MOCKUP RÉSULTAT FINAL -->
+  <div class="section-label">👁️ Ce que tu vois à la fin</div>
+  <div class="inbox-mockup">
+    <div class="inbox-bar">
+      📬 Boîte de réception — Outlook Desktop
+      <span style="margin-left:auto;font-size:12px;opacity:0.8">Affichage → Catégories activé ✅</span>
+    </div>
+    <div class="inbox-subbar">
+      <span>Trier par :</span>
+      <span class="inbox-tab active">Catégories</span>
+      <span class="inbox-tab">Date</span>
+      <span class="inbox-tab">Expéditeur</span>
+    </div>
+
+    <!-- Groupe V8 -->
+    <div class="group-header" style="background:var(--v8-lt)">
+      <div class="group-dot" style="background:var(--v8)"></div>
+      <span style="color:var(--v8);font-family:'Nunito',sans-serif">🟢 V8</span>
+      <span class="group-count" style="background:var(--v8)">3 mails</span>
+    </div>
+    <div class="inbox-mail unread">
+      <div class="m-dot" style="background:var(--v8)"></div>
+      <div class="m-sender">EDF Pro</div>
+      <div class="m-subject">Facture n°2025-0312 — V8 Equipment</div>
+      <div class="m-date">Auj. 09:14</div>
+    </div>
+    <div class="inbox-mail">
+      <div class="m-dot" style="background:var(--v8)"></div>
+      <div class="m-sender">CIC Pro</div>
+      <div class="m-subject">Relevé de compte — Fév. 2025</div>
+      <div class="m-date">01/03</div>
+    </div>
+
+    <!-- Groupe Fu-Fight -->
+    <div class="group-header" style="background:var(--fu-lt)">
+      <div class="group-dot" style="background:var(--fu)"></div>
+      <span style="color:var(--fu);font-family:'Nunito',sans-serif">🔴 Fu-Fight</span>
+      <span class="group-count" style="background:var(--fu)">2 mails</span>
+    </div>
+    <div class="inbox-mail unread">
+      <div class="m-dot" style="background:var(--fu)"></div>
+      <div class="m-sender">Fournisseur HK</div>
+      <div class="m-subject">RE: Order confirmation — Fu-Fight gloves</div>
+      <div class="m-date">Hier</div>
+    </div>
+
+    <!-- Groupe Sourcing -->
+    <div class="group-header" style="background:var(--src-lt)">
+      <div class="group-dot" style="background:var(--src)"></div>
+      <span style="color:var(--src);font-family:'Nunito',sans-serif">🟠 Sourcing</span>
+      <span class="group-count" style="background:var(--src)">4 mails</span>
+    </div>
+    <div class="inbox-mail">
+      <div class="m-dot" style="background:var(--src)"></div>
+      <div class="m-sender">Lily — Chine</div>
+      <div class="m-subject">Devis tentes V8 — nouvelle collection</div>
+      <div class="m-date">Lun.</div>
+    </div>
+
+    <!-- Groupe Perso -->
+    <div class="group-header" style="background:var(--perso-lt)">
+      <div class="group-dot" style="background:var(--perso)"></div>
+      <span style="color:var(--perso);font-family:'Nunito',sans-serif">🔵 Perso</span>
+      <span class="group-count" style="background:var(--perso)">1 mail</span>
+    </div>
+    <div class="inbox-mail">
+      <div class="m-dot" style="background:var(--perso)"></div>
+      <div class="m-sender">Mutuelles du Soleil</div>
+      <div class="m-subject">Votre attestation de remboursement</div>
+      <div class="m-date">28/02</div>
+    </div>
+
+    <!-- Groupe Infos -->
+    <div class="group-header" style="background:var(--info-bg)">
+      <div class="group-dot" style="background:var(--info)"></div>
+      <span style="color:var(--info);font-family:'Nunito',sans-serif">⚙️ Infos / Newsletters</span>
+      <span class="group-count" style="background:var(--info)">7 mails</span>
+    </div>
+    <div class="inbox-mail">
+      <div class="m-dot" style="background:var(--info)"></div>
+      <div class="m-sender">Notion</div>
+      <div class="m-subject">Résumé hebdo de ton espace de travail</div>
+      <div class="m-date">Lun.</div>
+    </div>
+  </div>
+
+  <!-- RÈGLES AUTO RÉSUMÉ -->
+  <div class="section-label">⚙️ Résumé des règles automatiques (à créer progressivement)</div>
+  <div class="rules-grid">
+    <div class="rule-row">
+      <div class="rule-if">
+        <div class="label">Si expéditeur contient</div>
+        @v8-equipment.com<br>OU objet contient "V8"
+      </div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-then rt-v8">
+        <div class="label">Alors</div>
+        🟢 Catégorie V8
+      </div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-if">
+        <div class="label">Si expéditeur contient</div>
+        @fulfate.fr<br>OU objet contient "Fu-Fight"
+      </div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-then rt-fu">
+        <div class="label">Alors</div>
+        🔴 Catégorie Fu-Fight
+      </div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-if">
+        <div class="label">Si expéditeur contient</div>
+        Lily / fournisseur Chine<br>OU objet contient "FOB" / "sourcing"
+      </div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-then rt-src">
+        <div class="label">Alors</div>
+        🟠 Catégorie Sourcing
+      </div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-if">
+        <div class="label">Si expéditeur contient</div>
+        newsletter / noreply / promo
+      </div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-then rt-info">
+        <div class="label">Alors</div>
+        ⚙️ Catégorie Infos
+      </div>
+    </div>
+  </div>
+
+  <!-- RECAP -->
+  <div class="recap">
+    <div class="recap-item">
+      <div class="r-num">3</div>
+      <div class="r-label">étapes en séance<br>Créer → Appliquer → Afficher</div>
+    </div>
+    <div class="recap-item">
+      <div class="r-num">5</div>
+      <div class="r-label">catégories couleurs<br>V8 · Fu-Fight · Sourcing · Perso · Infos</div>
+    </div>
+    <div class="recap-item">
+      <div class="r-num">2</div>
+      <div class="r-label">règles automatiques max en séance<br>le reste = action Fred cette semaine</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
