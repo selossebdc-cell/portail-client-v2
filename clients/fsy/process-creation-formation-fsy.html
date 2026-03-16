@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process Creation Formation — Face Soul Yoga</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --terracotta: #C27A5A;
+        --terracotta-light: #d4967a;
+        --terracotta-glow: #C27A5A22;
+        --coral: #E8A090;
+        --soft-pink: #F2C4B8;
+        --blush: #F7DDD3;
+        --cream: #FFF5F0;
+        --bg: #0f0f0f;
+        --card: #1a1a1a;
+        --card-hover: #1e1e1e;
+        --border: #2a2a2a;
+        --border-light: #333;
+        --text: #e0e0e0;
+        --text-muted: #888;
+        --text-dim: #666;
+        --white: #fff;
+        --success: #52b788;
+        --success-bg: #2d6a4f22;
+        --warning: #e0c05a;
+        --warning-bg: #b8860b22;
+        --danger: #e07070;
+        --danger-bg: #8b3a3a22;
+        --info: #7ab8e0;
+        --info-bg: #2a5a7a22;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        padding: 40px 20px;
+        line-height: 1.7;
+        max-width: 960px;
+        margin: 0 auto;
+    }
+
+    /* PRINT */
+    @media print {
+        body { background: #fff; color: #222; padding: 20px; font-size: 11px; }
+        .phase-card { background: #f9f9f9 !important; border-color: #ddd !important; break-inside: avoid; }
+        .phase-content { display: block !important; max-height: none !important; padding: 16px !important; opacity: 1 !important; }
+        .phase-header .toggle-icon { display: none; }
+        .header-badge { background: #f5f5f5 !important; }
+        .callout { background: #fff8f0 !important; border-color: #e0c05a !important; }
+        .tool-tag { background: #eee !important; color: #444 !important; }
+        .summary-section { break-before: page; }
+    }
+
+    /* HEADER */
+    .header { margin-bottom: 40px; text-align: center; }
+    .header-logo {
+        font-size: 13px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+        color: var(--terracotta); margin-bottom: 8px;
+    }
+    .header h1 {
+        font-size: 32px; font-weight: 800; color: var(--white);
+        margin-bottom: 8px; line-height: 1.3;
+    }
+    .header h1 span { color: var(--terracotta); }
+    .header .subtitle {
+        color: var(--text-muted); font-size: 15px; margin-bottom: 24px;
+        max-width: 600px; margin-left: auto; margin-right: auto;
+    }
+    .header-badges {
+        display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+    .header-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: var(--card); border: 1px solid var(--border);
+        padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    }
+    .header-badge .badge-icon { font-size: 14px; }
+
+    /* TIMELINE OVERVIEW */
+    .timeline-overview {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 8px; margin-bottom: 40px; padding: 20px;
+        background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    }
+    .timeline-item {
+        text-align: center; padding: 12px 6px; border-radius: 10px;
+        cursor: pointer; transition: all 0.2s;
+    }
+    .timeline-item:hover { background: var(--terracotta-glow); }
+    .timeline-item .t-phase {
+        font-size: 10px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; color: var(--terracotta); margin-bottom: 4px;
+    }
+    .timeline-item .t-name { font-size: 11px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .timeline-item .t-duration {
+        font-size: 10px; color: var(--text-dim); margin-top: 4px;
+    }
+
+    /* PHASE CARDS */
+    .phase-card {
+        background: var(--card); border: 1px solid var(--border);
+        border-radius: 14px; margin-bottom: 16px; overflow: hidden;
+        transition: border-color 0.2s;
+    }
+    .phase-card:hover { border-color: var(--border-light); }
+    .phase-card.active { border-color: var(--terracotta); }
+    .phase-card.active .phase-header { border-bottom-color: var(--border); }
+
+    .phase-header {
+        display: flex; align-items: center; gap: 14px;
+        padding: 18px 22px; cursor: pointer; user-select: none;
+        border-bottom: 1px solid transparent; transition: all 0.2s;
+    }
+    .phase-header:hover { background: var(--card-hover); }
+
+    .phase-number {
+        width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; font-weight: 800; color: var(--white);
+        background: linear-gradient(135deg, var(--terracotta), var(--coral));
+    }
+    .phase-header-text { flex: 1; }
+    .phase-header-text h2 { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+    .phase-header-text .phase-desc { font-size: 12px; color: var(--text-muted); }
+    .phase-header .phase-duration {
+        font-size: 11px; color: var(--terracotta-light); font-weight: 600;
+        background: var(--terracotta-glow); padding: 4px 10px; border-radius: 6px;
+        white-space: nowrap;
+    }
+    .toggle-icon {
+        font-size: 18px; color: var(--text-dim); transition: transform 0.3s;
+        flex-shrink: 0;
+    }
+    .phase-card.active .toggle-icon { transform: rotate(180deg); }
+
+    .phase-content {
+        max-height: 0; overflow: hidden; opacity: 0;
+        transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+        padding: 0 22px;
+    }
+    .phase-card.active .phase-content {
+        max-height: 5000px; opacity: 1; padding: 20px 22px;
+    }
+
+    /* STEPS */
+    .step-group { margin-bottom: 20px; }
+    .step-group-title {
+        font-size: 13px; font-weight: 700; color: var(--terracotta-light);
+        text-transform: uppercase; letter-spacing: 0.5px;
+        margin-bottom: 10px; padding-bottom: 6px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .step {
+        display: flex; align-items: flex-start; gap: 12px;
+        padding: 10px 0; border-bottom: 1px solid #1f1f1f;
+    }
+    .step:last-child { border-bottom: none; }
+    .step-icon {
+        width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 13px; background: var(--terracotta-glow);
+    }
+    .step-body { flex: 1; }
+    .step-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+    .step-detail { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .step-detail code {
+        background: #2a2a2a; padding: 1px 6px; border-radius: 3px;
+        font-size: 11px; color: var(--coral);
+    }
+
+    /* CLICK PATH */
+    .click-path {
+        font-size: 11px; color: var(--text-dim); margin-top: 4px;
+        font-family: 'Nunito', monospace;
+    }
+    .click-path span {
+        color: var(--info); background: var(--info-bg);
+        padding: 1px 6px; border-radius: 3px; font-weight: 600;
+    }
+    .click-path .arrow { color: var(--text-dim); margin: 0 3px; }
+
+    /* TOOL TAGS */
+    .tool-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .tool-tag {
+        display: inline-flex; align-items: center; gap: 4px;
+        font-size: 10px; font-weight: 700; padding: 2px 8px;
+        border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tool-kajabi { background: #4a1e5e22; color: #c084fc; }
+    .tool-brevo { background: #1a3a5e22; color: #60a5fa; }
+    .tool-bunny { background: #5e4a1e22; color: #fbbf24; }
+    .tool-canva { background: #1e4a3e22; color: #34d399; }
+    .tool-capcut { background: #3e1e4a22; color: #a78bfa; }
+    .tool-wix { background: #1e2a4a22; color: #93c5fd; }
+    .tool-manychat { background: #4a1e2e22; color: #fb7185; }
+    .tool-telegram { background: #1e3a4a22; color: #38bdf8; }
+    .tool-docusign { background: #4a3a1e22; color: #fcd34d; }
+    .tool-zapier { background: #4a2e1e22; color: #fb923c; }
+    .tool-instagram { background: #4a1e3a22; color: #f472b6; }
+    .tool-youtube { background: #4a1e1e22; color: #f87171; }
+    .tool-whatsapp { background: #1e4a2e22; color: #4ade80; }
+
+    /* CALLOUT */
+    .callout {
+        background: #2a2215; border-left: 3px solid var(--warning);
+        border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0;
+    }
+    .callout-header {
+        font-size: 11px; font-weight: 700; color: var(--warning);
+        text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+        display: flex; align-items: center; gap: 6px;
+    }
+    .callout-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+    .callout-tip {
+        background: #15252a; border-left-color: var(--info);
+    }
+    .callout-tip .callout-header { color: var(--info); }
+
+    .callout-danger {
+        background: #2a1515; border-left-color: var(--danger);
+    }
+    .callout-danger .callout-header { color: var(--danger); }
+
+    .callout-success {
+        background: #152a1a; border-left-color: var(--success);
+    }
+    .callout-success .callout-header { color: var(--success); }
+
+    /* GATE */
+    .gate {
+        display: flex; align-items: center; gap: 12px;
+        background: linear-gradient(135deg, #1a2a1a, #1a1a1a);
+        border: 1px solid #2d6a4f44;
+        border-radius: 10px; padding: 14px 18px; margin: 16px 0;
+    }
+    .gate-icon {
+        width: 36px; height: 36px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--success-bg); font-size: 18px; flex-shrink: 0;
+    }
+    .gate-body { flex: 1; }
+    .gate-title {
+        font-size: 12px; font-weight: 800; color: var(--success);
+        text-transform: uppercase; letter-spacing: 1px;
+    }
+    .gate-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .gate-criteria {
+        display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+    }
+    .gate-check {
+        font-size: 10px; background: var(--success-bg); color: var(--success);
+        padding: 3px 10px; border-radius: 4px; font-weight: 600;
+    }
+
+    /* CHECKLIST SUMMARY */
+    .summary-section {
+        margin-top: 40px; padding: 28px;
+        background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    }
+    .summary-section h2 {
+        font-size: 20px; font-weight: 800; color: var(--white);
+        margin-bottom: 4px; text-align: center;
+    }
+    .summary-section .summary-subtitle {
+        font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 24px;
+    }
+    .summary-phase { margin-bottom: 20px; }
+    .summary-phase-title {
+        font-size: 13px; font-weight: 700; color: var(--terracotta);
+        margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+    }
+    .summary-phase-title .sp-num {
+        width: 22px; height: 22px; border-radius: 5px; font-size: 10px;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: var(--terracotta-glow); color: var(--terracotta); font-weight: 800;
+    }
+
+    .check-item {
+        display: flex; align-items: flex-start; gap: 8px;
+        padding: 5px 0; font-size: 12px;
+    }
+    .check-item input[type="checkbox"] {
+        width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0;
+        margin-top: 2px; accent-color: var(--terracotta); cursor: pointer;
+    }
+    .check-item label { cursor: pointer; color: var(--text); }
+    .check-item.checked label { color: var(--text-dim); text-decoration: line-through; }
+
+    /* FOOTER */
+    .footer {
+        text-align: center; margin-top: 40px; padding: 24px;
+        border-top: 1px solid var(--border);
+    }
+    .footer-brand { font-size: 12px; font-weight: 700; color: var(--terracotta); letter-spacing: 2px; }
+    .footer-text { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+        body { padding: 20px 12px; }
+        .header h1 { font-size: 24px; }
+        .timeline-overview { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); padding: 14px; }
+        .phase-header { padding: 14px 16px; gap: 10px; }
+        .phase-number { width: 34px; height: 34px; font-size: 12px; }
+        .phase-content { padding: 0 16px; }
+        .phase-card.active .phase-content { padding: 16px; }
+        .phase-header .phase-duration { display: none; }
+        .summary-section { padding: 18px; }
+    }
+
+    /* PROGRESS BAR */
+    .progress-container {
+        position: sticky; top: 0; z-index: 100;
+        background: var(--bg); padding: 8px 0 12px; margin-bottom: 20px;
+    }
+    .progress-bar-bg {
+        height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
+    }
+    .progress-bar-fill {
+        height: 100%; width: 0%; background: linear-gradient(90deg, var(--terracotta), var(--coral));
+        border-radius: 2px; transition: width 0.3s;
+    }
+    .progress-text {
+        font-size: 10px; color: var(--text-dim); text-align: right;
+        margin-top: 4px; font-weight: 600;
+    }
+
+    /* LINKS */
+    a { color: var(--terracotta-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* DIVIDER */
+    .phase-divider {
+        height: 1px; background: var(--border); margin: 8px 0 16px;
+    }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="header-logo">Face Soul Yoga</div>
+    <h1>Process de <span>Creation de Formation</span></h1>
+    <p class="subtitle">
+        Guide complet et reutilisable — de l'idee au lancement. Chaque nouvelle formation suit ce pipeline.
+    </p>
+    <div class="header-badges">
+        <div class="header-badge"><span class="badge-icon">&#x1F3AF;</span> 7 phases</div>
+        <div class="header-badge"><span class="badge-icon">&#x1F4C5;</span> 6-10 semaines</div>
+        <div class="header-badge"><span class="badge-icon">&#x1F527;</span> 10+ outils</div>
+        <div class="header-badge"><span class="badge-icon">&#x267B;&#xFE0F;</span> Reutilisable</div>
+    </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-container">
+    <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">0 / 0 taches completees</div>
+</div>
+
+<!-- TIMELINE OVERVIEW -->
+<div class="timeline-overview">
+    <div class="timeline-item" onclick="togglePhase('phase0')">
+        <div class="t-phase">Phase 0</div>
+        <div class="t-name">Idee & Validation</div>
+        <div class="t-duration">1-2 jours</div>
+    </div>
+    <div class="timeline-item" onclick="togglePhase('phase1')">
+        <div class="t-phase">Phase 1</div>
+        <div class="t-name">Conception & Contenu</div>
+        <div class="t-duration">2-4 sem.</div>
+    </div>
+    <div class="timeline-item" onclick="togglePhase('phase2')">
+        <div class="t-phase">Phase 2</div>
+        <div class="t-name">Plateforme Kajabi</div>
+        <div class="t-duration">2-3 jours</div>
+    </div>
+    <div class="timeline-item" onclick="togglePhase('phase3')">
+        <div class="t-phase">Phase 3</div>
+        <div class="t-name">Page de Vente</div>
+        <div class="t-duration">3-5 jours</div>
+    </div>
+    <div class="timeline-item" onclick="togglePhase('phase4')">
+        <div class="t-phase">Phase 4</div>
+        <div class="t-name">Automatisations</div>
+        <div class="t-duration">2-3 jours</div>
+    </div>
+    <div class="timeline-item" onclick="togglePhase('phase5')">
+        <div class="t-phase">Phase 5</div>
+        <div class="t-name">Lancement</div>
+        <div class="t-duration">1-2 sem.</div>
+    </div>
+    <div class="timeline-item" onclick="togglePhase('phase6')">
+        <div class="t-phase">Phase 6</div>
+        <div class="t-name">Post-Lancement</div>
+        <div class="t-duration">Continu</div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PHASE 0 — IDEE & VALIDATION -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="phase-card active" id="phase0">
+    <div class="phase-header" onclick="togglePhase('phase0')">
+        <div class="phase-number">0</div>
+        <div class="phase-header-text">
+            <h2>Idee & Validation</h2>
+            <div class="phase-desc">Avant de faire quoi que ce soit — valider l'idee</div>
+        </div>
+        <div class="phase-duration">1-2 jours</div>
+        <div class="toggle-icon">&#9660;</div>
+    </div>
+    <div class="phase-content">
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4A1; Clarifier l'idee</div>
+            <div class="step">
+                <div class="step-icon">1</div>
+                <div class="step-body">
+                    <div class="step-title">Formuler l'idee en 1 phrase</div>
+                    <div class="step-detail">
+                        Template : <em>"J'aide [public cible] a [transformation] grace a [methode/format] en [duree]."</em><br>
+                        Exemple : "J'aide les femmes stressees a retrouver un sommeil profond grace a un programme de yoga en 4 semaines."
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <div class="step-body">
+                    <div class="step-title">Identifier la marque porteuse</div>
+                    <div class="step-detail">
+                        Est-ce que ca s'inscrit sous <strong>Face Soul Yoga</strong> (yoga, bien-etre, methode) ou <strong>Aurelia Del Sol</strong> (developpement perso, marque personnelle) ?<br>
+                        <em>Cette decision impacte le branding, la page de vente et la communication.</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x2705; Checklist de validation</div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <div class="step-body">
+                    <div class="step-title">Demande du public</div>
+                    <div class="step-detail">
+                        Verifier dans les DMs Instagram, commentaires YouTube, questions Telegram/WhatsApp.<br>
+                        Minimum 5-10 demandes ou questions similaires sur le sujet.<br>
+                        Optionnel : creer un sondage en story Instagram ou Telegram.
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-instagram">Instagram</span>
+                        <span class="tool-tag tool-telegram">Telegram</span>
+                        <span class="tool-tag tool-youtube">YouTube</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">4</div>
+                <div class="step-body">
+                    <div class="step-title">Analyse concurrence</div>
+                    <div class="step-detail">
+                        Lister 3-5 formations similaires. Comparer : prix, duree, format, positionnement.<br>
+                        Identifier ton angle unique (methode FSY, approche holistique, accompagnement personnalise).
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">5</div>
+                <div class="step-body">
+                    <div class="step-title">Estimation du chiffre d'affaires</div>
+                    <div class="step-detail">
+                        Calculer : <code>prix x nombre inscriptions estime = CA previsionnel</code><br>
+                        Exemple : 399 EUR x 30 inscrits = 11 970 EUR<br>
+                        Couts a deduire : hebergement, outils, publicite, temps de creation.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout">
+            <div class="callout-header">&#x1F4DD; Notes Catherine</div>
+            <div class="callout-text">
+                Ne pas sauter cette phase ! Beaucoup de creatrices passent des semaines a creer une formation que personne ne veut.
+                La validation pre-creation est le meilleur investissement de temps.<br>
+                <strong>Astuce :</strong> un simple sondage en story "Ca vous interesserait un programme sur [sujet] ?" avec un curseur emoji donne deja un signal.
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x23F1;&#xFE0F; Estimation timeline</div>
+            <div class="step">
+                <div class="step-icon">6</div>
+                <div class="step-body">
+                    <div class="step-title">Planifier le retroplanning</div>
+                    <div class="step-detail">
+                        Fixer la date de lancement souhaitee. Remonter en arriere pour planifier chaque phase.<br>
+                        Cycles recommandes : <strong>septembre</strong> (rentree) et <strong>mars</strong> (printemps/renouveau).<br>
+                        Prevoir 6-10 semaines minimum entre le GO et le lancement.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gate">
+            <div class="gate-icon">&#x1F6A6;</div>
+            <div class="gate-body">
+                <div class="gate-title">Gate GO / NO-GO</div>
+                <div class="gate-desc">Tous les criteres doivent etre valides pour passer a la Phase 1</div>
+                <div class="gate-criteria">
+                    <span class="gate-check">&#x2713; Idee en 1 phrase</span>
+                    <span class="gate-check">&#x2713; Marque identifiee</span>
+                    <span class="gate-check">&#x2713; Demande validee (5+ signaux)</span>
+                    <span class="gate-check">&#x2713; Concurrence analysee</span>
+                    <span class="gate-check">&#x2713; CA previsionnel calcule</span>
+                    <span class="gate-check">&#x2713; Date de lancement fixee</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PHASE 1 — CONCEPTION & CONTENU -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="phase-card" id="phase1">
+    <div class="phase-header" onclick="togglePhase('phase1')">
+        <div class="phase-number">1</div>
+        <div class="phase-header-text">
+            <h2>Conception & Contenu</h2>
+            <div class="phase-desc">Structurer, filmer, monter — creer la formation</div>
+        </div>
+        <div class="phase-duration">2-4 semaines</div>
+        <div class="toggle-icon">&#9660;</div>
+    </div>
+    <div class="phase-content">
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F3AF; Definir les objectifs pedagogiques</div>
+            <div class="step">
+                <div class="step-icon">1</div>
+                <div class="step-body">
+                    <div class="step-title">Learning outcomes (resultats concrets)</div>
+                    <div class="step-detail">
+                        Ecrire 3-5 phrases commencant par "A la fin de cette formation, l'eleve sera capable de..."<br>
+                        Exemples : "...pratiquer une routine de 15 min pour dormir", "...identifier ses declencheurs de stress".<br>
+                        <strong>Regle :</strong> chaque outcome doit etre mesurable et concret.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4DA; Structurer le programme</div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <div class="step-body">
+                    <div class="step-title">Decouper en modules / semaines</div>
+                    <div class="step-detail">
+                        Chaque module = 1 theme cle = 1 transformation partielle.<br>
+                        Format recommande : 4-8 modules, 2-4 lecons par module, 10-20 min par lecon video.<br>
+                        Creer une arborescence : Module &gt; Lecons &gt; Support.
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <div class="step-body">
+                    <div class="step-title">Scripter le contenu de chaque lecon</div>
+                    <div class="step-detail">
+                        Pour chaque video : bullet points des points cles (pas un script mot-a-mot).<br>
+                        Inclure : intro (pourquoi ce sujet), contenu principal, exercice pratique, recap.<br>
+                        Prevoir les pratiques guidees et les meditations separement.
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-canva">Canva</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F3AC; Production video</div>
+            <div class="step">
+                <div class="step-icon">4</div>
+                <div class="step-body">
+                    <div class="step-title">Setup et tournage</div>
+                    <div class="step-detail">
+                        <strong>Materiel :</strong> camera/iPhone + trepied + ring light + micro-cravate/Rode.<br>
+                        <strong>Decor :</strong> fond coherent avec la marque (plantes, tissus, eclairage chaud).<br>
+                        <strong>Format :</strong> 16:9 horizontal pour les lecons, 9:16 vertical pour les teasers Instagram.<br>
+                        <strong>Tips :</strong> filmer par batch (toutes les videos d'un module en une seance).
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">5</div>
+                <div class="step-body">
+                    <div class="step-title">Montage avec CapCut</div>
+                    <div class="step-detail">
+                        Ajouter : intro animee (5s), sous-titres, transitions douces, musique de fond (libre de droits).<br>
+                        Exporter en 1080p minimum. Poids ideal : &lt; 500 Mo par video.
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-capcut">CapCut</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">6</div>
+                <div class="step-body">
+                    <div class="step-title">Upload sur Bunny.net</div>
+                    <div class="step-detail">
+                        Uploader chaque video dans un dossier dedie a la formation.<br>
+                        Nommage : <code>FSY-[formation]-M[module]-L[lecon].mp4</code><br>
+                        Exemple : <code>FSY-sommeil-M01-L02.mp4</code><br>
+                        Recuperer les liens embed pour integration Kajabi.
+                    </div>
+                    <div class="click-path">
+                        <span>Bunny.net</span> <span class="arrow">&rarr;</span>
+                        <span>Stream</span> <span class="arrow">&rarr;</span>
+                        <span>Video Library</span> <span class="arrow">&rarr;</span>
+                        <span>Upload</span> <span class="arrow">&rarr;</span>
+                        <span>Copier Embed Code</span>
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-bunny">Bunny.net</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4C4; Supports complementaires</div>
+            <div class="step">
+                <div class="step-icon">7</div>
+                <div class="step-body">
+                    <div class="step-title">Creer les PDFs et workbooks dans Canva</div>
+                    <div class="step-detail">
+                        Templates a creer : guide de bienvenue, fiche recap par module, workbook exercices, journal de suivi.<br>
+                        Charte graphique coherente avec la formation (couleurs, polices, logo).<br>
+                        Exporter en PDF, taille optimisee pour mobile.
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-canva">Canva</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4F1; Controle qualite</div>
+            <div class="step">
+                <div class="step-icon">8</div>
+                <div class="step-body">
+                    <div class="step-title">Tester le visionnage sur mobile</div>
+                    <div class="step-detail">
+                        Verifier : lisibilite des sous-titres, qualite audio, temps de chargement.<br>
+                        80%+ de tes eleves regarderont sur telephone — c'est la reference.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout">
+            <div class="callout-header">&#x1F4DD; Notes Catherine</div>
+            <div class="callout-text">
+                <strong>Ne vise pas la perfection au 1er tour !</strong> Mieux vaut une V1 "assez bien" lancee qu'une V2 parfaite jamais terminee.
+                Tu pourras toujours re-filmer des lecons apres feedback des premiers eleves.<br>
+                <strong>Batch filming :</strong> bloque 2-3 demi-journees pour filmer tout un module. Change juste de haut pour donner l'illusion de jours differents.
+            </div>
+        </div>
+
+        <div class="gate">
+            <div class="gate-icon">&#x1F6A6;</div>
+            <div class="gate-body">
+                <div class="gate-title">Gate Phase 1</div>
+                <div class="gate-desc">Tout le contenu est pret avant de toucher a Kajabi</div>
+                <div class="gate-criteria">
+                    <span class="gate-check">&#x2713; Outcomes definis</span>
+                    <span class="gate-check">&#x2713; Modules structures</span>
+                    <span class="gate-check">&#x2713; Videos montees + uploadees</span>
+                    <span class="gate-check">&#x2713; PDFs crees</span>
+                    <span class="gate-check">&#x2713; Test mobile OK</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PHASE 2 — PLATEFORME KAJABI -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="phase-card" id="phase2">
+    <div class="phase-header" onclick="togglePhase('phase2')">
+        <div class="phase-number">2</div>
+        <div class="phase-header-text">
+            <h2>Plateforme Kajabi</h2>
+            <div class="phase-desc">Mettre en place la formation sur Kajabi</div>
+        </div>
+        <div class="phase-duration">2-3 jours</div>
+        <div class="toggle-icon">&#9660;</div>
+    </div>
+    <div class="phase-content">
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F3D7;&#xFE0F; Creer le produit</div>
+            <div class="step">
+                <div class="step-icon">1</div>
+                <div class="step-body">
+                    <div class="step-title">Creer le produit (Course) dans Kajabi</div>
+                    <div class="step-detail">
+                        Choisir le type : <strong>Online Course</strong> (drip) ou <strong>Coaching</strong> (acces immediat).<br>
+                        Renseigner : titre, description, image de couverture (1280x720).
+                    </div>
+                    <div class="click-path">
+                        <span>Kajabi</span> <span class="arrow">&rarr;</span>
+                        <span>Products</span> <span class="arrow">&rarr;</span>
+                        <span>+ New Product</span> <span class="arrow">&rarr;</span>
+                        <span>Online Course</span>
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-kajabi">Kajabi</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <div class="step-body">
+                    <div class="step-title">Ajouter les modules et lecons</div>
+                    <div class="step-detail">
+                        Pour chaque module : creer une categorie. Pour chaque lecon : ajouter un post.<br>
+                        Integrer les videos Bunny.net via embed code (Custom Code block).<br>
+                        Attacher les PDFs en telechargement dans chaque lecon.
+                    </div>
+                    <div class="click-path">
+                        <span>Product</span> <span class="arrow">&rarr;</span>
+                        <span>+ Add Category</span> <span class="arrow">&rarr;</span>
+                        <span>+ Add Post</span> <span class="arrow">&rarr;</span>
+                        <span>Custom Code (embed Bunny)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x23F0; Configuration drip content</div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <div class="step-body">
+                    <div class="step-title">Programmer le deblocage progressif</div>
+                    <div class="step-detail">
+                        Si formation sur X semaines : configurer le drip (1 module debloque par semaine).<br>
+                        Cela empeche l'eleve de "binge-watch" et favorise l'integration.<br>
+                        <strong>Exception :</strong> l'Abonnement Studio reste en acces libre.
+                    </div>
+                    <div class="click-path">
+                        <span>Product</span> <span class="arrow">&rarr;</span>
+                        <span>Settings</span> <span class="arrow">&rarr;</span>
+                        <span>Drip</span> <span class="arrow">&rarr;</span>
+                        <span>Schedule release</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4B3; Offres et tarification</div>
+            <div class="step">
+                <div class="step-icon">4</div>
+                <div class="step-body">
+                    <div class="step-title">Creer l'offre (Offer) dans Kajabi</div>
+                    <div class="step-detail">
+                        Configurer : prix, plans de paiement (1x, 3x, mensuel), early bird si applicable.<br>
+                        Ajouter un coupon de lancement si prevu.<br>
+                        <strong>Exemples tarifs existants :</strong> Master The Method = 1950 EUR (possible 2900 EUR), Sommeil = 399 EUR, Studio = 17 EUR/mois.
+                    </div>
+                    <div class="click-path">
+                        <span>Kajabi</span> <span class="arrow">&rarr;</span>
+                        <span>Sales</span> <span class="arrow">&rarr;</span>
+                        <span>Offers</span> <span class="arrow">&rarr;</span>
+                        <span>+ New Offer</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">5</div>
+                <div class="step-body">
+                    <div class="step-title">Configurer la page checkout</div>
+                    <div class="step-detail">
+                        Personnaliser la page de paiement : logo, couleurs FSY, temoignages, garantie.<br>
+                        Activer Stripe/PayPal si pas deja fait. Verifier le flux de bout en bout.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x2709;&#xFE0F; Emails automatiques Kajabi</div>
+            <div class="step">
+                <div class="step-icon">6</div>
+                <div class="step-body">
+                    <div class="step-title">Configurer les emails natifs Kajabi</div>
+                    <div class="step-detail">
+                        <strong>Email de bienvenue :</strong> acces, mot de passe, lien formation, message perso d'Aurelia.<br>
+                        <strong>Deblocage module :</strong> notification quand un nouveau module est disponible.<br>
+                        <strong>Completion :</strong> felicitations + prochain pas (temoignage, upgrade, communaute).<br>
+                        <em>Note : les sequences de nurturing plus complexes seront dans Brevo (Phase 4).</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F393; Certification (optionnel)</div>
+            <div class="step">
+                <div class="step-icon">7</div>
+                <div class="step-body">
+                    <div class="step-title">Configurer le certificat de completion</div>
+                    <div class="step-detail">
+                        Si applicable (Master The Method) : activer le certificat Kajabi.<br>
+                        Personnaliser le design avec le branding FSY.<br>
+                        Definir les criteres : toutes les lecons completees + quiz passes.
+                    </div>
+                    <div class="click-path">
+                        <span>Product</span> <span class="arrow">&rarr;</span>
+                        <span>Settings</span> <span class="arrow">&rarr;</span>
+                        <span>Certificate</span> <span class="arrow">&rarr;</span>
+                        <span>Enable & Customize</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout callout-tip">
+            <div class="callout-header">&#x1F4A1; Astuce</div>
+            <div class="callout-text">
+                Avant de lancer, fais un <strong>test complet</strong> : cree un compte test, achete avec un coupon 100%, verifie le parcours eleve de A a Z (bienvenue, drip, videos, PDFs, certificat).
+            </div>
+        </div>
+
+        <div class="gate">
+            <div class="gate-icon">&#x1F6A6;</div>
+            <div class="gate-body">
+                <div class="gate-title">Gate Phase 2</div>
+                <div class="gate-desc">La formation est 100% fonctionnelle sur Kajabi</div>
+                <div class="gate-criteria">
+                    <span class="gate-check">&#x2713; Produit cree</span>
+                    <span class="gate-check">&#x2713; Drip configure</span>
+                    <span class="gate-check">&#x2713; Offre + checkout OK</span>
+                    <span class="gate-check">&#x2713; Emails configures</span>
+                    <span class="gate-check">&#x2713; Test complet effectue</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PHASE 3 — PAGE DE VENTE & TUNNEL -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="phase-card" id="phase3">
+    <div class="phase-header" onclick="togglePhase('phase3')">
+        <div class="phase-number">3</div>
+        <div class="phase-header-text">
+            <h2>Page de Vente & Tunnel</h2>
+            <div class="phase-desc">Convertir les visiteurs en acheteurs</div>
+        </div>
+        <div class="phase-duration">3-5 jours</div>
+        <div class="toggle-icon">&#9660;</div>
+    </div>
+    <div class="phase-content">
+
+        <div class="step-group">
+            <div class="step-group-title">&#x270D;&#xFE0F; Copywriting de la page de vente</div>
+            <div class="step">
+                <div class="step-icon">1</div>
+                <div class="step-body">
+                    <div class="step-title">Rediger le contenu de la page</div>
+                    <div class="step-detail">
+                        Structure eprouvee pour la page de vente :
+                        <br><br>
+                        <strong>1. Hook :</strong> phrase d'accroche qui parle au probleme ("Tu n'arrives plus a dormir ? Tu te reveilles epuisee ?")<br>
+                        <strong>2. Douleurs :</strong> lister 3-5 frustrations que la cible ressent au quotidien<br>
+                        <strong>3. Vision :</strong> decrire la transformation ("Imagine te reveiller naturellement, pleine d'energie...")<br>
+                        <strong>4. Programme :</strong> contenu module par module avec les benefices<br>
+                        <strong>5. Temoignages :</strong> 3-5 avis (video si possible, screenshot sinon)<br>
+                        <strong>6. A propos :</strong> qui est Aurelia, pourquoi cette methode<br>
+                        <strong>7. FAQ :</strong> 5-8 questions frequentes (paiement, acces, niveau, remboursement)<br>
+                        <strong>8. CTA :</strong> bouton d'achat clair, visible, repete 3x dans la page
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F3A8; Design de la page</div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <div class="step-body">
+                    <div class="step-title">Creer la page de vente sur Wix ou Kajabi</div>
+                    <div class="step-detail">
+                        <strong>Wix :</strong> si la page est sur facesoulyoga.com (recommande pour le SEO et la coherence).<br>
+                        <strong>Kajabi :</strong> si tu preferes un funnel integre (checkout sur la meme plateforme).<br>
+                        Design mobile-first. Photos haute qualite d'Aurelia en action (yoga, coaching).<br>
+                        Couleurs et typo coherentes avec le branding FSY.
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-wix">Wix</span>
+                        <span class="tool-tag tool-kajabi">Kajabi</span>
+                        <span class="tool-tag tool-canva">Canva</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <div class="step-body">
+                    <div class="step-title">Creer le flux d'achat (checkout flow)</div>
+                    <div class="step-detail">
+                        Page de vente &rarr; Bouton CTA &rarr; Page checkout Kajabi &rarr; Confirmation.<br>
+                        Si la page de vente est sur Wix, le bouton redirige vers le checkout Kajabi (lien direct de l'Offer).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4B0; Paiement & Confirmation</div>
+            <div class="step">
+                <div class="step-icon">4</div>
+                <div class="step-body">
+                    <div class="step-title">Verifier le paiement Stripe/PayPal</div>
+                    <div class="step-detail">
+                        S'assurer que Stripe est connecte a Kajabi et que les virements tombent sur le bon compte.<br>
+                        Tester avec une carte de test Stripe (mode test).
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">5</div>
+                <div class="step-body">
+                    <div class="step-title">Page de confirmation / merci</div>
+                    <div class="step-detail">
+                        Creer une page post-achat : felicitations, prochaines etapes, lien vers la formation,
+                        invitation au groupe Telegram, lien de telechargement du guide de bienvenue.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4F1; Optimisation mobile</div>
+            <div class="step">
+                <div class="step-icon">6</div>
+                <div class="step-body">
+                    <div class="step-title">Tester sur mobile (iOS + Android)</div>
+                    <div class="step-detail">
+                        Verifier : vitesse de chargement, lisibilite, taille des boutons CTA, images responsives.<br>
+                        Tester le parcours complet : landing &rarr; scroll &rarr; CTA &rarr; checkout &rarr; confirmation.<br>
+                        <strong>70%+ du trafic viendra d'Instagram = mobile.</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout">
+            <div class="callout-header">&#x1F4DD; Notes Catherine</div>
+            <div class="callout-text">
+                La page de vente est l'element le plus important du tunnel. Passe du temps sur le copywriting.
+                <strong>Regle d'or :</strong> parle de la transformation, pas des fonctionnalites.
+                "Tu vas retrouver un sommeil profond" &gt; "4 modules de yoga".<br>
+                Les temoignages video convertissent 2x plus que le texte seul.
+            </div>
+        </div>
+
+        <div class="gate">
+            <div class="gate-icon">&#x1F6A6;</div>
+            <div class="gate-body">
+                <div class="gate-title">Gate Phase 3</div>
+                <div class="gate-desc">Le tunnel de vente est complet et teste</div>
+                <div class="gate-criteria">
+                    <span class="gate-check">&#x2713; Copy redigee</span>
+                    <span class="gate-check">&#x2713; Page designee</span>
+                    <span class="gate-check">&#x2713; Checkout fonctionnel</span>
+                    <span class="gate-check">&#x2713; Page confirmation OK</span>
+                    <span class="gate-check">&#x2713; Test mobile passe</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PHASE 4 — AUTOMATISATIONS & CONTRATS -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="phase-card" id="phase4">
+    <div class="phase-header" onclick="togglePhase('phase4')">
+        <div class="phase-number">4</div>
+        <div class="phase-header-text">
+            <h2>Automatisations & Contrats</h2>
+            <div class="phase-desc">Email sequences, e-signatures, chatbot, ManyChat</div>
+        </div>
+        <div class="phase-duration">2-3 jours</div>
+        <div class="toggle-icon">&#9660;</div>
+    </div>
+    <div class="phase-content">
+
+        <div class="step-group">
+            <div class="step-group-title">&#x2709;&#xFE0F; Sequences email Brevo</div>
+            <div class="step">
+                <div class="step-icon">1</div>
+                <div class="step-body">
+                    <div class="step-title">Sequence de nurturing pre-lancement</div>
+                    <div class="step-detail">
+                        4-6 emails sur 2 semaines avant le lancement :<br>
+                        J-14 : teaser ("Quelque chose arrive...")<br>
+                        J-10 : partage de valeur (article, video gratuite liee au sujet)<br>
+                        J-7 : annonce officielle + early bird<br>
+                        J-3 : temoignage / cas client<br>
+                        J-1 : dernier rappel early bird<br>
+                        Jour J : lancement !
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-brevo">Brevo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <div class="step-body">
+                    <div class="step-title">Sequence de lancement (semaine de vente)</div>
+                    <div class="step-detail">
+                        5-7 emails pendant la semaine de lancement :<br>
+                        Email 1 : portes ouvertes + lien<br>
+                        Email 2 : FAQ + objections<br>
+                        Email 3 : temoignages<br>
+                        Email 4 : behind the scenes (pourquoi cette formation)<br>
+                        Email 5 : dernieres 48h<br>
+                        Email 6 : derniere chance (fermeture ce soir)<br>
+                        <strong>Segmenter :</strong> audience chaude (liste existante) vs froide (nouveaux leads).
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <div class="step-body">
+                    <div class="step-title">Sequence post-achat (onboarding)</div>
+                    <div class="step-detail">
+                        J+0 : bienvenue + acces formation + groupe Telegram<br>
+                        J+3 : "Comment ca se passe ? Besoin d'aide ?"<br>
+                        J+7 : rappel module 2 + tips de pratique<br>
+                        Mi-parcours : encouragement + temoignage<br>
+                        Fin de programme : felicitations + demande temoignage + offre upgrade
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">4</div>
+                <div class="step-body">
+                    <div class="step-title">Sequence fin d'acces / relance churn</div>
+                    <div class="step-detail">
+                        Si acces limite dans le temps :<br>
+                        J-30 avant fin : rappel de finaliser<br>
+                        J-7 : derniere chance + offre extension<br>
+                        J-1 : acces ferme demain<br>
+                        Pour les abandons en cours de route : email de re-engagement a J+14 d'inactivite.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout callout-danger">
+            <div class="callout-header">&#x26A0;&#xFE0F; Point critique</div>
+            <div class="callout-text">
+                Pense a configurer les <strong>listes et tags Brevo</strong> AVANT de creer les sequences.
+                Tag minimum : <code>achat-[nom-formation]</code>, <code>lead-[nom-formation]</code>, <code>prospect-chaud</code>.
+                Ca evitera de spammer les mauvaises personnes.
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4DD; Contrats & e-signatures</div>
+            <div class="step">
+                <div class="step-icon">5</div>
+                <div class="step-body">
+                    <div class="step-title">Automatiser la signature electronique</div>
+                    <div class="step-detail">
+                        <strong>Objectif :</strong> a l'achat sur Kajabi, le contrat/CGV est envoye automatiquement pour signature.<br><br>
+                        <strong>Option A — DocuSign :</strong><br>
+                        Kajabi webhook (achat) &rarr; Zapier/n8n &rarr; DocuSign (envoyer contrat pre-rempli).<br><br>
+                        <strong>Option B — eSignatures.io :</strong><br>
+                        API plus simple et moins chere. Meme logique : webhook &rarr; API eSignatures &rarr; email contrat.<br><br>
+                        <strong>Option C — Kajabi natif :</strong><br>
+                        Si la formation inclut des termes acceptes au checkout (Terms of Service checkbox).<br>
+                        Moins juridiquement solide mais plus simple pour les petits montants (&lt; 500 EUR).
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-docusign">DocuSign</span>
+                        <span class="tool-tag tool-zapier">Zapier / n8n</span>
+                        <span class="tool-tag tool-kajabi">Kajabi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout">
+            <div class="callout-header">&#x1F4DD; Notes Catherine</div>
+            <div class="callout-text">
+                Pour les formations &lt; 500 EUR (ex : Sommeil 399 EUR), une checkbox CGV au checkout suffit.
+                Pour les formations premium (&gt; 1000 EUR, ex : Master The Method), un contrat signe est recommande.
+                <strong>On mettra en place l'automatisation e-signature ensemble en session.</strong>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F916; ManyChat & Instagram</div>
+            <div class="step">
+                <div class="step-icon">6</div>
+                <div class="step-body">
+                    <div class="step-title">Configurer l'automatisation ManyChat</div>
+                    <div class="step-detail">
+                        Creer un flow ManyChat declenche par mot-cle en DM Instagram (ex : "SOMMEIL").<br>
+                        Le flow : envoie un message avec le lien de la page de vente + capture l'email pour Brevo.<br>
+                        Ajouter en story : "Ecris SOMMEIL en DM pour recevoir le lien".
+                    </div>
+                    <div class="click-path">
+                        <span>ManyChat</span> <span class="arrow">&rarr;</span>
+                        <span>Automation</span> <span class="arrow">&rarr;</span>
+                        <span>+ New Flow</span> <span class="arrow">&rarr;</span>
+                        <span>Trigger: Instagram Keyword</span>
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-manychat">ManyChat</span>
+                        <span class="tool-tag tool-instagram">Instagram</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4AC; Telegram & WhatsApp</div>
+            <div class="step">
+                <div class="step-icon">7</div>
+                <div class="step-body">
+                    <div class="step-title">Mettre a jour le chatbot Telegram</div>
+                    <div class="step-detail">
+                        Ajouter les infos de la nouvelle formation dans la base de connaissances du chatbot.<br>
+                        Le chatbot doit pouvoir repondre : prix, contenu, lien d'inscription, FAQ.<br>
+                        Creer un message d'annonce pour le groupe Telegram communaute.
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-telegram">Telegram</span>
+                        <span class="tool-tag tool-whatsapp">WhatsApp</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x2699;&#xFE0F; Automations Kajabi</div>
+            <div class="step">
+                <div class="step-icon">8</div>
+                <div class="step-body">
+                    <div class="step-title">Tags et pipelines Kajabi</div>
+                    <div class="step-detail">
+                        A l'achat : tagger automatiquement le contact (<code>achat-[formation]</code>).<br>
+                        Retirer le tag <code>prospect-[formation]</code> si existant.<br>
+                        Declencher l'ajout dans le pipeline CRM si applicable.
+                    </div>
+                    <div class="click-path">
+                        <span>Kajabi</span> <span class="arrow">&rarr;</span>
+                        <span>Automations</span> <span class="arrow">&rarr;</span>
+                        <span>+ New Automation</span> <span class="arrow">&rarr;</span>
+                        <span>When: Purchase</span> <span class="arrow">&rarr;</span>
+                        <span>Then: Add Tag</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gate">
+            <div class="gate-icon">&#x1F6A6;</div>
+            <div class="gate-body">
+                <div class="gate-title">Gate Phase 4</div>
+                <div class="gate-desc">Toutes les automatisations sont testees</div>
+                <div class="gate-criteria">
+                    <span class="gate-check">&#x2713; Sequences Brevo creees</span>
+                    <span class="gate-check">&#x2713; E-signature automatisee</span>
+                    <span class="gate-check">&#x2713; ManyChat configure</span>
+                    <span class="gate-check">&#x2713; Chatbot Telegram MAJ</span>
+                    <span class="gate-check">&#x2713; Tags Kajabi OK</span>
+                    <span class="gate-check">&#x2713; Test end-to-end passe</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PHASE 5 — LANCEMENT -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="phase-card" id="phase5">
+    <div class="phase-header" onclick="togglePhase('phase5')">
+        <div class="phase-number">5</div>
+        <div class="phase-header-text">
+            <h2>Lancement</h2>
+            <div class="phase-desc">Pre-launch, early bird, semaine de vente, full price</div>
+        </div>
+        <div class="phase-duration">1-2 semaines</div>
+        <div class="toggle-icon">&#9660;</div>
+    </div>
+    <div class="phase-content">
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F525; Pre-lancement (J-14 a J-1)</div>
+            <div class="step">
+                <div class="step-icon">1</div>
+                <div class="step-body">
+                    <div class="step-title">Teasing Instagram</div>
+                    <div class="step-detail">
+                        <strong>Stories :</strong> countdown sticker, behind-the-scenes du tournage, sneak peeks.<br>
+                        <strong>Reels :</strong> 2-3 reels educatifs sur le sujet de la formation (apporter de la valeur).<br>
+                        <strong>Posts :</strong> carousel "5 signes que tu as besoin de [sujet]".<br>
+                        <strong>Frequence :</strong> 1 story/jour + 2-3 reels/semaine pendant 2 semaines.
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-instagram">Instagram</span>
+                        <span class="tool-tag tool-canva">Canva</span>
+                        <span class="tool-tag tool-capcut">CapCut</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <div class="step-body">
+                    <div class="step-title">Emails de pre-lancement via Brevo</div>
+                    <div class="step-detail">
+                        Activer la sequence de nurturing pre-lancement (creee en Phase 4).<br>
+                        Segmenter : audience chaude (abonnes, anciens clients) vs liste froide (leads).
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-brevo">Brevo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <div class="step-body">
+                    <div class="step-title">Waitlist / early bird</div>
+                    <div class="step-detail">
+                        Ouvrir une liste d'attente (formulaire Brevo ou page Wix).<br>
+                        Offrir un bonus early bird : reduction 10-20%, module bonus, session live offerte.<br>
+                        <strong>Limiter</strong> l'early bird (nombre de places ou duree) pour creer l'urgence.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F680; Semaine de lancement (Jour J a J+7)</div>
+            <div class="step">
+                <div class="step-icon">4</div>
+                <div class="step-body">
+                    <div class="step-title">Jour J — Email blast + post annonce</div>
+                    <div class="step-detail">
+                        Envoyer l'email de lancement a toute la liste (segmente).<br>
+                        Poster l'annonce sur Instagram (reel + post + stories).<br>
+                        Activer le flow ManyChat (mot-cle en DM).<br>
+                        Annonce dans le groupe Telegram + WhatsApp.
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-brevo">Brevo</span>
+                        <span class="tool-tag tool-instagram">Instagram</span>
+                        <span class="tool-tag tool-manychat">ManyChat</span>
+                        <span class="tool-tag tool-telegram">Telegram</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">5</div>
+                <div class="step-body">
+                    <div class="step-title">Contenu quotidien pendant la semaine</div>
+                    <div class="step-detail">
+                        <strong>Jour 1 :</strong> annonce officielle<br>
+                        <strong>Jour 2 :</strong> FAQ + reponse aux objections<br>
+                        <strong>Jour 3 :</strong> temoignages / resultats<br>
+                        <strong>Jour 4 :</strong> coulisses / histoire personnelle d'Aurelia<br>
+                        <strong>Jour 5 :</strong> rappel early bird qui se termine<br>
+                        <strong>Jour 6 :</strong> live Q&A (Instagram ou YouTube)<br>
+                        <strong>Jour 7 :</strong> dernier jour / fermeture
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">6</div>
+                <div class="step-body">
+                    <div class="step-title">Live Q&A / webinaire (optionnel mais recommande)</div>
+                    <div class="step-detail">
+                        Organiser un live de 30-45 min : presenter la formation, repondre aux questions en direct.<br>
+                        Plateforme : Instagram Live, YouTube Live ou Zoom.<br>
+                        Inclure un CTA a la fin avec le lien d'inscription.<br>
+                        <strong>Tip :</strong> le live est souvent le declencheur de vente le plus puissant.
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-instagram">Instagram</span>
+                        <span class="tool-tag tool-youtube">YouTube</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4B5; Passage au plein tarif</div>
+            <div class="step">
+                <div class="step-icon">7</div>
+                <div class="step-body">
+                    <div class="step-title">Desactiver l'early bird, activer le prix normal</div>
+                    <div class="step-detail">
+                        Desactiver le coupon / offre early bird dans Kajabi.<br>
+                        Mettre a jour la page de vente (retirer les mentions early bird).<br>
+                        La formation reste en vente en mode "evergreen" ou fermer les inscriptions.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout callout-success">
+            <div class="callout-header">&#x1F389; Conseil de lancement</div>
+            <div class="callout-text">
+                Les 3 moments qui generent le plus de ventes : <strong>ouverture (Jour 1)</strong>, <strong>fin early bird</strong> et <strong>derniere heure avant fermeture</strong>.
+                Concentre ton energie (et tes emails) sur ces 3 moments.
+            </div>
+        </div>
+
+        <div class="gate">
+            <div class="gate-icon">&#x1F6A6;</div>
+            <div class="gate-body">
+                <div class="gate-title">Gate Phase 5</div>
+                <div class="gate-desc">Le lancement est termine</div>
+                <div class="gate-criteria">
+                    <span class="gate-check">&#x2713; Pre-launch execute</span>
+                    <span class="gate-check">&#x2713; Emails de lancement envoyes</span>
+                    <span class="gate-check">&#x2713; Contenu quotidien publie</span>
+                    <span class="gate-check">&#x2713; Early bird desactive</span>
+                    <span class="gate-check">&#x2713; Premieres ventes enregistrees</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PHASE 6 — POST-LANCEMENT & OPTIMISATION -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="phase-card" id="phase6">
+    <div class="phase-header" onclick="togglePhase('phase6')">
+        <div class="phase-number">6</div>
+        <div class="phase-header-text">
+            <h2>Post-Lancement & Optimisation</h2>
+            <div class="phase-desc">Mesurer, ameliorer, perenniser</div>
+        </div>
+        <div class="phase-duration">Continu</div>
+        <div class="toggle-icon">&#9660;</div>
+    </div>
+    <div class="phase-content">
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4CA; Suivi des KPIs</div>
+            <div class="step">
+                <div class="step-icon">1</div>
+                <div class="step-body">
+                    <div class="step-title">Tracker les indicateurs cles</div>
+                    <div class="step-detail">
+                        <strong>Inscriptions :</strong> nombre total + objectif<br>
+                        <strong>Taux de conversion :</strong> visiteurs page de vente &rarr; achat (objectif : 2-5%)<br>
+                        <strong>Taux de completion :</strong> % d'eleves qui finissent la formation (objectif : &gt;60%)<br>
+                        <strong>CA genere :</strong> total + par canal (email, Instagram, organique)<br>
+                        <strong>Panier moyen :</strong> si plusieurs options de paiement<br>
+                        <strong>NPS / satisfaction :</strong> sondage post-formation
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-kajabi">Kajabi Analytics</span>
+                        <span class="tool-tag tool-brevo">Brevo Stats</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x2B50; Temoignages & preuve sociale</div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <div class="step-body">
+                    <div class="step-title">Collecter les temoignages</div>
+                    <div class="step-detail">
+                        Envoyer un email a J+30 et a la fin du programme pour demander un temoignage.<br>
+                        Format ideal : video courte (30-60s) envoyee par WhatsApp.<br>
+                        Alternative : screenshot de message DM ou email (avec autorisation).<br>
+                        Template : "Qu'est-ce qui a change pour toi depuis que tu as suivi [formation] ?"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F504; Optimisation</div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <div class="step-body">
+                    <div class="step-title">Analyser et ameliorer</div>
+                    <div class="step-detail">
+                        <strong>Contenu :</strong> quels modules ont le plus de drop-off ? Re-filmer ou completer.<br>
+                        <strong>Page de vente :</strong> A/B test titre, CTA, prix si possible.<br>
+                        <strong>Emails :</strong> analyser les taux d'ouverture et de clic. Optimiser les objets.<br>
+                        <strong>Feedback :</strong> integrer les retours eleves dans la V2 du contenu.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x267B;&#xFE0F; Funnel evergreen</div>
+            <div class="step">
+                <div class="step-icon">4</div>
+                <div class="step-body">
+                    <div class="step-title">Mettre en place le funnel automatise</div>
+                    <div class="step-detail">
+                        Si le lancement a fonctionne, convertir en funnel evergreen :<br>
+                        <strong>Lead magnet</strong> (PDF gratuit, mini-cours) &rarr; <strong>Sequence email</strong> (nurturing 5-7 jours) &rarr; <strong>Offre</strong> (avec deadline dynamique via Deadline Funnel ou similaire).<br>
+                        La formation se vend en continu sans avoir besoin de "lancer" a chaque fois.
+                    </div>
+                    <div class="tool-tags">
+                        <span class="tool-tag tool-brevo">Brevo</span>
+                        <span class="tool-tag tool-kajabi">Kajabi</span>
+                        <span class="tool-tag tool-manychat">ManyChat</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-group">
+            <div class="step-group-title">&#x1F4C5; Planification du prochain cycle</div>
+            <div class="step">
+                <div class="step-icon">5</div>
+                <div class="step-body">
+                    <div class="step-title">Planifier le prochain lancement</div>
+                    <div class="step-detail">
+                        Cycles recommandes : <strong>2 lancements par an</strong> (septembre + mars).<br>
+                        Reutiliser ce process pour chaque nouvelle formation.<br>
+                        Capitaliser sur les assets crees : emails, page de vente, automations — tout est reutilisable et ameliorable.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout">
+            <div class="callout-header">&#x1F4DD; Notes Catherine</div>
+            <div class="callout-text">
+                Le vrai argent est dans l'optimisation, pas dans la creation de nouvelles formations.
+                <strong>Regle :</strong> optimise une formation existante avant d'en creer une nouvelle.
+                Un funnel evergreen bien huile peut generer des ventes chaque semaine sans effort supplementaire.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- CHECKLIST RECAPITULATIVE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="summary-section" id="summarySection">
+    <h2>Checklist Recapitulative</h2>
+    <p class="summary-subtitle">Coche chaque etape au fur et a mesure — ta progression se met a jour automatiquement</p>
+
+    <!-- Phase 0 -->
+    <div class="summary-phase">
+        <div class="summary-phase-title"><span class="sp-num">0</span> Idee & Validation</div>
+        <div class="check-item"><input type="checkbox" id="c00" onchange="updateProgress()"><label for="c00">Formuler l'idee en 1 phrase</label></div>
+        <div class="check-item"><input type="checkbox" id="c01" onchange="updateProgress()"><label for="c01">Identifier la marque porteuse (FSY ou Aurelia Del Sol)</label></div>
+        <div class="check-item"><input type="checkbox" id="c02" onchange="updateProgress()"><label for="c02">Valider la demande du public (5+ signaux)</label></div>
+        <div class="check-item"><input type="checkbox" id="c03" onchange="updateProgress()"><label for="c03">Analyser la concurrence (3-5 formations)</label></div>
+        <div class="check-item"><input type="checkbox" id="c04" onchange="updateProgress()"><label for="c04">Calculer le CA previsionnel</label></div>
+        <div class="check-item"><input type="checkbox" id="c05" onchange="updateProgress()"><label for="c05">Fixer la date de lancement + retroplanning</label></div>
+    </div>
+
+    <!-- Phase 1 -->
+    <div class="summary-phase">
+        <div class="summary-phase-title"><span class="sp-num">1</span> Conception & Contenu</div>
+        <div class="check-item"><input type="checkbox" id="c10" onchange="updateProgress()"><label for="c10">Definir les learning outcomes (3-5)</label></div>
+        <div class="check-item"><input type="checkbox" id="c11" onchange="updateProgress()"><label for="c11">Structurer les modules et lecons</label></div>
+        <div class="check-item"><input type="checkbox" id="c12" onchange="updateProgress()"><label for="c12">Scripter le contenu de chaque lecon</label></div>
+        <div class="check-item"><input type="checkbox" id="c13" onchange="updateProgress()"><label for="c13">Tourner toutes les videos</label></div>
+        <div class="check-item"><input type="checkbox" id="c14" onchange="updateProgress()"><label for="c14">Monter avec CapCut</label></div>
+        <div class="check-item"><input type="checkbox" id="c15" onchange="updateProgress()"><label for="c15">Uploader sur Bunny.net</label></div>
+        <div class="check-item"><input type="checkbox" id="c16" onchange="updateProgress()"><label for="c16">Creer les PDFs / workbooks (Canva)</label></div>
+        <div class="check-item"><input type="checkbox" id="c17" onchange="updateProgress()"><label for="c17">Test visionnage mobile OK</label></div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="summary-phase">
+        <div class="summary-phase-title"><span class="sp-num">2</span> Plateforme Kajabi</div>
+        <div class="check-item"><input type="checkbox" id="c20" onchange="updateProgress()"><label for="c20">Creer le produit (Course)</label></div>
+        <div class="check-item"><input type="checkbox" id="c21" onchange="updateProgress()"><label for="c21">Ajouter modules + lecons + videos embed</label></div>
+        <div class="check-item"><input type="checkbox" id="c22" onchange="updateProgress()"><label for="c22">Configurer le drip content</label></div>
+        <div class="check-item"><input type="checkbox" id="c23" onchange="updateProgress()"><label for="c23">Creer l'offre + plans de paiement</label></div>
+        <div class="check-item"><input type="checkbox" id="c24" onchange="updateProgress()"><label for="c24">Configurer la page checkout</label></div>
+        <div class="check-item"><input type="checkbox" id="c25" onchange="updateProgress()"><label for="c25">Configurer les emails Kajabi</label></div>
+        <div class="check-item"><input type="checkbox" id="c26" onchange="updateProgress()"><label for="c26">Test complet du parcours eleve</label></div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="summary-phase">
+        <div class="summary-phase-title"><span class="sp-num">3</span> Page de Vente & Tunnel</div>
+        <div class="check-item"><input type="checkbox" id="c30" onchange="updateProgress()"><label for="c30">Rediger le copy (hook, douleurs, transformation, FAQ, CTA)</label></div>
+        <div class="check-item"><input type="checkbox" id="c31" onchange="updateProgress()"><label for="c31">Designer la page (Wix ou Kajabi)</label></div>
+        <div class="check-item"><input type="checkbox" id="c32" onchange="updateProgress()"><label for="c32">Creer le flux checkout</label></div>
+        <div class="check-item"><input type="checkbox" id="c33" onchange="updateProgress()"><label for="c33">Verifier Stripe / paiement</label></div>
+        <div class="check-item"><input type="checkbox" id="c34" onchange="updateProgress()"><label for="c34">Page de confirmation creee</label></div>
+        <div class="check-item"><input type="checkbox" id="c35" onchange="updateProgress()"><label for="c35">Test mobile complet OK</label></div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="summary-phase">
+        <div class="summary-phase-title"><span class="sp-num">4</span> Automatisations & Contrats</div>
+        <div class="check-item"><input type="checkbox" id="c40" onchange="updateProgress()"><label for="c40">Sequence Brevo pre-lancement (4-6 emails)</label></div>
+        <div class="check-item"><input type="checkbox" id="c41" onchange="updateProgress()"><label for="c41">Sequence Brevo lancement (5-7 emails)</label></div>
+        <div class="check-item"><input type="checkbox" id="c42" onchange="updateProgress()"><label for="c42">Sequence Brevo post-achat (onboarding)</label></div>
+        <div class="check-item"><input type="checkbox" id="c43" onchange="updateProgress()"><label for="c43">Sequence Brevo fin d'acces / relance</label></div>
+        <div class="check-item"><input type="checkbox" id="c44" onchange="updateProgress()"><label for="c44">E-signature automatisee (si applicable)</label></div>
+        <div class="check-item"><input type="checkbox" id="c45" onchange="updateProgress()"><label for="c45">Flow ManyChat configure</label></div>
+        <div class="check-item"><input type="checkbox" id="c46" onchange="updateProgress()"><label for="c46">Chatbot Telegram mis a jour</label></div>
+        <div class="check-item"><input type="checkbox" id="c47" onchange="updateProgress()"><label for="c47">Tags + automations Kajabi</label></div>
+        <div class="check-item"><input type="checkbox" id="c48" onchange="updateProgress()"><label for="c48">Test end-to-end de toutes les automations</label></div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="summary-phase">
+        <div class="summary-phase-title"><span class="sp-num">5</span> Lancement</div>
+        <div class="check-item"><input type="checkbox" id="c50" onchange="updateProgress()"><label for="c50">Teasing Instagram (J-14 a J-1)</label></div>
+        <div class="check-item"><input type="checkbox" id="c51" onchange="updateProgress()"><label for="c51">Emails pre-lancement envoyes</label></div>
+        <div class="check-item"><input type="checkbox" id="c52" onchange="updateProgress()"><label for="c52">Waitlist / early bird ouverts</label></div>
+        <div class="check-item"><input type="checkbox" id="c53" onchange="updateProgress()"><label for="c53">Jour J — blast email + annonce</label></div>
+        <div class="check-item"><input type="checkbox" id="c54" onchange="updateProgress()"><label for="c54">Contenu quotidien semaine de lancement</label></div>
+        <div class="check-item"><input type="checkbox" id="c55" onchange="updateProgress()"><label for="c55">Live Q&A realise</label></div>
+        <div class="check-item"><input type="checkbox" id="c56" onchange="updateProgress()"><label for="c56">Early bird desactive, plein tarif actif</label></div>
+    </div>
+
+    <!-- Phase 6 -->
+    <div class="summary-phase">
+        <div class="summary-phase-title"><span class="sp-num">6</span> Post-Lancement & Optimisation</div>
+        <div class="check-item"><input type="checkbox" id="c60" onchange="updateProgress()"><label for="c60">KPIs reportes (inscriptions, conversion, completion, CA)</label></div>
+        <div class="check-item"><input type="checkbox" id="c61" onchange="updateProgress()"><label for="c61">Temoignages collectes</label></div>
+        <div class="check-item"><input type="checkbox" id="c62" onchange="updateProgress()"><label for="c62">Optimisations appliquees (contenu, page, emails)</label></div>
+        <div class="check-item"><input type="checkbox" id="c63" onchange="updateProgress()"><label for="c63">Funnel evergreen mis en place</label></div>
+        <div class="check-item"><input type="checkbox" id="c64" onchange="updateProgress()"><label for="c64">Prochain cycle de lancement planifie</label></div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <div class="footer-brand">CS CONSULTING STRATEGIQUE</div>
+    <div class="footer-text">Process Creation Formation — Face Soul Yoga / Aurelia Del Sol<br>
+    Document reutilisable — chaque nouvelle formation suit ce pipeline<br>
+    Derniere mise a jour : mars 2026</div>
+</div>
+
+<script>
+// Toggle phase cards
+function togglePhase(id) {
+    const card = document.getElementById(id);
+    const wasActive = card.classList.contains('active');
+    // Close all
+    document.querySelectorAll('.phase-card').forEach(c => c.classList.remove('active'));
+    // Open clicked (unless it was already open)
+    if (!wasActive) {
+        card.classList.add('active');
+        setTimeout(() => {
+            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+}
+
+// Progress tracking with localStorage
+const STORAGE_KEY = 'fsy-process-formation-progress';
+
+function loadProgress() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        Object.keys(saved).forEach(id => {
+            const cb = document.getElementById(id);
+            if (cb) {
+                cb.checked = saved[id];
+                if (saved[id]) cb.closest('.check-item').classList.add('checked');
+            }
+        });
+    } catch(e) {}
+    updateProgress();
+}
+
+function updateProgress() {
+    const checkboxes = document.querySelectorAll('.summary-section input[type="checkbox"]');
+    const total = checkboxes.length;
+    const checked = Array.from(checkboxes).filter(c => c.checked).length;
+    const pct = total > 0 ? Math.round((checked / total) * 100) : 0;
+
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressText').textContent = checked + ' / ' + total + ' taches completees (' + pct + '%)';
+
+    // Save to localStorage
+    const state = {};
+    checkboxes.forEach(cb => {
+        state[cb.id] = cb.checked;
+        if (cb.checked) {
+            cb.closest('.check-item').classList.add('checked');
+        } else {
+            cb.closest('.check-item').classList.remove('checked');
+        }
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', loadProgress);
+</script>
+
+</body>
+</html>
