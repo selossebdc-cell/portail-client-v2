@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feuille de Route — Face Soul Yoga</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --bg-card-hover: #222;
+            --terracotta: #C27A5A;
+            --terracotta-light: #d4956f;
+            --terracotta-dark: #a8633e;
+            --text: #e8e0d8;
+            --text-muted: #9a938b;
+            --text-dim: #6b6560;
+            --green: #4CAF50;
+            --green-bg: rgba(76,175,80,0.12);
+            --orange: #FF9800;
+            --orange-bg: rgba(255,152,0,0.12);
+            --red: #f44336;
+            --red-bg: rgba(244,67,54,0.12);
+            --blue: #5B8DEF;
+            --purple: #9B6DEF;
+            --phase0: #78909C;
+            --phase1: #5B8DEF;
+            --phase2: #9B6DEF;
+            --phase3: #4CAF50;
+            --border: #2a2a2a;
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+            margin-bottom: 0.75rem;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .header h1 span {
+            color: var(--terracotta);
+        }
+
+        .header-sub {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .meta-item strong {
+            color: var(--terracotta-light);
+            font-weight: 500;
+        }
+
+        /* Vision */
+        .vision {
+            background: linear-gradient(135deg, rgba(194,122,90,0.08) 0%, rgba(194,122,90,0.02) 100%);
+            border: 1px solid rgba(194,122,90,0.2);
+            border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .vision::before {
+            content: '\201C';
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--terracotta);
+            opacity: 0.3;
+            position: absolute;
+            top: -0.2rem;
+            left: 1rem;
+            line-height: 1;
+        }
+
+        .vision p {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--text);
+            padding-left: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .vision cite {
+            display: block;
+            text-align: right;
+            font-family: 'Inter', sans-serif;
+            font-style: normal;
+            font-size: 0.8rem;
+            color: var(--terracotta);
+            margin-top: 0.75rem;
+        }
+
+        /* Progress bar */
+        .progress-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .progress-pct {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--terracotta);
+        }
+
+        .progress-bar-bg {
+            background: var(--bg-card);
+            border-radius: 8px;
+            height: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--terracotta-dark), var(--terracotta), var(--terracotta-light));
+            border-radius: 8px;
+            transition: width 0.6s ease;
+            min-width: 0;
+        }
+
+        .progress-detail {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 0.4rem;
+            text-align: right;
+        }
+
+        /* Section titles */
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--terracotta);
+            display: inline-block;
+        }
+
+        .section-block {
+            margin-bottom: 2.5rem;
+        }
+
+        /* Diagnostic table */
+        .diag-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .diag-table thead th {
+            background: rgba(194,122,90,0.1);
+            color: var(--terracotta-light);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.85rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .diag-table tbody td {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .diag-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .diag-table tbody tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .diag-table td:first-child {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .badge-red { background: var(--red-bg); color: var(--red); }
+        .badge-orange { background: var(--orange-bg); color: var(--orange); }
+        .badge-green { background: var(--green-bg); color: var(--green); }
+
+        /* Blocages */
+        .blocages-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .blocage-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--red);
+            border-radius: var(--radius);
+            padding: 1rem 1.25rem;
+        }
+
+        .blocage-card strong {
+            color: var(--terracotta-light);
+            font-size: 0.9rem;
+        }
+
+        .blocage-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Phase cards */
+        .phase-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s;
+        }
+
+        .phase-header:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .phase-indicator {
+            width: 4px;
+            height: 36px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .phase-0 .phase-indicator { background: var(--phase0); }
+        .phase-1 .phase-indicator { background: var(--phase1); }
+        .phase-2 .phase-indicator { background: var(--phase2); }
+        .phase-3 .phase-indicator { background: var(--phase3); }
+
+        .phase-info { flex: 1; }
+
+        .phase-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .phase-info p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 0.15rem;
+        }
+
+        .phase-progress-mini {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .phase-toggle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+
+        .phase-card.open .phase-toggle {
+            transform: rotate(180deg);
+        }
+
+        .phase-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .phase-card.open .phase-body {
+            max-height: 1000px;
+        }
+
+        .phase-body-inner {
+            padding: 0 1.25rem 1.25rem;
+        }
+
+        /* Task items */
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-dim);
+            border-radius: 4px;
+            flex-shrink: 0;
+            cursor: pointer;
+            position: relative;
+            margin-top: 1px;
+            transition: all 0.2s;
+        }
+
+        .task-checkbox:checked {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .task-checkbox:checked::after {
+            content: '\2713';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-label {
+            font-size: 0.9rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-item.done .task-label {
+            text-decoration: line-through;
+            color: var(--text-dim);
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.2rem;
+        }
+
+        .task-priority {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .task-priority.haute { color: var(--red); }
+        .task-priority.moyenne { color: var(--orange); }
+
+        .task-duration {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        /* Success indicators */
+        .success-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .success-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.25rem;
+        }
+
+        .success-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--terracotta);
+            line-height: 1;
+            flex-shrink: 0;
+            width: 28px;
+            text-align: center;
+        }
+
+        .success-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .success-card p strong {
+            color: var(--text);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .footer a {
+            color: var(--terracotta);
+            text-decoration: none;
+        }
+
+        /* Print */
+        @media print {
+            body { background: #fff; color: #222; }
+            .container { padding: 0; max-width: 100%; }
+            .phase-body { max-height: none !important; }
+            .phase-toggle { display: none; }
+            .vision { border-color: #ccc; background: #f9f6f4; }
+            .vision::before { color: var(--terracotta); }
+            .vision p { color: #333; }
+            .phase-card { break-inside: avoid; border-color: #ddd; background: #fff; }
+            .blocage-card { background: #fff; border-color: #ddd; }
+            .success-card { background: #fff; border-color: #ddd; }
+            .diag-table { background: #fff; }
+            .diag-table thead th { background: #f5f0ec; color: #8b5e3c; }
+            .diag-table tbody td { color: #333; }
+            .header h1, .section-title { color: #222; }
+            .progress-bar-bg { border-color: #ddd; }
+            .footer { display: none; }
+            .task-label { color: #333 !important; }
+            .task-item.done .task-label { color: #999 !important; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container { padding: 1.25rem 1rem 3rem; }
+            .header h1 { font-size: 1.6rem; }
+            .header-meta { gap: 1rem; }
+            .diag-table { font-size: 0.8rem; }
+            .diag-table thead th, .diag-table tbody td { padding: 0.6rem 0.6rem; }
+            .phase-header { padding: 0.85rem 1rem; }
+            .vision { padding: 1.25rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="header-label">CS Consulting Strategique</div>
+        <h1>Feuille de Route <span>Strategique</span></h1>
+        <div class="header-sub">Face Soul Yoga — Aurelia &amp; Laurie</div>
+        <div class="header-meta">
+            <span class="meta-item"><strong>Programme</strong> Clarte &amp; Autonomie</span>
+            <span class="meta-item"><strong>Duree</strong> 6 mois &middot; 19 seances</span>
+            <span class="meta-item"><strong>Fevrier</strong> &rarr; <strong>Aout 2026</strong></span>
+        </div>
+    </div>
+
+    <!-- Vision -->
+    <div class="vision">
+        <p>Je veux etre une vraie chef d'entreprise qui a du recul, anticipe et pilote sa boite sans la tete dans le guidon mais avec fluidite et joie.</p>
+        <cite>— Aurelia, Face Soul Yoga</cite>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-section">
+        <div class="progress-header">
+            <span class="progress-label">Progression globale</span>
+            <span class="progress-pct" id="progressPct">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+        <div class="progress-detail" id="progressDetail">0 / 19 actions</div>
+    </div>
+
+    <!-- Diagnostic -->
+    <div class="section-block">
+        <h2 class="section-title">Diagnostic de depart</h2>
+        <table class="diag-table">
+            <thead>
+                <tr>
+                    <th>Dimension</th>
+                    <th>Etat actuel</th>
+                    <th>Objectif 6 mois</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Temps strategie</td>
+                    <td>10% (5h/sem sur 50h) <span class="badge badge-red">CRITIQUE</span></td>
+                    <td>30% (~10-15h/sem) <span class="badge badge-green">CIBLE</span></td>
+                </tr>
+                <tr>
+                    <td>Autonomie equipe</td>
+                    <td>3/5 <span class="badge badge-orange">MOYEN</span></td>
+                    <td>4/5 <span class="badge badge-green">CIBLE</span></td>
+                </tr>
+                <tr>
+                    <td>Automatisation parcours client</td>
+                    <td>19% <span class="badge badge-red">CRITIQUE</span></td>
+                    <td>60% <span class="badge badge-green">CIBLE</span></td>
+                </tr>
+                <tr>
+                    <td>Strategie structuree</td>
+                    <td>5/10 <span class="badge badge-orange">MOYEN</span></td>
+                    <td>8/10 <span class="badge badge-green">CIBLE</span></td>
+                </tr>
+                <tr>
+                    <td>Documentation process</td>
+                    <td>2/5 <span class="badge badge-red">CRITIQUE</span></td>
+                    <td>4/5 <span class="badge badge-green">CIBLE</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Blocages -->
+    <div class="section-block">
+        <h2 class="section-title">Blocages identifies</h2>
+        <div class="blocages-grid">
+            <div class="blocage-card">
+                <strong>Eparpillement</strong>
+                <p>&laquo; Je m'epuise sur des choses pas necessaires &raquo; — pas de priorisation, pas de filtre</p>
+            </div>
+            <div class="blocage-card">
+                <strong>Syndrome de l'imposteur</strong>
+                <p>Doute sur la legitimite, hesitation sur les prix</p>
+            </div>
+            <div class="blocage-card">
+                <strong>80% operationnel</strong>
+                <p>Zero espace pour la vision, la strategie est etouffee</p>
+            </div>
+            <div class="blocage-card">
+                <strong>Process inexistants</strong>
+                <p>Rien de documente (2/5) — delegation impossible</p>
+            </div>
+            <div class="blocage-card">
+                <strong>Dependance aux RS</strong>
+                <p>Poster = vendre, pas de systeme alternatif d'acquisition</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roadmap -->
+    <div class="section-block">
+        <h2 class="section-title">Roadmap 6 mois — 19 actions</h2>
+
+        <!-- Phase 0 -->
+        <div class="phase-card phase-0 open" data-phase="0">
+            <div class="phase-header" onclick="togglePhase(this)">
+                <div class="phase-indicator"></div>
+                <div class="phase-info">
+                    <h3>Phase 0 — Fondations</h3>
+                    <p>Semaines 1-2 &middot; Poser les bases, installer les routines, creer l'espace mental</p>
+                </div>
+                <span class="phase-progress-mini" data-phase-progress="0"></span>
+                <span class="phase-toggle">&#9662;</span>
+            </div>
+            <div class="phase-body">
+                <div class="phase-body-inner">
+                    <div class="task-item" data-task="1">
+                        <input type="checkbox" class="task-checkbox" data-id="1">
+                        <div class="task-content">
+                            <label class="task-label">Lister TOUS les abonnements/outils en cours avec couts mensuels</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">1h</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="2">
+                        <input type="checkbox" class="task-checkbox" data-id="2">
+                        <div class="task-content">
+                            <label class="task-label">Bloquer 2h/semaine "CEO Time" dans l'agenda (non negociable)</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">15 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="3">
+                        <input type="checkbox" class="task-checkbox" data-id="3">
+                        <div class="task-content">
+                            <label class="task-label">Prendre en main le dashboard Notion</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">30 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="4">
+                        <input type="checkbox" class="task-checkbox" data-id="4">
+                        <div class="task-content">
+                            <label class="task-label">Envoyer l'email de Laurie pour l'integrer dans Notion</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">5 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 1 -->
+        <div class="phase-card phase-1" data-phase="1">
+            <div class="phase-header" onclick="togglePhase(this)">
+                <div class="phase-indicator"></div>
+                <div class="phase-info">
+                    <h3>Phase 1 — Clarte &amp; Diagnostic</h3>
+                    <p>Mois 1 &middot; Avoir une vision CLAIRE de l'existant</p>
+                </div>
+                <span class="phase-progress-mini" data-phase-progress="1"></span>
+                <span class="phase-toggle">&#9662;</span>
+            </div>
+            <div class="phase-body">
+                <div class="phase-body-inner">
+                    <div class="task-item" data-task="5">
+                        <input type="checkbox" class="task-checkbox" data-id="5">
+                        <div class="task-content">
+                            <label class="task-label">Cartographier ses process actuels — "qui fait quoi, quand, comment"</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">2h+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="6">
+                        <input type="checkbox" class="task-checkbox" data-id="6">
+                        <div class="task-content">
+                            <label class="task-label">Cartographier le parcours client complet (decouverte &rarr; fidelisation)</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">2h+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="7">
+                        <input type="checkbox" class="task-checkbox" data-id="7">
+                        <div class="task-content">
+                            <label class="task-label">Valider l'audit stack technique : garder / remplacer / supprimer</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">30 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="8">
+                        <input type="checkbox" class="task-checkbox" data-id="8">
+                        <div class="task-content">
+                            <label class="task-label">Lister les fonctionnalites non-negociables pour la future plateforme</label>
+                            <div class="task-meta">
+                                <span class="task-priority moyenne">Moyenne</span>
+                                <span class="task-duration">1h</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="9">
+                        <input type="checkbox" class="task-checkbox" data-id="9">
+                        <div class="task-content">
+                            <label class="task-label">Definir 5 KPIs de pilotage (CA, churn, conversion, retention, tresorerie)</label>
+                            <div class="task-meta">
+                                <span class="task-priority moyenne">Moyenne</span>
+                                <span class="task-duration">15 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="phase-card phase-2" data-phase="2">
+            <div class="phase-header" onclick="togglePhase(this)">
+                <div class="phase-indicator"></div>
+                <div class="phase-info">
+                    <h3>Phase 2 — Structure &amp; Outils</h3>
+                    <p>Mois 2-3 &middot; Process documentes, outils en place, automatisations actives</p>
+                </div>
+                <span class="phase-progress-mini" data-phase-progress="2"></span>
+                <span class="phase-toggle">&#9662;</span>
+            </div>
+            <div class="phase-body">
+                <div class="phase-body-inner">
+                    <div class="task-item" data-task="10">
+                        <input type="checkbox" class="task-checkbox" data-id="10">
+                        <div class="task-content">
+                            <label class="task-label">Valider l'organigramme simplifie : Aurelia (Vision &amp; Creation) vs Laurie (Operationnel)</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">30 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="11">
+                        <input type="checkbox" class="task-checkbox" data-id="11">
+                        <div class="task-content">
+                            <label class="task-label">Documenter les 5 SOP prioritaires (templates fournis par Catherine)</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">2h+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="12">
+                        <input type="checkbox" class="task-checkbox" data-id="12">
+                        <div class="task-content">
+                            <label class="task-label">Tester et valider les automatisations (devis, relances, emails)</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">1h</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="13">
+                        <input type="checkbox" class="task-checkbox" data-id="13">
+                        <div class="task-content">
+                            <label class="task-label">Structurer Notion comme QG central (organisation, suivi, projets)</label>
+                            <div class="task-meta">
+                                <span class="task-priority moyenne">Moyenne</span>
+                                <span class="task-duration">2h+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="14">
+                        <input type="checkbox" class="task-checkbox" data-id="14">
+                        <div class="task-content">
+                            <label class="task-label">Tester l'agent IA sur-mesure et donner ses retours</label>
+                            <div class="task-meta">
+                                <span class="task-priority moyenne">Moyenne</span>
+                                <span class="task-duration">1h</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="phase-card phase-3" data-phase="3">
+            <div class="phase-header" onclick="togglePhase(this)">
+                <div class="phase-indicator"></div>
+                <div class="phase-info">
+                    <h3>Phase 3 — Autonomie &amp; Pilotage</h3>
+                    <p>Mois 4-6 &middot; Aurelia pilote, Laurie execute, les systemes tournent</p>
+                </div>
+                <span class="phase-progress-mini" data-phase-progress="3"></span>
+                <span class="phase-toggle">&#9662;</span>
+            </div>
+            <div class="phase-body">
+                <div class="phase-body-inner">
+                    <div class="task-item" data-task="15">
+                        <input type="checkbox" class="task-checkbox" data-id="15">
+                        <div class="task-content">
+                            <label class="task-label">Briefer Laurie sur les nouveaux process (avec les SOP documentes)</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">2h+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="16">
+                        <input type="checkbox" class="task-checkbox" data-id="16">
+                        <div class="task-content">
+                            <label class="task-label">Installer la routine CEO hebdomadaire : 30 min dashboard KPIs + decisions</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">30 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="17">
+                        <input type="checkbox" class="task-checkbox" data-id="17">
+                        <div class="task-content">
+                            <label class="task-label">Valider le plan de delegation : quelles taches passent a Laurie definitivement</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">30 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="18">
+                        <input type="checkbox" class="task-checkbox" data-id="18">
+                        <div class="task-content">
+                            <label class="task-label">Valider le protocole "anti-chaos" (quoi faire quand ca derape)</label>
+                            <div class="task-meta">
+                                <span class="task-priority moyenne">Moyenne</span>
+                                <span class="task-duration">30 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="19">
+                        <input type="checkbox" class="task-checkbox" data-id="19">
+                        <div class="task-content">
+                            <label class="task-label">Bilan de fin d'accompagnement : autonomie acquise + plan de continuite</label>
+                            <div class="task-meta">
+                                <span class="task-priority haute">Haute</span>
+                                <span class="task-duration">1h</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Indicateurs de succes -->
+    <div class="section-block">
+        <h2 class="section-title">Indicateurs de succes</h2>
+        <div class="success-grid">
+            <div class="success-card">
+                <span class="success-num">1</span>
+                <p><strong>Temps strategie</strong> — passer de 5h/sem a 10-15h/sem</p>
+            </div>
+            <div class="success-card">
+                <span class="success-num">2</span>
+                <p><strong>Process documentes</strong> — 5 SOP minimum crees et utilises</p>
+            </div>
+            <div class="success-card">
+                <span class="success-num">3</span>
+                <p><strong>Automatisation</strong> — passer de 19% a 60% du parcours client</p>
+            </div>
+            <div class="success-card">
+                <span class="success-num">4</span>
+                <p><strong>Revenu recurrent</strong> — structure en place pour atteindre 50K EUR/mois</p>
+            </div>
+            <div class="success-card">
+                <span class="success-num">5</span>
+                <p><strong>Charge mentale</strong> — allegee de 60% (objectif contractuel)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>CS Consulting Strategique &middot; <a href="https://csbusiness.fr">csbusiness.fr</a></p>
+        <p style="margin-top: 0.3rem">Accompagnement Clarte &amp; Autonomie &middot; Face Soul Yoga &middot; 2026</p>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'fsy-roadmap';
+    const TOTAL_TASKS = 19;
+    // Tasks 1 and 4 are pre-done
+    const PRE_DONE = [1, 4];
+
+    function loadState() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) return JSON.parse(raw);
+        } catch (e) {}
+        // Default: mark pre-done tasks
+        const state = {};
+        PRE_DONE.forEach(id => state[id] = true);
+        return state;
+    }
+
+    function saveState(state) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {}
+    }
+
+    const state = loadState();
+
+    function updateProgress() {
+        const done = Object.values(state).filter(Boolean).length;
+        const pct = Math.round((done / TOTAL_TASKS) * 100);
+        document.getElementById('progressPct').textContent = pct + '%';
+        document.getElementById('progressBar').style.width = pct + '%';
+        document.getElementById('progressDetail').textContent = done + ' / ' + TOTAL_TASKS + ' actions';
+
+        // Update phase mini progress
+        document.querySelectorAll('.phase-card').forEach(card => {
+            const tasks = card.querySelectorAll('.task-checkbox');
+            const phaseDone = Array.from(tasks).filter(cb => cb.checked).length;
+            const phaseTotal = tasks.length;
+            const phaseIdx = card.dataset.phase;
+            const el = card.querySelector('[data-phase-progress]');
+            if (el) el.textContent = phaseDone + '/' + phaseTotal;
+        });
+    }
+
+    function applyTaskState(taskItem, isDone) {
+        if (isDone) {
+            taskItem.classList.add('done');
+        } else {
+            taskItem.classList.remove('done');
+        }
+    }
+
+    // Init checkboxes
+    document.querySelectorAll('.task-checkbox').forEach(cb => {
+        const id = parseInt(cb.dataset.id);
+        cb.checked = !!state[id];
+        applyTaskState(cb.closest('.task-item'), !!state[id]);
+
+        cb.addEventListener('change', () => {
+            state[id] = cb.checked;
+            applyTaskState(cb.closest('.task-item'), cb.checked);
+            saveState(state);
+            updateProgress();
+        });
+    });
+
+    // Labels toggle checkboxes
+    document.querySelectorAll('.task-label').forEach(label => {
+        label.addEventListener('click', () => {
+            const cb = label.closest('.task-item').querySelector('.task-checkbox');
+            cb.checked = !cb.checked;
+            cb.dispatchEvent(new Event('change'));
+        });
+    });
+
+    updateProgress();
+
+    // Phase toggle
+    function togglePhase(header) {
+        const card = header.closest('.phase-card');
+        card.classList.toggle('open');
+    }
+</script>
+
+</body>
+</html>
