@@ -815,8 +815,21 @@ const CLIENT = {
         '<h3>Paiements</h3>';
 
     a.payments.forEach(p => {
-      const statusClass = p.status === 'paid' ? 'status-paid' : (p.status === 'due' ? 'status-due' : 'status-pending');
-      const statusLabel = p.status === 'paid' ? 'Paye' : (p.status === 'due' ? 'En retard' : 'A venir');
+      let statusClass, statusLabel;
+      if (p.status === 'paid') {
+        statusClass = 'status-paid';
+        statusLabel = 'Paye';
+      } else {
+        const dueDate = new Date(p.date);
+        const now = new Date();
+        if (dueDate < now) {
+          statusClass = 'status-due';
+          statusLabel = 'En retard';
+        } else {
+          statusClass = '';
+          statusLabel = 'Echeance ' + formatDate(p.date);
+        }
+      }
       gridHtml += '<div class="admin-row"><span class="label">' + p.label + '</span><span class="value ' + statusClass + '">' + p.amount.toLocaleString('fr-FR') + ' EUR — ' + statusLabel + '</span></div>';
     });
 
