@@ -432,43 +432,43 @@ const CLIENT = {
   program: "Clarté & Autonomie — 6 mois",
   startDate: "2026-02-19",
   endDate: "2026-08-18",
-  sessionsUsed: 3,
+  sessionsUsed: 4,
   sessionsTotal: 19,
   nextSession: {
-    date: "2026-03-18",
+    date: "2026-03-24",
     time: "10:00",
-    theme: "Mindset Aurelia, Evergreen MTM roadmap, Migration Uscreen, Chatbot"
+    theme: "Validation 3 parcours clients, plans migration Circle, session Claude"
   },
 
-  // ─── ACTIONS EN COURS ───
+  // ─── ACTIONS EN COURS (post-session 4) ───
   actions: [
     {
-      id: "a1",
-      text: "🤖 CHATBOT — Fournir 20-30 FAQ (les questions que vous recevez le plus sur WhatsApp + vos réponses types). BLOQUANT pour la mise en prod.",
+      id: "b1",
+      text: "🔴 LAURIE — Prendre la main sur VA Anam (Upwork) : vérifier brief, ouvrir accès Uscreen, ajouter clause NDA au contrat. Lancer la migration vidéos → Bunny.net",
       tags: ["urgent"],
       done: false
     },
     {
-      id: "a2",
-      text: "🤖 CHATBOT — Créer le vrai groupe Telegram FSY + ajouter @facesoulyoga_bot comme administrateur + envoyer un message privé au bot (pour récupérer le chat_id escalade Laurie)",
+      id: "b2",
+      text: "🔴 LAURIE — Explorer Circle Business : créer les 2 espaces (Studio B2C + MTM B2B), tester communautés séparées, calendrier, checkout Stripe",
       tags: ["urgent"],
       done: false
     },
     {
-      id: "a3",
-      text: "🤖 CHATBOT — Valider le message d'accueil nouveau membre + confirmer horaires bot (9h-18h lun-ven ?)",
+      id: "b3",
+      text: "🟠 LAURIE — Lister TOUS les emails par parcours client : bienvenue, relance churn, certification, licence, upsell (pour les 3 entités)",
       tags: ["session"],
       done: false
     },
     {
-      id: "a4",
-      text: "📧 EMAILS — Lister tous les cas d'envoi emails par offre : formation (bienvenue, rappel, certification, licence), abo studio (bienvenue, essai, renouvellement, relance churn), accompagnement",
-      tags: ["urgent"],
+      id: "b4",
+      text: "🟠 AURÉLIA — Réécrire la page de vente MTM à 2 900 € avec les vrais témoignages (Léa, Agnès) — commencé avec Claude",
+      tags: ["session"],
       done: false
     },
     {
-      id: "a5",
-      text: "🎓 MTM — Finaliser le contenu de la formation Master The Method : quels modules sont prêts ? Lesquels restent à filmer ?",
+      id: "b5",
+      text: "🟠 LAURIE + CLAUDE — Benchmark sites face yoga éducatifs → proposer nouveau positionnement site facesoulyoga.com (exit lifestyle, exit belly typo)",
       tags: ["session"],
       done: false
     }
@@ -509,9 +509,9 @@ const CLIENT = {
       steps: null
     },
     {
-      id: "feuille-de-route",
-      name: "Feuille de route stratégique",
-      desc: "19 actions en 4 phases — diagnostic, process, outils, autonomie. Ta vision à 6 mois.",
+      id: "feuille-de-route-v2",
+      name: "Feuille de route V2 (post-session 4)",
+      desc: "19 actions en 4 phases — migrations Circle, process 3 entités, automatisations, autonomie.",
       icon: "\uD83C\uDFAF",
       url: "feuille-de-route-fsy.html",
       steps: null
@@ -520,6 +520,21 @@ const CLIENT = {
 
   // ─── HISTORIQUE SESSIONS ───
   sessions: [
+    {
+      num: 4, date: "2026-03-16",
+      title: "Repositionnement des marques & feuille de route opérationnelle",
+      summary: "SESSION PIVOT. 3 entités distinctes actées : FSY Studio B2C (17€, Laurie gère, sans Aurélia), MTM B2B (2 900€ evergreen), Aurélia Del Sol (premium 390€+). Migration Uscreen+Kajabi → Circle avant juillet. VA recrutée (Upwork, 500$). Site FSY → éducatif.",
+      decisions: [
+        "3 entités distinctes : FSY Studio B2C + MTM B2B + Aurélia Del Sol Premium",
+        "Migration Uscreen + Kajabi → Circle Business (199€/mois) avant juillet 2026",
+        "Prix MTM relevé : 1 950€ → 2 900€ (early bird 2 500€)",
+        "FSY Studio : plus de lives, vidéos batch uniquement, Laurie gère",
+        "Site facesoulyoga.com → purement éducatif (exit lifestyle)",
+        "Contrats B2B à automatiser (e-signature)",
+        "4 challenges/an FSY + 2 pushs/an MTM",
+        "Skills Claude à développer pour Aurélia"
+      ]
+    },
     {
       num: 3, date: "2026-03-11",
       title: "Stratégie offre FSY (evergreen + pricing) & Chatbot Telegram",

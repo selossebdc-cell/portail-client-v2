@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feuille de Route — Face Soul Yoga</title>
+    <title>Feuille de Route V2 — Face Soul Yoga</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -105,6 +105,21 @@
             font-weight: 500;
         }
 
+        /* Pivot banner */
+        .pivot-banner {
+            background: linear-gradient(135deg, rgba(244,67,54,0.08) 0%, rgba(244,67,54,0.02) 100%);
+            border: 1px solid rgba(244,67,54,0.25);
+            border-radius: var(--radius);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .pivot-banner strong {
+            color: var(--red);
+        }
+
         /* Vision */
         .vision {
             background: linear-gradient(135deg, rgba(194,122,90,0.08) 0%, rgba(194,122,90,0.02) 100%);
@@ -134,6 +149,12 @@
             color: var(--text);
             padding-left: 1.5rem;
             line-height: 1.7;
+        }
+
+        .vision p + p {
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
         }
 
         .vision cite {
@@ -218,6 +239,7 @@
             border-radius: var(--radius);
             overflow: hidden;
             border: 1px solid var(--border);
+            margin-bottom: 1rem;
         }
 
         .diag-table thead th {
@@ -264,29 +286,127 @@
         .badge-orange { background: var(--orange-bg); color: var(--orange); }
         .badge-green { background: var(--green-bg); color: var(--green); }
 
-        /* Blocages */
-        .blocages-grid {
-            display: grid;
-            gap: 0.75rem;
+        /* Process cartography */
+        .carto-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--terracotta-light);
+            margin: 1.5rem 0 0.75rem;
         }
 
-        .blocage-card {
+        .carto-subtitle:first-of-type {
+            margin-top: 0.5rem;
+        }
+
+        .process-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 0.75rem;
+        }
+
+        .process-table thead th {
+            background: rgba(194,122,90,0.07);
+            color: var(--terracotta-light);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.7rem 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .process-table tbody td {
+            padding: 0.6rem 0.75rem;
+            font-size: 0.82rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+            color: var(--text-muted);
+        }
+
+        .process-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .process-table tbody tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .process-table td:first-child {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .priority-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .priority-dot.high { background: var(--red); }
+        .priority-dot.medium { background: var(--orange); }
+        .priority-dot.low { background: #FFD54F; }
+
+        /* Collapsible section */
+        .collapsible-section {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-left: 3px solid var(--red);
             border-radius: var(--radius);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .collapsible-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 1rem 1.25rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s;
         }
 
-        .blocage-card strong {
-            color: var(--terracotta-light);
-            font-size: 0.9rem;
+        .collapsible-header:hover {
+            background: var(--bg-card-hover);
         }
 
-        .blocage-card p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
+        .collapsible-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .collapsible-toggle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+
+        .collapsible-section.open .collapsible-toggle {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .collapsible-section.open .collapsible-body {
+            max-height: 3000px;
+        }
+
+        .collapsible-body-inner {
+            padding: 0 1.25rem 1.25rem;
         }
 
         /* Phase cards */
@@ -365,11 +485,28 @@
         }
 
         .phase-card.open .phase-body {
-            max-height: 1000px;
+            max-height: 2000px;
         }
 
         .phase-body-inner {
             padding: 0 1.25rem 1.25rem;
+        }
+
+        .phase-gate {
+            background: rgba(194,122,90,0.06);
+            border: 1px solid rgba(194,122,90,0.15);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .phase-gate strong {
+            color: var(--terracotta-light);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         /* Task items */
@@ -381,7 +518,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.04);
         }
 
-        .task-item:last-child {
+        .task-item:last-of-type {
             border-bottom: none;
         }
 
@@ -435,58 +572,119 @@
             display: flex;
             gap: 0.75rem;
             margin-top: 0.2rem;
+            flex-wrap: wrap;
         }
 
-        .task-priority {
+        .task-who {
             font-size: 0.7rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            color: var(--terracotta);
         }
 
-        .task-priority.haute { color: var(--red); }
-        .task-priority.moyenne { color: var(--orange); }
+        .task-type {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            font-style: italic;
+        }
 
         .task-duration {
             font-size: 0.7rem;
             color: var(--text-dim);
         }
 
-        /* Success indicators */
-        .success-grid {
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .success-card {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
+        /* KPI table */
+        .kpi-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
             background: var(--bg-card);
-            border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 1rem 1.25rem;
+            overflow: hidden;
+            border: 1px solid var(--border);
         }
 
-        .success-num {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--terracotta);
-            line-height: 1;
-            flex-shrink: 0;
-            width: 28px;
-            text-align: center;
+        .kpi-table thead th {
+            background: rgba(194,122,90,0.1);
+            color: var(--terracotta-light);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.85rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
         }
 
-        .success-card p {
-            font-size: 0.9rem;
+        .kpi-table tbody td {
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
             color: var(--text-muted);
-            line-height: 1.5;
         }
 
-        .success-card p strong {
+        .kpi-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .kpi-table tbody tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .kpi-table td:first-child {
+            font-weight: 500;
             color: var(--text);
+        }
+
+        /* Calendar table */
+        .calendar-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .calendar-table thead th {
+            background: rgba(194,122,90,0.1);
+            color: var(--terracotta-light);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.85rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .calendar-table tbody td {
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            color: var(--text-muted);
+        }
+
+        .calendar-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .calendar-table tbody tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .calendar-table td:first-child {
+            font-weight: 500;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .calendar-table td:nth-child(2) {
+            color: var(--terracotta-light);
+            font-weight: 500;
         }
 
         /* Footer */
@@ -509,16 +707,17 @@
             body { background: #fff; color: #222; }
             .container { padding: 0; max-width: 100%; }
             .phase-body { max-height: none !important; }
-            .phase-toggle { display: none; }
+            .collapsible-body { max-height: none !important; }
+            .phase-toggle, .collapsible-toggle { display: none; }
             .vision { border-color: #ccc; background: #f9f6f4; }
             .vision::before { color: var(--terracotta); }
             .vision p { color: #333; }
+            .pivot-banner { border-color: #ddd; background: #fef5f5; }
             .phase-card { break-inside: avoid; border-color: #ddd; background: #fff; }
-            .blocage-card { background: #fff; border-color: #ddd; }
-            .success-card { background: #fff; border-color: #ddd; }
-            .diag-table { background: #fff; }
-            .diag-table thead th { background: #f5f0ec; color: #8b5e3c; }
-            .diag-table tbody td { color: #333; }
+            .collapsible-section { break-inside: avoid; border-color: #ddd; background: #fff; }
+            .diag-table, .process-table, .kpi-table, .calendar-table { background: #fff; }
+            .diag-table thead th, .process-table thead th, .kpi-table thead th, .calendar-table thead th { background: #f5f0ec; color: #8b5e3c; }
+            .diag-table tbody td, .process-table tbody td, .kpi-table tbody td, .calendar-table tbody td { color: #333; }
             .header h1, .section-title { color: #222; }
             .progress-bar-bg { border-color: #ddd; }
             .footer { display: none; }
@@ -531,8 +730,11 @@
             .container { padding: 1.25rem 1rem 3rem; }
             .header h1 { font-size: 1.6rem; }
             .header-meta { gap: 1rem; }
-            .diag-table { font-size: 0.8rem; }
-            .diag-table thead th, .diag-table tbody td { padding: 0.6rem 0.6rem; }
+            .diag-table, .process-table, .kpi-table, .calendar-table { font-size: 0.8rem; }
+            .diag-table thead th, .diag-table tbody td,
+            .process-table thead th, .process-table tbody td,
+            .kpi-table thead th, .kpi-table tbody td,
+            .calendar-table thead th, .calendar-table tbody td { padding: 0.6rem 0.6rem; }
             .phase-header { padding: 0.85rem 1rem; }
             .vision { padding: 1.25rem 1.25rem; }
         }
@@ -543,20 +745,27 @@
 <div class="container">
     <!-- Header -->
     <div class="header">
-        <div class="header-label">CS Consulting Strategique</div>
-        <h1>Feuille de Route <span>Strategique</span></h1>
-        <div class="header-sub">Face Soul Yoga — Aurelia &amp; Laurie</div>
+        <div class="header-label">CS Consulting Strat&eacute;gique</div>
+        <h1>Feuille de Route <span>V2 &mdash; Post-session 4</span></h1>
+        <div class="header-sub">Face Soul Yoga &mdash; Aur&eacute;lia &amp; Laurie</div>
         <div class="header-meta">
-            <span class="meta-item"><strong>Programme</strong> Clarte &amp; Autonomie</span>
-            <span class="meta-item"><strong>Duree</strong> 6 mois &middot; 19 seances</span>
-            <span class="meta-item"><strong>Fevrier</strong> &rarr; <strong>Aout 2026</strong></span>
+            <span class="meta-item"><strong>Programme</strong> Clart&eacute; &amp; Autonomie</span>
+            <span class="meta-item"><strong>Dur&eacute;e</strong> 6 mois &middot; 19 s&eacute;ances</span>
+            <span class="meta-item"><strong>Sessions</strong> 4 / 19 utilis&eacute;es</span>
+            <span class="meta-item"><strong>F&eacute;vrier</strong> &rarr; <strong>Ao&ucirc;t 2026</strong></span>
         </div>
+    </div>
+
+    <!-- Pivot banner -->
+    <div class="pivot-banner">
+        <strong>Pivot session 4 :</strong> la V1 est obsol&egrave;te. 3 entit&eacute;s distinctes identifi&eacute;es (FSY Studio B2C, Master The Method B2B, Aur&eacute;lia Del Sol Premium), migration Circle d&eacute;cid&eacute;e, prix MTM relev&eacute; &agrave; 2 900 &euro;.
     </div>
 
     <!-- Vision -->
     <div class="vision">
-        <p>Je veux etre une vraie chef d'entreprise qui a du recul, anticipe et pilote sa boite sans la tete dans le guidon mais avec fluidite et joie.</p>
-        <cite>— Aurelia, Face Soul Yoga</cite>
+        <p>Je veux &ecirc;tre une vraie chef d&rsquo;entreprise qui a du recul, anticipe et pilote sa bo&icirc;te sans la t&ecirc;te dans le guidon mais avec fluidit&eacute; et joie.</p>
+        <p>Mon &eacute;nergie, je suis en train de la mettre sur Aur&eacute;lia Del Sol. Je ne suis plus dedans. &Ccedil;a reste un recurring revenue qui est int&eacute;ressant et qui peut &ecirc;tre compl&egrave;tement scalable et qui, &agrave; terme, est revendable.</p>
+        <cite>&mdash; Aur&eacute;lia, Face Soul Yoga</cite>
     </div>
 
     <!-- Progress bar -->
@@ -571,85 +780,329 @@
         <div class="progress-detail" id="progressDetail">0 / 19 actions</div>
     </div>
 
-    <!-- Diagnostic -->
+    <!-- Diagnostic actualis&eacute; -->
     <div class="section-block">
-        <h2 class="section-title">Diagnostic de depart</h2>
+        <h2 class="section-title">Diagnostic actualis&eacute; (session 4)</h2>
         <table class="diag-table">
             <thead>
                 <tr>
                     <th>Dimension</th>
-                    <th>Etat actuel</th>
-                    <th>Objectif 6 mois</th>
+                    <th>D&eacute;part (f&eacute;v 2026)</th>
+                    <th>Apr&egrave;s session 4</th>
+                    <th>Objectif ao&ucirc;t 2026</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>Temps strategie</td>
-                    <td>10% (5h/sem sur 50h) <span class="badge badge-red">CRITIQUE</span></td>
+                    <td>Temps strat&eacute;gie</td>
+                    <td>10% (5h/50h)</td>
+                    <td>15% <span class="badge badge-orange">EN PROGRESSION</span></td>
                     <td>30% (~10-15h/sem) <span class="badge badge-green">CIBLE</span></td>
                 </tr>
                 <tr>
-                    <td>Autonomie equipe</td>
-                    <td>3/5 <span class="badge badge-orange">MOYEN</span></td>
-                    <td>4/5 <span class="badge badge-green">CIBLE</span></td>
+                    <td>Autonomie &eacute;quipe</td>
+                    <td>3/5</td>
+                    <td>3.5/5 <span class="badge badge-orange">LAURIE MONTE</span></td>
+                    <td>4.5/5 <span class="badge badge-green">CIBLE</span></td>
                 </tr>
                 <tr>
-                    <td>Automatisation parcours client</td>
-                    <td>19% <span class="badge badge-red">CRITIQUE</span></td>
+                    <td>Automatisation parcours</td>
+                    <td>19%</td>
+                    <td>20% <span class="badge badge-red">RIEN AUTOMATIS&Eacute;</span></td>
                     <td>60% <span class="badge badge-green">CIBLE</span></td>
                 </tr>
                 <tr>
-                    <td>Strategie structuree</td>
-                    <td>5/10 <span class="badge badge-orange">MOYEN</span></td>
+                    <td>Strat&eacute;gie structur&eacute;e</td>
+                    <td>5/10</td>
+                    <td>7/10 <span class="badge badge-green">3 ENTIT&Eacute;S CLAIRES</span></td>
                     <td>8/10 <span class="badge badge-green">CIBLE</span></td>
                 </tr>
                 <tr>
                     <td>Documentation process</td>
-                    <td>2/5 <span class="badge badge-red">CRITIQUE</span></td>
+                    <td>2/5</td>
+                    <td>2/5 <span class="badge badge-red">PAS ENCORE</span></td>
                     <td>4/5 <span class="badge badge-green">CIBLE</span></td>
+                </tr>
+                <tr>
+                    <td>Stack technique</td>
+                    <td>Fragment&eacute;e (6 outils)</td>
+                    <td>En migration <span class="badge badge-orange">CIRCLE D&Eacute;CID&Eacute;</span></td>
+                    <td>Unifi&eacute;e (Circle + Brevo + Bunny) <span class="badge badge-green">CIBLE</span></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- Blocages -->
+    <!-- Cartographie des process -->
     <div class="section-block">
-        <h2 class="section-title">Blocages identifies</h2>
-        <div class="blocages-grid">
-            <div class="blocage-card">
-                <strong>Eparpillement</strong>
-                <p>&laquo; Je m'epuise sur des choses pas necessaires &raquo; — pas de priorisation, pas de filtre</p>
+        <h2 class="section-title">Cartographie des process</h2>
+
+        <!-- FSY Studio -->
+        <div class="collapsible-section open" data-carto="fsy">
+            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                <h3>FSY Studio B2C</h3>
+                <span class="collapsible-toggle">&#9662;</span>
             </div>
-            <div class="blocage-card">
-                <strong>Syndrome de l'imposteur</strong>
-                <p>Doute sur la legitimite, hesitation sur les prix</p>
+            <div class="collapsible-body">
+                <div class="collapsible-body-inner">
+                    <table class="process-table">
+                        <thead>
+                            <tr>
+                                <th>Process</th>
+                                <th>Fr&eacute;quence</th>
+                                <th>&Eacute;tat actuel</th>
+                                <th>Priorit&eacute;</th>
+                                <th>Phase</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Parcours prospect &rarr; abonn&eacute;</td>
+                                <td>Continu</td>
+                                <td>Non document&eacute;</td>
+                                <td><span class="priority-dot high"></span></td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Onboarding nouvel abonn&eacute;</td>
+                                <td>&Agrave; chaque inscription</td>
+                                <td>Manuel (email basique)</td>
+                                <td><span class="priority-dot high"></span></td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Publication contenu hebdo</td>
+                                <td>Hebdo</td>
+                                <td>Lives &rarr; va devenir batch</td>
+                                <td><span class="priority-dot high"></span></td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Challenges trimestriels</td>
+                                <td>4x/an</td>
+                                <td>Non planifi&eacute;</td>
+                                <td><span class="priority-dot medium"></span></td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Relance churn</td>
+                                <td>Continu</td>
+                                <td>Inexistant</td>
+                                <td><span class="priority-dot medium"></span></td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Communication migration</td>
+                                <td>Ponctuel (mai-juil)</td>
+                                <td>Inexistant</td>
+                                <td><span class="priority-dot high"></span></td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Upsell vers MTM/Premium</td>
+                                <td>Continu</td>
+                                <td>Inexistant</td>
+                                <td><span class="priority-dot low"></span></td>
+                                <td>3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="blocage-card">
-                <strong>80% operationnel</strong>
-                <p>Zero espace pour la vision, la strategie est etouffee</p>
+        </div>
+
+        <!-- MTM -->
+        <div class="collapsible-section" data-carto="mtm">
+            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                <h3>Master The Method B2B</h3>
+                <span class="collapsible-toggle">&#9662;</span>
             </div>
-            <div class="blocage-card">
-                <strong>Process inexistants</strong>
-                <p>Rien de documente (2/5) — delegation impossible</p>
+            <div class="collapsible-body">
+                <div class="collapsible-body-inner">
+                    <table class="process-table">
+                        <thead>
+                            <tr>
+                                <th>Process</th>
+                                <th>Fr&eacute;quence</th>
+                                <th>&Eacute;tat actuel</th>
+                                <th>Priorit&eacute;</th>
+                                <th>Phase</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>S&eacute;quence de lancement</td>
+                                <td>2x/an (sept + mars)</td>
+                                <td>Non structur&eacute;</td>
+                                <td><span class="priority-dot high"></span></td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Checkout + contrat</td>
+                                <td>&Agrave; chaque vente</td>
+                                <td>Contrat manuel (chronophage)</td>
+                                <td><span class="priority-dot high"></span></td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Onboarding formation</td>
+                                <td>&Agrave; chaque inscription</td>
+                                <td>Email basique</td>
+                                <td><span class="priority-dot medium"></span></td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Suivi pendant formation</td>
+                                <td>Continu</td>
+                                <td>Inexistant (pas d&rsquo;emails palier)</td>
+                                <td><span class="priority-dot medium"></span></td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Certification + kit comm</td>
+                                <td>Post-formation</td>
+                                <td>Semi-manuel</td>
+                                <td><span class="priority-dot medium"></span></td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Licence annuelle + relance</td>
+                                <td>Annuel</td>
+                                <td>Inexistant</td>
+                                <td><span class="priority-dot low"></span></td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Programme ambassadrices</td>
+                                <td>Continu</td>
+                                <td>Inexistant</td>
+                                <td><span class="priority-dot low"></span></td>
+                                <td>3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="blocage-card">
-                <strong>Dependance aux RS</strong>
-                <p>Poster = vendre, pas de systeme alternatif d'acquisition</p>
+        </div>
+
+        <!-- Aur&eacute;lia Del Sol -->
+        <div class="collapsible-section" data-carto="ads">
+            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                <h3>Aur&eacute;lia Del Sol Premium</h3>
+                <span class="collapsible-toggle">&#9662;</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="collapsible-body-inner">
+                    <table class="process-table">
+                        <thead>
+                            <tr>
+                                <th>Process</th>
+                                <th>Fr&eacute;quence</th>
+                                <th>&Eacute;tat actuel</th>
+                                <th>Priorit&eacute;</th>
+                                <th>Phase</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cr&eacute;ation programmes</td>
+                                <td>Ponctuel</td>
+                                <td>En cours d&rsquo;&eacute;criture</td>
+                                <td><span class="priority-dot low"></span></td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Identit&eacute; visuelle</td>
+                                <td>Ponctuel</td>
+                                <td>Inexistant</td>
+                                <td><span class="priority-dot low"></span></td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Parcours prospect &rarr; client</td>
+                                <td>Continu</td>
+                                <td>Inexistant</td>
+                                <td><span class="priority-dot low"></span></td>
+                                <td>3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transverse -->
+        <div class="collapsible-section" data-carto="transverse">
+            <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                <h3>Transverse</h3>
+                <span class="collapsible-toggle">&#9662;</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="collapsible-body-inner">
+                    <table class="process-table">
+                        <thead>
+                            <tr>
+                                <th>Process</th>
+                                <th>Fr&eacute;quence</th>
+                                <th>&Eacute;tat actuel</th>
+                                <th>Priorit&eacute;</th>
+                                <th>Phase</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Segmentation Brevo</td>
+                                <td>Continu</td>
+                                <td>Listes basiques, pas de tags</td>
+                                <td><span class="priority-dot high"></span></td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Migration Uscreen &rarr; Circle</td>
+                                <td>Ponctuel</td>
+                                <td>VA recrut&eacute;e, brief fait</td>
+                                <td><span class="priority-dot high"></span></td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Migration Kajabi &rarr; Circle</td>
+                                <td>Ponctuel</td>
+                                <td>Non d&eacute;marr&eacute;</td>
+                                <td><span class="priority-dot medium"></span></td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Connexion Circle &harr; Brevo</td>
+                                <td>Ponctuel</td>
+                                <td>Non recherch&eacute;</td>
+                                <td><span class="priority-dot high"></span></td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Calendrier &eacute;ditorial annuel</td>
+                                <td>Annuel</td>
+                                <td>Inexistant</td>
+                                <td><span class="priority-dot medium"></span></td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Roadmap -->
     <div class="section-block">
-        <h2 class="section-title">Roadmap 6 mois — 19 actions</h2>
+        <h2 class="section-title">Roadmap 6 mois &mdash; 4 phases, 19 actions</h2>
 
         <!-- Phase 0 -->
         <div class="phase-card phase-0 open" data-phase="0">
             <div class="phase-header" onclick="togglePhase(this)">
                 <div class="phase-indicator"></div>
                 <div class="phase-info">
-                    <h3>Phase 0 — Fondations</h3>
-                    <p>Semaines 1-2 &middot; Poser les bases, installer les routines, creer l'espace mental</p>
+                    <h3>Phase 0 &mdash; Ancrage &amp; migrations</h3>
+                    <p>Semaines 5-8 &middot; Mars-Avril 2026 &middot; Ancrer les d&eacute;cisions, lancer les migrations, poser les fondations Circle</p>
                 </div>
                 <span class="phase-progress-mini" data-phase-progress="0"></span>
                 <span class="phase-toggle">&#9662;</span>
@@ -659,42 +1112,60 @@
                     <div class="task-item" data-task="1">
                         <input type="checkbox" class="task-checkbox" data-id="1">
                         <div class="task-content">
-                            <label class="task-label">Lister TOUS les abonnements/outils en cours avec couts mensuels</label>
+                            <label class="task-label">Mapper les 3 parcours clients (FSY Studio B2C, MTM B2B, Aur&eacute;lia Del Sol) &mdash; de l&rsquo;acquisition &agrave; la sortie, chaque &eacute;tape, chaque outil, chaque email</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
-                                <span class="task-duration">1h</span>
+                                <span class="task-who">Catherine</span>
+                                <span class="task-type">&Agrave; livrer</span>
+                                <span class="task-duration">2h+</span>
                             </div>
                         </div>
                     </div>
                     <div class="task-item" data-task="2">
                         <input type="checkbox" class="task-checkbox" data-id="2">
                         <div class="task-content">
-                            <label class="task-label">Bloquer 2h/semaine "CEO Time" dans l'agenda (non negociable)</label>
+                            <label class="task-label">Lancer la migration vid&eacute;os Uscreen &rarr; Bunny.net &mdash; VA Anam g&egrave;re, Laurie supervise, clause NDA dans contrat</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
-                                <span class="task-duration">15 min</span>
+                                <span class="task-who">Laurie + VA</span>
+                                <span class="task-type">&Agrave; ex&eacute;cuter</span>
+                                <span class="task-duration">2h+</span>
                             </div>
                         </div>
                     </div>
                     <div class="task-item" data-task="3">
                         <input type="checkbox" class="task-checkbox" data-id="3">
                         <div class="task-content">
-                            <label class="task-label">Prendre en main le dashboard Notion</label>
+                            <label class="task-label">Explorer Circle Business &mdash; cr&eacute;er les 2 espaces (Studio B2C + MTM B2B), tester communaut&eacute;s s&eacute;par&eacute;es, calendrier, checkout Stripe</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
-                                <span class="task-duration">30 min</span>
+                                <span class="task-who">Laurie</span>
+                                <span class="task-type">&Agrave; explorer</span>
+                                <span class="task-duration">2h+</span>
                             </div>
                         </div>
                     </div>
                     <div class="task-item" data-task="4">
                         <input type="checkbox" class="task-checkbox" data-id="4">
                         <div class="task-content">
-                            <label class="task-label">Envoyer l'email de Laurie pour l'integrer dans Notion</label>
+                            <label class="task-label">Auditer Brevo &mdash; se connecter, lister les listes existantes, comprendre la segmentation, proposer architecture</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
-                                <span class="task-duration">5 min</span>
+                                <span class="task-who">Catherine</span>
+                                <span class="task-type">&Agrave; livrer</span>
+                                <span class="task-duration">1h</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="task-item" data-task="5">
+                        <input type="checkbox" class="task-checkbox" data-id="5">
+                        <div class="task-content">
+                            <label class="task-label">Rechercher connexion Circle &harr; Brevo &mdash; webhook, API, Zapier, n8n ? Documenter les options possibles</label>
+                            <div class="task-meta">
+                                <span class="task-who">Catherine</span>
+                                <span class="task-type">&Agrave; livrer</span>
+                                <span class="task-duration">1h</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phase-gate">
+                        <strong>Gate de passage :</strong> Les 3 parcours clients sont mapp&eacute;s et valid&eacute;s. Circle est explor&eacute;. Brevo est audit&eacute;. La VA a commenc&eacute; la migration vid&eacute;os.
                     </div>
                 </div>
             </div>
@@ -705,30 +1176,21 @@
             <div class="phase-header" onclick="togglePhase(this)">
                 <div class="phase-indicator"></div>
                 <div class="phase-info">
-                    <h3>Phase 1 — Clarte &amp; Diagnostic</h3>
-                    <p>Mois 1 &middot; Avoir une vision CLAIRE de l'existant</p>
+                    <h3>Phase 1 &mdash; Process FSY Studio</h3>
+                    <p>Mois 3-4 &middot; Avril-Mai 2026 &middot; FSY Studio doit tourner sans Aur&eacute;lia</p>
                 </div>
                 <span class="phase-progress-mini" data-phase-progress="1"></span>
                 <span class="phase-toggle">&#9662;</span>
             </div>
             <div class="phase-body">
                 <div class="phase-body-inner">
-                    <div class="task-item" data-task="5">
-                        <input type="checkbox" class="task-checkbox" data-id="5">
-                        <div class="task-content">
-                            <label class="task-label">Cartographier ses process actuels — "qui fait quoi, quand, comment"</label>
-                            <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
-                                <span class="task-duration">2h+</span>
-                            </div>
-                        </div>
-                    </div>
                     <div class="task-item" data-task="6">
                         <input type="checkbox" class="task-checkbox" data-id="6">
                         <div class="task-content">
-                            <label class="task-label">Cartographier le parcours client complet (decouverte &rarr; fidelisation)</label>
+                            <label class="task-label">Construire l&rsquo;espace Circle Studio &mdash; importer vid&eacute;os (depuis Bunny), cr&eacute;er les collections, configurer le calendrier, checkout Stripe, communaut&eacute;</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
+                                <span class="task-who">Laurie + VA</span>
+                                <span class="task-type">&Agrave; ex&eacute;cuter</span>
                                 <span class="task-duration">2h+</span>
                             </div>
                         </div>
@@ -736,32 +1198,49 @@
                     <div class="task-item" data-task="7">
                         <input type="checkbox" class="task-checkbox" data-id="7">
                         <div class="task-content">
-                            <label class="task-label">Valider l'audit stack technique : garder / remplacer / supprimer</label>
+                            <label class="task-label">Cr&eacute;er les s&eacute;quences email FSY Studio dans Brevo &mdash; bienvenue (J+1/3/7), r&eacute;tention (J+30/60/90), relance churn, upsell vers MTM (M+3)</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
-                                <span class="task-duration">30 min</span>
+                                <span class="task-who">Catherine</span>
+                                <span class="task-type">&Agrave; livrer</span>
+                                <span class="task-duration">2h+</span>
                             </div>
                         </div>
                     </div>
                     <div class="task-item" data-task="8">
                         <input type="checkbox" class="task-checkbox" data-id="8">
                         <div class="task-content">
-                            <label class="task-label">Lister les fonctionnalites non-negociables pour la future plateforme</label>
+                            <label class="task-label">Refondre le site facesoulyoga.com &mdash; purement &eacute;ducatif, exit lifestyle/immersions, nouveaux articles SEO (sommeil, m&acirc;choire, bruxisme)</label>
                             <div class="task-meta">
-                                <span class="task-priority moyenne">Moyenne</span>
-                                <span class="task-duration">1h</span>
+                                <span class="task-who">Laurie + Claude</span>
+                                <span class="task-type">&Agrave; ex&eacute;cuter</span>
+                                <span class="task-duration">2h+</span>
                             </div>
                         </div>
                     </div>
                     <div class="task-item" data-task="9">
                         <input type="checkbox" class="task-checkbox" data-id="9">
                         <div class="task-content">
-                            <label class="task-label">Definir 5 KPIs de pilotage (CA, churn, conversion, retention, tresorerie)</label>
+                            <label class="task-label">Planifier le calendrier &eacute;ditorial annuel FSY &mdash; 4 challenges/an + contenu hebdo batch + communication associ&eacute;e (emails + Instagram)</label>
                             <div class="task-meta">
-                                <span class="task-priority moyenne">Moyenne</span>
-                                <span class="task-duration">15 min</span>
+                                <span class="task-who">Laurie + Catherine</span>
+                                <span class="task-type">&Agrave; valider</span>
+                                <span class="task-duration">1h</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="task-item" data-task="10">
+                        <input type="checkbox" class="task-checkbox" data-id="10">
+                        <div class="task-content">
+                            <label class="task-label">Plan de communication migration &mdash; pr&eacute;venir les abonn&eacute;s d&egrave;s mai (app va dispara&icirc;tre), emails progressifs, FAQ, redirection vers Circle</label>
+                            <div class="task-meta">
+                                <span class="task-who">Catherine + Laurie</span>
+                                <span class="task-type">&Agrave; livrer</span>
+                                <span class="task-duration">1h</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phase-gate">
+                        <strong>Gate de passage :</strong> FSY Studio tourne sur Circle. Les emails automatiques sont en place. Le site est refait. Les abonn&eacute;s sont pr&eacute;venus de la migration.
                     </div>
                 </div>
             </div>
@@ -772,30 +1251,21 @@
             <div class="phase-header" onclick="togglePhase(this)">
                 <div class="phase-indicator"></div>
                 <div class="phase-info">
-                    <h3>Phase 2 — Structure &amp; Outils</h3>
-                    <p>Mois 2-3 &middot; Process documentes, outils en place, automatisations actives</p>
+                    <h3>Phase 2 &mdash; Process MTM + Brevo</h3>
+                    <p>Mois 4-5 &middot; Mai-Juin 2026 &middot; Master The Method evergreen &agrave; 2 900 &euro;, contrats automatis&eacute;s</p>
                 </div>
                 <span class="phase-progress-mini" data-phase-progress="2"></span>
                 <span class="phase-toggle">&#9662;</span>
             </div>
             <div class="phase-body">
                 <div class="phase-body-inner">
-                    <div class="task-item" data-task="10">
-                        <input type="checkbox" class="task-checkbox" data-id="10">
-                        <div class="task-content">
-                            <label class="task-label">Valider l'organigramme simplifie : Aurelia (Vision &amp; Creation) vs Laurie (Operationnel)</label>
-                            <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
-                                <span class="task-duration">30 min</span>
-                            </div>
-                        </div>
-                    </div>
                     <div class="task-item" data-task="11">
                         <input type="checkbox" class="task-checkbox" data-id="11">
                         <div class="task-content">
-                            <label class="task-label">Documenter les 5 SOP prioritaires (templates fournis par Catherine)</label>
+                            <label class="task-label">Migrer MTM de Kajabi vers Circle &mdash; formation, quiz certification, communaut&eacute; certifi&eacute;es s&eacute;par&eacute;e</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
+                                <span class="task-who">Laurie</span>
+                                <span class="task-type">&Agrave; ex&eacute;cuter</span>
                                 <span class="task-duration">2h+</span>
                             </div>
                         </div>
@@ -803,19 +1273,21 @@
                     <div class="task-item" data-task="12">
                         <input type="checkbox" class="task-checkbox" data-id="12">
                         <div class="task-content">
-                            <label class="task-label">Tester et valider les automatisations (devis, relances, emails)</label>
+                            <label class="task-label">R&eacute;&eacute;crire la page de vente MTM &agrave; 2 900 &euro; &mdash; avec vrais t&eacute;moignages (L&eacute;a, Agn&egrave;s), passage evergreen</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
-                                <span class="task-duration">1h</span>
+                                <span class="task-who">Aur&eacute;lia + Claude</span>
+                                <span class="task-type">&Agrave; livrer</span>
+                                <span class="task-duration">2h+</span>
                             </div>
                         </div>
                     </div>
                     <div class="task-item" data-task="13">
                         <input type="checkbox" class="task-checkbox" data-id="13">
                         <div class="task-content">
-                            <label class="task-label">Structurer Notion comme QG central (organisation, suivi, projets)</label>
+                            <label class="task-label">Automatiser le contrat e-signature B2B &mdash; achat Circle &rarr; webhook n8n &rarr; envoi contrat auto &rarr; signature &rarr; acc&egrave;s Circle</label>
                             <div class="task-meta">
-                                <span class="task-priority moyenne">Moyenne</span>
+                                <span class="task-who">Catherine</span>
+                                <span class="task-type">&Agrave; livrer</span>
                                 <span class="task-duration">2h+</span>
                             </div>
                         </div>
@@ -823,12 +1295,27 @@
                     <div class="task-item" data-task="14">
                         <input type="checkbox" class="task-checkbox" data-id="14">
                         <div class="task-content">
-                            <label class="task-label">Tester l'agent IA sur-mesure et donner ses retours</label>
+                            <label class="task-label">Cr&eacute;er la s&eacute;quence de lancement MTM dans Brevo &mdash; template 7-8 emails r&eacute;utilisable 2x/an (nurturing + urgence douce + early bird 2 500 &euro;)</label>
                             <div class="task-meta">
-                                <span class="task-priority moyenne">Moyenne</span>
+                                <span class="task-who">Catherine</span>
+                                <span class="task-type">&Agrave; livrer</span>
+                                <span class="task-duration">2h+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-item" data-task="15">
+                        <input type="checkbox" class="task-checkbox" data-id="15">
+                        <div class="task-content">
+                            <label class="task-label">Automatiser la licence annuelle &mdash; relance email M-3 avant &eacute;ch&eacute;ance + renouvellement Stripe + acc&egrave;s communaut&eacute; + CPD</label>
+                            <div class="task-meta">
+                                <span class="task-who">Catherine</span>
+                                <span class="task-type">&Agrave; livrer</span>
                                 <span class="task-duration">1h</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="phase-gate">
+                        <strong>Gate de passage :</strong> MTM est sur Circle. Le contrat est automatis&eacute;. La s&eacute;quence de lancement est pr&ecirc;te. La licence fonctionne.
                     </div>
                 </div>
             </div>
@@ -839,30 +1326,21 @@
             <div class="phase-header" onclick="togglePhase(this)">
                 <div class="phase-indicator"></div>
                 <div class="phase-info">
-                    <h3>Phase 3 — Autonomie &amp; Pilotage</h3>
-                    <p>Mois 4-6 &middot; Aurelia pilote, Laurie execute, les systemes tournent</p>
+                    <h3>Phase 3 &mdash; Autonomie &amp; Premium</h3>
+                    <p>Mois 5-6 &middot; Juin-Ao&ucirc;t 2026 &middot; Aur&eacute;lia pilote, Laurie g&egrave;re FSY + MTM, Aur&eacute;lia Del Sol se construit</p>
                 </div>
                 <span class="phase-progress-mini" data-phase-progress="3"></span>
                 <span class="phase-toggle">&#9662;</span>
             </div>
             <div class="phase-body">
                 <div class="phase-body-inner">
-                    <div class="task-item" data-task="15">
-                        <input type="checkbox" class="task-checkbox" data-id="15">
-                        <div class="task-content">
-                            <label class="task-label">Briefer Laurie sur les nouveaux process (avec les SOP documentes)</label>
-                            <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
-                                <span class="task-duration">2h+</span>
-                            </div>
-                        </div>
-                    </div>
                     <div class="task-item" data-task="16">
                         <input type="checkbox" class="task-checkbox" data-id="16">
                         <div class="task-content">
-                            <label class="task-label">Installer la routine CEO hebdomadaire : 30 min dashboard KPIs + decisions</label>
+                            <label class="task-label">Installer la routine CEO hebdomadaire &mdash; 30 min/sem : dashboard KPIs + d&eacute;cisions + briefing Laurie</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
+                                <span class="task-who">Aur&eacute;lia</span>
+                                <span class="task-type">&Agrave; installer</span>
                                 <span class="task-duration">30 min</span>
                             </div>
                         </div>
@@ -870,9 +1348,10 @@
                     <div class="task-item" data-task="17">
                         <input type="checkbox" class="task-checkbox" data-id="17">
                         <div class="task-content">
-                            <label class="task-label">Valider le plan de delegation : quelles taches passent a Laurie definitivement</label>
+                            <label class="task-label">Valider le plan de d&eacute;l&eacute;gation d&eacute;finitif &mdash; quoi reste chez Aur&eacute;lia (cr&eacute;ation, vision, premium) vs quoi passe chez Laurie (op&eacute;rations FSY, MTM, com)</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
+                                <span class="task-who">Aur&eacute;lia + Laurie</span>
+                                <span class="task-type">&Agrave; valider</span>
                                 <span class="task-duration">30 min</span>
                             </div>
                         </div>
@@ -880,77 +1359,161 @@
                     <div class="task-item" data-task="18">
                         <input type="checkbox" class="task-checkbox" data-id="18">
                         <div class="task-content">
-                            <label class="task-label">Valider le protocole "anti-chaos" (quoi faire quand ca derape)</label>
+                            <label class="task-label">Poser les fondations Aur&eacute;lia Del Sol &mdash; identit&eacute; visuelle, site s&eacute;par&eacute;, premier programme (sommeil ou respiration), parcours client &eacute;bauch&eacute;</label>
                             <div class="task-meta">
-                                <span class="task-priority moyenne">Moyenne</span>
-                                <span class="task-duration">30 min</span>
+                                <span class="task-who">Aur&eacute;lia</span>
+                                <span class="task-type">&Agrave; ex&eacute;cuter</span>
+                                <span class="task-duration">2h+</span>
                             </div>
                         </div>
                     </div>
                     <div class="task-item" data-task="19">
                         <input type="checkbox" class="task-checkbox" data-id="19">
                         <div class="task-content">
-                            <label class="task-label">Bilan de fin d'accompagnement : autonomie acquise + plan de continuite</label>
+                            <label class="task-label">Bilan mi-parcours &amp; plan de continuit&eacute; &mdash; ce qui fonctionne, ce qui reste &agrave; faire, autonomie acquise, plan post-accompagnement</label>
                             <div class="task-meta">
-                                <span class="task-priority haute">Haute</span>
+                                <span class="task-who">Catherine + Aur&eacute;lia</span>
+                                <span class="task-type">&Agrave; valider</span>
                                 <span class="task-duration">1h</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="phase-gate">
+                        <strong>Gate de passage :</strong> Aur&eacute;lia est en posture CEO. FSY Studio + MTM tournent sans elle. Aur&eacute;lia Del Sol est amorc&eacute;. Le plan post-accompagnement est clair.
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Indicateurs de succes -->
+    <!-- Indicateurs de succ&egrave;s -->
     <div class="section-block">
-        <h2 class="section-title">Indicateurs de succes</h2>
-        <div class="success-grid">
-            <div class="success-card">
-                <span class="success-num">1</span>
-                <p><strong>Temps strategie</strong> — passer de 5h/sem a 10-15h/sem</p>
-            </div>
-            <div class="success-card">
-                <span class="success-num">2</span>
-                <p><strong>Process documentes</strong> — 5 SOP minimum crees et utilises</p>
-            </div>
-            <div class="success-card">
-                <span class="success-num">3</span>
-                <p><strong>Automatisation</strong> — passer de 19% a 60% du parcours client</p>
-            </div>
-            <div class="success-card">
-                <span class="success-num">4</span>
-                <p><strong>Revenu recurrent</strong> — structure en place pour atteindre 50K EUR/mois</p>
-            </div>
-            <div class="success-card">
-                <span class="success-num">5</span>
-                <p><strong>Charge mentale</strong> — allegee de 60% (objectif contractuel)</p>
-            </div>
-        </div>
+        <h2 class="section-title">Indicateurs de succ&egrave;s</h2>
+        <table class="kpi-table">
+            <thead>
+                <tr>
+                    <th>KPI</th>
+                    <th>Actuel</th>
+                    <th>Cible ao&ucirc;t 2026</th>
+                    <th>Mesure</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Temps d&rsquo;Aur&eacute;lia sur FSY ops</td>
+                    <td>80%</td>
+                    <td>&lt; 10%</td>
+                    <td>Auto-d&eacute;clar&eacute; + suivi Laurie</td>
+                </tr>
+                <tr>
+                    <td>Abonn&eacute;s FSY Studio</td>
+                    <td>613</td>
+                    <td>800+</td>
+                    <td>Dashboard Circle</td>
+                </tr>
+                <tr>
+                    <td>Churn mensuel Studio</td>
+                    <td>Inconnu</td>
+                    <td>&lt; 5%</td>
+                    <td>Stripe / Circle</td>
+                </tr>
+                <tr>
+                    <td>Ventes MTM / an</td>
+                    <td>~5</td>
+                    <td>10+ (2 pushs)</td>
+                    <td>Stripe</td>
+                </tr>
+                <tr>
+                    <td>Prix MTM</td>
+                    <td>1 950 &euro;</td>
+                    <td>2 900 &euro;</td>
+                    <td>Act&eacute; session 4</td>
+                </tr>
+                <tr>
+                    <td>S&eacute;quences email actives</td>
+                    <td>0</td>
+                    <td>6+</td>
+                    <td>Brevo</td>
+                </tr>
+                <tr>
+                    <td>Process document&eacute;s (SOP)</td>
+                    <td>2/5</td>
+                    <td>4/5</td>
+                    <td>Portail client</td>
+                </tr>
+                <tr>
+                    <td>Co&ucirc;t outils mensuel</td>
+                    <td>~760 &euro;/mois</td>
+                    <td>~450 &euro;/mois</td>
+                    <td>Dashboard KPI (exit Uscreen)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Calendrier r&eacute;sum&eacute; -->
+    <div class="section-block">
+        <h2 class="section-title">Calendrier r&eacute;sum&eacute;</h2>
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th>Mois</th>
+                    <th>Focus principal</th>
+                    <th>Livrables cl&eacute;s</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mars 2026</td>
+                    <td>Phase 0 &mdash; Ancrage &amp; migrations</td>
+                    <td>3 parcours clients mapp&eacute;s, Circle explor&eacute;, Brevo audit&eacute;, VA lanc&eacute;e</td>
+                </tr>
+                <tr>
+                    <td>Avril 2026</td>
+                    <td>Phase 1 &mdash; FSY Studio sur Circle</td>
+                    <td>Espace Circle construit, emails Brevo en place, site refait, calendrier &eacute;ditorial</td>
+                </tr>
+                <tr>
+                    <td>Mai 2026</td>
+                    <td>Phase 1&rarr;2 &mdash; Migration + MTM</td>
+                    <td>Migration Uscreen effective, communication membres, d&eacute;but migration MTM</td>
+                </tr>
+                <tr>
+                    <td>Juin 2026</td>
+                    <td>Phase 2 &mdash; MTM evergreen</td>
+                    <td>MTM sur Circle, contrat auto, s&eacute;quence lancement pr&ecirc;te, licence automatis&eacute;e</td>
+                </tr>
+                <tr>
+                    <td>Juillet 2026</td>
+                    <td>Phase 2&rarr;3 &mdash; Fermeture Uscreen</td>
+                    <td>Uscreen ferm&eacute;, routine CEO install&eacute;e, d&eacute;l&eacute;gation valid&eacute;e</td>
+                </tr>
+                <tr>
+                    <td>Ao&ucirc;t 2026</td>
+                    <td>Phase 3 &mdash; Bilan + Premium</td>
+                    <td>Bilan mi-parcours, fondations Aur&eacute;lia Del Sol pos&eacute;es, plan de continuit&eacute;</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-        <p>CS Consulting Strategique &middot; <a href="https://csbusiness.fr">csbusiness.fr</a></p>
-        <p style="margin-top: 0.3rem">Accompagnement Clarte &amp; Autonomie &middot; Face Soul Yoga &middot; 2026</p>
+        <p>CS Consulting Strat&eacute;gique &middot; <a href="https://csbusiness.fr">csbusiness.fr</a></p>
+        <p style="margin-top: 0.3rem">Accompagnement Clart&eacute; &amp; Autonomie &middot; Face Soul Yoga &middot; 2026</p>
     </div>
 </div>
 
 <script>
     const STORAGE_KEY = 'fsy-roadmap';
     const TOTAL_TASKS = 19;
-    // Tasks 1 and 4 are pre-done
-    const PRE_DONE = [1, 4];
 
     function loadState() {
         try {
             const raw = localStorage.getItem(STORAGE_KEY);
             if (raw) return JSON.parse(raw);
         } catch (e) {}
-        // Default: mark pre-done tasks
-        const state = {};
-        PRE_DONE.forEach(id => state[id] = true);
-        return state;
+        return {};
     }
 
     function saveState(state) {
@@ -973,7 +1536,6 @@
             const tasks = card.querySelectorAll('.task-checkbox');
             const phaseDone = Array.from(tasks).filter(cb => cb.checked).length;
             const phaseTotal = tasks.length;
-            const phaseIdx = card.dataset.phase;
             const el = card.querySelector('[data-phase-progress]');
             if (el) el.textContent = phaseDone + '/' + phaseTotal;
         });
@@ -1016,6 +1578,12 @@
     function togglePhase(header) {
         const card = header.closest('.phase-card');
         card.classList.toggle('open');
+    }
+
+    // Collapsible section toggle
+    function toggleCollapsible(header) {
+        const section = header.closest('.collapsible-section');
+        section.classList.toggle('open');
     }
 </script>
 
