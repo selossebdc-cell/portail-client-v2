@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Écosystème Outils — Face Soul Yoga | CS Consulting Stratégique</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --terracotta: #C27A5A;
+    --terracotta-light: #d4956f;
+    --terracotta-dark: #a8654a;
+    --bg: #0f0f0f;
+    --bg-card: #1a1a1a;
+    --bg-card-alt: #151515;
+    --bg-hover: #222222;
+    --white: #FFFFFF;
+    --grey-light: #b0b0b0;
+    --grey-dim: #666666;
+    --grey-border: #2a2a2a;
+    --green: #4ade80;
+    --green-bg: rgba(74, 222, 128, 0.08);
+    --green-border: rgba(74, 222, 128, 0.25);
+    --red: #f87171;
+    --red-bg: rgba(248, 113, 113, 0.08);
+    --red-border: rgba(248, 113, 113, 0.25);
+    --orange: #fb923c;
+    --orange-bg: rgba(251, 146, 60, 0.08);
+    --orange-border: rgba(251, 146, 60, 0.25);
+    --blue: #60a5fa;
+    --blue-bg: rgba(96, 165, 250, 0.08);
+    --blue-border: rgba(96, 165, 250, 0.25);
+    --purple: #c084fc;
+    --purple-bg: rgba(192, 132, 252, 0.08);
+    --purple-border: rgba(192, 132, 252, 0.25);
+    --yellow: #facc15;
+    --yellow-bg: rgba(250, 204, 21, 0.08);
+    --yellow-border: rgba(250, 204, 21, 0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══ HEADER ═══ */
+  .header {
+    background: linear-gradient(160deg, #1a1a1a 0%, #0f0f0f 50%, #1a1410 100%);
+    padding: 48px 24px 40px;
+    border-bottom: 3px solid var(--terracotta);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -60px;
+    width: 300px; height: 300px;
+    background: var(--terracotta);
+    opacity: 0.06;
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 10%;
+    width: 200px; height: 200px;
+    background: var(--terracotta);
+    opacity: 0.03;
+    border-radius: 50%;
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .header .brand {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 0.95rem;
+    color: var(--grey-light);
+    max-width: 600px;
+  }
+  .header .meta {
+    margin-top: 16px;
+    font-size: 0.78rem;
+    color: var(--grey-dim);
+  }
+
+  /* ═══ MAIN LAYOUT ═══ */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* ═══ LEGEND ═══ */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 28px;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--grey-border);
+    border-radius: 12px;
+    margin-bottom: 40px;
+    align-items: center;
+  }
+  .legend-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--grey-dim);
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--grey-light);
+  }
+  .legend-line {
+    width: 28px;
+    height: 3px;
+    border-radius: 2px;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .line-money { background: var(--green); }
+  .line-content { background: var(--blue); }
+  .line-contacts { background: var(--orange); }
+  .line-community { background: var(--purple); }
+  .dot-auto { background: var(--green); }
+  .dot-manual { background: var(--red); }
+  .dot-legacy { background: var(--yellow); }
+
+  /* ═══ SECTION ═══ */
+  .section {
+    margin-bottom: 48px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  .section-desc {
+    font-size: 0.85rem;
+    color: var(--grey-dim);
+    margin-left: auto;
+  }
+
+  /* ═══ TOOL CARDS ═══ */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .tool-card {
+    background: var(--bg-card);
+    border: 1px solid var(--grey-border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .tool-card:hover {
+    border-color: #3a3a3a;
+    transform: translateY(-2px);
+  }
+  .tool-card.legacy {
+    border-color: var(--yellow-border);
+    background: var(--yellow-bg);
+  }
+  .tool-card.source-verite {
+    border-color: var(--terracotta-dark);
+    border-width: 2px;
+  }
+  .tool-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .tool-name-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .tool-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .tool-name {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  .tool-role {
+    font-size: 0.8rem;
+    color: var(--grey-light);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-source {
+    background: rgba(194, 122, 90, 0.15);
+    color: var(--terracotta-light);
+    border: 1px solid rgba(194, 122, 90, 0.3);
+  }
+  .badge-auto {
+    background: var(--green-bg);
+    color: var(--green);
+    border: 1px solid var(--green-border);
+  }
+  .badge-manual {
+    background: var(--red-bg);
+    color: var(--red);
+    border: 1px solid var(--red-border);
+  }
+  .badge-legacy {
+    background: var(--yellow-bg);
+    color: var(--yellow);
+    border: 1px solid var(--yellow-border);
+  }
+  .badge-a-connecter {
+    background: var(--red-bg);
+    color: var(--red);
+    border: 1px solid var(--red-border);
+    animation: pulse-badge 2s ease-in-out infinite;
+  }
+  @keyframes pulse-badge {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Data list in cards */
+  .tool-data {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--grey-border);
+  }
+  .tool-data-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--grey-dim);
+    margin-bottom: 6px;
+  }
+  .tool-data ul {
+    list-style: none;
+    padding: 0;
+  }
+  .tool-data li {
+    font-size: 0.8rem;
+    color: var(--grey-light);
+    padding: 2px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+  .tool-data li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--terracotta);
+    font-weight: 700;
+  }
+
+  /* ═══ FLOW DIAGRAM ═══ */
+  .flow-section {
+    margin-bottom: 48px;
+  }
+  .flow-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .flow-row {
+    background: var(--bg-card);
+    border: 1px solid var(--grey-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    transition: border-color 0.2s;
+  }
+  .flow-row:hover {
+    border-color: #3a3a3a;
+  }
+  .flow-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .flow-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .flow-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .flow-chain {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 4px 0;
+  }
+  .flow-node {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    white-space: nowrap;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--grey-border);
+  }
+  .flow-node-icon {
+    font-size: 0.9rem;
+  }
+  .flow-arrow {
+    font-size: 1.1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .flow-arrow.money { color: var(--green); }
+  .flow-arrow.content { color: var(--blue); }
+  .flow-arrow.contacts { color: var(--orange); }
+  .flow-arrow.community { color: var(--purple); }
+  .flow-detail {
+    font-size: 0.78rem;
+    color: var(--grey-dim);
+    margin-top: 8px;
+    padding-left: 38px;
+    font-style: italic;
+  }
+
+  /* ═══ MISSING / À CONNECTER ═══ */
+  .missing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .missing-card {
+    background: var(--red-bg);
+    border: 1px solid var(--red-border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .missing-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(248, 113, 113, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .missing-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--red);
+    margin-bottom: 4px;
+  }
+  .missing-desc {
+    font-size: 0.82rem;
+    color: var(--grey-light);
+    line-height: 1.5;
+  }
+  .missing-how {
+    font-size: 0.75rem;
+    color: var(--grey-dim);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* ═══ GOLDEN RULES ═══ */
+  .rules-section {
+    background: linear-gradient(135deg, rgba(194, 122, 90, 0.08), rgba(194, 122, 90, 0.02));
+    border: 2px solid var(--terracotta-dark);
+    border-radius: 16px;
+    padding: 32px;
+    margin-top: 48px;
+  }
+  .rules-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--terracotta-light);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .rule-card {
+    background: rgba(15, 15, 15, 0.6);
+    border: 1px solid var(--grey-border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .rule-number {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--terracotta);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .rule-text {
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .rule-explain {
+    font-size: 0.8rem;
+    color: var(--grey-light);
+    line-height: 1.5;
+  }
+
+  /* ═══ SOURCE TABLE ═══ */
+  .source-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 0.85rem;
+  }
+  .source-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--grey-dim);
+    border-bottom: 1px solid var(--grey-border);
+  }
+  .source-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--grey-border);
+    color: var(--grey-light);
+  }
+  .source-table tr:last-child td {
+    border-bottom: none;
+  }
+  .source-table .tool-col {
+    color: var(--terracotta-light);
+    font-weight: 600;
+  }
+
+  /* ═══ COSTS SUMMARY ═══ */
+  .costs-bar {
+    margin-top: 32px;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--grey-border);
+    border-radius: 12px;
+  }
+  .costs-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--grey-dim);
+    margin-bottom: 12px;
+  }
+  .cost-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .cost-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--grey-border);
+    border-radius: 8px;
+    font-size: 0.82rem;
+  }
+  .cost-item.alert {
+    border-color: var(--red-border);
+    background: var(--red-bg);
+  }
+  .cost-amount {
+    font-weight: 700;
+    color: var(--white);
+  }
+  .cost-label {
+    color: var(--grey-light);
+  }
+  .cost-pct {
+    font-size: 0.72rem;
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  /* ═══ FOOTER ═══ */
+  .footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--grey-border);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--grey-dim);
+  }
+  .footer a {
+    color: var(--terracotta);
+    text-decoration: none;
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 768px) {
+    .header { padding: 32px 16px 28px; }
+    .container { padding: 24px 16px 60px; }
+    .tools-grid { grid-template-columns: 1fr; }
+    .missing-grid { grid-template-columns: 1fr; }
+    .rules-grid { grid-template-columns: 1fr; }
+    .rules-section { padding: 24px 16px; }
+    .flow-chain { gap: 4px; }
+    .flow-node { padding: 5px 10px; font-size: 0.76rem; }
+    .legend { gap: 10px 20px; }
+    .cost-items { flex-direction: column; }
+    .source-table { font-size: 0.78rem; }
+    .source-table th, .source-table td { padding: 8px 10px; }
+  }
+
+  /* Color utilities */
+  .bg-green { background: var(--green-bg); border-color: var(--green-border); }
+  .bg-blue { background: var(--blue-bg); border-color: var(--blue-border); }
+  .bg-orange { background: var(--orange-bg); border-color: var(--orange-border); }
+  .bg-purple { background: var(--purple-bg); border-color: var(--purple-border); }
+  .bg-terracotta { background: rgba(194, 122, 90, 0.12); }
+  .text-green { color: var(--green); }
+  .text-blue { color: var(--blue); }
+  .text-orange { color: var(--orange); }
+  .text-purple { color: var(--purple); }
+  .text-yellow { color: var(--yellow); }
+
+  .icon-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .icon-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .icon-orange { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-border); }
+  .icon-purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+  .icon-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+  .icon-yellow { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow-border); }
+  .icon-terracotta { background: rgba(194,122,90,0.12); color: var(--terracotta-light); border: 1px solid rgba(194,122,90,0.3); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<div class="header">
+  <div class="header-inner">
+    <div class="brand">CS Consulting Stratégique</div>
+    <h1>Écosystème Outils — Face Soul Yoga</h1>
+    <p class="subtitle">Carte visuelle de tous vos outils, flux de données et sources de vérité. Ce document est votre référence pour comprendre comment tout s'articule.</p>
+    <p class="meta">Aurélia &amp; Laurie &nbsp;·&nbsp; Mise à jour : 16 mars 2026</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ═══════════════════ LÉGENDE ═══════════════════ -->
+  <div class="legend">
+    <div class="legend-title">Légende des flux &amp; statuts</div>
+    <div class="legend-item"><span class="legend-line line-money"></span> Flux financier</div>
+    <div class="legend-item"><span class="legend-line line-content"></span> Flux contenu</div>
+    <div class="legend-item"><span class="legend-line line-contacts"></span> Flux contacts</div>
+    <div class="legend-item"><span class="legend-line" style="background:var(--purple)"></span> Flux communauté</div>
+    <div class="legend-item"><span class="legend-dot dot-auto"></span> Automatisé</div>
+    <div class="legend-item"><span class="legend-dot dot-manual"></span> Manuel</div>
+    <div class="legend-item"><span class="legend-dot dot-legacy"></span> Legacy</div>
+    <div class="legend-item"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid var(--terracotta);"></span> Source de vérité</div>
+  </div>
+
+  <!-- ═══════════════════ 1. REVENUE / VENTE ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-green">$</div>
+      <h2 class="section-title">Revenue &amp; Vente</h2>
+      <span class="section-desc">Là où l'argent entre</span>
+    </div>
+    <div class="tools-grid">
+
+      <!-- Kajabi -->
+      <div class="tool-card source-verite">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#7c3aed; color:#fff; font-size:0.75rem;">K</div>
+            <span class="tool-name">Kajabi</span>
+          </div>
+          <span class="badge badge-source">Source de vérité</span>
+        </div>
+        <div class="tool-role">Plateforme principale — cours, checkout, offres, drip content, email intégré. <strong>TOUT part de Kajabi pour les formations.</strong></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-auto">Automatisé</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Élèves inscrits &amp; progression</li>
+            <li>Paiements &amp; abonnements</li>
+            <li>Certificats de formation</li>
+            <li>Offres &amp; drip content</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Wix -->
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#0C6EFC; color:#fff; font-size:0.75rem;">W</div>
+            <span class="tool-name">Wix</span>
+          </div>
+        </div>
+        <div class="tool-role">Site vitrine facesoulyoga.com — landing pages, blog, SEO. Redirige vers Kajabi pour le checkout.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-auto">Automatisé</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Trafic &amp; analytics</li>
+            <li>Formulaires de contact</li>
+            <li>Pages de vente</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Stripe -->
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#635BFF; color:#fff; font-size:0.75rem;">S</div>
+            <span class="tool-name">Stripe</span>
+          </div>
+        </div>
+        <div class="tool-role">Passerelle de paiement (via Kajabi). Gère transactions, remboursements et abonnements récurrents.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-auto">Automatisé</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Transactions &amp; reçus</li>
+            <li>Remboursements</li>
+            <li>Abonnements récurrents</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ 2. MARKETING / ACQUISITION ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-orange">M</div>
+      <h2 class="section-title">Marketing &amp; Acquisition</h2>
+      <span class="section-desc">Attirer et convertir</span>
+    </div>
+    <div class="tools-grid">
+
+      <!-- Brevo -->
+      <div class="tool-card source-verite">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#0B996E; color:#fff; font-size:0.75rem;">B</div>
+            <span class="tool-name">Brevo</span>
+          </div>
+          <span class="badge badge-source">Source de vérité</span>
+        </div>
+        <div class="tool-role">Email marketing — séquences, newsletters, nurturing, relances churn. Reçoit les contacts depuis Kajabi.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-a-connecter">À connecter</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Contacts &amp; segments</li>
+            <li>Taux ouverture &amp; clics</li>
+            <li>Séquences (vente, onboarding, relance)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ManyChat -->
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#0084FF; color:#fff; font-size:0.75rem;">MC</div>
+            <span class="tool-name">ManyChat</span>
+          </div>
+        </div>
+        <div class="tool-role">Automatisation Instagram DM — qualifie les leads en conversation, redirige vers page de vente Wix/Kajabi.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-auto">Automatisé</span>
+          <span class="badge badge-a-connecter">Sync Brevo manquant</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Conversations DM</li>
+            <li>Leads qualifiés</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Instagram -->
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color:#fff; font-size:0.75rem;">IG</div>
+            <span class="tool-name">Instagram</span>
+          </div>
+        </div>
+        <div class="tool-role">Acquisition organique — posts, reels, stories. Contenu créé avec Canva + CapCut.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-manual">Manuel</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Followers &amp; engagement</li>
+            <li>Métriques reels/stories</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- YouTube -->
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#FF0000; color:#fff; font-size:0.75rem;">YT</div>
+            <span class="tool-name">YouTube</span>
+          </div>
+        </div>
+        <div class="tool-role">Contenu long format, SEO vidéo. Complète Instagram pour la visibilité organique.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-manual">Manuel</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Vidéos publiques</li>
+            <li>Analytics &amp; abonnés</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ 3. COMMUNAUTÉ ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-purple">C</div>
+      <h2 class="section-title">Communauté</h2>
+      <span class="section-desc">Engager et fidéliser</span>
+    </div>
+    <div class="tools-grid">
+
+      <!-- Telegram -->
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#229ED9; color:#fff; font-size:0.75rem;">TG</div>
+            <span class="tool-name">Telegram + Chatbot</span>
+          </div>
+        </div>
+        <div class="tool-role">Communauté principale (à venir). Bot @facesoulyoga_bot géré par n8n sur VPS Catherine. FAQ auto + escalade Laurie.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-a-connecter">En cours</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Messages &amp; FAQ</li>
+            <li>Escalades vers Laurie</li>
+            <li>Historique conversations</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- WhatsApp -->
+      <div class="tool-card legacy">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#25D366; color:#fff; font-size:0.75rem;">WA</div>
+            <span class="tool-name">WhatsApp</span>
+          </div>
+          <span class="badge badge-legacy">Legacy</span>
+        </div>
+        <div class="tool-role">Communauté actuelle (~300 membres). Migration progressive vers Telegram prévue.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-manual">Manuel</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>~300 membres actifs</li>
+            <li>Historique messages</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ 4. CONTENU / CRÉATION ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-blue">+</div>
+      <h2 class="section-title">Contenu &amp; Création</h2>
+      <span class="section-desc">Produire et héberger</span>
+    </div>
+    <div class="tools-grid">
+
+      <!-- Bunny.net -->
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#FF6600; color:#fff; font-size:0.75rem;">Bn</div>
+            <span class="tool-name">Bunny.net</span>
+          </div>
+        </div>
+        <div class="tool-role">Hébergement vidéo CDN — remplace YouTube privé. Intégré dans Kajabi via embed.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-auto">Automatisé</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Vidéos de formation</li>
+            <li>Statistiques bande passante</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Canva -->
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#00C4CC; color:#fff; font-size:0.75rem;">Ca</div>
+            <span class="tool-name">Canva</span>
+          </div>
+        </div>
+        <div class="tool-role">Visuels — posts réseaux sociaux, PDF, workbooks, supports de cours.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-manual">Manuel</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Templates &amp; designs</li>
+            <li>Workbooks PDF</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- CapCut -->
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#000; color:#fff; font-size:0.75rem; border:1px solid #333;">CC</div>
+            <span class="tool-name">CapCut</span>
+          </div>
+        </div>
+        <div class="tool-role">Montage vidéo — reels Instagram, vidéos de cours. Export vers Bunny.net ou réseaux sociaux.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-manual">Manuel</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Projets de montage</li>
+            <li>Reels &amp; vidéos cours</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ 5. ADMIN / GESTION ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-terracotta">A</div>
+      <h2 class="section-title">Admin &amp; Gestion</h2>
+      <span class="section-desc">Organiser en interne</span>
+    </div>
+    <div class="tools-grid">
+
+      <!-- Google Drive -->
+      <div class="tool-card source-verite">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#4285F4; color:#fff; font-size:0.75rem;">GD</div>
+            <span class="tool-name">Google Drive</span>
+          </div>
+          <span class="badge badge-source">Source de vérité</span>
+        </div>
+        <div class="tool-role">Fichiers partagés Aurélia + Laurie. Source de vérité pour tous les documents internes.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-auto">Automatisé</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Documents internes</li>
+            <li>Fichiers partagés équipe</li>
+            <li>Archives</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- eSignatures -->
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon" style="background:#333; color:#fff; font-size:0.75rem;">eS</div>
+            <span class="tool-name">eSignatures</span>
+          </div>
+        </div>
+        <div class="tool-role">Contrats de formation. Actuellement MANUEL — à automatiser via achat Kajabi.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-manual">Manuel</span>
+          <span class="badge badge-a-connecter">À automatiser</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées</div>
+          <ul>
+            <li>Contrats signés</li>
+            <li>Statut des signatures</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Uscreen -->
+      <div class="tool-card legacy">
+        <div class="tool-top">
+          <div class="tool-name-row">
+            <div class="tool-icon icon-yellow" style="font-size:0.75rem;">Us</div>
+            <span class="tool-name">Uscreen</span>
+          </div>
+          <span class="badge badge-legacy">Legacy — Ne plus investir</span>
+        </div>
+        <div class="tool-role">Abonnement studio 17 €/mois + app mobile. ~613 abonnés, ~600 vidéos, ~550 Go. <strong>Coûte 7 090 €/an = 70 % des coûts outils.</strong> Gardé 1 an, migration progressive vers Kajabi.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <span class="badge badge-legacy">Migration prévue</span>
+        </div>
+        <div class="tool-data">
+          <div class="tool-data-title">Données hébergées (à migrer)</div>
+          <ul>
+            <li>~613 abonnés courants</li>
+            <li>~600 vidéos (~550 Go)</li>
+            <li>App mobile iOS/Android</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ COÛTS OUTILS ═══════════════════ -->
+  <div class="costs-bar">
+    <div class="costs-title">Répartition des coûts outils (annuels estimés)</div>
+    <div class="cost-items">
+      <div class="cost-item alert">
+        <span class="cost-amount">7 090 €</span>
+        <span class="cost-label">Uscreen</span>
+        <span class="cost-pct">~70 %</span>
+      </div>
+      <div class="cost-item">
+        <span class="cost-amount" style="color:var(--green)">~3 000 €</span>
+        <span class="cost-label">Tous les autres outils combinés</span>
+        <span style="font-size:0.72rem;color:var(--grey-dim);">~30 %</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ FLUX DE DONNÉES ═══════════════════ -->
+  <div class="flow-section section" style="margin-top:48px;">
+    <div class="section-header">
+      <div class="section-icon icon-terracotta">→</div>
+      <h2 class="section-title">Flux de données</h2>
+      <span class="section-desc">Comment l'information circule</span>
+    </div>
+    <div class="flow-container">
+
+      <!-- Flow 1: Acquisition -->
+      <div class="flow-row">
+        <div class="flow-label">
+          <span class="flow-number">1</span>
+          <span class="flow-title">Acquisition → Conversion</span>
+        </div>
+        <div class="flow-chain">
+          <span class="flow-node"><span class="flow-node-icon">IG</span> Instagram</span>
+          <span class="flow-arrow contacts">→</span>
+          <span class="flow-node"><span class="flow-node-icon">MC</span> ManyChat</span>
+          <span class="flow-arrow contacts">→</span>
+          <span class="flow-node"><span class="flow-node-icon">W</span> Page de vente (Wix)</span>
+          <span class="flow-arrow money">→</span>
+          <span class="flow-node"><span class="flow-node-icon">K</span> Checkout (Kajabi)</span>
+          <span class="flow-arrow money">→</span>
+          <span class="flow-node"><span class="flow-node-icon">S</span> Stripe</span>
+        </div>
+        <div class="flow-detail">Un DM Instagram déclenche ManyChat, qui redirige vers la page de vente. L'achat se fait sur Kajabi, encaissé par Stripe.</div>
+      </div>
+
+      <!-- Flow 2: Onboarding -->
+      <div class="flow-row">
+        <div class="flow-label">
+          <span class="flow-number">2</span>
+          <span class="flow-title">Onboarding formation</span>
+        </div>
+        <div class="flow-chain">
+          <span class="flow-node"><span class="flow-node-icon">K</span> Kajabi (achat)</span>
+          <span class="flow-arrow contacts">→</span>
+          <span class="flow-node"><span class="flow-node-icon">B</span> Brevo (bienvenue)</span>
+          <span class="flow-arrow contacts">→</span>
+          <span class="flow-node"><span class="flow-node-icon">eS</span> eSignature (contrat)</span>
+          <span class="flow-arrow community">→</span>
+          <span class="flow-node"><span class="flow-node-icon">TG</span> Telegram (groupe)</span>
+        </div>
+        <div class="flow-detail">Après achat, Kajabi notifie Brevo pour la séquence de bienvenue. Un contrat est envoyé automatiquement, puis l'élève rejoint le groupe Telegram.</div>
+      </div>
+
+      <!-- Flow 3: Contenu -->
+      <div class="flow-row">
+        <div class="flow-label">
+          <span class="flow-number">3</span>
+          <span class="flow-title">Pipeline contenu</span>
+        </div>
+        <div class="flow-chain">
+          <span class="flow-node"><span class="flow-node-icon">CC</span> CapCut (montage)</span>
+          <span class="flow-arrow content">→</span>
+          <span class="flow-node"><span class="flow-node-icon">Bn</span> Bunny.net (CDN)</span>
+          <span class="flow-arrow content">→</span>
+          <span class="flow-node"><span class="flow-node-icon">K</span> Kajabi (embed cours)</span>
+        </div>
+        <div class="flow-detail">Les vidéos sont montées dans CapCut, uploadées sur Bunny.net, puis intégrées dans les cours Kajabi via embed.</div>
+      </div>
+
+      <!-- Flow 4: Email marketing -->
+      <div class="flow-row">
+        <div class="flow-label">
+          <span class="flow-number">4</span>
+          <span class="flow-title">Email marketing</span>
+        </div>
+        <div class="flow-chain">
+          <span class="flow-node"><span class="flow-node-icon">K</span> Kajabi (inscrits)</span>
+          <span class="flow-arrow contacts">→</span>
+          <span class="flow-node"><span class="flow-node-icon">B</span> Brevo (séquences)</span>
+          <span class="flow-arrow contacts">→</span>
+          <span class="flow-node" style="border-color:var(--orange-border);"><span class="flow-node-icon">📧</span> Nurturing / Launch / Relance</span>
+        </div>
+        <div class="flow-detail">Les nouveaux inscrits Kajabi alimentent Brevo pour les séquences de nurturing, lancement et relance churn.</div>
+      </div>
+
+      <!-- Flow 5: Communauté -->
+      <div class="flow-row">
+        <div class="flow-label">
+          <span class="flow-number">5</span>
+          <span class="flow-title">Communauté &amp; support</span>
+        </div>
+        <div class="flow-chain">
+          <span class="flow-node"><span class="flow-node-icon">👤</span> Membre (question)</span>
+          <span class="flow-arrow community">→</span>
+          <span class="flow-node"><span class="flow-node-icon">TG</span> Chatbot (FAQ auto)</span>
+          <span class="flow-arrow community">→</span>
+          <span class="flow-node" style="border-color:var(--purple-border);"><span class="flow-node-icon">🙋</span> Si pas de réponse</span>
+          <span class="flow-arrow community">→</span>
+          <span class="flow-node"><span class="flow-node-icon">👩</span> Escalade Laurie</span>
+        </div>
+        <div class="flow-detail">Le chatbot Telegram répond aux questions fréquentes. Si pas de réponse satisfaisante, escalade automatique vers Laurie.</div>
+      </div>
+
+      <!-- Flow 6: Renouvellement -->
+      <div class="flow-row">
+        <div class="flow-label">
+          <span class="flow-number">6</span>
+          <span class="flow-title">Renouvellement &amp; rétention</span>
+        </div>
+        <div class="flow-chain">
+          <span class="flow-node"><span class="flow-node-icon">K</span> Kajabi (fin accès)</span>
+          <span class="flow-arrow contacts">→</span>
+          <span class="flow-node"><span class="flow-node-icon">B</span> Brevo (relance)</span>
+          <span class="flow-arrow money">→</span>
+          <span class="flow-node"><span class="flow-node-icon">K</span> Kajabi (renouvellement)</span>
+          <span class="flow-arrow money">→</span>
+          <span class="flow-node" style="border-color:var(--green-border);"><span class="flow-node-icon">💰</span> Licence 100 €/an</span>
+        </div>
+        <div class="flow-detail">Quand l'accès arrive à expiration, Brevo déclenche une séquence de relance. L'élève renouvelle sa licence annuelle (100 €/an) sur Kajabi.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ CE QUI MANQUE ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-red">!</div>
+      <h2 class="section-title">Ce qui manque</h2>
+      <span class="section-desc">Connexions à mettre en place</span>
+    </div>
+    <div class="missing-grid">
+
+      <div class="missing-card">
+        <div class="missing-icon">1</div>
+        <div>
+          <div class="missing-title">Kajabi → Brevo</div>
+          <div class="missing-desc">Connexion webhook à configurer pour synchroniser automatiquement les nouveaux inscrits vers Brevo.</div>
+          <div class="missing-how">Via webhook Kajabi ou Zapier/n8n</div>
+        </div>
+      </div>
+
+      <div class="missing-card">
+        <div class="missing-icon">2</div>
+        <div>
+          <div class="missing-title">Kajabi → eSignature</div>
+          <div class="missing-desc">Automatiser l'envoi du contrat de formation après chaque achat Kajabi.</div>
+          <div class="missing-how">Via n8n ou Zapier (trigger achat → envoi contrat)</div>
+        </div>
+      </div>
+
+      <div class="missing-card">
+        <div class="missing-icon">3</div>
+        <div>
+          <div class="missing-title">ManyChat → Brevo</div>
+          <div class="missing-desc">Synchronisation des contacts qualifiés ManyChat vers les listes Brevo pour le nurturing email.</div>
+          <div class="missing-how">Via Zapier ou API ManyChat → Brevo</div>
+        </div>
+      </div>
+
+      <div class="missing-card">
+        <div class="missing-icon">4</div>
+        <div>
+          <div class="missing-title">Chatbot Telegram</div>
+          <div class="missing-desc">FAQ automatique, gestion du groupe et escalade vers Laurie à finaliser.</div>
+          <div class="missing-how">Bot n8n sur VPS — en cours de développement</div>
+        </div>
+      </div>
+
+      <div class="missing-card">
+        <div class="missing-icon">5</div>
+        <div>
+          <div class="missing-title">Dashboard KPI</div>
+          <div class="missing-desc">Agrégation des données multi-outils (Kajabi + Brevo + Stripe) dans un tableau de bord unifié.</div>
+          <div class="missing-how">À créer — Google Sheets ou dashboard custom</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SOURCES DE VÉRITÉ ═══════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-terracotta">✓</div>
+      <h2 class="section-title">Sources de vérité</h2>
+      <span class="section-desc">Chaque donnée vit à UN seul endroit</span>
+    </div>
+    <table class="source-table">
+      <thead>
+        <tr>
+          <th>Type de donnée</th>
+          <th>Source de vérité</th>
+          <th>Pas ici</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Élèves &amp; formations</td>
+          <td class="tool-col">Kajabi</td>
+          <td>Ne pas dupliquer dans un tableur</td>
+        </tr>
+        <tr>
+          <td>Contacts &amp; séquences email</td>
+          <td class="tool-col">Brevo</td>
+          <td>Ne pas gérer les emails dans Kajabi</td>
+        </tr>
+        <tr>
+          <td>Fichiers internes (équipe)</td>
+          <td class="tool-col">Google Drive</td>
+          <td>Ne pas stocker dans WhatsApp ou email</td>
+        </tr>
+        <tr>
+          <td>Paiements &amp; transactions</td>
+          <td class="tool-col">Stripe (via Kajabi)</td>
+          <td>Ne pas suivre manuellement</td>
+        </tr>
+        <tr>
+          <td>Vidéos de formation</td>
+          <td class="tool-col">Bunny.net</td>
+          <td>Ne plus uploader sur Uscreen</td>
+        </tr>
+        <tr>
+          <td>Communauté active</td>
+          <td class="tool-col">Telegram (cible)</td>
+          <td>WhatsApp = legacy, migration en cours</td>
+        </tr>
+        <tr>
+          <td>Visuels &amp; templates</td>
+          <td class="tool-col">Canva</td>
+          <td>Ne pas stocker les sources ailleurs</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════════════ RÈGLES D'OR ═══════════════════ -->
+  <div class="rules-section">
+    <div class="rules-title">
+      <span style="color:var(--terracotta);">&#9670;</span>
+      Règles d'or de la data
+    </div>
+    <div class="rules-grid">
+
+      <div class="rule-card">
+        <div class="rule-number">Règle 1</div>
+        <div class="rule-text">Chaque donnée a UN seul endroit.</div>
+        <div class="rule-explain">Pas de copier-coller entre outils. Si une info existe dans Kajabi, on ne la recopie pas dans un Google Sheet. On va la chercher dans Kajabi.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number">Règle 2</div>
+        <div class="rule-text">Kajabi = la vérité pour les élèves.</div>
+        <div class="rule-explain">Tout ce qui concerne les inscriptions, la progression et les certificats vit dans Kajabi. C'est LA référence, point final.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number">Règle 3</div>
+        <div class="rule-text">Brevo = la vérité pour les contacts.</div>
+        <div class="rule-explain">Les segments, les séquences email, les stats d'ouverture. On n'envoie pas de newsletters depuis un autre outil.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number">Règle 4</div>
+        <div class="rule-text">Uscreen = legacy. Ne plus y investir.</div>
+        <div class="rule-explain">On maintient Uscreen pour les abonnés existants pendant 1 an. Tout nouveau contenu va sur Kajabi + Bunny.net. Objectif : couper Uscreen et économiser ~7 000 €/an.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number">Règle 5</div>
+        <div class="rule-text">Automatiser avant de dupliquer.</div>
+        <div class="rule-explain">Si vous devez copier manuellement une info d'un outil à un autre, c'est un signal : il faut automatiser cette connexion (webhook, Zapier, n8n).</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number">Règle 6</div>
+        <div class="rule-text">Google Drive = fichiers internes uniquement.</div>
+        <div class="rule-explain">Les fichiers partagés entre Aurélia et Laurie vivent sur Drive. Les contenus clients (cours, vidéos) vivent sur Kajabi + Bunny.net.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <div class="footer">
+    <p>CS Consulting Stratégique &nbsp;·&nbsp; <a href="https://csbusiness.fr">csbusiness.fr</a> &nbsp;·&nbsp; Document de référence interne</p>
+    <p style="margin-top:6px;">Dernière mise à jour : 16 mars 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
