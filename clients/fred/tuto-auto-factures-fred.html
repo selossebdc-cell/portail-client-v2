@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tes factures se trient toutes seules</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --terracotta: #C27A5A;
+    --terracotta-light: #d4956f;
+    --terracotta-dark: #a8654a;
+    --bg: #0f0f0f;
+    --bg-card: #1a1a1a;
+    --bg-card-hover: #222222;
+    --white: #FFFFFF;
+    --grey-light: #b0b0b0;
+    --grey-dim: #666666;
+    --green: #4ade80;
+    --green-dim: #166534;
+    --red: #ef4444;
+    --yellow: #facc15;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══ HEADER ═══ */
+  .header {
+    background: linear-gradient(160deg, #1a1a1a 0%, #0f0f0f 50%, #1a1410 100%);
+    padding: 50px 24px 40px;
+    text-align: center;
+    border-bottom: 3px solid var(--terracotta);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -60px;
+    width: 300px;
+    height: 300px;
+    background: var(--terracotta);
+    opacity: 0.06;
+    border-radius: 50%;
+  }
+  .header .brand {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .header .subtitle {
+    font-size: 1rem;
+    color: var(--grey-light);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .header .emoji-big {
+    font-size: 3rem;
+    margin-bottom: 16px;
+  }
+
+  /* ═══ CONTAINER ═══ */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  /* ═══ HERO CARD ═══ */
+  .hero-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, #1f1a17 100%);
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 32px;
+    margin: 32px 0;
+    text-align: center;
+  }
+  .hero-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+  .hero-card p {
+    color: var(--grey-light);
+    font-size: 0.95rem;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--terracotta);
+  }
+  .hero-stat .label {
+    font-size: 0.75rem;
+    color: var(--grey-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ═══ SECTION TITLE ═══ */
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 40px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #2a2a2a;
+  }
+
+  /* ═══ HOW IT WORKS ═══ */
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+  }
+  .flow-step {
+    display: flex;
+    gap: 16px;
+    padding: 20px 0;
+    position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 23px;
+    top: 60px;
+    bottom: 0;
+    width: 2px;
+    background: #2a2a2a;
+  }
+  .flow-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--terracotta);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    z-index: 1;
+  }
+  .flow-text h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .flow-text p {
+    font-size: 0.9rem;
+    color: var(--grey-light);
+  }
+  .flow-auto {
+    display: inline-block;
+    font-size: 0.7rem;
+    background: rgba(74, 222, 128, 0.15);
+    color: var(--green);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ═══ LABELS SECTION ═══ */
+  .labels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .label-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #2a2a2a;
+  }
+  .label-card .label-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .label-card .label-desc {
+    font-size: 0.85rem;
+    color: var(--grey-light);
+  }
+  .label-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .label-dot.blue { background: #60a5fa; }
+  .label-dot.green { background: var(--green); }
+  .label-dot.orange { background: #fb923c; }
+  .label-dot.red { background: var(--red); }
+
+  /* ═══ ACTION CARD ═══ */
+  .action-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    border: 1px solid #2a2a2a;
+    border-left: 4px solid var(--terracotta);
+  }
+  .action-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .action-card ol {
+    padding-left: 20px;
+  }
+  .action-card li {
+    margin-bottom: 8px;
+    color: #e0e0e0;
+  }
+  .action-card .highlight {
+    color: var(--terracotta-light);
+    font-weight: 600;
+  }
+
+  /* ═══ LINKS ═══ */
+  .link-btn {
+    display: inline-block;
+    background: var(--terracotta);
+    color: var(--white);
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+    margin: 8px 4px;
+  }
+  .link-btn:hover {
+    background: var(--terracotta-light);
+  }
+  .link-btn.secondary {
+    background: transparent;
+    border: 1px solid var(--terracotta);
+    color: var(--terracotta);
+  }
+  .link-btn.secondary:hover {
+    background: rgba(194, 122, 90, 0.1);
+  }
+  .links-center {
+    text-align: center;
+    margin: 32px 0;
+  }
+
+  /* ═══ FAQ ═══ */
+  .faq-item {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    border: 1px solid #2a2a2a;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .faq-item:hover {
+    border-color: #3a3a3a;
+  }
+  .faq-question {
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-answer {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #2a2a2a;
+    color: var(--grey-light);
+    font-size: 0.9rem;
+  }
+  .faq-item.open .faq-answer {
+    display: block;
+  }
+  .faq-chevron {
+    color: var(--grey-dim);
+    transition: transform 0.3s;
+  }
+  .faq-item.open .faq-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* ═══ RECAP SECTION ═══ */
+  .recap-box {
+    background: linear-gradient(135deg, rgba(194, 122, 90, 0.1) 0%, var(--bg-card) 100%);
+    border: 1px solid var(--terracotta-dark);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .recap-box p {
+    color: var(--grey-light);
+    font-size: 0.9rem;
+  }
+  .recap-box strong {
+    color: var(--terracotta-light);
+  }
+
+  /* ═══ FOOTER ═══ */
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--grey-dim);
+    font-size: 0.8rem;
+    border-top: 1px solid #2a2a2a;
+  }
+  .footer a {
+    color: var(--terracotta);
+    text-decoration: none;
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 480px) {
+    .hero-stats { gap: 16px; }
+    .hero-stat .number { font-size: 1.5rem; }
+    .labels-grid { grid-template-columns: 1fr; }
+    .flow-step { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="brand">CS Consulting Strat&eacute;gique</div>
+  <div class="emoji-big">&#128203;</div>
+  <h1>Tes factures se trient toutes seules</h1>
+  <p class="subtitle">Un robot scanne ta bo&icirc;te mail, extrait les infos et remplit ton tableau. Tu n'as rien &agrave; faire.</p>
+</div>
+
+<!-- CONTAINER -->
+<div class="container">
+
+  <!-- HERO STATS -->
+  <div class="hero-card">
+    <h2>Ce que le robot fait pour toi</h2>
+    <p>Toutes les 15 minutes, il surveille ta bo&icirc;te v8@v8-equipment.com</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="number">0</div>
+        <div class="label">action de ta part</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">15min</div>
+        <div class="label">de d&eacute;lai max</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">24/7</div>
+        <div class="label">surveillance auto</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMENT CA MARCHE -->
+  <h2 class="section-heading">Comment &ccedil;a marche</h2>
+
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="flow-icon">&#128233;</div>
+      <div class="flow-text">
+        <h3>Tu re&ccedil;ois un email avec une facture <span class="flow-auto">automatique</span></h3>
+        <p>Le robot d&eacute;tecte les emails avec pi&egrave;ces jointes PDF dans ta bo&icirc;te v8@</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-icon">&#128065;</div>
+      <div class="flow-text">
+        <h3>Il lit le PDF <span class="flow-auto">automatique</span></h3>
+        <p>Intelligence artificielle qui extrait : &eacute;metteur, montant, &eacute;ch&eacute;ance, cat&eacute;gorie...</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-icon">&#128202;</div>
+      <div class="flow-text">
+        <h3>Il remplit ton tableau <span class="flow-auto">automatique</span></h3>
+        <p>Google Sheet avec toutes les infos : qui, combien, quand payer</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-icon">&#128194;</div>
+      <div class="flow-text">
+        <h3>Il archive le PDF <span class="flow-auto">automatique</span></h3>
+        <p>Copie propre dans ton Google Drive, dossier archives-compta</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-icon">&#127937;</div>
+      <div class="flow-text">
+        <h3>Il te fait un r&eacute;cap chaque lundi</h3>
+        <p>Email &agrave; 8h : combien en attente, combien en retard, les nouvelles de la semaine</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LABELS GMAIL -->
+  <h2 class="section-heading">Les labels dans Gmail</h2>
+  <p style="color: var(--grey-light); margin-bottom: 16px;">Ouvre Gmail et regarde dans la barre lat&eacute;rale &agrave; gauche :</p>
+
+  <div class="labels-grid">
+    <div class="label-card">
+      <div class="label-name"><span class="label-dot blue"></span> Factures</div>
+      <div class="label-desc">Tous tes emails factures. Pos&eacute; automatiquement par Gmail.</div>
+    </div>
+    <div class="label-card">
+      <div class="label-name"><span class="label-dot green"></span> trait&eacute;es</div>
+      <div class="label-desc">Le robot a extrait les infos. C'est dans le tableau.</div>
+    </div>
+    <div class="label-card">
+      <div class="label-name"><span class="label-dot orange"></span> A traiter</div>
+      <div class="label-desc"><strong>Le seul que tu poses toi-m&ecirc;me</strong> (voir ci-dessous).</div>
+    </div>
+    <div class="label-card">
+      <div class="label-name"><span class="label-dot red"></span> Erreur</div>
+      <div class="label-desc">Le robot n'a pas r&eacute;ussi &agrave; lire. Catherine regarde.</div>
+    </div>
+  </div>
+
+  <!-- ACTION : A TRAITER -->
+  <h2 class="section-heading">Si une facture n'est pas d&eacute;tect&eacute;e</h2>
+
+  <div class="action-card">
+    <h3>&#9757; La seule action que tu as &agrave; faire</h3>
+    <p style="color: var(--grey-light); margin-bottom: 12px;">Si tu vois un email avec une facture qui n'a pas le label <span class="highlight">trait&eacute;es</span> :</p>
+    <ol>
+      <li>Ouvre le mail dans Gmail</li>
+      <li>Clique sur l'ic&ocirc;ne <strong>label</strong> (le petit drapeau en haut)</li>
+      <li>Coche <span class="highlight">Factures / A traiter</span></li>
+      <li>C'est tout &mdash; le robot la traitera dans les 15 minutes</li>
+    </ol>
+  </div>
+
+  <!-- LIENS -->
+  <h2 class="section-heading">Tes acc&egrave;s</h2>
+
+  <div class="links-center">
+    <a href="https://docs.google.com/spreadsheets/d/1yS2supD-Nks4XFnbRlLXY9AN78vGjaH7A7acyFbVHWc/edit" class="link-btn" target="_blank">&#128202; Mon tableau de suivi</a>
+    <a href="https://drive.google.com/drive/folders/1wwmC6h8FVLoYSlAc82EOuKDo4obuxnmP" class="link-btn secondary" target="_blank">&#128194; Mes archives Drive</a>
+  </div>
+
+  <!-- RECAP HEBDO -->
+  <div class="recap-box">
+    <h3 style="margin-bottom: 8px;">&#128236; R&eacute;cap du lundi</h3>
+    <p>Chaque <strong>lundi &agrave; 8h</strong>, tu re&ccedil;ois un email avec :<br>
+    le nombre de factures en retard, en attente, pay&eacute;es + les nouvelles de la semaine.</p>
+  </div>
+
+  <!-- CE QUE TU PEUX FAIRE DANS LE SHEET -->
+  <h2 class="section-heading">Dans le tableau</h2>
+
+  <div class="action-card">
+    <h3>&#9989; Ce que tu peux modifier</h3>
+    <ol>
+      <li>Quand tu paies une facture &rarr; change le <span class="highlight">Statut</span> en &laquo; Pay&eacute; &raquo;</li>
+      <li>Remplis la <span class="highlight">Date encaissement</span></li>
+      <li>Trie par &eacute;ch&eacute;ance pour voir ce qui arrive</li>
+    </ol>
+    <p style="color: var(--grey-dim); margin-top: 12px; font-size: 0.85rem;">Le robot remplit le reste tout seul. Si tu corriges un montant, il ne l'&eacute;crasera pas.</p>
+  </div>
+
+  <!-- FAQ -->
+  <h2 class="section-heading">Questions fr&eacute;quentes</h2>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-question">Le robot va supprimer mes mails ? <span class="faq-chevron">&#9660;</span></div>
+    <div class="faq-answer">Non. Il lit, il extrait, il labelle. Tes mails restent exactement comme ils sont.</div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-question">Si je re&ccedil;ois une facture sur fu@fusolution.fr ? <span class="faq-chevron">&#9660;</span></div>
+    <div class="faq-answer">Pour l'instant, transf&egrave;re-la vers v8@v8-equipment.com. Le support de fu@ arrive bient&ocirc;t.</div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-question">Si le robot se trompe sur un montant ? <span class="faq-chevron">&#9660;</span></div>
+    <div class="faq-answer">Corrige directement dans le Google Sheet. Le robot ne modifiera pas ta correction (sauf si le m&ecirc;me &eacute;metteur + num&eacute;ro de facture est retrait&eacute;).</div>
+  </div>
+
+
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Mis en place par <a href="https://csbusiness.fr">CS Consulting Strat&eacute;gique</a> &mdash; Mars 2026</p>
+  <p style="margin-top: 8px;">Un souci ? &Eacute;cris &agrave; Catherine sur WhatsApp ou par mail.</p>
+</div>
+
+</body>
+</html>
