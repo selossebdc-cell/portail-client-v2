@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapport Trimestriel Q1 2026 — FEEDUC x CS Consulting Stratégique</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --terracotta: #C27A5A;
+    --terracotta-light: #D4956F;
+    --dark: #1a1a1a;
+    --bg: #FFFBF7;
+    --text: #2c2c2c;
+    --text-light: #666;
+    --border: #e8e0d8;
+    --green: #2E7D32;
+    --green-bg: #E8F5E9;
+    --orange: #E65100;
+    --orange-bg: #FFF3E0;
+    --blue: #1565C0;
+    --blue-bg: #E3F2FD;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 3px solid var(--terracotta);
+  }
+
+  .header-left h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+
+  .header-left .subtitle {
+    font-size: 0.95rem;
+    color: var(--terracotta);
+    font-weight: 500;
+  }
+
+  .header-right {
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+
+  .header-right .period {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 36px;
+  }
+
+  .section-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    display: inline-block;
+    background: var(--terracotta);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  /* KPI Cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+
+  .kpi-label {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .kpi-card.green { border-left: 4px solid var(--green); }
+  .kpi-card.orange { border-left: 4px solid var(--orange); }
+  .kpi-card.blue { border-left: 4px solid var(--blue); }
+
+  .placeholder {
+    color: var(--terracotta);
+    background: #FFF0E8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9em;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+  }
+
+  thead th {
+    background: var(--dark);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+
+  tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+  tbody tr:last-child td:last-child { border-radius: 0 0 8px 0; }
+
+  tbody tr:hover { background: #f9f5f1; }
+
+  /* Status badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .badge-ok { background: var(--green-bg); color: var(--green); }
+  .badge-warning { background: var(--orange-bg); color: var(--orange); }
+  .badge-info { background: var(--blue-bg); color: var(--blue); }
+
+  /* Lists */
+  .suggestions-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .suggestions-list li {
+    padding: 12px 16px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .suggestions-list li::before {
+    content: '💡';
+    position: absolute;
+    left: 12px;
+    top: 12px;
+  }
+
+  .suggestion-title {
+    font-weight: 600;
+    color: var(--dark);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .suggestion-detail {
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+
+  /* Incident block */
+  .incident-block {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .incident-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .incident-date {
+    font-size: 0.8rem;
+    color: var(--text-light);
+  }
+
+  .incident-desc {
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 2px solid var(--border);
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.8rem;
+  }
+
+  .footer a {
+    color: var(--terracotta);
+    text-decoration: none;
+  }
+
+  /* Intro text */
+  .intro {
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+
+  /* Print */
+  @media print {
+    body { padding: 20px; }
+    .container { max-width: 100%; }
+    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 600px) {
+    .header { flex-direction: column; gap: 12px; }
+    .header-right { text-align: left; }
+    .kpi-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Rapport Trimestriel d'Activité</h1>
+      <div class="subtitle">Maintenance Automatisations — FEEDUC</div>
+    </div>
+    <div class="header-right">
+      <div class="period">Q1 2026</div>
+      Janvier — Mars 2026<br>
+      Catherine Selosse<br>
+      CS Consulting Stratégique
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <p class="intro">
+    Nathalie, Jean-François,<br><br>
+    Comme prévu dans notre contrat de maintenance (article 2.3), voici le rapport trimestriel d'activité de vos automatisations pour le premier trimestre 2026. Ce rapport couvre le fonctionnement des workflows, les incidents éventuels, et mes suggestions d'amélioration.
+  </p>
+
+  <!-- 1. SYNTHÈSE -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-number">1</span> Synthèse du trimestre</h2>
+
+    <div class="kpi-grid">
+      <div class="kpi-card green">
+        <div class="kpi-value">91</div>
+        <div class="kpi-label">Exécutions réussies</div>
+      </div>
+      <div class="kpi-card blue">
+        <div class="kpi-value">100%</div>
+        <div class="kpi-label">Taux de réussite</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="kpi-value">0</div>
+        <div class="kpi-label">Incidents</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Indicateur</th>
+          <th>Valeur</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Disponibilité infrastructure (uptime)</td>
+          <td>99,9%</td>
+          <td><span class="badge badge-ok">OK</span></td>
+        </tr>
+        <tr>
+          <td>Incidents détectés</td>
+          <td>0</td>
+          <td><span class="badge badge-ok">Aucun</span></td>
+        </tr>
+        <tr>
+          <td>Heures d'ajustements consommées (max 6h/trimestre)</td>
+          <td>0h / 6h</td>
+          <td><span class="badge badge-info">Inclus</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;">
+      <em>Note : le workflow du Lot 2 (CR réunions) est actif depuis le 9 mars 2026 avec 91 exécutions réussies. Les workflows du Lot 1 (classification e-mails) sont volontairement en pause — réactivation possible à tout moment (voir section 5).</em>
+    </p>
+  </div>
+
+  <!-- 2. DÉTAIL PAR WORKFLOW -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-number">2</span> Détail par workflow</h2>
+
+    <h3 style="font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; color: var(--dark);">Lot 1 — Agent IA Gestion E-mails &amp; Relances</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Workflow</th>
+          <th>Exécutions Q1</th>
+          <th>Erreurs</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Categorize Mail (classification automatique)</td>
+          <td>0</td>
+          <td>0</td>
+          <td><span class="badge badge-warning">En pause</span></td>
+        </tr>
+        <tr>
+          <td>Categorize Mail — boîte info@ (classification)</td>
+          <td>0</td>
+          <td>0</td>
+          <td><span class="badge badge-warning">En pause</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size: 0.85rem; color: var(--text-light); margin-top: -8px; margin-bottom: 16px;">
+      <em>Les workflows de classification e-mails sont volontairement en pause depuis fin 2025. Ils restent prêts à être réactivés à tout moment — voir section 5.</em>
+    </p>
+
+    <h3 style="font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; color: var(--dark);">Lot 2 — Agent IA Comptes Rendus de Réunion</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Workflow</th>
+          <th>Exécutions Q1</th>
+          <th>Erreurs</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Feeduc Report Meeting — Automation<br><small style="color: var(--text-light);">Transcription, classification, génération CR structuré</small></td>
+          <td>91</td>
+          <td>0</td>
+          <td><span class="badge badge-ok">Actif</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size: 0.85rem; color: var(--text-light); margin-top: -8px; margin-bottom: 16px;">
+      Workflow actif depuis le 9 mars 2026 (dernière mise à jour : 6 mars 2026). 91 exécutions réussies sur la période du 9 au 23 mars, soit environ 6 CR générés par jour ouvrable. Taux de réussite : 100%.
+    </p>
+
+    <h3 style="font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; color: var(--dark);">Intégrations &amp; Infrastructure</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Composant</th>
+          <th>Statut</th>
+          <th>Remarque</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Instance n8n (hébergement dédié)</td>
+          <td><span class="badge badge-ok">Opérationnel</span></td>
+          <td>Mises à jour appliquées</td>
+        </tr>
+        <tr>
+          <td>API Gmail / Outlook</td>
+          <td><span class="badge badge-ok">Connecté</span></td>
+          <td>Tokens renouvelés automatiquement</td>
+        </tr>
+        <tr>
+          <td>API Google Meet / Drive</td>
+          <td><span class="badge badge-ok">Connecté</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Oscar CRM</td>
+          <td><span class="badge badge-ok">Connecté</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Pipeline IA (Gemini / Claude)</td>
+          <td><span class="badge badge-ok">Opérationnel</span></td>
+          <td>Modèles à jour</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 3. INCIDENTS -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-number">3</span> Incidents &amp; Interventions</h2>
+
+    <p style="font-size: 0.95rem; color: var(--text); padding: 16px; background: var(--green-bg); border-radius: 8px; border-left: 4px solid var(--green);">
+      Aucun incident à signaler sur la période. Les workflows actifs ont fonctionné de manière nominale avec un taux de réussite de 100%.
+    </p>
+  </div>
+
+  <!-- 4. AJUSTEMENTS RÉALISÉS -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-number">4</span> Ajustements réalisés (maintenance évolutive)</h2>
+
+    <p style="font-size: 0.95rem; color: var(--text); padding: 16px; background: white; border-radius: 8px; border: 1px solid var(--border);">
+      Aucun ajustement réalisé ce trimestre. Le quota de 2 heures par mois (non cumulables) reste disponible pour vos demandes.
+    </p>
+  </div>
+
+  <!-- 5. SUGGESTIONS -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-number">5</span> Suggestions d'amélioration</h2>
+
+    <ul class="suggestions-list">
+      <li>
+        <span class="suggestion-title">Google Form de feedback équipe</span>
+        <span class="suggestion-detail">
+          Comme convenu lors de notre réunion de mars, je vous fournis un questionnaire pour sonder vos 7 prestataires sur l'utilisation des outils. Livraison prévue mi-avril, en préparation de la réunion d'équipe de juin à Madrid.
+        </span>
+      </li>
+      <li>
+        <span class="suggestion-title">Automatisation leads partenaires (projet août 2026)</span>
+        <span class="suggestion-detail">
+          Le projet de reconnexion des formulaires WordPress avec routage automatique vers les partenaires est en préparation. Je vous transmets un devis détaillé d'ici mi-avril. Ce projet fait l'objet d'une prestation séparée (hors contrat maintenance), avec un déploiement prévu en août 2026.
+        </span>
+      </li>
+      <li>
+        <span class="suggestion-title">Réactivation Lot 1 — Classification e-mails</span>
+        <span class="suggestion-detail">
+          Les workflows de classification automatique des e-mails (Lot 1) sont en pause depuis fin 2025. Quand vous le souhaitez, nous pouvons les réactiver et les ajuster aux éventuels changements dans vos boîtes mail depuis la recette. Cela entre dans les heures d'ajustements incluses au contrat.
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 6. PROCHAINES ÉCHÉANCES -->
+  <div class="section">
+    <h2 class="section-title"><span class="section-number">6</span> Prochaines échéances</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Échéance</th>
+          <th>Action</th>
+          <th>Responsable</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Mi-avril 2026</td>
+          <td>Livraison Google Form feedback équipe</td>
+          <td>Catherine</td>
+        </tr>
+        <tr>
+          <td>Mi-avril 2026</td>
+          <td>Devis automatisation leads partenaires</td>
+          <td>Catherine</td>
+        </tr>
+        <tr>
+          <td>Semaine du 1-5 juin</td>
+          <td>Réunion équipe Madrid (présentation résultats — en ligne ou présentiel)</td>
+          <td>Catherine</td>
+        </tr>
+        <tr>
+          <td>Août 2026</td>
+          <td>Déploiement automatisation leads partenaires (devis séparé)</td>
+          <td>Catherine</td>
+        </tr>
+        <tr>
+          <td>Juillet 2026</td>
+          <td>Prochain rapport trimestriel (Q2 2026)</td>
+          <td>Catherine</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p style="margin-bottom: 8px;">
+      <strong>Catherine Selosse</strong> — CS Consulting Stratégique<br>
+      <a href="mailto:catherine@csbusiness.fr">catherine@csbusiness.fr</a> — 06 61 86 40 16
+    </p>
+    <p>
+      Ce rapport est fourni dans le cadre du contrat de maintenance FEEDUC x CS Consulting Stratégique (article 2.3).<br>
+      Prochain rapport : Q2 2026 (juillet 2026).
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>
