@@ -11,14 +11,7 @@ async function initApp() {
 
   if (profile.role === 'admin') {
     document.getElementById('admin-view').classList.remove('hidden');
-    await initAdminDashboard();
-
-    // Auto-navigate to client if ?client=ID in URL
-    var params = new URLSearchParams(window.location.search);
-    var targetClientId = params.get('client');
-    if (targetClientId) {
-      viewClientDetail(targetClientId);
-    }
+    initAdminDashboard();
   } else {
     document.getElementById('client-view').classList.remove('hidden');
     initClientPortal(profile);
