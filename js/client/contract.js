@@ -1,3 +1,29 @@
+async function downloadStorageDoc(path, btnId) {
+  const btn = document.getElementById(btnId);
+  const badge = btn.querySelector('.doc-badge');
+  badge.textContent = 'Chargement...';
+  badge.style.color = '#666666';
+
+  try {
+    const { data, error } = await db.storage
+      .from('documents')
+      .createSignedUrl(path, 3600);
+
+    if (error) throw error;
+    window.open(data.signedUrl, '_blank');
+    badge.textContent = 'Telecharger';
+    badge.style.color = '#4ade80';
+  } catch(e) {
+    console.error('Erreur telechargement:', e);
+    badge.textContent = 'Erreur — contacte Catherine';
+    badge.style.color = '#f87171';
+    setTimeout(function() {
+      badge.textContent = 'Telecharger';
+      badge.style.color = '#4ade80';
+    }, 3000);
+  }
+}
+
 async function loadContract(clientId) {
   const { data, error } = await db
     .from('contracts')
@@ -79,22 +105,36 @@ function renderContract(contract) {
     docsTitle.style.display = 'block';
     let docsHtml = '';
 
-    contract.documents.forEach(function(doc) {
+    contract.documents.forEach(function(doc, idx) {
       const icon = doc.type === 'contrat' ? '📋' : '🧾';
       const hasUrl = doc.url && doc.url.length > 0;
-      const wrapper = hasUrl
-        ? '<a href="' + doc.url + '" target="_blank" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:12px; padding:10px 16px; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:8px; margin-bottom:6px; transition:border-color 0.2s; cursor:pointer;" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">'
-        : '<div style="display:flex; align-items:center; gap:12px; padding:10px 16px; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:8px; margin-bottom:6px; opacity:0.6;">';
-      const closeTag = hasUrl ? '</a>' : '</div>';
-      const badge = hasUrl
-        ? '<span style="font-size:0.7rem; color:#4ade80; font-weight:500;">Telecharger</span>'
-        : '<span style="font-size:0.7rem; color:#666666; font-style:italic;">Bientot disponible</span>';
+      const hasPath = doc.path && doc.path.length > 0;
+      const isClickable = hasUrl || hasPath;
+      const docId = 'doc-btn-' + idx;
       const dateStr = doc.date ? formatDate(doc.date) : '';
 
-      docsHtml += wrapper +
-        '<span style="font-size:1.1rem;">' + icon + '</span>' +
-        '<div style="flex:1;"><div style="font-size:0.9rem; font-weight:500;">' + (doc.name || '') + '</div><div style="font-size:0.75rem; color:#666666;">' + dateStr + '</div></div>' +
-        badge + closeTag;
+      if (hasPath) {
+        // Document dans Supabase Storage — URL signée à la volée
+        docsHtml += '<div id="' + docId + '" style="display:flex; align-items:center; gap:12px; padding:10px 16px; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:8px; margin-bottom:6px; transition:border-color 0.2s; cursor:pointer;" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'" onclick="downloadStorageDoc(\'' + doc.path + '\', \'' + docId + '\')">' +
+          '<span style="font-size:1.1rem;">' + icon + '</span>' +
+          '<div style="flex:1;"><div style="font-size:0.9rem; font-weight:500;">' + (doc.name || '') + '</div><div style="font-size:0.75rem; color:#666666;">' + dateStr + '</div></div>' +
+          '<span class="doc-badge" style="font-size:0.7rem; color:#4ade80; font-weight:500;">Telecharger</span>' +
+        '</div>';
+      } else if (hasUrl) {
+        // URL directe
+        docsHtml += '<a href="' + doc.url + '" target="_blank" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:12px; padding:10px 16px; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:8px; margin-bottom:6px; transition:border-color 0.2s; cursor:pointer;" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
+          '<span style="font-size:1.1rem;">' + icon + '</span>' +
+          '<div style="flex:1;"><div style="font-size:0.9rem; font-weight:500;">' + (doc.name || '') + '</div><div style="font-size:0.75rem; color:#666666;">' + dateStr + '</div></div>' +
+          '<span style="font-size:0.7rem; color:#4ade80; font-weight:500;">Telecharger</span>' +
+        '</a>';
+      } else {
+        // Pas encore disponible
+        docsHtml += '<div style="display:flex; align-items:center; gap:12px; padding:10px 16px; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:8px; margin-bottom:6px; opacity:0.6;">' +
+          '<span style="font-size:1.1rem;">' + icon + '</span>' +
+          '<div style="flex:1;"><div style="font-size:0.9rem; font-weight:500;">' + (doc.name || '') + '</div><div style="font-size:0.75rem; color:#666666;">' + dateStr + '</div></div>' +
+          '<span style="font-size:0.7rem; color:#666666; font-style:italic;">Bientot disponible</span>' +
+        '</div>';
+      }
     });
 
     docsContainer.innerHTML = docsHtml;
