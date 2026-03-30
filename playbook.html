@@ -1026,6 +1026,11 @@
         <input type="text" id="new-step-section" placeholder="Ex: CONCEPTION">
       </div>
       <div class="form-group">
+        <label for="new-step-date">Date</label>
+        <input type="date" id="new-step-date">
+        <span style="font-size:0.75rem;opacity:0.5;">Choisir une date calcule le timing automatiquement</span>
+      </div>
+      <div class="form-group">
         <label for="new-step-timing">Timing (jours)</label>
         <input type="number" id="new-step-timing" value="0">
       </div>
@@ -2285,7 +2290,7 @@ steps: [
             + '<div class="step-title">' + escapeHtml(step.title) + '</div>'
             + '<div class="step-meta">'
             + '<span class="owner-pill" style="background:' + ownerColor + ';display:inline-flex;width:22px;height:22px;font-size:0.6rem;vertical-align:middle;margin-right:4px;">' + getInitials(step.raci_r) + '</span>'
-            + ' ' + timingLabel + ' &middot; ' + formatDate(absDate)
+            + ' ' + timingLabel + ' &middot; <span class="date-click" data-action="edit" data-step-id="' + step.id + '" style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;">' + formatDate(absDate) + '</span>'
             + '</div>'
             + '</div>'
             + '<div class="step-actions">'
@@ -2365,6 +2370,16 @@ steps: [
         document.getElementById('new-step-title').value = '';
         document.getElementById('new-step-section').value = '';
         document.getElementById('new-step-timing').value = '0';
+        // Pre-fill date based on today
+        var proc = appState.processes.find(function(p) { return p.id === appState.currentProcessId; });
+        if (proc) {
+          var today = new Date().toISOString().slice(0, 10);
+          document.getElementById('new-step-date').value = today;
+          document.getElementById('new-step-date').dataset.dateCible = proc.date_cible;
+          var todayD = new Date(today + 'T00:00:00');
+          var jourJ = new Date(proc.date_cible + 'T00:00:00');
+          document.getElementById('new-step-timing').value = Math.round((todayD - jourJ) / (1000 * 60 * 60 * 24));
+        }
         openModal('modal-add-step');
       });
 
@@ -3061,7 +3076,26 @@ steps: [
         showToast('Etape mise a jour');
       });
 
-      // Add Step Modal
+      // Add Step Modal — date ↔ timing sync
+      document.getElementById('new-step-date').addEventListener('change', function() {
+        var dateVal = this.value;
+        var dateCible = this.dataset.dateCible;
+        if (dateVal && dateCible) {
+          var chosen = new Date(dateVal + 'T00:00:00');
+          var jourJ = new Date(dateCible + 'T00:00:00');
+          document.getElementById('new-step-timing').value = Math.round((chosen - jourJ) / (1000 * 60 * 60 * 24));
+        }
+      });
+      document.getElementById('new-step-timing').addEventListener('input', function() {
+        var dateEl = document.getElementById('new-step-date');
+        var dateCible = dateEl.dataset.dateCible;
+        if (dateCible) {
+          var timing = parseInt(this.value) || 0;
+          var absDate = calculateAbsoluteDate(dateCible, timing);
+          dateEl.value = absDate.toISOString().slice(0, 10);
+        }
+      });
+
       document.getElementById('add-step-cancel').addEventListener('click', function() {
         closeModal('modal-add-step');
       });
