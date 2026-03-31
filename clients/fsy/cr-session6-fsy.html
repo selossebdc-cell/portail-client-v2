@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CR Session 6 — Face Soul Yoga | CS Consulting Stratégique</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --terracotta: #C27A5A;
+    --terracotta-light: #d4956f;
+    --terracotta-dark: #a8654a;
+    --bg: #0f0f0f;
+    --bg-card: #1a1a1a;
+    --bg-card-hover: #222222;
+    --white: #FFFFFF;
+    --grey-light: #b0b0b0;
+    --grey-dim: #666666;
+    --green: #4ade80;
+    --green-dim: #166534;
+    --red: #f87171;
+    --red-dim: #991b1b;
+    --orange: #fb923c;
+    --blue: #60a5fa;
+    --blue-dim: #1e3a5f;
+    --purple: #a78bfa;
+    --purple-dim: #4c1d95;
+    --yellow: #fbbf24;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(160deg, #1a1a1a 0%, #0f0f0f 50%, #1a1410 100%);
+    padding: 40px 24px 32px;
+    border-bottom: 3px solid var(--terracotta);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -40px;
+    width: 250px; height: 250px;
+    background: var(--terracotta);
+    opacity: 0.06;
+    border-radius: 50%;
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .header .brand {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .header .subtitle {
+    font-size: 0.95rem;
+    color: var(--grey-light);
+    margin-top: 6px;
+  }
+  .header-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .stat-box {
+    text-align: center;
+    padding: 12px 16px;
+    background: rgba(194,122,90,0.08);
+    border: 1px solid rgba(194,122,90,0.2);
+    border-radius: 12px;
+    min-width: 80px;
+  }
+  .stat-box .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--terracotta-light);
+  }
+  .stat-box .stat-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--grey-light);
+    margin-top: 2px;
+  }
+
+  /* MAIN */
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+
+  /* COLLAPSIBLE CARDS */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .card:hover {
+    border-color: rgba(194,122,90,0.2);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+  }
+  .card-header:hover {
+    background: var(--bg-card-hover);
+  }
+  .card-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-header .chevron {
+    width: 20px;
+    height: 20px;
+    color: var(--grey-dim);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .card.open .chevron {
+    transform: rotate(180deg);
+  }
+  .card-body {
+    display: none;
+    padding: 0 24px 24px;
+  }
+  .card.open .card-body {
+    display: block;
+  }
+
+  /* SECTION ICON */
+  .section-icon {
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .icon-green { background: rgba(74,222,128,0.12); }
+  .icon-red { background: rgba(248,113,113,0.12); }
+  .icon-blue { background: rgba(96,165,250,0.12); }
+  .icon-purple { background: rgba(167,139,250,0.12); }
+  .icon-orange { background: rgba(251,146,60,0.12); }
+  .icon-yellow { background: rgba(251,191,36,0.12); }
+  .icon-terracotta { background: rgba(194,122,90,0.15); }
+
+  /* BADGES */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .badge-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .badge-terracotta { background: rgba(194,122,90,0.2); color: var(--terracotta-light); }
+  .badge-green { background: rgba(74,222,128,0.15); color: var(--green); }
+  .badge-red { background: rgba(248,113,113,0.15); color: var(--red); }
+  .badge-orange { background: rgba(251,146,60,0.15); color: var(--orange); }
+  .badge-blue { background: rgba(96,165,250,0.15); color: var(--blue); }
+  .badge-purple { background: rgba(167,139,250,0.15); color: var(--purple); }
+  .badge-yellow { background: rgba(251,191,36,0.15); color: var(--yellow); }
+
+  /* DECISION ITEM */
+  .decision {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .decision:last-child { border-bottom: none; }
+  .decision-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .decision-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--terracotta-light);
+  }
+
+  /* LISTS */
+  .content-list {
+    list-style: none;
+    padding: 0;
+  }
+  .content-list li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    color: var(--grey-light);
+    font-size: 0.9rem;
+  }
+  .content-list li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    opacity: 0.6;
+  }
+  .content-list li strong {
+    color: var(--white);
+  }
+  .content-list li em {
+    color: var(--terracotta-light);
+    font-style: italic;
+  }
+
+  /* BLOCKQUOTES */
+  blockquote {
+    border-left: 3px solid var(--terracotta);
+    padding: 12px 16px;
+    margin: 12px 0;
+    background: rgba(194,122,90,0.06);
+    border-radius: 0 10px 10px 0;
+    color: var(--terracotta-light);
+    font-style: italic;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  blockquote .author {
+    display: block;
+    color: var(--grey-dim);
+    font-size: 0.8rem;
+    margin-top: 6px;
+    font-style: normal;
+  }
+
+  /* CHECKBOXES */
+  .action-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+    color: var(--grey-light);
+  }
+  .action-item:last-child { border-bottom: none; }
+  .action-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--grey-dim);
+    border-radius: 5px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .action-item input[type="checkbox"]:checked {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+  }
+  .action-item input[type="checkbox"]:checked::after {
+    content: '\2713';
+    position: absolute;
+    top: -1px;
+    left: 3px;
+    font-size: 14px;
+    color: var(--white);
+    font-weight: 700;
+  }
+  .action-item.checked .action-text {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+  .action-item .action-text strong {
+    color: var(--white);
+  }
+
+  /* PRIORITY LABELS */
+  .priority {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-left: 6px;
+  }
+  .priority-high { background: rgba(248,113,113,0.2); color: var(--red); }
+  .priority-med { background: rgba(251,146,60,0.2); color: var(--orange); }
+  .priority-low { background: rgba(251,191,36,0.2); color: var(--yellow); }
+
+  /* TABLES */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  thead th {
+    background: rgba(194,122,90,0.12);
+    color: var(--terracotta-light);
+    text-align: left;
+    padding: 12px 14px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 10px 14px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    color: var(--grey-light);
+    vertical-align: top;
+  }
+  tbody tr:hover {
+    background: rgba(194,122,90,0.04);
+  }
+
+  /* SUB-SECTIONS */
+  .sub-section {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .sub-section h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--terracotta);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  /* SECTION DIVIDER */
+  .section-divider {
+    text-align: center;
+    margin: 32px 0;
+    color: var(--grey-dim);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .section-divider::before,
+  .section-divider::after {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--grey-dim);
+    vertical-align: middle;
+    margin: 0 12px;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    color: var(--grey-dim);
+    font-size: 0.75rem;
+  }
+  .footer .brand-footer {
+    color: var(--terracotta);
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    margin-bottom: 6px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terracotta-dark), var(--terracotta-light));
+    border-radius: 10px;
+    transition: width 0.5s;
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: #fff; color: #000; }
+    .header { background: #f5f5f5 !important; border-bottom-color: var(--terracotta); }
+    .header h1, .header .brand { color: #000; }
+    .header .subtitle, .stat-box .stat-label { color: #555; }
+    .stat-box { border-color: #ccc; background: #f9f9f9; }
+    .stat-box .stat-value { color: var(--terracotta-dark); }
+    .card { background: #fff; border-color: #ddd; break-inside: avoid; }
+    .card-body { display: block !important; }
+    .card-header .chevron { display: none; }
+    .card-header { cursor: default; }
+    .card-header h2 { color: #000; }
+    blockquote { background: #faf5f2; border-left-color: var(--terracotta); color: #6b4a3a; }
+    .content-list li { color: #333; }
+    .content-list li strong { color: #000; }
+    .content-list li em { color: var(--terracotta-dark); }
+    .action-item { color: #333; }
+    .action-item .action-text strong { color: #000; }
+    table { font-size: 0.8rem; }
+    thead th { background: #f0e8e3; color: var(--terracotta-dark); }
+    tbody td { color: #333; border-top-color: #ddd; }
+    .sub-section { border-top-color: #ddd; }
+    .decision-header h3 { color: var(--terracotta-dark); }
+    .main { padding-top: 16px; }
+    .footer { border-top-color: #ddd; color: #999; }
+  }
+
+  @media (max-width: 600px) {
+    .header { padding: 28px 16px 24px; }
+    .header-inner { flex-direction: column; }
+    .header-stats { width: 100%; }
+    .main { padding: 20px 16px 40px; }
+    .card-header { padding: 16px 18px; }
+    .card-body { padding: 0 18px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <div class="brand">CS Consulting Stratégique</div>
+      <h1>Compte-Rendu Session 6</h1>
+      <div class="subtitle">Délégation, automatisation, migration &amp; tunnel premium</div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-box">
+        <div class="stat-value">6/19</div>
+        <div class="stat-label">Session</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">~2h</div>
+        <div class="stat-label">Durée</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">30/03</div>
+        <div class="stat-label">Date</div>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:900px;margin:16px auto 0;display:flex;gap:8px;flex-wrap:wrap;font-size:0.8rem;color:var(--grey-light);">
+    <span style="background:rgba(194,122,90,0.1);padding:3px 10px;border-radius:8px;">Aurélia</span>
+    <span style="background:rgba(194,122,90,0.1);padding:3px 10px;border-radius:8px;">Catherine</span>
+    <span style="margin-left:auto;color:var(--grey-dim);">Laurie absente</span>
+  </div>
+  <div style="max-width:900px;margin:12px auto 0;">
+    <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--grey-dim);margin-bottom:4px;">
+      <span>Progression accompagnement</span>
+      <span>32%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width:32%;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- RÉSUMÉ -->
+  <div class="card open" id="resume">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-terracotta">&#x2605;</span> Résumé en 3 points</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+      <ul class="content-list">
+        <li><strong>Chatbot basculé sur WhatsApp</strong> (FSY Studio) / Telegram gardé pour Master The Method &mdash; Aurélia a envoyé l'export WhatsApp à Catherine pour alimenter la base de données</li>
+        <li><strong>Laurie arrive en fin de cycle</strong> &mdash; Aurélia constate un décalage croissant (salaire doublé, livraison lente, énergie qui freine). Laurie termine les migrations Circle, puis transition vers quelqu'un de nouveau</li>
+        <li><strong>Programme &laquo; Sommeil et Joie &raquo;</strong> présenté &mdash; 397 &euro;, 6 semaines, sous Aurélia Del Sol, lancement visé le 8 juin. Aurélia est fière et alignée sur sa nouvelle direction</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- DÉCISIONS ACTÉES -->
+  <div class="card open" id="decisions">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-terracotta">&#x2691;</span> Décisions actées</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--terracotta);">1</span>
+          <h3>Chatbot WhatsApp pour FSY Studio</h3>
+        </div>
+        <ul class="content-list">
+          <li>Communauté FSY sur WhatsApp (pas Telegram)</li>
+          <li>Message de bienvenue en privé (pas dans le groupe)</li>
+          <li>Commandes slash maintenues</li>
+        </ul>
+      </div>
+
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--blue);">2</span>
+          <h3>Chatbot Telegram pour Master The Method</h3>
+        </div>
+        <ul class="content-list">
+          <li>Gardé sur Telegram pour la formation B2B</li>
+        </ul>
+      </div>
+
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--green);">3</span>
+          <h3>Migration MTM sur Circle</h3>
+        </div>
+        <ul class="content-list">
+          <li><strong>Deadline : fin de semaine (3 avril)</strong></li>
+          <li>Laurie finalise</li>
+          <li>Tunnel email 7 emails en cours (2 derniers bloqués en attente Circle)</li>
+        </ul>
+      </div>
+
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--purple);">4</span>
+          <h3>Migration FSY abo sur Circle</h3>
+        </div>
+        <ul class="content-list">
+          <li><strong>Deadline : 31 juillet</strong> au plus tard (renouvellement Uscreen août)</li>
+          <li>Idéalement avant l'été</li>
+        </ul>
+      </div>
+
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--orange);">5</span>
+          <h3>Laurie : finir les migrations puis réévaluer</h3>
+        </div>
+        <ul class="content-list">
+          <li>Aurélia doit lui parler de son rôle</li>
+          <li>Catherine propose que Laurie puisse booker 1h dans l'agenda pour travailler ensemble sur les automatisations Circle</li>
+        </ul>
+      </div>
+
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--yellow);color:#000;">6</span>
+          <h3>Programme Sommeil et Joie</h3>
+        </div>
+        <ul class="content-list">
+          <li>Lancement 8 juin, 397 &euro;, 6 semaines</li>
+          <li>Sous la marque Aurélia Del Sol</li>
+          <li>Process créé dans le Playbook</li>
+        </ul>
+      </div>
+
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--terracotta);">7</span>
+          <h3>Contact Studiolab (Laure Bilger)</h3>
+        </div>
+        <ul class="content-list">
+          <li>Catherine recommande son contact (ex-Hermès, premium) pour le site Aurélia Del Sol</li>
+          <li>Aurélia peut la contacter de la part de Catherine</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section-divider">Sujets traités en détail</div>
+
+  <!-- SUJET 1 : Chatbot -->
+  <div class="card" id="sujet-chatbot">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-blue">1</span> Chatbot &mdash; Bascule WhatsApp + démo</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+      <p style="color:var(--grey-light);font-size:0.9rem;margin-bottom:16px;">Catherine a montré le fonctionnement du chatbot (commandes slash, FAQ, escalade admin, message de bienvenue).</p>
+
+      <div class="sub-section" style="margin-top:0;padding-top:0;border-top:none;">
+        <h4>Décisions</h4>
+        <ul class="content-list">
+          <li><strong>FSY Studio &rarr; WhatsApp</strong> (là où est la communauté, pas de friction Telegram)</li>
+          <li><strong>MTM &rarr; Telegram</strong> (gardé)</li>
+          <li>Message de bienvenue envoyé en privé (pas dans le groupe, pour éviter le spam)</li>
+          <li>Chatbot lit les tags du planning Notion d'Antoine pour publier le dimanche soir</li>
+          <li>Sondages / check-ups trimestriels via le chatbot WhatsApp</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>Données reçues</h4>
+        <ul class="content-list">
+          <li>Aurélia a envoyé l'export des conversations WhatsApp à Catherine (base de données du bot)</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>Reste à faire</h4>
+        <ul class="content-list">
+          <li><strong>Catherine :</strong> adapter le bot de Telegram à WhatsApp</li>
+          <li><strong>Catherine :</strong> connecter Circle pour récupérer les titres des vidéos de la semaine (reminder dimanche soir)</li>
+          <li><strong>Aurélia :</strong> valider les commandes slash (aide, FAQ, replay, planning, programme, règles)</li>
+          <li>Tester sur un groupe privé avant mise en prod</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUJET 2 : Délégation -->
+  <div class="card" id="sujet-delegation">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-purple">2</span> Délégation FSY Studio &mdash; Revue du projet</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+      <p style="color:var(--grey-light);font-size:0.9rem;margin-bottom:16px;">Catherine a présenté le projet de délégation (HTML). Aurélia a validé la logique : <strong>documenter &rarr; recruter &rarr; transférer &rarr; automatiser &rarr; piloter</strong>.</p>
+
+      <div class="sub-section" style="margin-top:0;padding-top:0;border-top:none;">
+        <h4>Cartographie des tâches validée</h4>
+        <ul class="content-list">
+          <li><strong>Répondre WhatsApp membres</strong> &rarr; CM ou chatbot</li>
+          <li><strong>Publier contenu Circle</strong> &rarr; automatisable si planning existe</li>
+          <li><strong>Créer vidéos</strong> &rarr; Aurélia filme, monteur monte (pas délégable)</li>
+          <li><strong>Emails Brevo</strong> &rarr; CM + automatisations</li>
+          <li><strong>Gestion abonnements</strong> &rarr; automatisable (alertes KPIs)</li>
+          <li><strong>Lives</strong> &rarr; supprimés (remplacés par vidéos pré-enregistrées)</li>
+          <li><strong>Stories Instagram</strong> &rarr; Antoine + CM</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>5 SOP identifiés</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>SOP</th>
+                <th>Automatisable ?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Accueil nouveau membre</td><td style="color:var(--green);">Oui</td></tr>
+              <tr><td>2</td><td>Publication contenu hebdo</td><td style="color:var(--green);">Oui (si planning Circle)</td></tr>
+              <tr><td>3</td><td>Animation communauté</td><td style="color:var(--orange);">CM nécessaire</td></tr>
+              <tr><td>4</td><td>Campagne promo 4x/an</td><td style="color:var(--orange);">CM nécessaire en amont</td></tr>
+              <tr><td>5</td><td>Gestion abonnements</td><td style="color:var(--green);">Oui + alertes</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h4>Budget CM estimé</h4>
+        <ul class="content-list">
+          <li><strong>300-500 &euro;/mois</strong>, 10-15h/semaine</li>
+          <li>Va baisser à <strong>~10h/mois</strong> une fois tout automatisé</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUJET 3 : Laurie -->
+  <div class="card" id="sujet-laurie">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-red">3</span> Le sujet Laurie &mdash; Discussion profonde</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="sub-section" style="margin-top:0;padding-top:0;border-top:none;">
+        <h4>Ce qu'Aurélia a exprimé</h4>
+        <ul class="content-list">
+          <li>Salaire doublé en 2 ans, impression qu'elle en fait moins</li>
+          <li>Laurie bloque l'énergie d'Aurélia, la challenge sur la stratégie (pas son rôle)</li>
+          <li>Laurie a accès à tout, Aurélia n'a pas accès à certains outils (Tally, sites)</li>
+          <li>Aurélia demande depuis 1 mois un doc avec tous les sites et accès &rarr; pas fait</li>
+          <li>Laurie = 350 &euro;/jour, 2 000 &euro;/mois &mdash; Aurélia trouve ça cher pour ce qui est livré</li>
+        </ul>
+        <blockquote>J'ai l'impression de devoir justifier mes décisions.<span class="author">&mdash; Aurélia</span></blockquote>
+        <blockquote>J'ai pas envie de rentrer dans un truc où je dois argumenter ce que je veux. J'ai envie d'être soutenue.<span class="author">&mdash; Aurélia</span></blockquote>
+        <blockquote>C'est un mini-deuil.<span class="author">&mdash; Aurélia (sur la fin de la relation avec Laurie)</span></blockquote>
+      </div>
+
+      <div class="sub-section">
+        <h4>Observation de Catherine</h4>
+        <ul class="content-list">
+          <li>&laquo; Dès la première session, j'ai trouvé qu'elle n'était pas à la bonne place &raquo;</li>
+          <li>Laurie devrait exécuter, pas challenger la stratégie</li>
+          <li>La relation mélange personnel et professionnel (énergéticienne + assistante)</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>Décision</h4>
+        <ul class="content-list">
+          <li><strong>Laurie finit les migrations</strong> (MTM cette semaine, FSY abo avant juillet)</li>
+          <li>Laurie fait la passation propre à la nouvelle personne</li>
+          <li>Aurélia doit avoir la conversation avec Laurie (&laquo; Où tu te vois dans l'entreprise ? &raquo;)</li>
+          <li>Chercher quelqu'un de nouveau : CM ou assistante digitale</li>
+          <li><strong>Piste : Lana</strong> (contact de Mélanie via Square) &mdash; OBM / assistante digitale indépendante</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUJET 4 : Tunnel premium -->
+  <div class="card" id="sujet-tunnel">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-orange">4</span> Tunnel premium FSY &rarr; Aurélia Del Sol</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+      <p style="color:var(--grey-light);font-size:0.9rem;margin-bottom:16px;"><strong>Question posée :</strong> comment amener les 130K abonnés Instagram FSY vers les offres premium Aurélia Del Sol ?</p>
+
+      <ul class="content-list">
+        <li><strong>Pas de nouveau compte Instagram</strong> &mdash; communication premium via le compte FSY existant</li>
+        <li>&laquo; Pour celles qui veulent aller plus loin &raquo; &rarr; lien vers le site Aurélia Del Sol</li>
+        <li><strong>Tunnel :</strong> Instagram FSY &rarr; site web Aurélia Del Sol &rarr; emailing automatisé &rarr; programmes 300-400 &euro;</li>
+        <li><strong>YouTube :</strong> contenu long format sous la marque Aurélia Del Sol (recrutement différent)</li>
+        <li>Analogie Isabelle Marant : prêt-à-porter + haut de gamme, boutiques face à face</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SUJET 5 : Programme Sommeil et Joie -->
+  <div class="card" id="sujet-sommeil">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-green">5</span> Programme &laquo; Sommeil et Joie &raquo;</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+      <p style="color:var(--grey-light);font-size:0.9rem;margin-bottom:16px;">Aurélia a présenté un programme qu'elle a créé avec Claude. <strong>Elle est très fière</strong> (premier programme qui l'anime vraiment).</p>
+
+      <blockquote>C'est l'art de prendre soin de soi dans la joie. Ça m'excite !<span class="author">&mdash; Aurélia</span></blockquote>
+
+      <div class="sub-section">
+        <h4>Détails du programme</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Élément</th>
+                <th>Détail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Nom</strong></td><td>Sommeil et Joie</td></tr>
+              <tr><td><strong>Marque</strong></td><td>Aurélia Del Sol</td></tr>
+              <tr><td><strong>Prix</strong></td><td>397 &euro; (accès 6 mois, puis 47 &euro;/an)</td></tr>
+              <tr><td><strong>Durée</strong></td><td>6 semaines</td></tr>
+              <tr><td><strong>Lancement</strong></td><td>8 juin 2026</td></tr>
+              <tr><td><strong>Plateforme</strong></td><td>Circle (espace Aurélia Del Sol)</td></tr>
+              <tr><td><strong>Source</strong></td><td>Sondage communauté WhatsApp &rarr; sommeil = 95% des réponses</td></tr>
+              <tr><td><strong>Garantie</strong></td><td>Remboursement si &lt;20% du contenu consulté dans les 7 premiers jours</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h4>Contenu inclus</h4>
+        <ul class="content-list">
+          <li>6 vidéos guidées</li>
+          <li>Audios d'endormissement</li>
+          <li>Cartographie corps sous stress</li>
+          <li>Poster salle de bain</li>
+          <li>Guide &laquo; 3h du matin &raquo; (acupression + audio retour au calme)</li>
+          <li>Journal guidé 6 semaines</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>Upsells</h4>
+        <ul class="content-list">
+          <li>Kit nuit de crise</li>
+          <li>Recettes de Damien</li>
+          <li>Guide cycle hormonal</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUJET 6 : Playbook -->
+  <div class="card" id="sujet-playbook">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-yellow">6</span> Playbook Process &mdash; Démo + bug</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+      <p style="color:var(--grey-light);font-size:0.9rem;margin-bottom:16px;">Catherine a montré le Playbook avec les process interactifs :</p>
+      <ul class="content-list">
+        <li>Process &laquo; Créer un espace Circle &raquo; (existant)</li>
+        <li>Process &laquo; Migration contenu &raquo; &mdash; 27 étapes (MTM + FSY abo)</li>
+        <li>Process &laquo; Lancer un challenge recrutement &raquo; &mdash; 16 étapes</li>
+        <li>Nouveau process créé : <strong>&laquo; Accompagnement Sommeil et Joie &raquo;</strong></li>
+      </ul>
+
+      <div style="margin-top:16px;padding:12px 16px;background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.15);border-radius:10px;font-size:0.85rem;color:var(--red);">
+        <strong>Bug identifié :</strong> impossible de modifier les dates dans les tâches. Catherine corrige ce soir.
+      </div>
+
+      <div style="margin-top:12px;padding:12px 16px;background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.15);border-radius:10px;font-size:0.85rem;color:var(--blue);">
+        <strong>Portail client :</strong> Aurélia n'a pas la V2 (manque Brain Dump, Mes outils). Catherine met à jour et renvoie.
+      </div>
+    </div>
+  </div>
+
+  <!-- SUJET 7 : Automatisations -->
+  <div class="card" id="sujet-auto">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-terracotta">7</span> Automatisations &mdash; Reminder dimanche + emailing</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="sub-section" style="margin-top:0;padding-top:0;border-top:none;">
+        <h4>Reminder dimanche soir</h4>
+        <ul class="content-list">
+          <li>Message automatique WhatsApp : &laquo; Voici la semaine, voici les 3 vidéos, focus X &raquo;</li>
+          <li>Source : récupérer les titres de vidéos depuis Circle (Catherine doit avoir les accès)</li>
+          <li>Laurie fait ça manuellement aujourd'hui &rarr; à automatiser</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>Emailing en parallèle du chatbot</h4>
+        <ul class="content-list">
+          <li>Reminder hebdo en emailing ET en chatbot</li>
+          <li>Séquences Brevo existantes (bienvenue, désabonnement, rétention) &mdash; vérifier si tout est en place</li>
+          <li>Aurélia garde UNE newsletter personnelle</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>Sondages</h4>
+        <ul class="content-list">
+          <li>Chatbot WhatsApp : tous les 3 mois, questions pour prendre la température</li>
+          <li>Programme ambassadeurs Circle à explorer</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider">Citations clés</div>
+
+  <!-- CITATIONS -->
+  <div class="card open" id="citations">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-terracotta">&#x201C;</span> Citations clés</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+      <blockquote>J'ai l'impression d'avoir jamais été autant occupée, de ne pas du tout avancer sur les trucs.<span class="author">&mdash; Aurélia (surcharge persistante)</span></blockquote>
+
+      <blockquote>Face Soul Yoga a une mission : rendre accessible le fait de prendre soin de soi. Vraiment accessible, à 17 &euro;. Moi, ma mission, elle est plus là.<span class="author">&mdash; Aurélia (clarté sur la séparation FSY / Aurélia Del Sol)</span></blockquote>
+
+      <blockquote>C'est l'art de prendre soin de soi dans la joie. Ça m'excite !<span class="author">&mdash; Aurélia (énergie retrouvée sur Aurélia Del Sol)</span></blockquote>
+
+      <blockquote>Je la paye, je n'ai fait que l'augmenter depuis deux ans, j'ai presque doublé son salaire et j'ai l'impression qu'elle en fait un peu moins.<span class="author">&mdash; Aurélia (sur Laurie)</span></blockquote>
+
+      <blockquote>J'ai pas envie de rentrer dans un truc où je dois argumenter ce que je veux. J'ai envie d'être soutenue.<span class="author">&mdash; Aurélia</span></blockquote>
+
+      <blockquote>C'est un mini-deuil.<span class="author">&mdash; Aurélia (sur la fin de la relation avec Laurie)</span></blockquote>
+
+      <blockquote>Garbage in, garbage out.<span class="author">&mdash; Aurélia (comprend bien l'IA, l'utilise intelligemment)</span></blockquote>
+    </div>
+  </div>
+
+  <div class="section-divider">Actions</div>
+
+  <!-- ACTIONS -->
+  <div class="card open" id="actions">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-green">&#x2713;</span> Actions &mdash; Qui fait quoi</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+
+      <div class="sub-section" style="margin-top:0;padding-top:0;border-top:none;">
+        <h4>Catherine (cette semaine)</h4>
+        <div class="action-item" data-key="s6-c-1"><input type="checkbox" /><span class="action-text">Adapter chatbot de Telegram à WhatsApp (FSY Studio)</span></div>
+        <div class="action-item" data-key="s6-c-2"><input type="checkbox" /><span class="action-text">Intégrer l'export WhatsApp dans la base de données du bot</span></div>
+        <div class="action-item" data-key="s6-c-3"><input type="checkbox" /><span class="action-text">Fixer le bug des dates dans le Playbook Process</span></div>
+        <div class="action-item" data-key="s6-c-4"><input type="checkbox" /><span class="action-text">Envoyer le Playbook mis à jour à Aurélia (version avec tous les onglets)</span></div>
+        <div class="action-item" data-key="s6-c-5"><input type="checkbox" /><span class="action-text">Mettre à jour le portail client FSY (V2 avec Brain Dump, Mes Outils)</span></div>
+        <div class="action-item" data-key="s6-c-6"><input type="checkbox" /><span class="action-text">Créer les listes de tâches avec deadlines pour Laurie (migration MTM + migration FSY abo)</span></div>
+        <div class="action-item" data-key="s6-c-7"><input type="checkbox" /><span class="action-text">Créer un template de process &laquo; Lancer un accompagnement Aurélia Del Sol &raquo; dans le Playbook</span></div>
+        <div class="action-item" data-key="s6-c-8"><input type="checkbox" /><span class="action-text">Regarder comment récupérer les titres de vidéos depuis Circle (API ou webhook)</span></div>
+      </div>
+
+      <div class="sub-section">
+        <h4>Aurélia</h4>
+        <div class="action-item" data-key="s6-a-1"><input type="checkbox" /><span class="action-text"><strong>Parler à Laurie</strong> &mdash; &laquo; Où tu te vois dans l'entreprise ? &raquo; + clarifier le rôle <span class="priority priority-high">Priorité</span></span></div>
+        <div class="action-item" data-key="s6-a-2"><input type="checkbox" /><span class="action-text">Valider les commandes slash du chatbot (aide, FAQ, replay, planning, programme, règles)</span></div>
+        <div class="action-item" data-key="s6-a-3"><input type="checkbox" /><span class="action-text">Contacter Lana (contact de Mélanie / Square) &mdash; assistante digitale potentielle</span></div>
+        <div class="action-item" data-key="s6-a-4"><input type="checkbox" /><span class="action-text">Contacter Laure Bilger (Studiolab) de la part de Catherine &mdash; site premium Aurélia Del Sol</span></div>
+        <div class="action-item" data-key="s6-a-5"><input type="checkbox" /><span class="action-text">Réfléchir : quel profil veut-elle ? Exécutant pur ou quelqu'un qui prend du lead ?</span></div>
+        <div class="action-item" data-key="s6-a-6"><input type="checkbox" /><span class="action-text">Lister tous les outils et accès dans le portail client (section &laquo; Mes Outils &raquo;)</span></div>
+        <div class="action-item" data-key="s6-a-7"><input type="checkbox" /><span class="action-text">Booker session 7</span></div>
+      </div>
+
+      <div class="sub-section">
+        <h4>Laurie</h4>
+        <div class="action-item" data-key="s6-l-1"><input type="checkbox" /><span class="action-text"><strong>Finaliser migration Master The Method sur Circle</strong> &mdash; deadline 3 avril <span class="priority priority-high">Urgent</span></span></div>
+        <div class="action-item" data-key="s6-l-2"><input type="checkbox" /><span class="action-text">Migration FSY abonnements sur Circle &mdash; deadline 31 juillet</span></div>
+        <div class="action-item" data-key="s6-l-3"><input type="checkbox" /><span class="action-text">Envoyer à Aurélia le doc avec tous les sites et accès (demandé depuis 1 mois)</span></div>
+        <div class="action-item" data-key="s6-l-4"><input type="checkbox" /><span class="action-text">Booker 1h avec Catherine pour travailler sur les automatisations Circle (séquences Brevo, contrats, etc.)</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OBSERVATIONS CATHERINE -->
+  <div class="card" id="observations">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h2><span class="section-icon icon-terracotta">&#x1F50D;</span> Observations Catherine (notes internes)</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="card-body">
+
+      <div class="sub-section" style="margin-top:0;padding-top:0;border-top:none;">
+        <h4>Ce qui a changé depuis la session 5</h4>
+        <ul class="content-list">
+          <li>Aurélia est plus claire sur la séparation FSY / Aurélia Del Sol &mdash; ce n'est plus une idée, c'est une conviction</li>
+          <li>Le programme Sommeil et Joie est un signe fort : elle crée du contenu premium avec énergie et fierté</li>
+          <li>Le sujet Laurie mûrit : Aurélia n'est plus dans le doute, elle est dans le &laquo; comment &raquo;</li>
+          <li>L'utilisation de Claude en autonomie progresse (programme entier créé avec)</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>Signaux d'alerte</h4>
+        <ul class="content-list">
+          <li><strong>&laquo; J'ai l'impression d'avoir jamais été autant occupée de ne pas avancer &raquo;</strong> &mdash; la surcharge ne diminue pas</li>
+          <li>Laurie a accès à tout, Aurélia non &mdash; <strong>risque de dépendance technique</strong></li>
+          <li>Le programme Sommeil et Joie risque de devenir un nouveau chantier d'éparpillement si on ne cadre pas la timeline</li>
+          <li>Aurélia parle de YouTube, site premium, LP, emailing &mdash; attention à ne pas ouvrir trop de fronts</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>Pattern confirmé</h4>
+        <ul class="content-list">
+          <li>L'éparpillement est toujours présent mais Aurélia en est plus consciente</li>
+          <li>Le syndrome de l'imposteur recule sur Aurélia Del Sol (fière du programme, alignée sur le pricing)</li>
+          <li>La validation externe diminue (elle a créé le programme seule avec Claude, pas besoin de Romain ou Mélanie)</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h4>Prochaine session &mdash; focus suggéré</h4>
+        <ul class="content-list">
+          <li>Retour conversation Laurie (qu'est-ce qui a été dit ? quelle décision ?)</li>
+          <li>Point migration MTM (devait être fait pour le 3 avril)</li>
+          <li>Cadrer le lancement Sommeil et Joie : qui fait quoi, avec quel budget, quelle timeline</li>
+          <li><strong>Ne PAS ouvrir de nouveau sujet</strong></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="brand-footer">CS Consulting Stratégique</div>
+  <p>Compte-rendu session 6 &mdash; Face Soul Yoga &mdash; 30 mars 2026</p>
+  <p style="margin-top:4px;">Document confidentiel</p>
+</div>
+
+<script>
+// Toggle collapsible cards
+function toggleCard(header) {
+  header.closest('.card').classList.toggle('open');
+}
+
+// localStorage persistence for checkboxes
+const STORAGE_KEY = 'fsy-cr-session6';
+
+function loadCheckboxes() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    document.querySelectorAll('.action-item[data-key]').forEach(item => {
+      const key = item.dataset.key;
+      const cb = item.querySelector('input[type="checkbox"]');
+      if (saved[key]) {
+        cb.checked = true;
+        item.classList.add('checked');
+      }
+    });
+  } catch (e) {}
+}
+
+function saveCheckboxes() {
+  const state = {};
+  document.querySelectorAll('.action-item[data-key]').forEach(item => {
+    const key = item.dataset.key;
+    const cb = item.querySelector('input[type="checkbox"]');
+    if (cb.checked) state[key] = true;
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadCheckboxes();
+  document.querySelectorAll('.action-item input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.closest('.action-item').classList.toggle('checked', this.checked);
+      saveCheckboxes();
+    });
+  });
+});
+</script>
+
+</body>
+</html>
