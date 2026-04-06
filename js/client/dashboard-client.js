@@ -71,6 +71,24 @@ async function loadClientDashboard(profile) {
     '</div>';
   }
 
+  // ─── Résumé Playbook ───
+  var pbSummary = await getPlaybookSummary(profile.id);
+  if (pbSummary.totalSteps > 0) {
+    var pbPct = Math.round((pbSummary.doneSteps / pbSummary.totalSteps) * 100);
+    html += '<div style="margin-bottom:20px;padding:14px 18px;background:rgba(194,122,90,0.08);border:1px solid rgba(194,122,90,0.2);border-radius:10px;cursor:pointer" onclick="switchToTab(\'tab-playbook\')">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center">' +
+        '<div>' +
+          '<div style="font-weight:600;font-size:0.9rem">📋 Playbook</div>' +
+          '<div style="font-size:0.8rem;color:#888;margin-top:2px">' + pbSummary.active + ' process actif' + (pbSummary.active > 1 ? 's' : '') + ' · ' + pbSummary.doneSteps + '/' + pbSummary.totalSteps + ' étapes</div>' +
+        '</div>' +
+        '<span style="font-size:0.85rem;color:#C27A5A;font-weight:600">' + pbPct + '%</span>' +
+      '</div>' +
+      '<div style="margin-top:8px;height:4px;background:#222;border-radius:2px;overflow:hidden">' +
+        '<div style="height:100%;width:' + pbPct + '%;background:linear-gradient(90deg,#C27A5A,#d4956f);border-radius:2px"></div>' +
+      '</div>' +
+    '</div>';
+  }
+
   // ─── Actions prioritaires ───
   const { data: actions } = await db
     .from('actions')

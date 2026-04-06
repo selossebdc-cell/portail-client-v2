@@ -27,9 +27,26 @@
         <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:var(--space-md)">Se connecter</button>
       </form>
 
-      <p style="text-align:center;margin-top:var(--space-lg);font-size:var(--font-size-xs);color:var(--text-muted)">
-        Mot de passe oublié ? Contactez Catherine.
+      <p style="text-align:center;margin-top:var(--space-lg)">
+        <a href="#" id="forgot-password-link" style="font-size:var(--font-size-xs);color:var(--terracotta);text-decoration:underline;cursor:pointer">
+          Mot de passe oublié ?
+        </a>
       </p>
+
+      <!-- Formulaire mot de passe oublié (caché par défaut) -->
+      <div id="forgot-password-form" style="display:none;margin-top:var(--space-md)">
+        <p style="font-size:var(--font-size-sm);color:var(--text-secondary);margin-bottom:var(--space-sm)">
+          Entre ton email, tu recevras un lien pour réinitialiser ton mot de passe.
+        </p>
+        <input type="email" id="reset-email" class="input" placeholder="votre@email.fr" required>
+        <div id="reset-message" class="form-error"></div>
+        <button type="button" id="reset-submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:var(--space-sm)">
+          Envoyer le lien
+        </button>
+        <p style="text-align:center;margin-top:var(--space-sm)">
+          <a href="#" id="back-to-login" style="font-size:var(--font-size-xs);color:var(--text-muted);text-decoration:underline">← Retour à la connexion</a>
+        </p>
+      </div>
     </div>
   </div>
 
@@ -45,6 +62,47 @@
           return;
         }
       } catch (e) { console.error('Session check:', e); }
+
+      // --- Mot de passe oublié ---
+      document.getElementById('forgot-password-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('forgot-password-link').parentElement.style.display = 'none';
+        document.getElementById('forgot-password-form').style.display = 'block';
+      });
+
+      document.getElementById('back-to-login').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('login-form').style.display = '';
+        document.getElementById('forgot-password-link').parentElement.style.display = '';
+        document.getElementById('forgot-password-form').style.display = 'none';
+      });
+
+      document.getElementById('reset-submit').addEventListener('click', async function() {
+        var email = document.getElementById('reset-email').value.trim();
+        var msgEl = document.getElementById('reset-message');
+        msgEl.classList.remove('visible');
+        if (!email) { msgEl.textContent = 'Entre ton email'; msgEl.classList.add('visible'); return; }
+
+        this.disabled = true;
+        this.textContent = 'Envoi...';
+
+        try {
+          var { error } = await db.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/reset-password.html'
+          });
+          if (error) throw error;
+          msgEl.textContent = 'Email envoyé ! Vérifie ta boîte mail.';
+          msgEl.style.color = '#4ade80';
+          msgEl.classList.add('visible');
+        } catch (err) {
+          msgEl.textContent = 'Erreur : ' + (err.message || 'impossible d\'envoyer l\'email');
+          msgEl.style.color = '';
+          msgEl.classList.add('visible');
+        }
+        this.disabled = false;
+        this.textContent = 'Envoyer le lien';
+      });
 
       const form = document.getElementById('login-form');
       const errorEl = document.getElementById('login-error');

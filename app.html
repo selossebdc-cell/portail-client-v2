@@ -51,8 +51,8 @@
       <button class="tab" data-tab="tab-project">Mon projet</button>
       <button class="tab" data-tab="tab-automations">Automatisations</button>
       <button class="tab" data-tab="tab-contract">Mon contrat <span class="badge" id="badge-contract" style="display:none"></span></button>
+      <button class="tab" data-tab="tab-playbook">Playbook <span class="badge" id="badge-playbook" style="display:none"></span></button>
       <a href="clients/fsy/dashboard-kpi-fsy.html" target="_blank" class="tab" style="text-decoration:none;color:inherit;">📊 KPI</a>
-      <a href="playbook.html" target="_blank" class="tab" style="text-decoration:none;color:inherit;">📋 Playbook</a>
     </nav>
 
     <div class="client-main">
@@ -149,6 +149,18 @@
         <div id="contract-docs"></div>
       </div>
 
+      <!-- TAB: PLAYBOOK -->
+      <div id="tab-playbook" class="tab-panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <h2 class="section-title">Playbook</h2>
+          <a href="playbook.html" target="_blank" style="font-size:0.8rem;color:#C27A5A;text-decoration:none">Ouvrir en plein écran →</a>
+        </div>
+        <p class="section-subtitle" style="color:#888;font-size:0.85rem;margin-bottom:16px">Tes process, timelines et avancement</p>
+        <div id="playbook-portal-list">
+          <div style="text-align:center;padding:40px 0"><span class="spinner"></span></div>
+        </div>
+      </div>
+
       <!-- HELP FOOTER -->
       <div class="help-footer">
         <p>Un blocage ? Une question ? Envoie-moi un message.</p>
@@ -227,6 +239,7 @@
   <script src="js/client/project.js"></script>
   <script src="js/client/automations.js"></script>
   <script src="js/client/contract.js"></script>
+  <script src="js/client/playbook.js"></script>
   <script src="js/admin/dashboard.js"></script>
   <script src="js/admin/client-selector.js"></script>
   <script src="js/admin/recap.js"></script>

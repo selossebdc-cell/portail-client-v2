@@ -816,8 +816,11 @@
 
     <!-- Header -->
     <header class="app-header">
-      <h1>Face Soul Yoga — Playbook</h1>
+      <h1 id="playbook-title">Playbook</h1>
       <div class="header-actions">
+        <select id="admin-client-select" style="display:none;background:#1a1a1a;color:#e8e0d8;border:1px solid #333;border-radius:8px;padding:6px 12px;font-size:0.85rem;font-family:inherit;cursor:pointer;min-width:180px;">
+          <option value="">Tous les clients</option>
+        </select>
         <span id="header-user" class="header-user"></span>
         <!-- Import/Export masqués (admin uniquement) -->
         <div class="data-actions" style="display:none;">
@@ -1659,6 +1662,7 @@ steps: [
       var process = {
         id: crypto.randomUUID(),
         name: name || template.name,
+        client_id: appState.currentClientId,
         date_cible: dateCible,
         template_id: template.id,
         category: template.category,
@@ -1689,6 +1693,7 @@ steps: [
       var newProcess = {
         id: crypto.randomUUID(),
         name: process.name + ' (copie)',
+        client_id: process.client_id || appState.currentClientId,
         date_cible: newDateCible,
         template_id: process.template_id,
         category: process.category,
@@ -1725,7 +1730,9 @@ steps: [
       currentProcessId: null,
       selectedTemplateId: null,
       editingStepId: null,
-      currentFilter: 'Tous'
+      currentFilter: 'Tous',
+      currentClientId: null,
+      isAdmin: false
     };
 
     // Palette contrastée : Aurélia=terracotta, Laurie=bleu marine, Catherine=doré, VA=vert, Automatique=violet, Externe=gris ardoise
@@ -1744,10 +1751,46 @@ steps: [
       });
     }
 
+    async function initAdminClientSelector() {
+      var select = document.getElementById('admin-client-select');
+      if (!select || !supabaseClient) return;
+      var result = await supabaseClient
+        .from('profiles')
+        .select('id, full_name, company, role')
+        .in('role', ['client', 'assistant'])
+        .order('full_name');
+      var clients = result.data || [];
+      clients.forEach(function(c) {
+        var opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = c.full_name + (c.company ? ' — ' + c.company : '');
+        select.appendChild(opt);
+      });
+      select.style.display = '';
+      select.addEventListener('change', async function() {
+        var titleEl = document.getElementById('playbook-title');
+        if (this.value) {
+          appState.currentClientId = this.value;
+          var selected = clients.find(function(c) { return c.id === select.value; });
+          titleEl.textContent = (selected ? (selected.company || selected.full_name) : '') + ' — Playbook';
+        } else {
+          appState.currentClientId = null;
+          titleEl.textContent = 'Playbook — Tous les clients';
+        }
+        await loadAllData();
+        renderAll();
+      });
+    }
+
     async function loadAllData() {
       try {
         var processesResult = await db.processes.getAll();
         var ownersResult = await db.owners.getAll();
+        // Admin avec filtre client : filtrer côté front (RLS retourne tout pour admin)
+        if (appState.isAdmin && appState.currentClientId) {
+          var cid = appState.currentClientId;
+          processesResult = processesResult.filter(function(p) { return p.client_id === cid; });
+        }
         appState.processes = processesResult;
         appState.owners = sortOwners(ownersResult);
       } catch (e) {
@@ -1766,6 +1809,7 @@ steps: [
           process = {
             id: crypto.randomUUID(),
             name: name,
+            client_id: appState.currentClientId,
             date_cible: dateCible,
             template_id: null,
             category: 'Projet',
@@ -2036,6 +2080,7 @@ steps: [
           var toInsert = {
             id: process.id,
             name: process.name,
+            client_id: process.client_id,
             date_cible: process.date_cible,
             template_id: process.template_id,
             category: process.category,
@@ -3222,8 +3267,37 @@ steps: [
         });
       });
 
-      // --- Init Direct (pas d'auth, protection via portail chiffre) ---
+      // --- Init avec auth (RLS multi-clients) ---
       try {
+        if (!supabaseClient) throw new Error('Supabase non disponible');
+        var sessionResult = await supabaseClient.auth.getSession();
+        var session = sessionResult.data.session;
+        if (!session) {
+          window.location.href = 'index.html';
+          return;
+        }
+        // Récupérer le profil pour déterminer le rôle
+        var profileResult = await supabaseClient
+          .from('profiles')
+          .select('id, role, full_name, company')
+          .eq('id', session.user.id)
+          .single();
+        if (profileResult.data) {
+          appState.isAdmin = (profileResult.data.role === 'admin');
+          appState.currentClientId = profileResult.data.id;
+          // Titre dynamique
+          var titleEl = document.getElementById('playbook-title');
+          if (!appState.isAdmin && profileResult.data.company) {
+            titleEl.textContent = profileResult.data.company + ' — Playbook';
+          }
+        }
+        // Admin : sélecteur clients
+        if (appState.isAdmin) {
+          await initAdminClientSelector();
+          // Afficher import/export pour admin
+          var dataActions = document.querySelector('.data-actions');
+          if (dataActions) dataActions.style.display = '';
+        }
         showApp(null);
         await loadAllData();
         renderAll();

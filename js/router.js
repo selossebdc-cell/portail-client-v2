@@ -112,16 +112,62 @@ async function initClientPortal(profile) {
   loadProject(profile.id);
   loadAutomations(profile.id);
   loadContract(profile.id);
+  loadPlaybook(profile.id);
 
   // Check badges (async, non-blocking)
   checkAllBadges(profile.id);
+  updatePlaybookBadge(profile.id);
 }
 
-// Password change
+// Password change modal
 function requestPasswordChange() {
-  var subject = encodeURIComponent('Changement de mot de passe — Espace Client');
-  var body = encodeURIComponent('Bonjour Catherine,\n\nJe souhaite changer le mot de passe de mon espace client.\n\nMon nouveau mot de passe souhaite : [A COMPLETER]\n\nMerci !');
-  window.location.href = 'mailto:catherine@csbusiness.fr?subject=' + subject + '&body=' + body;
+  var overlay = document.createElement('div');
+  overlay.id = 'password-modal-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+
+  overlay.innerHTML = '<div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:24px;max-width:400px;width:100%">'
+    + '<h3 style="color:#C27A5A;margin-bottom:16px;font-family:Playfair Display,serif">Changer mon mot de passe</h3>'
+    + '<input type="password" id="new-pw" class="input" placeholder="Nouveau mot de passe" style="margin-bottom:8px">'
+    + '<input type="password" id="confirm-pw" class="input" placeholder="Confirmer le nouveau" style="margin-bottom:8px">'
+    + '<div id="pw-error" style="color:#f87171;font-size:0.8rem;min-height:20px;margin-bottom:8px"></div>'
+    + '<div style="display:flex;gap:8px;justify-content:flex-end">'
+    + '<button onclick="document.getElementById(\'password-modal-overlay\').remove()" style="background:none;border:1px solid #333;color:#a0a0a0;border-radius:8px;padding:8px 16px;cursor:pointer;font-family:inherit">Annuler</button>'
+    + '<button id="pw-submit" style="background:#C27A5A;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-family:inherit">Changer</button>'
+    + '</div></div>';
+
+  document.body.appendChild(overlay);
+
+  // Fermer en cliquant sur l'overlay
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) overlay.remove();
+  });
+
+  document.getElementById('pw-submit').addEventListener('click', async function() {
+    var newPw = document.getElementById('new-pw').value;
+    var confirmPw = document.getElementById('confirm-pw').value;
+    var errEl = document.getElementById('pw-error');
+    errEl.textContent = '';
+
+    if (!newPw || !confirmPw) { errEl.textContent = 'Remplis tous les champs'; return; }
+    if (newPw !== confirmPw) { errEl.textContent = 'Les mots de passe ne correspondent pas'; return; }
+    if (newPw.length < 6) { errEl.textContent = 'Minimum 6 caractères'; return; }
+
+    this.disabled = true;
+    this.textContent = 'Changement...';
+
+    try {
+      var { error } = await db.auth.updateUser({ password: newPw });
+      if (error) throw error;
+      errEl.style.color = '#4ade80';
+      errEl.textContent = 'Mot de passe changé avec succès !';
+      setTimeout(function() { overlay.remove(); }, 2000);
+    } catch (err) {
+      errEl.style.color = '#f87171';
+      errEl.textContent = 'Erreur : ' + (err.message || 'impossible de changer le mot de passe');
+      this.disabled = false;
+      this.textContent = 'Changer';
+    }
+  });
 }
 
 // Done actions toggle
