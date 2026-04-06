@@ -94,26 +94,32 @@ async function switchToClientView(clientId) {
 }
 
 function addClientViewControls(profile) {
-  const header = document.querySelector('.client-header-inner');
-  let controls = header.querySelector('.admin-controls');
-  if (controls) controls.remove();
+  // Supprimer l'ancien bandeau s'il existe
+  var existing = document.getElementById('admin-topbar');
+  if (existing) existing.remove();
 
-  controls = document.createElement('div');
-  controls.className = 'admin-controls';
-  controls.style.cssText = 'display:flex;align-items:center;gap:8px;margin-top:8px;';
+  // Barre admin sticky en haut de la page
+  var topbar = document.createElement('div');
+  topbar.id = 'admin-topbar';
+  topbar.style.cssText = 'position:sticky;top:0;z-index:100;background:#111;border-bottom:2px solid #C27A5A;padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;';
 
   // Back button
-  const backBtn = document.createElement('button');
+  var backBtn = document.createElement('button');
   backBtn.textContent = '← Dashboard';
   backBtn.style.cssText = 'background:rgba(194,122,90,0.15);color:#C27A5A;border:none;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:0.8rem;font-family:inherit;font-weight:500;';
   backBtn.onclick = backToAdmin;
 
+  // Nom du client affiché
+  var clientLabel = document.createElement('span');
+  clientLabel.style.cssText = 'color:#e8e0d8;font-size:0.85rem;font-weight:600;';
+  clientLabel.textContent = profile.full_name + (profile.company ? ' — ' + profile.company : '');
+
   // Quick switch
-  const quickSelect = document.createElement('select');
-  quickSelect.style.cssText = 'background:#1a1a1a;color:#e8e0d8;border:1px solid #333;border-radius:8px;padding:6px 10px;font-size:0.8rem;font-family:inherit;cursor:pointer;';
+  var quickSelect = document.createElement('select');
+  quickSelect.style.cssText = 'background:#1a1a1a;color:#e8e0d8;border:1px solid #333;border-radius:8px;padding:6px 10px;font-size:0.8rem;font-family:inherit;cursor:pointer;margin-left:auto;';
 
   allClients.filter(c => c.role === 'client').forEach(client => {
-    const opt = document.createElement('option');
+    var opt = document.createElement('option');
     opt.value = client.id;
     opt.textContent = client.full_name;
     if (client.id === profile.id) opt.selected = true;
@@ -126,9 +132,13 @@ function addClientViewControls(profile) {
     }
   });
 
-  controls.appendChild(backBtn);
-  controls.appendChild(quickSelect);
-  header.appendChild(controls);
+  topbar.appendChild(backBtn);
+  topbar.appendChild(clientLabel);
+  topbar.appendChild(quickSelect);
+
+  // Insérer tout en haut de la vue client
+  var clientView = document.getElementById('client-view');
+  clientView.insertBefore(topbar, clientView.firstChild);
 }
 
 async function backToAdmin() {
@@ -144,9 +154,9 @@ async function backToAdmin() {
   const select = document.getElementById('admin-client-select');
   if (select) select.value = '';
 
-  // Remove admin controls from client view
-  const controls = document.querySelector('.admin-controls');
-  if (controls) controls.remove();
+  // Remove admin topbar from client view
+  var topbar = document.getElementById('admin-topbar');
+  if (topbar) topbar.remove();
 
   // Reset conditional tabs
   resetConditionalTabs();
