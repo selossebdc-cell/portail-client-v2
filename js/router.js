@@ -12,8 +12,24 @@ async function initApp() {
   if (profile.role === 'admin') {
     document.getElementById('admin-view').classList.remove('hidden');
     initAdminDashboard();
+    initClientSelector();
+  } else if (profile.role === 'assistant') {
+    // Assistant sees the associated client's portal with restricted modules
+    var associatedId = profile.associated_client_id;
+    if (associatedId) {
+      var clientProfile = await getProfile(associatedId);
+      // Override enabled_modules with assistant's own modules
+      clientProfile.enabled_modules = profile.enabled_modules || [];
+      document.getElementById('client-view').classList.remove('hidden');
+      applyConditionalTabs(clientProfile);
+      initClientPortal(clientProfile);
+    } else {
+      document.getElementById('client-view').classList.remove('hidden');
+      initClientPortal(profile);
+    }
   } else {
     document.getElementById('client-view').classList.remove('hidden');
+    applyConditionalTabs(profile);
     initClientPortal(profile);
   }
 }

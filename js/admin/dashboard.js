@@ -142,46 +142,8 @@ async function viewClientDetail(clientId) {
   const profile = await getProfile(clientId);
   currentProfile = profile;
 
-  document.getElementById('admin-view').classList.add('hidden');
-  document.getElementById('client-view').classList.remove('hidden');
-  document.getElementById('user-name').textContent = profile.full_name + ' (vue admin)';
-
-  initClientPortal(profile);
-
-  const header = document.querySelector('#client-view .app-header');
-  if (!header.querySelector('.btn-back')) {
-    const backBtn = document.createElement('button');
-    backBtn.className = 'btn btn-secondary btn-sm btn-back';
-    backBtn.textContent = '← Retour dashboard';
-    backBtn.onclick = async () => {
-      const session = await getSession();
-      const adminProfile = await getProfile(session.user.id);
-      currentProfile = adminProfile;
-      document.getElementById('client-view').classList.add('hidden');
-      document.getElementById('admin-view').classList.remove('hidden');
-      backBtn.remove();
-      await loadAdminClients();
-    };
-    header.insertBefore(backBtn, header.firstChild);
-  }
+  // Use the new switchToClientView from client-selector.js
+  await switchToClientView(clientId);
 }
 
-async function initClientPortal(profile) {
-  const tabs = document.querySelectorAll('#client-view .tab');
-  const panels = document.querySelectorAll('#client-view .tab-panel');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
-      tabs.forEach(t => t.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(target).classList.add('active');
-    });
-  });
-
-  loadActions(profile.id);
-  loadBrainDumps(profile.id);
-  loadSessions(profile.id);
-  loadTutos(profile.id);
-  loadContract(profile.id);
-}
+// initClientPortal is defined in router.js (single source of truth)
