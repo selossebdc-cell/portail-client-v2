@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes tâches — CS Consulting</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f0f0f;
+    color: #e8e0d8;
+    min-height: 100vh;
+    padding: 24px 16px 140px;
+  }
+  h1 { color: #C27A5A; font-size: 1.4rem; margin-bottom: 4px; }
+  .subtitle { color: #888; font-size: 0.85rem; margin-bottom: 16px; }
+  .progress-bar { background: #1a1a1a; border-radius: 8px; height: 8px; margin-bottom: 20px; overflow: hidden; }
+  .progress-fill { background: #C27A5A; height: 100%; border-radius: 8px; transition: width 0.4s ease; }
+
+  /* Filtres */
+  .filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .filter-btn {
+    background: #1a1a1a; border: 1px solid #2a2a2a; color: #888;
+    padding: 6px 14px; border-radius: 20px; font-size: 0.78rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .filter-btn.active { background: #C27A5A; color: #0f0f0f; border-color: #C27A5A; font-weight: 600; }
+
+  /* Catégories */
+  .category {
+    color: #C27A5A; font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.5px; margin: 20px 0 10px;
+  }
+
+  /* Tâches */
+  .task {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid #1a1a1a;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.3s;
+  }
+  .task.done { opacity: 0.4; }
+  .task input[type="checkbox"] {
+    appearance: none; -webkit-appearance: none;
+    width: 22px; height: 22px; min-width: 22px;
+    border: 2px solid #C27A5A; border-radius: 6px;
+    background: transparent; margin-top: 1px; cursor: pointer; position: relative;
+  }
+  .task input[type="checkbox"]:checked { background: #C27A5A; }
+  .task input[type="checkbox"]:checked::after {
+    content: '\2713'; color: #0f0f0f; font-size: 14px; font-weight: bold;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  }
+  .task.done .task-text { text-decoration: line-through; color: #555; }
+  .task-content { flex: 1; }
+  .task-text { font-size: 0.95rem; line-height: 1.4; }
+  .task-detail { color: #777; font-size: 0.8rem; margin-top: 2px; }
+  .task-meta { display: flex; gap: 8px; margin-top: 4px; }
+  .task-tag {
+    font-size: 0.65rem; padding: 2px 8px; border-radius: 10px;
+    background: #1a1a1a; color: #888;
+  }
+  .task-tag.urgent { background: #4a1a1a; color: #ff6b6b; }
+  .task-tag.important { background: #4a3a1a; color: #ffa94d; }
+  .task-tag.agent { background: #1a2a3a; color: #74b9ff; }
+  .task-notes { color: #C27A5A; font-size: 0.75rem; margin-top: 4px; font-style: italic; }
+
+  /* Ajout rapide */
+  .add-bar {
+    position: fixed; bottom: 56px; left: 0; right: 0;
+    background: #1a1a1a; border-top: 1px solid #2a2a2a;
+    padding: 10px 16px; display: flex; gap: 8px;
+  }
+  .add-bar input {
+    flex: 1; background: #0f0f0f; border: 1px solid #2a2a2a;
+    color: #e8e0d8; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem;
+  }
+  .add-bar input::placeholder { color: #555; }
+  .add-bar select {
+    background: #0f0f0f; border: 1px solid #2a2a2a; color: #C27A5A;
+    padding: 10px; border-radius: 8px; font-size: 0.8rem;
+  }
+  .add-bar button {
+    background: #C27A5A; color: #0f0f0f; border: none;
+    padding: 10px 18px; border-radius: 8px; font-weight: 700;
+    font-size: 0.9rem; cursor: pointer;
+  }
+
+  /* Compteur */
+  .counter {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: #0f0f0f; border-top: 1px solid #2a2a2a;
+    padding: 14px; text-align: center;
+    font-size: 0.85rem; color: #C27A5A; font-weight: 600;
+  }
+
+  /* Loading */
+  .loading { text-align: center; color: #555; padding: 40px; font-size: 0.9rem; }
+
+  /* Empty */
+  .empty { text-align: center; color: #555; padding: 40px; }
+  .empty-icon { font-size: 2rem; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<h1>Mes tâches</h1>
+<div class="subtitle" id="dateLabel"></div>
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">Tout</button>
+  <button class="filter-btn" data-filter="todo">À faire</button>
+  <button class="filter-btn" data-filter="done">Fait</button>
+  <button class="filter-btn" data-filter="pro">Pro</button>
+  <button class="filter-btn" data-filter="perso">Perso</button>
+</div>
+
+<div id="taskList"><div class="loading">Chargement...</div></div>
+
+<div class="add-bar">
+  <input type="text" id="newTask" placeholder="Nouvelle tâche..." />
+  <select id="newCategory">
+    <option value="clients">Clients</option>
+    <option value="contenu">Contenu</option>
+    <option value="administratif">Admin</option>
+    <option value="finances">Finances</option>
+    <option value="dev">Dev</option>
+    <option value="filles">Filles</option>
+    <option value="sante">Santé</option>
+    <option value="perso">Perso</option>
+  </select>
+  <button id="addBtn">+</button>
+</div>
+
+<div class="counter" id="counter"></div>
+
+<script>
+const SUPABASE_URL = 'https://dcynlifggjiqqihincbp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjeW5saWZnZ2ppcXFpaGluY2JwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2NTUyNTIsImV4cCI6MjA4OTIzMTI1Mn0.zsJnkswhmnzLCcO--0PwxJtIfTFL8C2p6_gqMM-V3bI';
+
+const PERSO_CATEGORIES = ['filles', 'voyages', 'finances', 'perso', 'sante'];
+const CATEGORY_LABELS = {
+  filles: 'Filles', voyages: 'Voyages', finances: 'Finances',
+  administratif: 'Administratif', clients: 'Clients', contenu: 'Contenu / Visibilité',
+  dev: 'Développement', perso: 'Perso', sante: 'Santé'
+};
+
+let allTasks = [];
+let currentFilter = 'all';
+
+// Date label
+const now = new Date();
+const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+document.getElementById('dateLabel').textContent = `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+// API helpers
+async function supaFetch(path, options = {}) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': options.prefer || 'return=representation',
+      ...options.headers
+    },
+    ...options
+  });
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  const text = await res.text();
+  return text ? JSON.parse(text) : [];
+}
+
+async function loadTasks() {
+  try {
+    allTasks = await supaFetch('tasks?order=priority.desc,created_at.desc');
+    render();
+  } catch (e) {
+    document.getElementById('taskList').innerHTML = '<div class="empty">Erreur de chargement</div>';
+    console.error(e);
+  }
+}
+
+async function toggleTask(id, currentStatus) {
+  const newStatus = currentStatus === 'done' ? 'todo' : 'done';
+  const completedAt = newStatus === 'done' ? new Date().toISOString() : null;
+  await supaFetch(`tasks?id=eq.${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status: newStatus, completed_at: completedAt, updated_by: 'catherine' })
+  });
+  const task = allTasks.find(t => t.id === id);
+  if (task) { task.status = newStatus; task.completed_at = completedAt; }
+  render();
+}
+
+async function addTask() {
+  const input = document.getElementById('newTask');
+  const cat = document.getElementById('newCategory');
+  const title = input.value.trim();
+  if (!title) return;
+
+  const [created] = await supaFetch('tasks', {
+    method: 'POST',
+    body: JSON.stringify({ title, category: cat.value, status: 'todo', created_by: 'catherine' })
+  });
+  allTasks.unshift(created);
+  input.value = '';
+  render();
+}
+
+function render() {
+  const list = document.getElementById('taskList');
+  let filtered = [...allTasks];
+
+  if (currentFilter === 'todo') filtered = filtered.filter(t => t.status !== 'done');
+  else if (currentFilter === 'done') filtered = filtered.filter(t => t.status === 'done');
+  else if (currentFilter === 'pro') filtered = filtered.filter(t => !PERSO_CATEGORIES.includes(t.category));
+  else if (currentFilter === 'perso') filtered = filtered.filter(t => PERSO_CATEGORIES.includes(t.category));
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">✨</div>Aucune tâche</div>';
+    updateProgress();
+    return;
+  }
+
+  // Group by category
+  const groups = {};
+  filtered.forEach(t => {
+    if (!groups[t.category]) groups[t.category] = [];
+    groups[t.category].push(t);
+  });
+
+  let html = '';
+  for (const [cat, tasks] of Object.entries(groups)) {
+    html += `<div class="category">${CATEGORY_LABELS[cat] || cat}</div>`;
+    tasks.forEach(t => {
+      const done = t.status === 'done';
+      const priorityTag = t.priority === 2 ? '<span class="task-tag urgent">Urgent</span>' :
+                          t.priority === 1 ? '<span class="task-tag important">Important</span>' : '';
+      const agentTag = t.created_by !== 'catherine' ? `<span class="task-tag agent">${t.created_by}</span>` : '';
+      const notesHtml = t.notes ? `<div class="task-notes">${t.notes}</div>` : '';
+      html += `
+        <label class="task ${done ? 'done' : ''}" onclick="toggleTask('${t.id}', '${t.status}')">
+          <input type="checkbox" ${done ? 'checked' : ''} readonly>
+          <div class="task-content">
+            <div class="task-text">${t.title}</div>
+            ${t.detail ? `<div class="task-detail">${t.detail}</div>` : ''}
+            ${(priorityTag || agentTag) ? `<div class="task-meta">${priorityTag}${agentTag}</div>` : ''}
+            ${notesHtml}
+          </div>
+        </label>`;
+    });
+  }
+  list.innerHTML = html;
+  updateProgress();
+}
+
+function updateProgress() {
+  const active = allTasks.filter(t => t.status !== 'cancelled');
+  const done = active.filter(t => t.status === 'done').length;
+  const total = active.length;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('counter').textContent = `${done} / ${total} — ${pct}%`;
+}
+
+// Filters
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    render();
+  });
+});
+
+// Add task
+document.getElementById('addBtn').addEventListener('click', addTask);
+document.getElementById('newTask').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addTask();
+});
+
+// Init
+loadTasks();
+
+// Auto-refresh every 60s (agents can update tasks)
+setInterval(loadTasks, 60000);
+</script>
+</body>
+</html>
