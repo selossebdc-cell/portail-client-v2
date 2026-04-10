@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comment savoir d'où viennent vos clients — CS Consulting Stratégique</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --terracotta: #C27A5A;
+    --terracotta-light: #D4956F;
+    --terracotta-bg: rgba(194,122,90,0.07);
+    --dark: #1a1a1a;
+    --bg: #FFFBF7;
+    --card: #fff;
+    --text: #2c2c2c;
+    --text-light: #777;
+    --border: #e8e0d8;
+    --green: #2E7D32;
+    --green-bg: #E8F5E9;
+    --code-bg: #1a1a1a;
+    --code-text: #C27A5A;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--dark);
+    padding: 64px 24px 52px;
+    text-align: center;
+    border-bottom: 4px solid var(--terracotta);
+  }
+  .header .brand {
+    font-size: 0.65rem;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: #fff;
+    line-height: 1.25;
+    max-width: 680px;
+    margin: 0 auto 12px;
+  }
+  .header .sub {
+    font-size: 1rem;
+    color: #aaa;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .header .badge {
+    display: inline-block;
+    margin-top: 20px;
+    background: var(--terracotta-bg);
+    border: 1px solid var(--terracotta);
+    color: var(--terracotta-light);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* SECTIONS */
+  .section {
+    padding: 56px 0 16px;
+  }
+  .section-num {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    color: var(--dark);
+    margin-bottom: 16px;
+    line-height: 1.25;
+  }
+  .section p {
+    font-size: 0.97rem;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .section p:last-child { margin-bottom: 0; }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0 0;
+  }
+
+  /* HIGHLIGHT BOX */
+  .box {
+    background: var(--terracotta-bg);
+    border-left: 3px solid var(--terracotta);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 20px;
+    margin: 20px 0;
+    font-size: 0.93rem;
+  }
+  .box strong { color: var(--terracotta); }
+  .box.green {
+    background: var(--green-bg);
+    border-color: var(--green);
+  }
+  .box.green strong { color: var(--green); }
+
+  /* CARDS GRILLE */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card .card-icon { font-size: 1.4rem; margin-bottom: 8px; }
+  .card .card-title { font-size: 0.9rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+  .card .card-text { font-size: 0.83rem; color: var(--text-light); line-height: 1.5; }
+
+  /* PARAM TABLE */
+  .param-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.88rem;
+  }
+  .param-table th {
+    background: var(--dark);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+  }
+  .param-table th:first-child { border-radius: 8px 0 0 0; }
+  .param-table th:last-child { border-radius: 0 8px 0 0; }
+  .param-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .param-table tr:last-child td { border-bottom: none; }
+  .param-table tr:nth-child(even) td { background: #faf8f6; }
+  .param-table code {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    font-family: monospace;
+  }
+
+  /* STEPS */
+  .steps { margin: 24px 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: var(--terracotta);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-top: 2px;
+  }
+  .step-content { flex: 1; }
+  .step-content strong { color: var(--dark); font-size: 0.95rem; display: block; margin-bottom: 4px; }
+  .step-content p { font-size: 0.88rem; color: var(--text-light); margin: 0; }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-family: monospace;
+    font-size: 0.82rem;
+    color: #e8e0d8;
+    word-break: break-all;
+    line-height: 1.6;
+    position: relative;
+  }
+  .code-block .code-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 8px;
+  }
+  .code-block .highlight { color: var(--terracotta-light); }
+  .btn-copy-code {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #333;
+    color: #ccc;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.15s;
+  }
+  .btn-copy-code:hover { background: var(--terracotta); color: #fff; }
+
+  /* CHANNEL LIST */
+  .channel-list { margin: 20px 0; }
+  .channel {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .channel:last-child { border-bottom: none; }
+  .channel-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    width: 36px;
+    text-align: center;
+    margin-top: 2px;
+  }
+  .channel-name { font-weight: 700; font-size: 0.93rem; color: var(--dark); margin-bottom: 2px; }
+  .channel-example { font-size: 0.8rem; color: var(--text-light); font-family: monospace; background: #faf8f6; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px; }
+  .channel-tip { font-size: 0.82rem; color: var(--text-light); margin-top: 4px; }
+
+  /* ═══════════════════════════════
+     GÉNÉRATEUR UTM
+  ═══════════════════════════════ */
+  .generator {
+    background: var(--dark);
+    border-radius: 16px;
+    padding: 36px 32px;
+    margin: 32px 0;
+  }
+  .generator h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .generator .gen-sub {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 28px;
+  }
+
+  .gen-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .gen-field { display: flex; flex-direction: column; gap: 5px; }
+  .gen-field.full { grid-column: 1 / -1; }
+  .gen-field label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #aaa;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .gen-field label span { color: var(--terracotta); margin-left: 2px; }
+  .gen-field input, .gen-field select {
+    background: #2a2a2a;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    color: #e8e0d8;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    transition: border-color 0.2s;
+  }
+  .gen-field input:focus, .gen-field select:focus {
+    outline: none;
+    border-color: var(--terracotta);
+  }
+  .gen-field input::placeholder { color: #555; }
+  .gen-field select option { background: #2a2a2a; }
+
+  .gen-result {
+    background: #111;
+    border: 1.5px solid #333;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 6px;
+    font-family: monospace;
+    font-size: 0.82rem;
+    color: #888;
+    word-break: break-all;
+    line-height: 1.6;
+    min-height: 52px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .gen-result.has-value {
+    color: #e8e0d8;
+    border-color: var(--terracotta);
+  }
+  .gen-result .utm-colored { color: var(--terracotta-light); }
+
+  .btn-gen-copy {
+    margin-top: 12px;
+    width: 100%;
+    background: var(--terracotta);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .btn-gen-copy:hover { background: var(--terracotta-light); }
+  .btn-gen-copy:disabled { background: #444; color: #777; cursor: not-allowed; }
+  .copy-confirm {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #4caf50;
+    margin-top: 8px;
+    height: 18px;
+    transition: opacity 0.3s;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-light);
+    font-size: 0.8rem;
+    margin-top: 48px;
+  }
+  .footer span { color: var(--terracotta); }
+  .footer a { color: var(--terracotta); text-decoration: none; }
+
+  @media (max-width: 580px) {
+    .header h1 { font-size: 1.6rem; }
+    .cards { grid-template-columns: 1fr; }
+    .gen-grid { grid-template-columns: 1fr; }
+    .gen-field.full { grid-column: 1; }
+    .generator { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="brand">CS — Consulting Stratégique · Ressource client</div>
+  <h1>Comment savoir d'où viennent vos clients</h1>
+  <div class="sub">Un guide pratique pour traquer vos sources d'acquisition — sans développeur, sans outil payant.</div>
+  <div class="badge">Lecture : 5 min · Niveau : débutant</div>
+</div>
+
+<div class="container">
+
+  <!-- ── 1. LE PROBLÈME ── -->
+  <div class="section">
+    <div class="section-num">01 — Le problème</div>
+    <h2>Vous publiez partout. Mais vous ne savez pas ce qui marche vraiment.</h2>
+    <p>Instagram, YouTube, newsletter, partenaires, bouche-à-oreille… Vous êtes présent sur plusieurs canaux. Des gens arrivent sur votre site. Certains achètent.</p>
+    <p>Mais lequel de vos canaux ramène vraiment des clients ? Votre post Instagram d'il y a deux semaines ? Votre email du mois dernier ? La page d'un partenaire ?</p>
+    <div class="box">
+      <strong>Sans tracking, vous ne pouvez pas le savoir.</strong> Vous continuez à investir du temps sur des canaux qui ne convertissent peut-être pas, et vous ignorez ceux qui fonctionnent.
+    </div>
+    <p>La bonne nouvelle : il existe une solution simple, gratuite, et qui fonctionne avec tous vos outils existants. Ce sont les <strong>liens UTM</strong>.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 2. C'EST QUOI ── -->
+  <div class="section">
+    <div class="section-num">02 — La solution</div>
+    <h2>Un lien UTM : votre lien normal, avec une étiquette invisible</h2>
+    <p>Un lien UTM, c'est simplement votre lien habituel avec des informations ajoutées à la fin. Ces informations voyagent avec le visiteur quand il clique, et permettent de savoir exactement d'où il vient.</p>
+
+    <div class="code-block">
+      <div class="code-label">Exemple — sans UTM</div>
+      https://monsite.fr/offre
+    </div>
+
+    <div class="code-block">
+      <div class="code-label">Exemple — avec UTM</div>
+      https://monsite.fr/offre<span class="highlight">?utm_source=instagram&utm_medium=bio&utm_campaign=lancement_juin</span>
+    </div>
+
+    <p>Pour l'utilisateur, rien ne change : il clique, il arrive sur votre page. De votre côté, vous savez qu'il vient de la bio Instagram, via la campagne "lancement juin".</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 3. LES PARAMÈTRES ── -->
+  <div class="section">
+    <div class="section-num">03 — Les paramètres</div>
+    <h2>3 informations essentielles à renseigner</h2>
+
+    <table class="param-table">
+      <thead>
+        <tr>
+          <th>Paramètre</th>
+          <th>Ce que ça désigne</th>
+          <th>Exemples</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>utm_source</code></td>
+          <td><strong>D'où vient le visiteur ?</strong><br>La plateforme ou l'origine</td>
+          <td><code>instagram</code>, <code>youtube</code>, <code>newsletter</code>, <code>partenaire_nom</code></td>
+        </tr>
+        <tr>
+          <td><code>utm_medium</code></td>
+          <td><strong>Quel type de lien ?</strong><br>Le format ou l'emplacement</td>
+          <td><code>bio</code>, <code>story</code>, <code>email</code>, <code>post</code>, <code>site_web</code></td>
+        </tr>
+        <tr>
+          <td><code>utm_campaign</code></td>
+          <td><strong>Quelle action ?</strong><br>Le nom de votre campagne ou contenu</td>
+          <td><code>lancement_juin</code>, <code>promo_ete</code>, <code>lead_magnet</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box">
+      <strong>Règle d'or :</strong> Utilisez toujours les mêmes termes. Si vous écrivez <code>instagram</code> une fois et <code>Instagram</code> une autre, vous aurez deux lignes séparées dans vos statistiques. Restez cohérent — minuscules, pas d'espaces, des underscores à la place.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 4. GÉNÉRATEUR ── -->
+  <div class="section">
+    <div class="section-num">04 — Créer vos liens</div>
+    <h2>Générez votre lien UTM ici</h2>
+    <p>Remplissez les champs ci-dessous et copiez le lien généré. Aucune installation nécessaire.</p>
+
+    <div class="generator">
+      <h3>Générateur de liens UTM</h3>
+      <div class="gen-sub">Remplissez les champs — le lien se construit automatiquement</div>
+
+      <div class="gen-grid">
+        <div class="gen-field full">
+          <label>URL de destination <span>*</span></label>
+          <input type="url" id="gen-url" placeholder="https://monsite.fr/ma-page" oninput="buildUTM()">
+        </div>
+        <div class="gen-field">
+          <label>Source <span>*</span></label>
+          <select id="gen-source" onchange="buildUTM()">
+            <option value="">— Choisir —</option>
+            <option value="instagram">instagram</option>
+            <option value="youtube">youtube</option>
+            <option value="newsletter">newsletter</option>
+            <option value="linkedin">linkedin</option>
+            <option value="facebook">facebook</option>
+            <option value="tiktok">tiktok</option>
+            <option value="partenaire">partenaire</option>
+            <option value="autre">autre</option>
+          </select>
+        </div>
+        <div class="gen-field">
+          <label>Source personnalisée</label>
+          <input type="text" id="gen-source-custom" placeholder="Ex : partenaire_dupont" oninput="buildUTM()">
+        </div>
+        <div class="gen-field">
+          <label>Medium <span>*</span></label>
+          <select id="gen-medium" onchange="buildUTM()">
+            <option value="">— Choisir —</option>
+            <option value="bio">bio</option>
+            <option value="story">story</option>
+            <option value="post">post</option>
+            <option value="email">email</option>
+            <option value="description">description</option>
+            <option value="site_web">site_web</option>
+            <option value="qr_code">qr_code</option>
+          </select>
+        </div>
+        <div class="gen-field">
+          <label>Campagne <span>*</span></label>
+          <input type="text" id="gen-campaign" placeholder="Ex : lancement_juin_2026" oninput="buildUTM()">
+        </div>
+      </div>
+
+      <div class="gen-field" style="margin-bottom: 16px;">
+        <label>Votre lien UTM</label>
+        <div class="gen-result" id="gen-result">Remplissez les champs ci-dessus pour générer votre lien…</div>
+      </div>
+
+      <button class="btn-gen-copy" id="btn-copy" onclick="copyGenerated()" disabled>Copier le lien</button>
+      <div class="copy-confirm" id="copy-confirm"></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 5. OÙ LES METTRE ── -->
+  <div class="section">
+    <div class="section-num">05 — Où les utiliser</div>
+    <h2>Un lien UTM pour chaque endroit où vous partagez</h2>
+    <p>La règle : <strong>un lien différent par canal et par emplacement</strong>. C'est la seule façon de savoir précisément ce qui fonctionne.</p>
+
+    <div class="channel-list">
+      <div class="channel">
+        <div class="channel-icon">📸</div>
+        <div>
+          <div class="channel-name">Instagram — lien en bio</div>
+          <div class="channel-tip">Le lien de votre bio est souvent votre source principale. Changez-le à chaque campagne et créez un nouveau lien UTM à chaque fois.</div>
+          <div class="channel-example">utm_source=instagram&utm_medium=bio&utm_campaign=nom_campagne</div>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="channel-icon">▶️</div>
+        <div>
+          <div class="channel-name">YouTube — description de vidéo</div>
+          <div class="channel-tip">Mettez votre lien UTM dans la description, toujours avec le titre de la vidéo dans le nom de campagne pour savoir quelle vidéo convertit.</div>
+          <div class="channel-example">utm_source=youtube&utm_medium=description&utm_campaign=nom_video</div>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="channel-icon">📧</div>
+        <div>
+          <div class="channel-name">Newsletter / Email</div>
+          <div class="channel-tip">Chaque bouton ou lien dans votre email doit avoir son propre UTM. Vous saurez quel bouton a été cliqué et quelle newsletter a converti.</div>
+          <div class="channel-example">utm_source=newsletter&utm_medium=email&utm_campaign=edition_avril</div>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="channel-icon">🤝</div>
+        <div>
+          <div class="channel-name">Pages partenaires</div>
+          <div class="channel-tip">Si un partenaire met votre lien sur son site, donnez-lui un lien UTM à son nom. Vous saurez combien de clients viennent de lui.</div>
+          <div class="channel-example">utm_source=partenaire_dupont&utm_medium=site_web&utm_campaign=leads</div>
+        </div>
+      </div>
+      <div class="channel">
+        <div class="channel-icon">💬</div>
+        <div>
+          <div class="channel-name">Stories / Reels</div>
+          <div class="channel-tip">Si vous avez le lien dans vos stories, utilisez un lien différent de celui de la bio. Vous saurez si vos stories convertissent mieux que votre bio.</div>
+          <div class="channel-example">utm_source=instagram&utm_medium=story&utm_campaign=nom_campagne</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 6. CE QUE ÇA DONNE ── -->
+  <div class="section">
+    <div class="section-num">06 — Ce que ça vous donne</div>
+    <h2>Des décisions basées sur des données, pas sur des intuitions</h2>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Dans Google Analytics</div>
+        <div class="card-text">Vous voyez exactement combien de visiteurs viennent de chaque source, et combien achètent. Gratuit, disponible tout de suite.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <div class="card-title">Dans vos formulaires</div>
+        <div class="card-text">La source peut être capturée dans votre formulaire de contact. Vous savez d'où vient chaque prospect au moment où il vous écrit.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">✉️</div>
+        <div class="card-title">Dans votre outil email</div>
+        <div class="card-text">Brevo, Mailchimp, etc. : ils lisent automatiquement les UTM et attribuent les ventes à la bonne campagne email.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">Dans une automatisation</div>
+        <div class="card-text">Avec un peu de configuration, la source peut être enregistrée dans votre CRM et déclencher des actions différentes selon l'origine.</div>
+      </div>
+    </div>
+
+    <div class="box green">
+      <strong>Exemple concret :</strong> Vous avez 3 clientes qui viennent de YouTube cette semaine. Vous regardez leur UTM dans votre outil email — elles viennent toutes les 3 de la même vidéo. Vous savez maintenant quelle vidéo convertit. Vous en faites une suite.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 7. PAR OÙ COMMENCER ── -->
+  <div class="section">
+    <div class="section-num">07 — Par où commencer</div>
+    <h2>3 liens à créer cette semaine</h2>
+    <p>Pas besoin de tout faire d'un coup. Commencez par vos 3 endroits les plus actifs :</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Le lien de votre bio Instagram (ou réseau principal)</strong>
+          <p>Créez un lien avec <code>utm_source=instagram&utm_medium=bio</code> et remplacez votre lien actuel. Résultat visible en 48h dans Google Analytics.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Le lien dans votre prochaine newsletter</strong>
+          <p>Ajoutez <code>utm_source=newsletter&utm_medium=email&utm_campaign=nom_edition</code> à votre bouton principal. Vous saurez si vos emails convertissent.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Le lien d'un partenaire ou d'une page externe</strong>
+          <p>Si quelqu'un parle de vous ou publie votre lien : donnez-lui un lien à son nom. <code>utm_source=prenom_partenaire&utm_medium=site_web</code></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <strong>La suite ?</strong> Une fois ces 3 liens en place, vous avez déjà une base de données utile. En 30 jours, vous aurez vos premières conclusions. Et si vous voulez aller plus loin — capturer la source dans votre CRM, automatiser le routing des leads selon l'origine — c'est là que j'interviens.
+    </div>
+  </div>
+
+</div><!-- /.container -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="container">
+    <span>CS — Consulting Stratégique</span> · Catherine Selosse<br>
+    <a href="mailto:catherine@csbusiness.fr">catherine@csbusiness.fr</a> — <a href="https://csbusiness.fr">csbusiness.fr</a>
+  </div>
+</div>
+
+<script>
+  let generatedURL = '';
+
+  function buildUTM() {
+    const url = document.getElementById('gen-url').value.trim();
+    const sourceSelect = document.getElementById('gen-source').value;
+    const sourceCustom = document.getElementById('gen-source-custom').value.trim();
+    const medium = document.getElementById('gen-medium').value;
+    const campaign = document.getElementById('gen-campaign').value.trim().replace(/\s+/g, '_').toLowerCase();
+
+    const source = sourceCustom || sourceSelect;
+
+    const result = document.getElementById('gen-result');
+    const btn = document.getElementById('btn-copy');
+
+    if (!url || !source || !medium || !campaign) {
+      result.className = 'gen-result';
+      result.textContent = 'Remplissez les champs ci-dessus pour générer votre lien…';
+      btn.disabled = true;
+      generatedURL = '';
+      return;
+    }
+
+    const base = url.includes('?') ? url + '&' : url + '?';
+    const params = `utm_source=${encodeURIComponent(source)}&utm_medium=${encodeURIComponent(medium)}&utm_campaign=${encodeURIComponent(campaign)}`;
+    generatedURL = base + params;
+
+    result.className = 'gen-result has-value';
+    result.innerHTML = `${url}<span class="utm-colored">?utm_source=${source}&amp;utm_medium=${medium}&amp;utm_campaign=${campaign}</span>`;
+    btn.disabled = false;
+  }
+
+  function copyGenerated() {
+    if (!generatedURL) return;
+    navigator.clipboard.writeText(generatedURL).then(() => {
+      const confirm = document.getElementById('copy-confirm');
+      confirm.textContent = 'Lien copié ✓';
+      setTimeout(() => { confirm.textContent = ''; }, 2500);
+    });
+  }
+</script>
+
+</body>
+</html>
