@@ -16,6 +16,8 @@ async function initAdminDashboard() {
 
   await loadAdminClients();
   loadRecaps();
+  loadMyTasks();
+  initMyTaskFilters();
 }
 
 async function loadAdminClients() {

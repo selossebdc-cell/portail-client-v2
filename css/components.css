@@ -272,6 +272,25 @@
   display: block;
 }
 
+/* Filter buttons */
+.filter-btn {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-btn.active {
+  background: var(--terracotta);
+  color: var(--bg-primary);
+  border-color: var(--terracotta);
+  font-weight: 600;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .app-container {
