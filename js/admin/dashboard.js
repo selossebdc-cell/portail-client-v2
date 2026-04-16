@@ -1,6 +1,5 @@
 async function initAdminDashboard() {
   document.getElementById('user-name-admin').textContent = currentProfile.full_name;
-  initTabs('#admin-tabs, #admin-view');
 
   const tabs = document.querySelectorAll('#admin-view .tab');
   const panels = document.querySelectorAll('#admin-view .tab-panel');

@@ -131,20 +131,30 @@ function updateTaskProgress() {
 
 // Filtres
 function initMyTaskFilters() {
-  document.querySelectorAll('#mytasks-filters .filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#mytasks-filters .filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentTaskFilter = btn.dataset.filter;
-      renderMyTasks();
+  const filterBtns = document.querySelectorAll('#mytasks-filters .filter-btn');
+  if (filterBtns.length > 0) {
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#mytasks-filters .filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentTaskFilter = btn.dataset.filter;
+        renderMyTasks();
+      });
     });
-  });
+  }
 
   // Add task
-  document.getElementById('addMyTaskBtn').addEventListener('click', addMyTask);
-  document.getElementById('newTask').addEventListener('keydown', e => {
-    if (e.key === 'Enter') addMyTask();
-  });
+  const addBtn = document.getElementById('addMyTaskBtn');
+  const newTaskInput = document.getElementById('newTask');
+
+  if (addBtn) {
+    addBtn.addEventListener('click', addMyTask);
+  }
+  if (newTaskInput) {
+    newTaskInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') addMyTask();
+    });
+  }
 }
 
 // Auto-refresh
