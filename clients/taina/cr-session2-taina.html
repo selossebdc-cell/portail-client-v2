@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CR Séance 2 — Guadeloupe Explor | CS Consulting Stratégique</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --terracotta: #C27A5A;
+    --terracotta-light: #d4956f;
+    --terracotta-dim: rgba(194,122,90,0.15);
+    --bg: #0f0f0f;
+    --bg-card: #1a1a1a;
+    --bg-card-alt: #1f1f1f;
+    --white: #FFFFFF;
+    --grey-light: #b0b0b0;
+    --grey-dim: #666666;
+    --green: #4ade80;
+    --green-dim: rgba(74,222,128,0.12);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.12);
+    --orange: #fb923c;
+    --orange-dim: rgba(251,146,60,0.12);
+    --blue: #60a5fa;
+    --blue-dim: rgba(96,165,250,0.12);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.12);
+    --yellow: #fbbf24;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 60px;
+  }
+
+  .header {
+    background: linear-gradient(160deg, #1a1a1a 0%, #0f0f0f 50%, #1a1410 100%);
+    padding: 40px 24px 32px;
+    border-bottom: 3px solid var(--terracotta);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -40px;
+    width: 250px; height: 250px;
+    background: var(--terracotta);
+    opacity: 0.05;
+    border-radius: 50%;
+  }
+  .header .brand { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 10px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 4vw, 2.2rem); font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
+  .header .subtitle { font-size: 0.95rem; color: var(--grey-light); margin-bottom: 14px; }
+  .header .meta { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 0.8rem; color: var(--grey-light); }
+  .header .meta span { background: var(--bg-card); padding: 4px 14px; border-radius: 20px; border: 1px solid #2a2a2a; }
+
+  .container { max-width: 820px; margin: 0 auto; padding: 0 20px; }
+
+  .section { margin-top: 36px; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 600; color: var(--terracotta);
+    margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #2a2a2a;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title .icon { font-size: 1.1rem; }
+
+  .card {
+    background: var(--bg-card); border-radius: 12px; padding: 20px;
+    margin-bottom: 12px; border: 1px solid #2a2a2a; transition: border-color 0.2s;
+  }
+  .card:hover { border-color: #3a3a3a; }
+  .card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
+  .card p, .card li { font-size: 0.86rem; color: var(--grey-light); line-height: 1.7; }
+  .card ul { list-style: none; padding-left: 0; }
+  .card ul li { padding: 4px 0 4px 18px; position: relative; }
+  .card ul li::before { content: '›'; position: absolute; left: 4px; color: var(--terracotta); font-weight: 700; }
+
+  /* Celebrations */
+  .celeb-grid { display: grid; gap: 8px; }
+  .celeb-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--bg-card); border-radius: 10px; padding: 12px 16px;
+    border: 1px solid #2a2a2a; font-size: 0.86rem; color: var(--grey-light);
+  }
+  .celeb-item .icon-badge {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--green-dim); color: var(--green); font-size: 0.85rem;
+  }
+
+  /* Blocages */
+  .blocage-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--bg-card); border-radius: 10px; padding: 12px 16px;
+    margin-bottom: 8px; border: 1px solid #2a2a2a; font-size: 0.86rem; color: var(--grey-light);
+  }
+  .blocage-item .icon-badge {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--red-dim); color: var(--red); font-size: 0.85rem;
+  }
+  .blocage-item strong { color: var(--white); }
+
+  /* Parcours */
+  .parcours-card {
+    background: var(--bg-card); border-radius: 12px; padding: 20px;
+    margin-bottom: 14px; border-left: 3px solid var(--terracotta);
+    border-top: 1px solid #2a2a2a; border-right: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a;
+  }
+  .parcours-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .parcours-num {
+    background: var(--terracotta-dim); color: var(--terracotta);
+    font-weight: 700; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px;
+  }
+  .parcours-name { font-weight: 600; font-size: 1rem; }
+
+  .flow-steps {
+    display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0;
+    justify-content: flex-start;
+  }
+  .flow-step {
+    background: var(--bg-card-alt); border: 1px solid #2a2a2a; border-radius: 8px;
+    padding: 6px 12px; font-size: 0.72rem; color: var(--grey-light);
+    text-align: center; position: relative;
+  }
+  .flow-step.friction {
+    border-color: var(--red); background: var(--red-dim); color: var(--red);
+  }
+  .flow-step::after {
+    content: '→'; margin-left: 8px; color: var(--grey-dim); font-size: 0.75rem;
+  }
+  .flow-step:last-child::after { display: none; }
+
+  .friction-tag {
+    display: inline-block; background: var(--red-dim); color: var(--red);
+    font-size: 0.72rem; font-weight: 600; padding: 2px 10px; border-radius: 12px;
+    margin: 2px 4px 2px 0;
+  }
+  .ok-tag {
+    display: inline-block; background: var(--green-dim); color: var(--green);
+    font-size: 0.72rem; font-weight: 600; padding: 2px 10px; border-radius: 12px;
+    margin: 2px 4px 2px 0;
+  }
+
+  /* Décisions */
+  .decision-item {
+    background: var(--bg-card); border-radius: 12px; padding: 16px 20px;
+    margin-bottom: 10px; border: 1px solid #2a2a2a;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .decision-num {
+    background: var(--orange-dim); color: var(--orange);
+    font-weight: 700; font-size: 0.75rem; padding: 4px 10px;
+    border-radius: 20px; flex-shrink: 0; margin-top: 2px;
+  }
+  .decision-content { flex: 1; }
+  .decision-content strong { font-size: 0.9rem; display: block; margin-bottom: 4px; }
+  .decision-content p { font-size: 0.82rem; color: var(--grey-light); }
+
+  /* Actions */
+  .action-section-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--terracotta); margin: 20px 0 10px;
+  }
+  .action-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--bg-card); border-radius: 10px; padding: 12px 16px;
+    margin-bottom: 6px; border: 1px solid #2a2a2a; font-size: 0.86rem;
+  }
+  .action-item .priority {
+    flex-shrink: 0; font-size: 0.65rem; font-weight: 700;
+    padding: 3px 8px; border-radius: 12px; text-transform: uppercase;
+  }
+  .priority.p1 { background: var(--red-dim); color: var(--red); }
+  .priority.p2 { background: var(--orange-dim); color: var(--orange); }
+  .priority.p3 { background: var(--blue-dim); color: var(--blue); }
+  .action-item .action-text { flex: 1; color: var(--grey-light); }
+
+  /* Citations */
+  .citation {
+    background: var(--bg-card); border-left: 3px solid var(--terracotta);
+    border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 12px 0;
+    font-style: italic; font-size: 0.86rem; color: var(--grey-light); line-height: 1.8;
+  }
+  .citation .author {
+    display: block; margin-top: 8px; font-style: normal;
+    font-size: 0.72rem; color: var(--grey-dim);
+  }
+
+  /* Next session */
+  .next-session {
+    background: linear-gradient(135deg, var(--terracotta-dim), var(--bg-card));
+    border: 1px solid var(--terracotta); border-radius: 14px;
+    padding: 24px; text-align: center; margin-top: 30px;
+  }
+  .next-session h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 8px; color: var(--terracotta); }
+  .next-session p { font-size: 0.88rem; color: var(--grey-light); }
+
+  .footer {
+    text-align: center; margin-top: 40px; padding: 20px;
+    font-size: 0.7rem; color: var(--grey-dim); border-top: 1px solid #1a1a1a;
+  }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .header { background: #fff; }
+    .card, .parcours-card, .action-item, .decision-item, .celeb-item, .blocage-item {
+      background: #f9f9f9; border-color: #ddd;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">CS Consulting Stratégique</div>
+  <h1>Compte-rendu Séance 2</h1>
+  <div class="subtitle">Taina THARSIS — Guadeloupe Explor</div>
+  <div class="meta">
+    <span>7 avril 2026</span>
+    <span>~110 min</span>
+    <span>Séance 2 / 18</span>
+    <span>Cartographie parcours client</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- CÉLÉBRATIONS -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#10024;</span> Célébrations</div>
+    <div class="celeb-grid">
+      <div class="celeb-item">
+        <div class="icon-badge">&#10003;</div>
+        <span>CS Digital Setup complété ce matin entre deux RDV — motivation intacte</span>
+      </div>
+      <div class="celeb-item">
+        <div class="icon-badge">&#10003;</div>
+        <span>Claude Pro créé et actif — premières instructions déjà intégrées</span>
+      </div>
+      <div class="celeb-item">
+        <div class="icon-badge">&#10003;</div>
+        <span>Premier virement effectué le 04/04 (en transit)</span>
+      </div>
+      <div class="celeb-item">
+        <div class="icon-badge">&#10003;</div>
+        <span>Fichier Excel de suivi Meurtre au Paradis en place + mails types structurés</span>
+      </div>
+      <div class="celeb-item">
+        <div class="icon-badge">&#10003;</div>
+        <span>Décision stratégique : simplifier à 2 tours l'an prochain (au lieu de 5-6)</span>
+      </div>
+      <div class="celeb-item">
+        <div class="icon-badge">&#10003;</div>
+        <span>A déjà pensé au modèle « brouillon → automatique » pour les réponses mail</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCAGES -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#9888;</span> Blocages identifiés</div>
+
+    <div class="blocage-item">
+      <div class="icon-badge">!</div>
+      <span><strong>3 boîtes mail non centralisées</strong> — contact@ (Meurtre au Paradis), info@ (site web), ttharsis@ (B2B). Aucune ne communique avec l'autre.</span>
+    </div>
+    <div class="blocage-item">
+      <div class="icon-badge">!</div>
+      <span><strong>Emails en spam</strong> — Double politique DMARC sur guadeloupe-explor.com. Diagnostic fait par Claude, correctif à envoyer au webmaster.</span>
+    </div>
+    <div class="blocage-item">
+      <div class="icon-badge">!</div>
+      <span><strong>Zéro calendrier numérique</strong> — Agenda papier depuis 2012 (trauma perte données iPad). Prête à changer.</span>
+    </div>
+    <div class="blocage-item">
+      <div class="icon-badge">!</div>
+      <span><strong>Zéro cloud</strong> — Seul un Google Drive partagé. Pas de sauvegarde. NAS prévu mais jamais installé.</span>
+    </div>
+    <div class="blocage-item">
+      <div class="icon-badge">!</div>
+      <span><strong>Roundcube</strong> — Interface mail archaïque, pas d'automatisation possible, expérience utilisateur médiocre.</span>
+    </div>
+    <div class="blocage-item">
+      <div class="icon-badge">!</div>
+      <span><strong>Pas de facturation individuelle</strong> — Facture globale unique, non envoyée aux clients. Comptable demande 1 facture / client.</span>
+    </div>
+    <div class="blocage-item">
+      <div class="icon-badge">!</div>
+      <span><strong>Crédit Mutuel bloquant</strong> — Ne répond pas, refuse l'accès banque en ligne à l'analyste financier, virement instantané payant.</span>
+    </div>
+  </div>
+
+  <!-- PARCOURS CLIENTS -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#128506;</span> Cartographie des parcours clients</div>
+
+    <!-- P1 : Meurtre au Paradis -->
+    <div class="parcours-card">
+      <div class="parcours-header">
+        <span class="parcours-num">P1</span>
+        <span class="parcours-name">BtoC — Meurtre au Paradis (contact@)</span>
+      </div>
+
+      <div class="flow-steps">
+        <div class="flow-step">Lead via FB<br>"Caribbean Cruises"</div>
+        <div class="flow-step">Mail contact@</div>
+        <div class="flow-step friction">Taina lit<br><small>4-5j de délai</small></div>
+        <div class="flow-step">Envoi catalogue<br><small>mail type copié-collé</small></div>
+        <div class="flow-step">Vérif dispo<br><small>WhatsApp prestas</small></div>
+        <div class="flow-step">Lien paiement<br><small>Crédit Mutuel</small></div>
+        <div class="flow-step friction">Récap Excel<br><small>copier-coller manuel</small></div>
+        <div class="flow-step">Confirmation<br><small>voucher Canva</small></div>
+      </div>
+
+      <div class="flow-steps">
+        <div class="flow-step">M-1 : choix menu<br>+ relance 50%</div>
+        <div class="flow-step">Bon de commande<br><small>prestas + guides</small></div>
+        <div class="flow-step">Jour J<br><small>coordination opé</small></div>
+        <div class="flow-step friction">Feedback<br><small>non systématique</small></div>
+      </div>
+
+      <div style="margin-top: 12px;">
+        <span class="friction-tag">Délai réponse 4-5j</span>
+        <span class="friction-tag">Relance 50% oubliée</span>
+        <span class="friction-tag">Pas de facture client</span>
+        <span class="friction-tag">Feedback non systématique</span>
+        <span class="ok-tag">Mails types existants</span>
+        <span class="ok-tag">Fichier Excel en place</span>
+      </div>
+    </div>
+
+    <!-- P2 : Site Internet -->
+    <div class="parcours-card">
+      <div class="parcours-header">
+        <span class="parcours-num">P2</span>
+        <span class="parcours-name">BtoC + B2B — Site Internet (info@)</span>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--grey-light); margin-bottom: 10px;">
+        Leads via site web (en anglais) + Google. Inclut des agences étrangères (B2B). Réponses manuelles personnalisées (pas de mail type). Si séjour : appel téléphonique.
+      </p>
+
+      <div style="margin-top: 8px;">
+        <span class="friction-tag">Pas de mail type</span>
+        <span class="friction-tag">Pas de relance si pas de réponse</span>
+        <span class="friction-tag">"Mon cerveau attend la réponse"</span>
+      </div>
+    </div>
+
+    <!-- P3 : B2B -->
+    <div class="parcours-card">
+      <div class="parcours-header">
+        <span class="parcours-num">P3</span>
+        <span class="parcours-name">BtoB — Ponant / UCPA / Agences (ttharsis@)</span>
+      </div>
+
+      <div class="card" style="margin-bottom: 10px; border: none; padding: 12px 16px;">
+        <h3 style="color: var(--blue); font-size: 0.85rem;">Ponant</h3>
+        <p>Travail en amont avec siège Marseille. Pré-réservation prestataires avant saison. 4-8 excursions / escale, 5 prestas / excursion. Chiffres J-15. <strong style="color: var(--white);">Process le plus structuré.</strong></p>
+      </div>
+      <div class="card" style="margin-bottom: 10px; border: none; padding: 12px 16px;">
+        <h3 style="color: var(--blue); font-size: 0.85rem;">UCPA</h3>
+        <p>Séjours hebdo. Chiffres dimanche soir → lundi midi. Envoi prestas dès validation. Frustration : nouvelle interlocutrice moins réactive.</p>
+      </div>
+      <div class="card" style="border: none; padding: 12px 16px;">
+        <h3 style="color: var(--blue); font-size: 0.85rem;">Agences (ex: canadienne)</h3>
+        <p>3 voyages/an. Même logique de pré-réservation. Demandes via info@ ou bouche-à-oreille.</p>
+      </div>
+
+      <div style="margin-top: 8px;">
+        <span class="ok-tag">Process plus structuré</span>
+        <span class="ok-tag">Pré-réservation en place</span>
+        <span class="friction-tag">Coordination prestas manuelle</span>
+      </div>
+    </div>
+
+    <!-- Prestataires -->
+    <div class="parcours-card">
+      <div class="parcours-header">
+        <span class="parcours-num">&#9881;</span>
+        <span class="parcours-name">Gestion des ~50 prestataires (transversal)</span>
+      </div>
+      <div class="card" style="border: none; padding: 0;">
+        <ul>
+          <li>Coordination par WhatsApp + appels</li>
+          <li>Pré-réservation dates en début de saison</li>
+          <li><strong style="color: var(--red);">Jours fériés Guadeloupe non anticipés</strong> par les prestataires (Vendredi Saint, billets bateau)</li>
+          <li>Prestataires qui ne confirment pas proactivement → Taina doit tout vérifier</li>
+          <li>Guide Yanis : exception — besoin d'un récap mensuel pour facturer</li>
+          <li><strong style="color: var(--green);">Quick win : rappel automatique la veille de chaque excursion à chaque prestataire</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÉCISIONS -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#9878;</span> Décisions prises</div>
+
+    <div class="decision-item">
+      <span class="decision-num">D1</span>
+      <div class="decision-content">
+        <strong>Catherine mappe le parcours client complet</strong>
+        <p>Schéma visuel à partir des informations recueillies. Taina valide et complète.</p>
+      </div>
+    </div>
+
+    <div class="decision-item">
+      <span class="decision-num">D2</span>
+      <div class="decision-content">
+        <strong>Automatisation leads entrants — mode brouillon d'abord</strong>
+        <p>Traitement auto des mails (qualification + réponse en brouillon). Après 15 jours sans correction → passage en automatique. Taina avait déjà pensé à ce modèle dans sa config Claude.</p>
+      </div>
+    </div>
+
+    <div class="decision-item">
+      <span class="decision-num">D3</span>
+      <div class="decision-content">
+        <strong>Ezus comme hub central</strong>
+        <p>Plan Pro confirmé (API disponible). Centraliser clients + facturation individuelle. Garder le lien paiement Crédit Mutuel, utiliser Ezus pour la facturation. Question ouverte : comment synchroniser paiement banque → Ezus ?</p>
+      </div>
+    </div>
+
+    <div class="decision-item">
+      <span class="decision-num">D4</span>
+      <div class="decision-content">
+        <strong>Migration Apple Mail + Calendrier + iCloud</strong>
+        <p>Quitter Roundcube. Configurer Apple Mail avec les 3 boîtes. Activer le calendrier Apple. Souscrire iCloud (~2,99€/mois). Catherine fournit les tutos.</p>
+      </div>
+    </div>
+
+    <div class="decision-item">
+      <span class="decision-num">D5</span>
+      <div class="decision-content">
+        <strong>Simplification offre Meurtre au Paradis</strong>
+        <p>2 tours seulement l'an prochain. Full Experience (réduit si escale courte). Déjeuner Catherine limité aux 30 premiers.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS TAINA -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#9889;</span> Actions Taina (7 — 21 avril)</div>
+
+    <div class="action-section-label">Priorité 1 — Configuration Claude</div>
+    <div class="action-item">
+      <span class="priority p1">P1</span>
+      <span class="action-text">Terminer l'intégration des instructions CS Digital Setup (style manquant)</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p1">P1</span>
+      <span class="action-text">Demander à Claude d'intégrer les 50 prestataires (via fichier, pas copier-coller)</span>
+    </div>
+
+    <div class="action-section-label">Priorité 2 — Infrastructure</div>
+    <div class="action-item">
+      <span class="priority p2">P2</span>
+      <span class="action-text">Configurer Apple Mail avec les 3 boîtes (tuto Catherine)</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p2">P2</span>
+      <span class="action-text">Activer le calendrier Apple — y mettre les excursions</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p2">P2</span>
+      <span class="action-text">Souscrire iCloud (premier niveau)</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p2">P2</span>
+      <span class="action-text">Envoyer le correctif DNS (spam) au webmaster</span>
+    </div>
+
+    <div class="action-section-label">Priorité 3 — Données</div>
+    <div class="action-item">
+      <span class="priority p3">P3</span>
+      <span class="action-text">Donner accès Google Drive à Catherine (fichiers Excel + bons de commande)</span>
+    </div>
+  </div>
+
+  <!-- ACTIONS CATHERINE -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#128221;</span> Actions Catherine</div>
+
+    <div class="action-item">
+      <span class="priority p1">P1</span>
+      <span class="action-text">Envoyer le diagnostic DNS (correctif spam — double DMARC)</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p1">P1</span>
+      <span class="action-text">Mapper le parcours client complet (schéma visuel HTML)</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p1">P1</span>
+      <span class="action-text">Tuto configuration Apple Mail (3 boîtes + archivage Roundcube)</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p2">P2</span>
+      <span class="action-text">Tuto configuration calendrier Apple</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p2">P2</span>
+      <span class="action-text">Étudier l'API Ezus (gestion paiements, facturation, clients)</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p2">P2</span>
+      <span class="action-text">Investiguer lien paiement Crédit Mutuel → Ezus</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p3">P3</span>
+      <span class="action-text">Mettre à jour le portail client (actions S2)</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p3">P3</span>
+      <span class="action-text">Envoyer invitation RDV 21 avril 14h</span>
+    </div>
+    <div class="action-item">
+      <span class="priority p3">P3</span>
+      <span class="action-text">Vérifier arrivée du virement sur Shine</span>
+    </div>
+  </div>
+
+  <!-- MINDSET -->
+  <div class="section">
+    <div class="section-title"><span class="icon">&#128161;</span> Mindset & Insights</div>
+
+    <div class="card">
+      <h3>Ce qui fonctionne (malgré le "bordel")</h3>
+      <ul>
+        <li>Mails classés par mois d'excursion — process implicite</li>
+        <li>Récap paiements hebdo depuis la banque → fichier Excel</li>
+        <li>Mails types pour contact@ (travail de l'ex-employée réutilisé)</li>
+        <li>Modèle brouillon → auto déjà intégré dans sa réflexion Claude</li>
+        <li>Bons rapports avec prestataires (chauffeur dispo un jour férié)</li>
+      </ul>
+    </div>
+
+    <div class="citation">
+      « Je perds des clients. Il y en a que je relance pas forcément. »
+      <span class="author">— Sur les 4-5 jours de délai de réponse</span>
+    </div>
+    <div class="citation">
+      « Je pense pour moi, je pense machin, je pense pas à l'agenda des autres. »
+      <span class="author">— Sur l'oubli de l'assistante marketing ce matin</span>
+    </div>
+    <div class="citation">
+      « C'est tout dans le... suite à ce plantage. J'ai bloqué de partout. »
+      <span class="author">— Sur le trauma iPad 2012 qui bloque encore l'adoption numérique</span>
+    </div>
+    <div class="citation">
+      « Je boycotte l'instantané sur ma banque professionnelle parce qu'ils me font payer. »
+      <span class="author">— Le Crédit Mutuel comme frein permanent</span>
+    </div>
+
+    <div class="card" style="margin-top: 16px;">
+      <h3>Dynamique de séance</h3>
+      <p>3 interruptions opérationnelles majeures (guides au port, amis de maman, assistante oubliée) — illustrent parfaitement le problème « 90% opérationnel ». Taina est lucide sur ses blocages mais la charge empêche l'action. <strong style="color: var(--terracotta);">La basse saison qui arrive = fenêtre critique pour tout mettre en place.</strong></p>
+    </div>
+  </div>
+
+  <!-- PROCHAINE SESSION -->
+  <div class="next-session">
+    <h3>Prochaine séance — 21 avril 2026</h3>
+    <p>14h France / 8h Guadeloupe<br>
+    <strong>Focus :</strong> Validation parcours client mappé + premières automatisations (leads entrants)</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  CS Consulting Stratégique &middot; Compte-rendu séance 2 &middot; Guadeloupe Explor &middot; 7 avril 2026
+</div>
+
+</body>
+</html>
