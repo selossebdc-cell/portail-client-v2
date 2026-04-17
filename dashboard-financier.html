@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS Consulting — Dashboard Financier</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            padding: 24px;
+            line-height: 1.5;
+        }
+
+        h1 { color: #C27A5A; font-size: 1.6rem; margin-bottom: 4px; }
+        .subtitle { color: #888; font-size: 0.9rem; margin-bottom: 24px; }
+        h2 { color: #C27A5A; font-size: 1.1rem; margin: 24px 0 12px 0; border-bottom: 1px solid #2a2a2a; padding-bottom: 6px; }
+        h3 { color: #aaa; font-size: 0.95rem; margin: 16px 0 8px 0; }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .kpi {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+        .kpi-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .kpi-value { font-size: 1.8rem; font-weight: 700; color: #C27A5A; margin: 4px 0; }
+        .kpi-detail { font-size: 0.8rem; color: #666; }
+        .kpi.green .kpi-value { color: #4CAF50; }
+        .kpi.blue .kpi-value { color: #5b9bd5; }
+        .kpi.orange .kpi-value { color: #ff9800; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.85rem; }
+        th { background: #1a1a1a; color: #C27A5A; text-align: left; padding: 8px 12px; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { padding: 8px 12px; border-bottom: 1px solid #1a1a1a; }
+        tr:hover { background: #1a1a1a; }
+        .amount { text-align: right; font-variant-numeric: tabular-nums; }
+        .status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+        .status-actif { background: #1b3a1b; color: #4CAF50; }
+        .status-prospect { background: #3a2e1b; color: #ff9800; }
+        .status-maintenance { background: #1b2a3a; color: #5b9bd5; }
+        .status-paye { background: #1b3a1b; color: #4CAF50; }
+        .status-attente { background: #3a2e1b; color: #ff9800; }
+        .status-retard { background: #3a1b1b; color: #ef5350; }
+
+        /* Sections */
+        .section { background: #141414; border: 1px solid #1e1e1e; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+
+        /* Progress bar */
+        .progress-bar { background: #2a2a2a; border-radius: 6px; height: 10px; overflow: hidden; margin: 8px 0; }
+        .progress-fill { height: 100%; border-radius: 6px; transition: width 0.5s; }
+        .progress-fill.terracotta { background: linear-gradient(90deg, #C27A5A, #d4956f); }
+
+        /* Costs breakdown */
+        .cost-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1e1e1e; font-size: 0.85rem; }
+        .cost-row:last-child { border-bottom: none; }
+        .cost-label { color: #aaa; }
+        .cost-amount { color: #e0e0e0; font-weight: 600; font-variant-numeric: tabular-nums; }
+        .cost-row.total { border-top: 2px solid #C27A5A; margin-top: 8px; padding-top: 10px; }
+        .cost-row.total .cost-label, .cost-row.total .cost-amount { color: #C27A5A; font-weight: 700; font-size: 0.95rem; }
+        .cost-row.highlight .cost-amount { color: #4CAF50; font-size: 1.1rem; }
+
+        /* SARL Checklist */
+        .checklist { list-style: none; }
+        .checklist li { padding: 6px 0; border-bottom: 1px solid #1e1e1e; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
+        .check { width: 18px; height: 18px; border: 2px solid #444; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.7rem; cursor: pointer; }
+        .check.done { background: #C27A5A; border-color: #C27A5A; color: #fff; }
+        .check.done::after { content: "✓"; }
+
+        /* Waterfall chart */
+        .waterfall { display: flex; align-items: flex-end; gap: 4px; height: 200px; margin: 16px 0; padding: 0 20px; }
+        .waterfall-bar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; position: relative; }
+        .waterfall-bar .bar { width: 100%; max-width: 80px; border-radius: 4px 4px 0 0; transition: height 0.5s; position: relative; }
+        .waterfall-bar .bar-label { font-size: 0.65rem; color: #888; text-align: center; margin-top: 6px; white-space: nowrap; }
+        .waterfall-bar .bar-amount { font-size: 0.7rem; color: #e0e0e0; font-weight: 600; position: absolute; top: -18px; width: 100%; text-align: center; }
+        .bar.income { background: linear-gradient(180deg, #C27A5A, #a86544); }
+        .bar.expense { background: linear-gradient(180deg, #ef5350, #c62828); }
+        .bar.net { background: linear-gradient(180deg, #4CAF50, #2e7d32); }
+
+        /* Simulation */
+        .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 768px) { .sim-grid { grid-template-columns: 1fr; } }
+
+        /* Notes */
+        .note { background: #1a1a0f; border-left: 3px solid #C27A5A; padding: 10px 14px; margin: 12px 0; font-size: 0.8rem; color: #bba; border-radius: 0 6px 6px 0; }
+
+        /* Edit mode */
+        .editable { cursor: pointer; border-bottom: 1px dashed #444; }
+        .editable:hover { border-color: #C27A5A; }
+        input.edit-input {
+            background: #0f0f0f; border: 1px solid #C27A5A; color: #e0e0e0;
+            padding: 2px 6px; border-radius: 4px; font-size: inherit; width: 80px;
+            text-align: right; font-variant-numeric: tabular-nums;
+        }
+
+        .last-update { text-align: right; font-size: 0.7rem; color: #555; margin-top: 24px; }
+    </style>
+</head>
+<body>
+
+<h1>CS Consulting Strategique</h1>
+<p class="subtitle">Dashboard Financier — Catherine Selosse | Transition EI → SARL en cours</p>
+
+<!-- ===== KPI ===== -->
+<div class="kpi-grid">
+    <div class="kpi">
+        <div class="kpi-label">CA Encaisse 2026</div>
+        <div class="kpi-value" id="kpi-ca">—</div>
+        <div class="kpi-detail">Objectif : 200 000 €</div>
+        <div class="progress-bar"><div class="progress-fill terracotta" id="progress-ca" style="width:0%"></div></div>
+    </div>
+    <div class="kpi green">
+        <div class="kpi-label">Net Disponible</div>
+        <div class="kpi-value" id="kpi-net">—</div>
+        <div class="kpi-detail">Apres charges & cotisations</div>
+    </div>
+    <div class="kpi blue">
+        <div class="kpi-label">Clients Actifs</div>
+        <div class="kpi-value" id="kpi-clients">—</div>
+        <div class="kpi-detail">Objectif : 24 sur 2026</div>
+    </div>
+    <div class="kpi orange">
+        <div class="kpi-label">Pipeline Prospects</div>
+        <div class="kpi-value" id="kpi-prospects">—</div>
+        <div class="kpi-detail">Valeur potentielle</div>
+    </div>
+</div>
+
+<!-- ===== CLIENTS & REVENUS ===== -->
+<div class="section">
+    <h2>Clients & Revenus</h2>
+    <table id="clients-table">
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Programme</th>
+                <th>Statut</th>
+                <th>Montant total</th>
+                <th>Encaisse</th>
+                <th>Reste du</th>
+                <th>Prochaine echeance</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<!-- ===== PROSPECTS ===== -->
+<div class="section">
+    <h2>Pipeline Prospects</h2>
+    <table id="prospects-table">
+        <thead>
+            <tr>
+                <th>Prospect</th>
+                <th>Offre</th>
+                <th>Montant estime</th>
+                <th>Score</th>
+                <th>Prochaine action</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<!-- ===== SIMULATION 8000€ ===== -->
+<div class="section">
+    <h2>Simulation : Que reste-t-il sur une facture ?</h2>
+    <p style="font-size:0.8rem; color:#888; margin-bottom:12px;">Basee sur SARL IS, gerante majoritaire TNS. Clique sur un montant pour le modifier.</p>
+
+    <div class="sim-grid">
+        <div>
+            <h3>Ventilation sur <span class="editable" id="sim-ca-label" onclick="editSimCA()">8 000</span> € HT factures</h3>
+            <div class="waterfall" id="waterfall"></div>
+        </div>
+        <div>
+            <h3>Detail</h3>
+            <div class="cost-row">
+                <span class="cost-label">CA facture HT</span>
+                <span class="cost-amount" id="sim-ca">8 000 €</span>
+            </div>
+            <div class="cost-row">
+                <span class="cost-label">TVA collectee (20%)</span>
+                <span class="cost-amount" id="sim-tva">+ 1 600 €</span>
+            </div>
+            <div class="cost-row">
+                <span class="cost-label">TVA a reverser</span>
+                <span class="cost-amount" style="color:#ef5350" id="sim-tva-rev">- 1 400 €</span>
+            </div>
+            <div class="cost-row">
+                <span class="cost-label">Charges fixes mensuelles</span>
+                <span class="cost-amount" style="color:#ef5350" id="sim-charges">- 330 €</span>
+            </div>
+            <div class="cost-row">
+                <span class="cost-label">Cotisations TNS (~45% du net)</span>
+                <span class="cost-amount" style="color:#ef5350" id="sim-cotisations">- 2 400 €</span>
+            </div>
+            <div class="cost-row">
+                <span class="cost-label">IS (si benefice residuel)</span>
+                <span class="cost-amount" style="color:#ef5350" id="sim-is">- 0 €</span>
+            </div>
+            <div class="cost-row total highlight">
+                <span class="cost-label">Net en poche</span>
+                <span class="cost-amount" id="sim-net">5 270 €</span>
+            </div>
+            <div class="cost-row">
+                <span class="cost-label">Ratio net / CA</span>
+                <span class="cost-amount" id="sim-ratio" style="color:#C27A5A">66%</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="note">
+        <strong>Astuce :</strong> En SARL IS, tes charges pro (ordi, telephone, outils, deplacements, repas) sont deductibles. Plus tu as de charges justifiees, moins tu paies de cotisations et d'IS. Garde bien toutes tes factures.
+    </div>
+</div>
+
+<!-- ===== COUTS FIXES ===== -->
+<div class="section">
+    <h2>Couts Fixes Mensuels</h2>
+    <div class="sim-grid">
+        <div>
+            <h3>Charges professionnelles</h3>
+            <div id="costs-list"></div>
+        </div>
+        <div>
+            <h3>Outils & Abonnements</h3>
+            <div id="tools-list"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== STRUCTURES JURIDIQUES ===== -->
+<div class="section">
+    <h2>Structures Juridiques — Vue d'ensemble</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Structure</th>
+                <th>Statut</th>
+                <th>Activites</th>
+                <th>Regime fiscal</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>EI (micro-entreprise)</strong></td>
+                <td><span class="status status-actif">ACTIVE</span></td>
+                <td>Formation (NDA/OPCO) + Vignes (fermage)</td>
+                <td>IR, micro-BNC</td>
+                <td>TVA non applicable (art. 293 B CGI). Plafond 77 700 €</td>
+            </tr>
+            <tr>
+                <td><strong>SARL CS Consulting</strong></td>
+                <td><span class="status status-prospect">EN CREATION</span></td>
+                <td>Consulting digital, accompagnement dirigeants, dev/automatisations</td>
+                <td>IS</td>
+                <td>Capital 1 000 €, gerante majoritaire (TNS)</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="note">
+        <strong>Repartition :</strong> L'EI est conservee (obligation legale vignes + NDA formation). La SARL porte tout le consulting et le developpement technique. Les 2 structures coexistent.
+    </div>
+</div>
+
+<!-- ===== SARL CHECKLIST ===== -->
+<div class="section">
+    <h2>Creation SARL — Suivi</h2>
+    <div class="sim-grid">
+        <div>
+            <h3>Informations</h3>
+            <div class="cost-row"><span class="cost-label">Denomination</span><span class="cost-amount">CS Consulting</span></div>
+            <div class="cost-row"><span class="cost-label">Forme</span><span class="cost-amount">SARL</span></div>
+            <div class="cost-row"><span class="cost-label">Capital</span><span class="cost-amount">1 000 € (1 000 parts x 1 €)</span></div>
+            <div class="cost-row"><span class="cost-label">Siege</span><span class="cost-amount">43 rue de l'Estagnas, 64200 Biarritz</span></div>
+            <div class="cost-row"><span class="cost-label">RCS</span><span class="cost-amount">Bayonne</span></div>
+            <div class="cost-row"><span class="cost-label">Regime fiscal</span><span class="cost-amount">IS</span></div>
+            <div class="cost-row"><span class="cost-label">Regime social</span><span class="cost-amount">TNS (gerante majoritaire)</span></div>
+            <div class="cost-row"><span class="cost-label">Comptable</span><span class="cost-amount">Catherine BERTON</span></div>
+            <div class="cost-row"><span class="cost-label">1er exercice</span><span class="cost-amount">Immatriculation → 31/12/2026</span></div>
+            <div class="cost-row"><span class="cost-label">Duree</span><span class="cost-amount">99 ans</span></div>
+        </div>
+        <div>
+            <h3>Checklist</h3>
+            <ul class="checklist" id="sarl-checklist"></ul>
+        </div>
+    </div>
+
+    <h3 style="margin-top:16px">Couts de creation estimes</h3>
+    <div id="creation-costs"></div>
+</div>
+
+<!-- ===== COMPARATIF EI vs SARL ===== -->
+<div class="section">
+    <h2>Comparatif EI (micro) vs SARL IS — sur 200 000 € CA</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Critere</th>
+                <th>Micro-entreprise (EI)</th>
+                <th>SARL IS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Plafond CA</td><td class="amount">77 700 €</td><td class="amount" style="color:#4CAF50">Illimite</td></tr>
+            <tr><td>TVA</td><td>Non applicable</td><td>20% (collectee + deductible)</td></tr>
+            <tr><td>Charges deductibles</td><td style="color:#ef5350">Non</td><td style="color:#4CAF50">Oui (tout justifie)</td></tr>
+            <tr><td>Taux cotisations</td><td class="amount">~22%</td><td class="amount">~45% du net (~30% du CA)</td></tr>
+            <tr><td>Sur 200K — Cotisations</td><td class="amount" style="color:#ef5350">44 000 €</td><td class="amount" style="color:#ef5350">~47 000 €</td></tr>
+            <tr><td>Sur 200K — Charges deduites</td><td class="amount">0 €</td><td class="amount" style="color:#4CAF50">~15 000 €</td></tr>
+            <tr><td>Sur 200K — Net estime</td><td class="amount" style="color:#ef5350">Impossible (plafond)</td><td class="amount" style="color:#4CAF50">~120 000 €</td></tr>
+            <tr><td>Dividendes</td><td style="color:#ef5350">Non</td><td style="color:#4CAF50">Oui (flat tax 30%)</td></tr>
+            <tr><td>Responsabilite</td><td style="color:#ef5350">Illimitee</td><td style="color:#4CAF50">Limitee au capital</td></tr>
+            <tr><td>Comptabilite</td><td>Simplifiee</td><td>Obligatoire (bilan)</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<p class="last-update" id="last-update"></p>
+
+<script>
+// ===== DATA (editable — source unique de verite) =====
+const DATA = {
+    clients: [
+        {
+            nom: "Fred (FU-Fight / V8)",
+            programme: "Transition Stratégique 6 mois",
+            statut: "actif",
+            sessions: "10/18",
+            montant_total: 8000,
+            encaisse: 5000,
+            reste_du: 3000,
+            prochaine_echeance: "Avril 2026",
+            notes: "OPCO ~3 000 EUR en cours"
+        },
+        {
+            nom: "FEEDUC",
+            programme: "Maintenance annuelle (en attente signature)",
+            statut: "maintenance",
+            sessions: "-",
+            montant_total: 1500, // contrat annuel option A (1 500 € HT) — pas encore signe
+            encaisse: 1300, // fin de facture projet recue 13/03/2026 (soldé)
+            reste_du: 1500, // maintenance annuelle — contrat en cours de signature
+            prochaine_echeance: "A la signature",
+            notes: "Contrat non signe — en attente. CR trimestriel agents obligatoire. EI (pas de TVA)."
+        },
+        {
+            nom: "Aurélia (Face Soul Yoga)",
+            programme: "Clarté & Autonomie 6 mois",
+            statut: "actif",
+            sessions: "6/19",
+            montant_total: 8000,
+            encaisse: 5250, // 2 500 signature + 2 750 recu 26/03
+            reste_du: 2750,
+            prochaine_echeance: "Vendredi 17 avril 2026",
+            notes: "Reste 2 750 EUR dû"
+        },
+        {
+            nom: "Taïna THARSIS (Guadeloupe Explor)",
+            programme: "Accélération 6 mois",
+            statut: "actif",
+            sessions: "2/18",
+            montant_total: 8000,
+            encaisse: 2640, // 1er tiers reçu
+            reste_du: 5360,
+            prochaine_echeance: "M+1 & M+2",
+            notes: "Cliente active depuis 26/03/2026. Session 2 fait 07/04/2026."
+        },
+        {
+            nom: "Dot Market / Dot Advisory / School Dot Market",
+            programme: "Pilotage opérationnel & Stratégie données (sur mesure 6 mois)",
+            statut: "actif",
+            sessions: "1/12",
+            montant_total: 12000,
+            encaisse: 0,
+            reste_du: 12000,
+            prochaine_echeance: "Mercredi 22 avril 2026 (RDV 1)",
+            notes: "SARL (TVA 20%). Paiement: 4 000 € signature, 4 000 € livraison dashboard (mi-juin), 4 000 € fin de mission."
+        }
+    ],
+
+    prospects: [
+        {
+            nom: "Jade Denia (Masenz Group / Barcelone)",
+            offre: "3 agents email + trigger proforma",
+            montant: 2000,
+            score: "8/10",
+            action: "Accord verbal — attente signature + acompte 1 000 €",
+            date: "Avant 27 mars 2026"
+        },
+        {
+            nom: "Marion",
+            offre: "A qualifier",
+            montant: 0,
+            score: "—",
+            action: "Suivi",
+            date: "—"
+        },
+        {
+            nom: "Maylis",
+            offre: "A qualifier",
+            montant: 0,
+            score: "—",
+            action: "Suivi",
+            date: "—"
+        }
+    ],
+
+    couts_fixes: [
+        { label: "Comptable", montant: 150, categorie: "pro" },
+        { label: "Assurance RC Pro", montant: 30, categorie: "pro" },
+        { label: "CFE (lisse/mois)", montant: 50, categorie: "pro" },
+        { label: "Mutuelle TNS", montant: 60, categorie: "pro" },
+        { label: "Telephone pro", montant: 25, categorie: "pro" }
+    ],
+
+    outils: [
+        { label: "Notion (Team)", montant: 10, categorie: "outil" },
+        { label: "n8n (Hostinger VPS)", montant: 10, categorie: "outil" },
+        { label: "API Anthropic (Claude)", montant: 20, categorie: "outil" },
+        { label: "Shine (banque pro)", montant: 8, categorie: "outil" },
+        { label: "Stripe (% sur encaissements)", montant: 15, categorie: "outil" },
+        { label: "Waalaxy", montant: 60, categorie: "outil" },
+        { label: "Plaud (transcription)", montant: 10, categorie: "outil" },
+        { label: "Domaine csbusiness.fr", montant: 3, categorie: "outil" },
+        { label: "Canva Pro", montant: 12, categorie: "outil" }
+    ],
+
+    sarl_checklist: [
+        { label: "Redaction des statuts (comptable)", done: true },
+        { label: "Choix denomination : CS Consulting", done: true },
+        { label: "Choix siege : 43 rue de l'Estagnas, Biarritz", done: true },
+        { label: "Completer etat civil dans les statuts (p.2)", done: false },
+        { label: "Verifier clause conjoint art. 6.2 (coherence situation)", done: false },
+        { label: "Capital : 1 000 € — depot sur compte bloque", done: false },
+        { label: "Courrier de domiciliation signe", done: false },
+        { label: "Signature des statuts", done: false },
+        { label: "Publication annonce legale (JAL)", done: false },
+        { label: "Depot dossier au Guichet Unique (INPI)", done: false },
+        { label: "Obtention Kbis", done: false },
+        { label: "Ouverture compte bancaire SARL", done: false },
+        { label: "Deblocage du capital", done: false },
+        { label: "Transfert activite EI → SARL", done: false },
+        { label: "Mise a jour Shine / Stripe / factures", done: false },
+        { label: "Radiation micro-entreprise", done: false },
+        { label: "Nouveau numero TVA intracommunautaire", done: false }
+    ],
+
+    couts_creation: [
+        { label: "Annonce legale (JAL)", montant: 150 },
+        { label: "Immatriculation Guichet Unique", montant: 37 },
+        { label: "Honoraires comptable (statuts + formalites)", montant: 500 },
+        { label: "Depot capital (frais bancaires)", montant: 0 },
+        { label: "Tampon / papeterie", montant: 30 }
+    ],
+
+    // Simulation params
+    sim_ca: 8000,
+    taux_tva: 0.20,
+    tva_deductible: 200,
+    charges_fixes_mensuelles: 0, // calculated
+    taux_cotisations_tns: 0.31 // ~31% du brut = ~45% du net
+};
+
+// ===== RENDER =====
+function render() {
+    // Calculate totals
+    const totalChargesPro = DATA.couts_fixes.reduce((s, c) => s + c.montant, 0);
+    const totalOutils = DATA.outils.reduce((s, c) => s + c.montant, 0);
+    DATA.charges_fixes_mensuelles = totalChargesPro + totalOutils;
+
+    const totalEncaisse = DATA.clients.reduce((s, c) => s + c.encaisse, 0);
+    const totalResteDu = DATA.clients.reduce((s, c) => s + c.reste_du, 0);
+    const totalPipeline = DATA.prospects.reduce((s, p) => s + p.montant, 0);
+    const nbClientsActifs = DATA.clients.filter(c => c.statut === 'actif').length;
+
+    // Net estimate (on encaisse)
+    const chargesAnnuelles = DATA.charges_fixes_mensuelles * 12;
+    const cotisations = totalEncaisse * DATA.taux_cotisations_tns;
+    const netEstime = totalEncaisse - cotisations - (chargesAnnuelles * (3/12)); // 3 mois ecoules
+
+    // KPIs
+    document.getElementById('kpi-ca').textContent = fmt(totalEncaisse) + ' €';
+    document.getElementById('progress-ca').style.width = Math.min((totalEncaisse / 200000) * 100, 100) + '%';
+    document.getElementById('kpi-net').textContent = fmt(Math.round(netEstime)) + ' €';
+    document.getElementById('kpi-clients').textContent = nbClientsActifs + ' + 1 maint.';
+    document.getElementById('kpi-prospects').textContent = fmt(totalPipeline) + ' €';
+
+    // Clients table
+    const clientsTbody = document.querySelector('#clients-table tbody');
+    clientsTbody.innerHTML = DATA.clients.map(c => `
+        <tr>
+            <td><strong>${c.nom}</strong></td>
+            <td>${c.programme}<br><small style="color:#666">${c.sessions} sessions</small></td>
+            <td><span class="status status-${c.statut}">${c.statut.toUpperCase()}</span></td>
+            <td class="amount">${fmt(c.montant_total)} €</td>
+            <td class="amount" style="color:#4CAF50">${fmt(c.encaisse)} €</td>
+            <td class="amount" style="color:#ff9800">${fmt(c.reste_du)} €</td>
+            <td>${c.prochaine_echeance}<br><small style="color:#666">${c.notes}</small></td>
+        </tr>
+    `).join('') + `
+        <tr style="border-top:2px solid #C27A5A; font-weight:700">
+            <td colspan="3" style="color:#C27A5A">TOTAL</td>
+            <td class="amount" style="color:#C27A5A">${fmt(DATA.clients.reduce((s,c)=>s+c.montant_total,0))} €</td>
+            <td class="amount" style="color:#4CAF50">${fmt(totalEncaisse)} €</td>
+            <td class="amount" style="color:#ff9800">${fmt(totalResteDu)} €</td>
+            <td></td>
+        </tr>
+    `;
+
+    // Prospects table
+    const prospectsTbody = document.querySelector('#prospects-table tbody');
+    prospectsTbody.innerHTML = DATA.prospects.map(p => `
+        <tr>
+            <td><strong>${p.nom}</strong></td>
+            <td>${p.offre}</td>
+            <td class="amount">${p.montant ? fmt(p.montant) + ' €' : '—'}</td>
+            <td>${p.score}</td>
+            <td>${p.action}</td>
+            <td>${p.date}</td>
+        </tr>
+    `).join('');
+
+    // Simulation
+    renderSimulation();
+
+    // Costs
+    renderCosts('costs-list', DATA.couts_fixes, totalChargesPro);
+    renderCosts('tools-list', DATA.outils, totalOutils);
+
+    // Total mensuel global
+    const costsContainer = document.getElementById('costs-list');
+    const toolsContainer = document.getElementById('tools-list');
+
+    // SARL Checklist
+    const checklistEl = document.getElementById('sarl-checklist');
+    checklistEl.innerHTML = DATA.sarl_checklist.map((item, i) => `
+        <li>
+            <div class="check ${item.done ? 'done' : ''}" onclick="toggleCheck(${i})"></div>
+            <span style="${item.done ? 'text-decoration:line-through; color:#666' : ''}">${item.label}</span>
+        </li>
+    `).join('');
+
+    // Creation costs
+    const creationEl = document.getElementById('creation-costs');
+    const totalCreation = DATA.couts_creation.reduce((s, c) => s + c.montant, 0);
+    creationEl.innerHTML = DATA.couts_creation.map(c => `
+        <div class="cost-row">
+            <span class="cost-label">${c.label}</span>
+            <span class="cost-amount">${fmt(c.montant)} €</span>
+        </div>
+    `).join('') + `
+        <div class="cost-row total">
+            <span class="cost-label">Total creation</span>
+            <span class="cost-amount">~ ${fmt(totalCreation)} €</span>
+        </div>
+    `;
+
+    // Last update
+    document.getElementById('last-update').textContent = 'Derniere mise a jour : ' + new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function renderSimulation() {
+    const ca = DATA.sim_ca;
+    const tva = ca * DATA.taux_tva;
+    const tvaRev = tva - DATA.tva_deductible;
+    const charges = DATA.charges_fixes_mensuelles;
+    const baseRemuneration = ca - charges;
+    const cotisations = Math.round(baseRemuneration * DATA.taux_cotisations_tns);
+    const net = baseRemuneration - cotisations;
+    const ratio = Math.round((net / ca) * 100);
+
+    document.getElementById('sim-ca-label').textContent = fmt(ca);
+    document.getElementById('sim-ca').textContent = fmt(ca) + ' €';
+    document.getElementById('sim-tva').textContent = '+ ' + fmt(Math.round(tva)) + ' €';
+    document.getElementById('sim-tva-rev').textContent = '- ' + fmt(Math.round(tvaRev)) + ' €';
+    document.getElementById('sim-charges').textContent = '- ' + fmt(charges) + ' €';
+    document.getElementById('sim-cotisations').textContent = '- ' + fmt(cotisations) + ' €';
+    document.getElementById('sim-is').textContent = '- 0 €';
+    document.getElementById('sim-net').textContent = fmt(net) + ' €';
+    document.getElementById('sim-ratio').textContent = ratio + '%';
+
+    // Waterfall
+    const maxVal = ca;
+    const waterfall = document.getElementById('waterfall');
+    const bars = [
+        { label: 'CA HT', amount: ca, type: 'income' },
+        { label: 'TVA reversee', amount: tvaRev, type: 'expense' },
+        { label: 'Charges', amount: charges, type: 'expense' },
+        { label: 'Cotisations TNS', amount: cotisations, type: 'expense' },
+        { label: 'NET EN POCHE', amount: net, type: 'net' }
+    ];
+    waterfall.innerHTML = bars.map(b => {
+        const h = Math.max((Math.abs(b.amount) / maxVal) * 180, 20);
+        return `<div class="waterfall-bar">
+            <div class="bar ${b.type}" style="height:${h}px">
+                <div class="bar-amount">${fmt(Math.round(b.amount))} €</div>
+            </div>
+            <div class="bar-label">${b.label}</div>
+        </div>`;
+    }).join('');
+}
+
+function renderCosts(containerId, items, total) {
+    const el = document.getElementById(containerId);
+    el.innerHTML = items.map(c => `
+        <div class="cost-row">
+            <span class="cost-label">${c.label}</span>
+            <span class="cost-amount">${fmt(c.montant)} €/mois</span>
+        </div>
+    `).join('') + `
+        <div class="cost-row total">
+            <span class="cost-label">Sous-total</span>
+            <span class="cost-amount">${fmt(total)} €/mois</span>
+        </div>
+    `;
+}
+
+// ===== INTERACTIONS =====
+function toggleCheck(i) {
+    DATA.sarl_checklist[i].done = !DATA.sarl_checklist[i].done;
+    saveData();
+    render();
+}
+
+function editSimCA() {
+    const label = document.getElementById('sim-ca-label');
+    const current = DATA.sim_ca;
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.className = 'edit-input';
+    input.value = current;
+    input.style.width = '100px';
+    label.replaceWith(input);
+    input.focus();
+    input.select();
+
+    function apply() {
+        const val = parseInt(input.value) || current;
+        DATA.sim_ca = val;
+        const newLabel = document.createElement('span');
+        newLabel.className = 'editable';
+        newLabel.id = 'sim-ca-label';
+        newLabel.onclick = editSimCA;
+        newLabel.textContent = fmt(val);
+        input.replaceWith(newLabel);
+        renderSimulation();
+    }
+
+    input.addEventListener('blur', apply);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') apply(); });
+}
+
+// ===== PERSISTENCE (localStorage) =====
+function saveData() {
+    localStorage.setItem('cs-dashboard-data', JSON.stringify({
+        checklist: DATA.sarl_checklist.map(c => c.done)
+    }));
+}
+
+function loadData() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('cs-dashboard-data'));
+        if (saved && saved.checklist) {
+            saved.checklist.forEach((done, i) => {
+                if (DATA.sarl_checklist[i]) DATA.sarl_checklist[i].done = done;
+            });
+        }
+    } catch(e) {}
+}
+
+// ===== UTILS =====
+function fmt(n) {
+    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+// ===== INIT =====
+loadData();
+render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartographie des Process — CS Consulting Strategique</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            padding: 40px;
+            line-height: 1.6;
+        }
+        h1 { font-size: 28px; color: #C27A5A; margin-bottom: 4px; }
+        .subtitle { color: #888; font-size: 14px; margin-bottom: 12px; }
+        .kpi-bar {
+            display: flex; gap: 24px; margin-bottom: 32px;
+            padding: 16px 20px; background: #1a1a1a; border-radius: 12px; border: 1px solid #2a2a2a;
+        }
+        .kpi { text-align: center; }
+        .kpi-value { font-size: 24px; font-weight: 700; color: #C27A5A; }
+        .kpi-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* STATUS BADGES */
+        .status {
+            display: inline-block; font-size: 10px; padding: 2px 8px;
+            border-radius: 4px; font-weight: 600; letter-spacing: 0.5px;
+        }
+        .status-auto { background: #2d6a4f33; color: #52b788; }
+        .status-semi { background: #e0a05a33; color: #e0c05a; }
+        .status-manual { background: #c2505033; color: #e07070; }
+        .status-todo { background: #5a5a5a33; color: #999; }
+
+        /* PROCESS CARDS */
+        .process-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;
+        }
+        .process-card {
+            background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 24px;
+            transition: border-color 0.2s;
+        }
+        .process-card:hover { border-color: #C27A5A; }
+        .process-card.full { grid-column: 1 / -1; }
+        .process-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+        }
+        .process-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+        .process-header h2 { font-size: 16px; color: #fff; }
+        .process-header .process-status { margin-left: auto; }
+
+        /* FLOW STEPS */
+        .flow-steps { margin: 12px 0; }
+        .step {
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 10px 14px; margin: 4px 0; border-radius: 8px;
+            background: #222; border: 1px solid #2a2a2a; font-size: 13px;
+            position: relative;
+        }
+        .step-number {
+            width: 22px; height: 22px; border-radius: 50%; font-size: 11px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-weight: 600;
+        }
+        .step-auto .step-number { background: #2d6a4f; color: #fff; }
+        .step-semi .step-number { background: #b8860b; color: #fff; }
+        .step-manual .step-number { background: #8b3a3a; color: #fff; }
+        .step-todo .step-number { background: #555; color: #fff; }
+        .step-content { flex: 1; }
+        .step-title { font-weight: 600; color: #e0e0e0; }
+        .step-detail { font-size: 11px; color: #888; margin-top: 2px; }
+        .step-tool { font-size: 10px; color: #C27A5A; margin-top: 3px; }
+        .step-arrow {
+            text-align: center; color: #444; font-size: 14px; margin: 0; padding: 0;
+            line-height: 1;
+        }
+
+        /* AUTOMATION OPPORTUNITIES */
+        .opportunities {
+            margin-top: 24px; padding: 20px; background: #1a1a1a;
+            border: 1px solid #C27A5A44; border-radius: 12px;
+        }
+        .opportunities h2 { font-size: 18px; color: #C27A5A; margin-bottom: 16px; }
+        .opp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        .opp-card {
+            background: #222; border: 1px solid #333; border-radius: 8px; padding: 16px;
+        }
+        .opp-card h4 { font-size: 13px; color: #fff; margin-bottom: 6px; }
+        .opp-card p { font-size: 11px; color: #888; }
+        .opp-impact {
+            margin-top: 8px; font-size: 11px; font-weight: 600;
+        }
+        .impact-high { color: #52b788; }
+        .impact-medium { color: #e0c05a; }
+
+        /* LEGEND */
+        .legend {
+            display: flex; gap: 20px; margin-top: 24px; padding-top: 20px;
+            border-top: 1px solid #2a2a2a; font-size: 12px; color: #666;
+        }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+    </style>
+</head>
+<body>
+
+<h1>Cartographie des Process</h1>
+<p class="subtitle">CS Consulting Strategique — Vue d'ensemble | Mars 2026</p>
+
+<!-- KPI BAR -->
+<div class="kpi-bar">
+    <div class="kpi">
+        <div class="kpi-value">6</div>
+        <div class="kpi-label">Process principaux</div>
+    </div>
+    <div class="kpi">
+        <div class="kpi-value">32</div>
+        <div class="kpi-label">Etapes totales</div>
+    </div>
+    <div class="kpi">
+        <div class="kpi-value" style="color: #52b788;">9</div>
+        <div class="kpi-label">Automatisees</div>
+    </div>
+    <div class="kpi">
+        <div class="kpi-value" style="color: #e0c05a;">10</div>
+        <div class="kpi-label">Semi-auto</div>
+    </div>
+    <div class="kpi">
+        <div class="kpi-value" style="color: #e07070;">8</div>
+        <div class="kpi-label">Manuelles</div>
+    </div>
+    <div class="kpi">
+        <div class="kpi-value" style="color: #999;">5</div>
+        <div class="kpi-label">A automatiser</div>
+    </div>
+</div>
+
+<!-- PROCESS GRID -->
+<div class="process-grid">
+
+    <!-- 1. PROSPECT → CLIENT -->
+    <div class="process-card">
+        <div class="process-header">
+            <div class="process-icon" style="background: #5AC2A044;">V</div>
+            <div>
+                <h2>Prospect → Client</h2>
+                <span style="font-size: 11px; color: #888;">Acquisition & conversion</span>
+            </div>
+            <span class="status status-semi process-status">SEMI-AUTO</span>
+        </div>
+        <div class="flow-steps">
+            <div class="step step-semi">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Contact entrant</div>
+                    <div class="step-detail">LinkedIn, bouche-a-oreille, site web</div>
+                    <div class="step-tool">Waalaxy (LinkedIn auto 30j) + formulaire site</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-semi">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Qualification</div>
+                    <div class="step-detail">Echange rapide, scoring prospect</div>
+                    <div class="step-tool">Fiche prospect (02-clients/prospects/) + CRM Notion</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-manual">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">RDV Decouverte</div>
+                    <div class="step-detail">Visio 45min, diagnostic oral</div>
+                    <div class="step-tool">Fantastical (lien RDV) + Plaud (transcript)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-semi">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Proposition commerciale</div>
+                    <div class="step-detail">Propale HTML → PDF personnalisee</div>
+                    <div class="step-tool">Skill /proposal-generator + Chrome headless PDF</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-auto">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">Signature contrat</div>
+                    <div class="step-detail">Bon de commande + CGV</div>
+                    <div class="step-tool">DocuSign (Business Pro)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-semi">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <div class="step-title">Onboarding</div>
+                    <div class="step-detail">Kit bienvenue, portail client, 1ere seance</div>
+                    <div class="step-tool">Skill /client-onboarding + portail HTML chiffre</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. SEANCE CLIENT -->
+    <div class="process-card">
+        <div class="process-header">
+            <div class="process-icon" style="background: #5A9EC244;">S</div>
+            <div>
+                <h2>Seance Client</h2>
+                <span style="font-size: 11px; color: #888;">Delivery & suivi</span>
+            </div>
+            <span class="status status-semi process-status">SEMI-AUTO</span>
+        </div>
+        <div class="flow-steps">
+            <div class="step step-semi">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Preparation</div>
+                    <div class="step-detail">Relire memoire client, actions en cours</div>
+                    <div class="step-tool">Fichier {client}.md + prep-sessions/</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-manual">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Seance visio</div>
+                    <div class="step-detail">1h30 en visio, enregistrement Plaud</div>
+                    <div class="step-tool">Google Meet + Plaud (transcript auto)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-semi">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Compte-rendu</div>
+                    <div class="step-detail">CR structure depuis transcript</div>
+                    <div class="step-tool">Skill /session-report → Notion</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-manual">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">MAJ portail client</div>
+                    <div class="step-detail">Ajouter actions, tutos, historique session</div>
+                    <div class="step-tool">Edition HTML manuelle + protect.py + push GitHub</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-todo">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">Post-RDV automatique</div>
+                    <div class="step-detail">Email recap + actions push Notion</div>
+                    <div class="step-tool">Projet auto-post-rdv (Sprint 1 en cours)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-semi">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <div class="step-title">MAJ memoire client</div>
+                    <div class="step-detail">Mise a jour fichier .md + progression</div>
+                    <div class="step-tool">Claude Code (memoire auto)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. FACTURATION -->
+    <div class="process-card">
+        <div class="process-header">
+            <div class="process-icon" style="background: #E0C05A44;">F</div>
+            <div>
+                <h2>Facturation & Paiements</h2>
+                <span style="font-size: 11px; color: #888;">Tresorerie & encaissements</span>
+            </div>
+            <span class="status status-semi process-status">SEMI-AUTO</span>
+        </div>
+        <div class="flow-steps">
+            <div class="step step-semi">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Creation echeancier</div>
+                    <div class="step-detail">3x sans frais, dates calculees auto</div>
+                    <div class="step-tool">Skill /invoice-generator</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-semi">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Emission facture</div>
+                    <div class="step-detail">Facture PDF depuis template</div>
+                    <div class="step-tool">Skill /invoice-generator + Shine</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-manual">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Envoi facture + lien paiement</div>
+                    <div class="step-detail">Email avec PDF + lien Stripe ou RIB</div>
+                    <div class="step-tool">Email manuel (Stripe + RIB)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-auto">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Check paiements</div>
+                    <div class="step-detail">Verification hebdo des encaissements</div>
+                    <div class="step-tool">Agent DAF (cron vendredi 9h)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-manual">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">Relance impaye</div>
+                    <div class="step-detail">Email de relance si retard</div>
+                    <div class="step-tool">Manuel — a automatiser</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. PROSPECTION & CONTENU -->
+    <div class="process-card">
+        <div class="process-header">
+            <div class="process-icon" style="background: #E05AAA44;">G</div>
+            <div>
+                <h2>Prospection & Contenu</h2>
+                <span style="font-size: 11px; color: #888;">Visibilite & leads</span>
+            </div>
+            <span class="status status-semi process-status">SEMI-AUTO</span>
+        </div>
+        <div class="flow-steps">
+            <div class="step step-semi">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Idees de contenu</div>
+                    <div class="step-detail">Pepites clients, actualites, retours terrain</div>
+                    <div class="step-tool">Agent Growth (pepites cross-clients)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-semi">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Redaction posts LinkedIn</div>
+                    <div class="step-detail">Posts, carrousels, stories</div>
+                    <div class="step-tool">Skill /linkedin-content</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-manual">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Publication</div>
+                    <div class="step-detail">Relecture + publication manuelle</div>
+                    <div class="step-tool">LinkedIn natif (pas de scheduler)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-semi">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Prospection automatisee</div>
+                    <div class="step-detail">Sequences LinkedIn 30 jours</div>
+                    <div class="step-tool">Waalaxy (auto)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-manual">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <div class="step-title">Suivi & nurturing</div>
+                    <div class="step-detail">Reponses, relances, prise de RDV</div>
+                    <div class="step-tool">Manuel — messagerie LinkedIn + email</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. PLANNING HEBDO -->
+    <div class="process-card">
+        <div class="process-header">
+            <div class="process-icon" style="background: #C27A5A44;">P</div>
+            <div>
+                <h2>Planning & Organisation</h2>
+                <span style="font-size: 11px; color: #888;">Hebdo & quotidien</span>
+            </div>
+            <span class="status status-auto process-status">AUTOMATISE</span>
+        </div>
+        <div class="flow-steps">
+            <div class="step step-auto">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Briefing matinal</div>
+                    <div class="step-detail">Agenda du jour + 3 priorites + alertes</div>
+                    <div class="step-tool">Agent DG (cron 7h30 lun-ven)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-semi">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Planification semaine</div>
+                    <div class="step-detail">Time blocking, priorites, clients</div>
+                    <div class="step-tool">Skill /weekly-planner + /agenda-writer</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-auto">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">Revue scalabilite</div>
+                    <div class="step-detail">Metriques, SOPs, delegation</div>
+                    <div class="step-tool">Agent Growth (cron lundi 10h)</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-manual">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Suivi actions Christelle</div>
+                    <div class="step-detail">Delegation, verification, feedback</div>
+                    <div class="step-tool">Manuel — a structurer</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. ADMIN & JURIDIQUE -->
+    <div class="process-card">
+        <div class="process-header">
+            <div class="process-icon" style="background: #5a5a5a44;">A</div>
+            <div>
+                <h2>Admin & Juridique</h2>
+                <span style="font-size: 11px; color: #888;">Back-office</span>
+            </div>
+            <span class="status status-manual process-status">MANUEL</span>
+        </div>
+        <div class="flow-steps">
+            <div class="step step-manual">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">Contrats & CGV</div>
+                    <div class="step-detail">Bon de commande + CGV par client</div>
+                    <div class="step-tool">DocuSign (nouveau) — templates a creer</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-manual">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">Creation SARL</div>
+                    <div class="step-detail">Statuts, immatriculation, banque</div>
+                    <div class="step-tool">En cours — comptable Catherine BERTON</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-manual">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">URSSAF / declarations</div>
+                    <div class="step-detail">Declarations trimestrielles EI</div>
+                    <div class="step-tool">Manuel</div>
+                </div>
+            </div>
+            <div class="step-arrow">&#8595;</div>
+            <div class="step step-todo">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-title">Archivage documents</div>
+                    <div class="step-detail">Contrats signes, factures, justificatifs</div>
+                    <div class="step-tool">OneDrive — pas de process structure</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- OPPORTUNITES D'AUTOMATISATION -->
+<div class="opportunities">
+    <h2>Opportunites d'automatisation — Quick Wins</h2>
+    <div class="opp-grid">
+        <div class="opp-card">
+            <h4>1. Post-RDV automatique</h4>
+            <p>Email recap + actions Notion apres chaque seance. Trigger : transcript Plaud dans Gmail.</p>
+            <div class="opp-impact impact-high">Impact : 2h/semaine | Sprint 1 en cours</div>
+        </div>
+        <div class="opp-card">
+            <h4>2. MAJ portail client auto</h4>
+            <p>Depuis le CR de seance, generer les actions et pousser sur le portail HTML automatiquement.</p>
+            <div class="opp-impact impact-high">Impact : 1h/client/seance | A planifier</div>
+        </div>
+        <div class="opp-card">
+            <h4>3. Relance paiement auto</h4>
+            <p>Email de relance J+3, J+7, J+14 si facture impayee. Trigger : check DAF vendredi.</p>
+            <div class="opp-impact impact-medium">Impact : 30min/semaine | n8n workflow</div>
+        </div>
+        <div class="opp-card">
+            <h4>4. Templates DocuSign</h4>
+            <p>Bon de commande + CGV en template reutilisable. Juste changer nom/formule/montant.</p>
+            <div class="opp-impact impact-medium">Impact : 20min/prospect | DocuSign templates</div>
+        </div>
+        <div class="opp-card">
+            <h4>5. Scheduler LinkedIn</h4>
+            <p>Planifier les posts a l'avance (Buffer ou natif LinkedIn). Plus de publication manuelle.</p>
+            <div class="opp-impact impact-medium">Impact : 30min/semaine | Buffer ou Shield</div>
+        </div>
+        <div class="opp-card">
+            <h4>6. Delegation Christelle</h4>
+            <p>Dashboard taches Notion pour Christelle avec deadlines et validation. Plus de suivi oral.</p>
+            <div class="opp-impact impact-high">Impact : 1h/semaine | Notion + Agent COO</div>
+        </div>
+    </div>
+</div>
+
+<div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background: #52b788;"></div> Automatise</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #e0c05a;"></div> Semi-automatise</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #e07070;"></div> Manuel</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #999;"></div> A automatiser</div>
+    <span style="margin-left: auto; font-size: 11px;">Cartographie Process v1.0 — CS Consulting Strategique — Mars 2026</span>
+</div>
+
+</body>
+</html>
