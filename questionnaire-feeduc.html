@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questionnaire Équipe — FEEDUC 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --terracotta: #C27A5A;
+    --terracotta-light: #D4956F;
+    --terracotta-bg: rgba(194,122,90,0.07);
+    --dark: #1a1a1a;
+    --bg: #FFFBF7;
+    --card: #fff;
+    --text: #2c2c2c;
+    --text-light: #777;
+    --border: #e8e0d8;
+    --green: #2E7D32;
+    --green-bg: #E8F5E9;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 5px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--terracotta);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-label {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 52px 24px 36px;
+    border-bottom: 3px solid var(--terracotta);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .brand {
+    font-size: 0.65rem;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--dark);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .header .subtitle {
+    font-size: 1rem;
+    color: var(--text-light);
+  }
+  .intro-box {
+    max-width: 700px;
+    margin: 28px auto 0;
+    background: var(--terracotta-bg);
+    border-left: 3px solid var(--terracotta);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    font-size: 0.9rem;
+    color: var(--text);
+    text-align: left;
+  }
+  .intro-box strong { color: var(--terracotta); }
+
+  /* FORM */
+  form {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 36px 24px 60px;
+  }
+
+  /* BLOC */
+  .bloc {
+    margin-bottom: 40px;
+  }
+  .bloc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--terracotta);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .bloc-title .bloc-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: var(--terracotta);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    flex-shrink: 0;
+  }
+
+  /* QUESTION */
+  .question {
+    margin-bottom: 28px;
+  }
+  .q-label {
+    font-size: 0.93rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .q-label .q-num {
+    color: var(--terracotta);
+    margin-right: 4px;
+  }
+  .q-hint {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
+  /* RADIO & CHECKBOX OPTIONS */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    background: var(--card);
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .option-label:hover {
+    border-color: var(--terracotta-light);
+    background: var(--terracotta-bg);
+  }
+  .option-label input[type="radio"],
+  .option-label input[type="checkbox"] {
+    margin-top: 2px;
+    accent-color: var(--terracotta);
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+  }
+  .option-label.selected {
+    border-color: var(--terracotta);
+    background: var(--terracotta-bg);
+  }
+
+  /* TEXTAREA */
+  textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--card);
+    resize: vertical;
+    transition: border-color 0.18s;
+    line-height: 1.5;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: var(--terracotta);
+  }
+  textarea::placeholder { color: #bbb; }
+
+  /* TEXT INPUT */
+  input[type="text"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--card);
+    transition: border-color 0.18s;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--terracotta);
+  }
+  input[type="text"]::placeholder { color: #bbb; }
+
+  /* INLINE OPEN FIELD after radio */
+  .open-sub {
+    margin-top: 8px;
+    display: none;
+  }
+  .open-sub.visible { display: block; }
+
+  /* SUBMIT */
+  .submit-wrap {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .btn-submit {
+    background: var(--terracotta);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 48px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.3px;
+  }
+  .btn-submit:hover { background: var(--terracotta-light); }
+  .btn-submit:active { transform: scale(0.98); }
+  .submit-hint {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: var(--text-light);
+  }
+
+  /* THANK YOU PAGE */
+  #thanks {
+    display: none;
+    max-width: 700px;
+    margin: 80px auto;
+    padding: 24px;
+    text-align: center;
+  }
+  #thanks .check {
+    font-size: 3rem;
+    margin-bottom: 16px;
+  }
+  #thanks h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--dark);
+    margin-bottom: 10px;
+  }
+  #thanks p {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  #thanks .badge {
+    display: inline-block;
+    margin-top: 24px;
+    background: var(--green-bg);
+    color: var(--green);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 30px;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-light);
+    font-size: 0.78rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .footer span { color: var(--terracotta); }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px 0;
+  }
+
+  @media (max-width: 580px) {
+    .header { padding: 36px 20px 28px; }
+    .header h1 { font-size: 1.6rem; }
+    form { padding: 28px 18px 48px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 12</div>
+</div>
+
+<!-- PAGE PRINCIPALE -->
+<div id="mainPage">
+
+  <div class="header">
+    <div class="brand">Questionnaire envoyé par Catherine Selosse (CS Consulting) · FEEDUC</div>
+    <h1>IA &amp; automatisation au quotidien</h1>
+    <div class="subtitle">5 minutes · vos usages d'outils numériques et d'IA</div>
+  </div>
+
+  <div class="intro-box">
+    <strong>Pourquoi ce questionnaire ?</strong><br>
+    Je vous l'envoie pour <strong>cartographier comment vous utilisez l'IA et les automatisations</strong> — ce qui vous aide, ce qui bloque, et ce qu'on pourrait améliorer côté outils numériques. Vos réponses sont <strong>anonymes</strong> et servent à prioriser les évolutions sur ces thèmes.
+  </div>
+
+  <form id="feeducForm">
+
+    <!-- ======================== BLOC 1 ======================== -->
+    <div class="bloc">
+      <div class="bloc-title"><span class="bloc-num">A</span> Usage au quotidien (IA &amp; numérique)</div>
+
+      <!-- Q1 -->
+      <div class="question" data-q="1">
+        <label class="q-label"><span class="q-num">1.</span> Parmi les usages suivants, lesquels correspondent à votre travail au quotidien ? <span class="q-hint">(plusieurs réponses possibles — angle IA / automatisation / collaboration)</span></label>
+        <div class="options">
+          <label class="option-label"><input type="checkbox" name="q1" value="Assistants conversationnels (ChatGPT, Claude, Copilot…)"> Assistants conversationnels (ChatGPT, Claude, Copilot…)</label>
+          <label class="option-label"><input type="checkbox" name="q1" value="Notion"> Notion</label>
+          <label class="option-label"><input type="checkbox" name="q1" value="Google Meet"> Google Meet</label>
+          <label class="option-label"><input type="checkbox" name="q1" value="Comptes rendus automatiques"> Les comptes rendus automatiques générés après les réunions</label>
+          <label class="option-label"><input type="checkbox" name="q1" value="Email"> Email (Gmail / Outlook)</label>
+          <label class="option-label"><input type="checkbox" name="q1_autre_check" value="autre"> Autre :
+            <input type="text" name="q1_autre" placeholder="précisez…" style="margin-left:8px;flex:1;padding:4px 8px;font-size:0.85rem;">
+          </label>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question" data-q="2">
+        <label class="q-label"><span class="q-num">2.</span> À quelle fréquence utilisez-vous les comptes rendus automatiques ?</label>
+        <div class="options" id="q2-options">
+          <label class="option-label"><input type="radio" name="q2" value="Après chaque réunion"> Après chaque réunion</label>
+          <label class="option-label"><input type="radio" name="q2" value="Souvent"> Souvent</label>
+          <label class="option-label"><input type="radio" name="q2" value="Parfois"> Parfois</label>
+          <label class="option-label"><input type="radio" name="q2" value="Jamais - ne savais pas"> Jamais — je ne savais pas que ça existait</label>
+          <label class="option-label"><input type="radio" name="q2" value="Jamais - ne convient pas"> Jamais — j'ai essayé mais ça ne me convient pas</label>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question" data-q="3">
+        <label class="q-label"><span class="q-num">3.</span> En moyenne, combien de temps vous font gagner les comptes rendus automatiques par rapport à avant, par semaine ?</label>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q3" value="Plus d'1 heure"> Plus d'1 heure</label>
+          <label class="option-label"><input type="radio" name="q3" value="30 min à 1 heure"> 30 min à 1 heure</label>
+          <label class="option-label"><input type="radio" name="q3" value="10 à 30 min"> 10 à 30 min</label>
+          <label class="option-label"><input type="radio" name="q3" value="Moins de 10 min"> Moins de 10 min</label>
+          <label class="option-label"><input type="radio" name="q3" value="Je ne les utilise pas"> Je ne les utilise pas</label>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ======================== BLOC 2 ======================== -->
+    <div class="bloc">
+      <div class="bloc-title"><span class="bloc-num">B</span> Ce qui fonctionne bien</div>
+
+      <!-- Q4 -->
+      <div class="question" data-q="4">
+        <label class="q-label"><span class="q-num">4.</span> Qu'est-ce qui fonctionne bien pour vous dans les <strong>outils numériques, l'IA ou les automatisations</strong> que vous utilisez au travail ?</label>
+        <textarea name="q4" placeholder="Vos impressions positives, même courtes, sont précieuses…"></textarea>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question" data-q="5">
+        <label class="q-label"><span class="q-num">5.</span> Y a-t-il une fonction d'IA, une automatisation ou un outil numérique qui vous a vraiment rendu service ? Lequel, et dans quelle situation ?</label>
+        <textarea name="q5" placeholder="Ex. : « Le compte rendu du meeting du 15 mars m'a fait gagner 45 min »…"></textarea>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ======================== BLOC 3 ======================== -->
+    <div class="bloc">
+      <div class="bloc-title"><span class="bloc-num">C</span> Ce qui coince</div>
+
+      <!-- Q6 -->
+      <div class="question" data-q="6">
+        <label class="q-label"><span class="q-num">6.</span> Y a-t-il des <strong>outils numériques, fonctions d'IA ou automatisations</strong> que vous n'utilisez pas ou peu ? Pourquoi ? <span class="q-hint">(aucun jugement — c'est pour améliorer)</span></label>
+        <textarea name="q6" placeholder="Soyez direct·e — c'est exactement ce qu'on a besoin de savoir…"></textarea>
+      </div>
+
+      <!-- Q7 -->
+      <div class="question" data-q="7">
+        <label class="q-label"><span class="q-num">7.</span> Avez-vous rencontré des problèmes ou des bugs avec les automatisations ?</label>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q7" value="Non, tout fonctionne bien"> Non, tout fonctionne bien</label>
+          <label class="option-label" id="q7-oui-once"><input type="radio" name="q7" value="Oui, une fois"> Oui, une fois</label>
+          <label class="option-label" id="q7-oui-reg"><input type="radio" name="q7" value="Oui, régulièrement"> Oui, régulièrement</label>
+        </div>
+        <div class="open-sub" id="q7-sub">
+          <textarea name="q7_detail" placeholder="Décrivez brièvement ce qui s'est passé…" style="min-height:72px;margin-top:8px;"></textarea>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="question" data-q="8">
+        <label class="q-label"><span class="q-num">8.</span> Y a-t-il des tâches répétitives dans votre travail qui vous prennent du temps inutilement, et pour lesquelles vous aimeriez un coup de pouce ?</label>
+        <textarea name="q8" placeholder="Ex. : relances, mise en forme de docs, transferts d'info entre outils…"></textarea>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ======================== BLOC 4 ======================== -->
+    <div class="bloc">
+      <div class="bloc-title"><span class="bloc-num">D</span> Souhaits &amp; améliorations</div>
+
+      <!-- Q9 -->
+      <div class="question" data-q="9">
+        <label class="q-label"><span class="q-num">9.</span> Si vous pouviez améliorer <strong>un seul</strong> outil numérique, flux d'IA ou automatisation dans votre quotidien pro, ce serait lequel ?</label>
+        <textarea name="q9" placeholder="Pas de bonne ou mauvaise réponse — ce qui vous tient à cœur…"></textarea>
+      </div>
+
+      <!-- Q10 -->
+      <div class="question" data-q="10">
+        <label class="q-label"><span class="q-num">10.</span> Avez-vous des idées d'automatisations qui pourraient vous faciliter la vie ? <span class="q-hint">(même vague, notez ce qui vous passe par la tête)</span></label>
+        <textarea name="q10" placeholder="Toutes les idées sont bienvenues, même les plus folles…"></textarea>
+      </div>
+
+      <!-- Q11 -->
+      <div class="question" data-q="11">
+        <label class="q-label"><span class="q-num">11.</span> Comment vous sentez-vous par rapport aux outils numériques en général ?</label>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q11" value="Très à l'aise, j'aime explorer"> Très à l'aise — j'aime explorer et tester</label>
+          <label class="option-label"><input type="radio" name="q11" value="À l'aise si on m'explique"> À l'aise si on m'explique au départ</label>
+          <label class="option-label"><input type="radio" name="q11" value="Ça dépend de l'outil"> Ça dépend de l'outil</label>
+          <label class="option-label"><input type="radio" name="q11" value="Pas très à l'aise"> Pas très à l'aise — je préfère éviter si possible</label>
+        </div>
+      </div>
+
+      <!-- Q12 -->
+      <div class="question" data-q="12">
+        <label class="q-label"><span class="q-num">12.</span> Y a-t-il un sujet lié à <strong>l'IA, aux automatisations ou aux outils numériques</strong> que vous aimeriez creuser ou voir traiter en priorité ?</label>
+        <textarea name="q12" placeholder="Ex. : besoin de formation sur un outil, idée d'automatisation, friction avec une fonction IA…"></textarea>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION OPTIONNELLE: COORDONNÉES -->
+    <div class="bloc">
+      <div class="bloc-title" style="color: var(--text-light); border-bottom: none; margin-bottom: 16px;">
+        <span style="font-size: 0.85rem;">Optionnel — Si vous voulez qu'on puisse vous recontacter</span>
+      </div>
+
+      <div class="question">
+        <label class="q-label" style="font-weight: 500; color: var(--text);">Votre nom</label>
+        <input type="text" name="respondent_name" placeholder="Non obligatoire…">
+      </div>
+
+      <div class="question">
+        <label class="q-label" style="font-weight: 500; color: var(--text);">Votre email</label>
+        <input type="text" name="respondent_email" placeholder="Non obligatoire…">
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit">Envoyer mes réponses →</button>
+      <p class="submit-hint">Réponses anonymes par défaut · Nom et email restent optionnels</p>
+    </div>
+
+  </form>
+
+  <div class="footer">
+    <span>FEEDUC</span> — Questionnaire <strong>transmis par Catherine Selosse</strong> (CS Consulting), sur l'IA et les outils numériques au travail
+  </div>
+
+</div><!-- /#mainPage -->
+
+
+<!-- PAGE MERCI -->
+<div id="thanks">
+  <div class="check">✅</div>
+  <h2>Merci pour vos réponses !</h2>
+  <p>Vos réponses ont bien été enregistrées. Elles seront analysées par Catherine pour l'accompagnement <strong>IA &amp; automatisation</strong>.</p>
+  <div class="badge">Réponse enregistrée avec succès</div>
+</div>
+
+
+<script>
+  // ─── PROGRESS BAR ───────────────────────────────────────────
+  const TOTAL_Q = 12;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+
+  function countAnswered() {
+    let count = 0;
+    // Q1 checkboxes
+    if (document.querySelectorAll('input[name="q1"]:checked').length > 0 ||
+        document.querySelector('input[name="q1_autre_check"]:checked')) count++;
+    // Q2 radio
+    if (document.querySelector('input[name="q2"]:checked')) count++;
+    // Q3 radio
+    if (document.querySelector('input[name="q3"]:checked')) count++;
+    // Q4 textarea
+    if (document.querySelector('textarea[name="q4"]').value.trim()) count++;
+    // Q5 textarea
+    if (document.querySelector('textarea[name="q5"]').value.trim()) count++;
+    // Q6 textarea
+    if (document.querySelector('textarea[name="q6"]').value.trim()) count++;
+    // Q7 radio
+    if (document.querySelector('input[name="q7"]:checked')) count++;
+    // Q8 textarea
+    if (document.querySelector('textarea[name="q8"]').value.trim()) count++;
+    // Q9 textarea
+    if (document.querySelector('textarea[name="q9"]').value.trim()) count++;
+    // Q10 textarea
+    if (document.querySelector('textarea[name="q10"]').value.trim()) count++;
+    // Q11 radio
+    if (document.querySelector('input[name="q11"]:checked')) count++;
+    // Q12 textarea
+    if (document.querySelector('textarea[name="q12"]').value.trim()) count++;
+    return count;
+  }
+
+  function updateProgress() {
+    const answered = countAnswered();
+    const pct = Math.round((answered / TOTAL_Q) * 100);
+    fill.style.width = pct + '%';
+    label.textContent = answered + ' / ' + TOTAL_Q;
+  }
+
+  document.getElementById('feeducForm').addEventListener('input', updateProgress);
+  document.getElementById('feeducForm').addEventListener('change', updateProgress);
+
+  // ─── SELECTED STATE on radio/checkbox labels ──────────────────
+  document.querySelectorAll('.option-label input').forEach(input => {
+    input.addEventListener('change', () => {
+      if (input.type === 'radio') {
+        const name = input.name;
+        document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+          r.closest('.option-label').classList.remove('selected');
+        });
+      }
+      if (input.checked) input.closest('.option-label').classList.add('selected');
+      else input.closest('.option-label').classList.remove('selected');
+    });
+  });
+
+  // ─── Q7 SUB-FIELD toggle ──────────────────────────────────────
+  document.querySelectorAll('input[name="q7"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const sub = document.getElementById('q7-sub');
+      if (r.value !== 'Non, tout fonctionne bien' && r.checked) {
+        sub.classList.add('visible');
+      } else {
+        sub.classList.remove('visible');
+      }
+    });
+  });
+
+  // ─── COLLECT & SUBMIT ─────────────────────────────────────────
+  const SUPABASE_FUNCTION_URL = 'https://dcynlifggjiqqihincbp.supabase.co/functions/v1/feeduc-questionnaire-submit';
+
+  document.getElementById('feeducForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Envoi en cours…';
+    submitBtn.disabled = true;
+
+    const fd = new FormData(this);
+    const data = {};
+
+    // Collect all form values
+    for (const [key, value] of fd.entries()) {
+      if (value.trim()) {
+        if (data[key]) {
+          data[key] = Array.isArray(data[key]) ? [...data[key], value] : [data[key], value];
+        } else {
+          data[key] = value;
+        }
+      }
+    }
+
+    // Checkboxes explicites (q1)
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+      if (!data[cb.name]) {
+        data[cb.name] = cb.value;
+      } else if (!Array.isArray(data[cb.name])) {
+        if (data[cb.name] !== cb.value) data[cb.name] = [data[cb.name], cb.value];
+      } else if (!data[cb.name].includes(cb.value)) {
+        data[cb.name].push(cb.value);
+      }
+    });
+
+    // Métadonnées
+    data._formulaire = 'questionnaire-equipe-feeduc';
+    data._date_envoi = new Date().toISOString();
+
+    try {
+      const response = await fetch(SUPABASE_FUNCTION_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        showThanks();
+      } else {
+        throw new Error('Erreur serveur : ' + response.status);
+      }
+    } catch (error) {
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+      alert('Erreur lors de l\'envoi. Vérifiez votre connexion et réessayez.\n\nSi le problème persiste, contactez catherine@csbusiness.fr');
+    }
+  });
+
+  function showThanks() {
+    document.getElementById('mainPage').style.display = 'none';
+    document.querySelector('.progress-bar-wrap').style.display = 'none';
+    document.getElementById('thanks').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>
