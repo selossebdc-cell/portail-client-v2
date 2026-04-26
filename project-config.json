@@ -1,0 +1,262 @@
+{
+  "name": "Portail Client V2 — Secure Multi-Tenant Isolation",
+  "version": "1.0.0",
+  "evolutionMode": "greenfield",
+  "evolutionVersion": 1,
+  "status": "MODEL-PHASE-COMPLETE",
+  "generatedAt": "2026-04-26T00:00:00Z",
+  "phase": "MODEL",
+  "description": "PostgreSQL RLS-based multi-tenant isolation for playbook.html application",
+  "stack": {
+    "frontend": {
+      "framework": "HTML5",
+      "styling": "CSS3",
+      "language": "Vanilla JavaScript",
+      "bundler": "None (direct HTML)",
+      "testing": "Manual + Supabase Playground"
+    },
+    "backend": {
+      "database": "PostgreSQL (Supabase)",
+      "authentication": "Supabase Auth (JWT)",
+      "rls": "PostgreSQL Row Level Security",
+      "edgeFunctions": "Optional (out of scope for V1)"
+    },
+    "deployment": {
+      "frontend": "GitHub Pages",
+      "backend": "Supabase Managed (eu-north-1)"
+    }
+  },
+  "architecture": {
+    "isolationMechanism": "PostgreSQL RLS (primary) + JavaScript filtering (defense-in-depth)",
+    "tenantBoundary": "client_id (UUID, FK to clients table)",
+    "adminCapability": "Switcher (can change active client_id)",
+    "policyCount": 13,
+    "policySummary": {
+      "playbook_processes": {
+        "select": "playbook_processes_select_policy",
+        "insert": "playbook_processes_insert_policy",
+        "update": "playbook_processes_update_policy",
+        "delete": "playbook_processes_delete_policy"
+      },
+      "playbook_steps": {
+        "select": "playbook_steps_select_policy",
+        "insert": "playbook_steps_insert_policy",
+        "update": "playbook_steps_update_policy",
+        "delete": "playbook_steps_delete_policy"
+      },
+      "playbook_owners": {
+        "select": "playbook_owners_select_policy",
+        "insert": "playbook_owners_insert_policy",
+        "update": "playbook_owners_update_policy",
+        "delete": "playbook_owners_delete_policy"
+      },
+      "profiles": {
+        "update_admin_switch": "profiles_admin_switch_client"
+      }
+    }
+  },
+  "database": {
+    "project": "dcynlifggjiqqihincbp",
+    "region": "eu-north-1",
+    "tables": {
+      "clients": {
+        "description": "Tenant registry",
+        "columns": ["id", "name", "created_at", "updated_at"],
+        "rls": false
+      },
+      "profiles": {
+        "description": "User accounts with role and client assignment",
+        "columns": ["user_id", "client_id", "role", "created_at", "updated_at"],
+        "rls": true,
+        "policies": ["profiles_admin_switch_client"]
+      },
+      "playbook_processes": {
+        "description": "Business processes",
+        "columns": ["id", "client_id", "name", "description", "owner_id", "status", "created_at", "updated_at"],
+        "rls": true,
+        "policies": [
+          "playbook_processes_select_policy",
+          "playbook_processes_insert_policy",
+          "playbook_processes_update_policy",
+          "playbook_processes_delete_policy"
+        ],
+        "immutableColumns": ["client_id"]
+      },
+      "playbook_steps": {
+        "description": "Steps within processes",
+        "columns": ["id", "process_id", "client_id", "name", "description", "order", "created_at", "updated_at"],
+        "rls": true,
+        "policies": [
+          "playbook_steps_select_policy",
+          "playbook_steps_insert_policy",
+          "playbook_steps_update_policy",
+          "playbook_steps_delete_policy"
+        ],
+        "cascadingFrom": "playbook_processes.id",
+        "immutableColumns": ["process_id"]
+      },
+      "playbook_owners": {
+        "description": "Owners/team members assigned to processes",
+        "columns": ["id", "process_id", "client_id", "user_id", "name", "role", "created_at", "updated_at"],
+        "rls": true,
+        "policies": [
+          "playbook_owners_select_policy",
+          "playbook_owners_insert_policy",
+          "playbook_owners_update_policy",
+          "playbook_owners_delete_policy"
+        ],
+        "immutableColumns": ["client_id"]
+      }
+    }
+  },
+  "security": {
+    "authProvider": "Supabase Auth (JWT-based)",
+    "isolationLayer": "PostgreSQL RLS (database-layer enforcement)",
+    "cryptographicBinding": "auth.uid() from JWT token",
+    "adminBypass": false,
+    "notes": "RLS applies equally to admin and regular users. Admin can only switch client_id via dedicated UPDATE policy.",
+    "threatModel": {
+      "ANONKeyExposure": "MITIGATED: RLS blocks unauthenticated access",
+      "JavaScriptBypass": "MITIGATED: RLS enforces at DB layer",
+      "AdminCompromise": "MITIGATED: RLS restricts to assigned client_id",
+      "SQLInjection": "MITIGATED: Supabase JS client uses parameterized queries",
+      "ViewBypass": "REQUIRES AUDIT: Phase BUILD must verify all views use SECURITY INVOKER"
+    }
+  },
+  "specifications": {
+    "system": "docs/specs/system.md",
+    "domain": "docs/specs/domain.md",
+    "api": "docs/specs/api.md",
+    "adr": "docs/adr/ADR-0001-rls-isolation.md"
+  },
+  "requirements": {
+    "break": {
+      "brief": "docs/brief.md",
+      "scope": "docs/scope.md",
+      "acceptance": "docs/acceptance.md"
+    }
+  },
+  "timeline": {
+    "phase_model": {
+      "status": "COMPLETE",
+      "duration": "1 day",
+      "deliverables": [
+        "docs/specs/system.md",
+        "docs/specs/domain.md",
+        "docs/specs/api.md",
+        "docs/adr/ADR-0001-rls-isolation.md",
+        "project-config.json"
+      ]
+    },
+    "phase_plan": {
+      "status": "PENDING",
+      "duration": "1 day",
+      "deliverables": [
+        "epics (in GitHub)",
+        "user stories (in GitHub)",
+        "tasks (in GitHub)"
+      ]
+    },
+    "phase_build": {
+      "status": "PENDING",
+      "duration": "2-3 days",
+      "deliverables": [
+        "SQL migrations (RLS policies)",
+        "JavaScript refactoring",
+        "Admin switcher UI",
+        "Endpoint implementation"
+      ]
+    },
+    "phase_qa": {
+      "status": "PENDING",
+      "duration": "1 day",
+      "deliverables": [
+        "Test reports",
+        "Security audit",
+        "Performance validation"
+      ]
+    }
+  },
+  "codeLocations": {
+    "frontend": {
+      "playbook_html": "playbook.html",
+      "javascript_client": "js/client/",
+      "javascript_admin": "js/admin/",
+      "css": "css/"
+    },
+    "backend": {
+      "migrations": "docs/factory/",
+      "supabase_project": "https://app.supabase.com/project/dcynlifggjiqqihincbp"
+    }
+  },
+  "successCriteria": {
+    "functional": [
+      "RLS enabled on playbook_processes, playbook_steps, playbook_owners",
+      "Admin can switch between clients",
+      "Non-admin users see only their assigned client's data",
+      "JavaScript queries refactored to use .eq('client_id', ...)",
+      "Taïna isolation verified (Guadeloupe Explor vs Face Soul Yoga)"
+    ],
+    "security": [
+      "ANON key cannot access RLS-protected data",
+      "All UPDATE/DELETE operations verified at DB layer",
+      "No views or procedures bypass RLS",
+      "Secure-by-Design checklist passed"
+    ],
+    "nonfunctional": [
+      "<5% performance degradation",
+      "No UI changes",
+      "Full backward compatibility"
+    ]
+  },
+  "risks": {
+    "legacy_data": {
+      "risk": "Orphaned playbook_processes without client_id",
+      "mitigation": "Phase MODEL audit (Q15) + Phase BUILD migration script",
+      "likelihood": "Medium",
+      "impact": "High"
+    },
+    "javascript_audit": {
+      "risk": "Large number of .select('*') patterns to refactor",
+      "mitigation": "Phase MODEL audit (Q11) + systematic refactoring in Phase BUILD",
+      "likelihood": "Medium",
+      "impact": "High"
+    },
+    "view_bypass": {
+      "risk": "Existing views or procedures bypass RLS",
+      "mitigation": "Phase MODEL audit (Q12) + refactoring in Phase BUILD",
+      "likelihood": "Low",
+      "impact": "Critical"
+    }
+  },
+  "assumptions": {
+    "a1_client_id_columns": "client_id (UUID, FK to clients) exists in profiles, playbook_processes, playbook_owners",
+    "a2_all_users_have_client_id": "Both admins and regular clients have non-NULL client_id",
+    "a3_inheritance_chain": "playbook_steps.process_id → playbook_processes.client_id",
+    "a4_javascript_uses_supabase": "All queries use supabase.from(), not raw HTTP or wire protocol",
+    "a5_no_rls_bypass_views": "No existing views/procedures that bypass RLS",
+    "a6_admin_only_switching": "Only role='admin' can switch client_id",
+    "a7_same_client_modify": "Users from same client can modify owners",
+    "a8_legacy_quarantine": "Orphaned rows handled via migration (not auto-populated)"
+  },
+  "notes": {
+    "greenfield_v1": "This is the first version of the RLS isolation feature for this project.",
+    "future_extensions": "Rate limiting, audit logging, granular RBAC are out of scope for V1.",
+    "secure_by_design": "This architecture was designed following the Secure-by-Design framework.",
+    "no_schema_changes": "No breaking schema changes; RLS is additive (policies + optional column additions for legacy data).",
+    "performance": "PostgreSQL RLS has minimal overhead; estimated <5% query latency increase.",
+    "maintenance": "All RLS policies documented in SQL comments; clear code patterns for JavaScript refactoring."
+  },
+  "metadata": {
+    "created_by": "Factory Pipeline (MODEL Phase)",
+    "created_at": "2026-04-26T00:00:00Z",
+    "last_updated": "2026-04-26T00:00:00Z",
+    "version_history": [
+      {
+        "version": "1.0.0",
+        "date": "2026-04-26",
+        "change": "Initial project configuration (MODEL Phase complete)"
+      }
+    ]
+  }
+}
