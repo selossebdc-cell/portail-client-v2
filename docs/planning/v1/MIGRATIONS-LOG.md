@@ -140,16 +140,73 @@ ALTER TABLE public.playbook_clients ENABLE ROW LEVEL SECURITY;
 
 ---
 
-## Next Migrations
+---
 
-1. ✅ TASK-0001: Audit playbook_processes schema
-2. ✅ TASK-0002: Create playbook_clients table
-3. ✅ TASK-0003: Backfill profiles with client_id
-4. ✅ TASK-0003b: Fix FK in `playbook_processes` (client_id → playbook_clients.id)
-5. → TASK-0004: Add client_id to playbook_owners
-6. → TASK-0005+: RLS policies on all tables
+## Migration: fix_playbook_owners_client_id_fk
+
+**Timestamp**: 2026-04-26 21:57:30 UTC  
+**Status**: ✅ SUCCESS  
+**Task**: TASK-0004
+
+### Operations
+
+1. Dropped old FK constraint `playbook_owners_client_id_fkey` (was pointing to profiles.id)
+2. Remapped 6 owners to Face Soul Yoga client (correct mapping based on team members)
+3. Set client_id as NOT NULL
+4. Created new FK constraint pointing to `playbook_clients.id`
+5. Created index on client_id
+
+### Backfill Results
+
+| Owner | Client |
+|-------|--------|
+| Aurélia | Face Soul Yoga |
+| Laurie | Face Soul Yoga |
+| Catherine | Face Soul Yoga |
+| VA | Face Soul Yoga |
+| Automatique | Face Soul Yoga |
+| Externe | Face Soul Yoga |
+
+**Total Owners Remapped**: 6/6
+
+### Verification
+
+✅ 6/6 owners assigned to Face Soul Yoga client  
+✅ 0 NULL values  
+✅ FK constraint points to playbook_clients.id  
+✅ Index created for query performance
 
 ---
 
-**Status**: Ready for TASK-0004  
-**Architecture Checkpoint**: Multi-tenant isolation chain complete ✅✅✅✅
+## RLS Foundation Phase — COMPLETE
+
+### Summary
+
+All foundational multi-tenant architecture is in place:
+
+| Component | Status | Details |
+|-----------|--------|---------|
+| playbook_clients table | ✅ | 4 clients seeded |
+| profiles.client_id | ✅ | 6 users assigned to clients |
+| playbook_processes.client_id | ✅ | 8 processes mapped to clients |
+| playbook_owners.client_id | ✅ | 6 owners mapped to clients |
+| playbook_steps | ✅ | Inherit via FK chain (no column needed) |
+| FK constraints | ✅ | All point to playbook_clients.id |
+
+### Architecture Chain
+
+```
+playbook_clients (master)
+  ↓
+profiles.client_id (users → clients)
+playbook_processes.client_id (processes → clients)
+playbook_owners.client_id (owners → clients)
+playbook_steps (via process_id FK chain)
+```
+
+## Next Phase
+
+→ **Epic 2 — RLS Policies**: Implement SQL-level access control policies on all tables
+
+**Status**: Ready for RLS policy creation  
+**Architecture Checkpoint**: Complete multi-tenant foundation ✅✅✅✅✅
