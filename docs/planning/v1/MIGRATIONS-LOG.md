@@ -58,13 +58,57 @@ ALTER TABLE public.playbook_clients ENABLE ROW LEVEL SECURITY;
 
 ---
 
-## Next Migrations
+## Migration: backfill_profiles_client_id
 
-1. **TASK-0003**: Add `client_id` to `profiles` table (link users to clients)
-2. **TASK-0004**: Fix FK in `playbook_processes` (client_id → playbook_clients.id)
-3. **TASK-0005+**: RLS policies on all tables
+**Timestamp**: 2026-04-26 21:55:12 UTC  
+**Status**: ✅ SUCCESS  
+**Task**: TASK-0003
+
+### Operations
+
+1. Dropped old FK constraint `profiles_client_id_fkey` (was pointing to profiles.id)
+2. Backfilled 6 profiles with correct `playbook_clients` mappings
+3. Set column as NOT NULL
+4. Created new FK constraint pointing to `playbook_clients.id`
+5. Created index on `client_id`
+
+### Backfill Logic
+
+| User | Email | Role | Client |
+|------|-------|------|--------|
+| catherine@csbusiness.fr | admin | Client A |
+| michael@csbusiness.fr | admin | Client A |
+| fu@fusolutions.fr | client | Client A (default) |
+| support@facesoulyoga.com | client | Face Soul Yoga |
+| aurelia.delsol@gmail.com | client | Face Soul Yoga |
+| ttharsis@guadeloupe-explor.com | client | Guadeloupe Explor |
+
+### Verification
+
+✅ 6/6 profiles backfilled  
+✅ 0 NULL values  
+✅ All FK references valid  
+✅ New FK constraint points to playbook_clients.id  
+✅ Index created on client_id for performance
+
+### Impact
+
+- **Modified table**: `public.profiles` (linked users to clients)
+- **Constraint change**: FK now correctly references `playbook_clients` instead of self-referential
+- **Blockers**: None
+- **Data clean**: All 6 users properly assigned to their clients
 
 ---
 
-**Status**: Ready for TASK-0003  
-**Architecture Checkpoint**: Client master table established ✅
+## Next Migrations
+
+1. ✅ TASK-0001: Audit playbook_processes schema
+2. ✅ TASK-0002: Create playbook_clients table
+3. ✅ TASK-0003: Backfill profiles with client_id
+4. → TASK-0004: Fix FK in `playbook_processes` (client_id → playbook_clients.id)
+5. → TASK-0005+: RLS policies on all tables
+
+---
+
+**Status**: Ready for TASK-0004  
+**Architecture Checkpoint**: Multi-tenant foundation established ✅✅✅
