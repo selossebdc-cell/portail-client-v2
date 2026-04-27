@@ -1108,471 +1108,49 @@
     // === SECTION: DOMAIN ===
     // ============================================================
 
-    // --- Templates (constantes) ---
+    // --- Templates (loaded from DB via RLS) ---
+    // Templates are now stored in playbook_templates table with client_id isolation
+    // They are loaded asynchronously when the app initializes
 
-    const TEMPLATES = {
-T1: {id:'T1',name:'Créer un espace Circle',category:'Projet',steps:[
-{title:'Définir la vision et les objectifs',section:'CONCEPTION',timing:-21,raci:{r:'Aurélia',a:'Aurélia',c:'Catherine' }},
-{title:'Identifier le public cible',section:'CONCEPTION',timing:-21,raci:{r:'Aurélia',a:'Aurélia' }},
-{title:'Choisir le type d\'espace',section:'CONCEPTION',timing:-20,raci:{r:'Aurélia',a:'Aurélia',c:'Catherine' }},
-{title:'Définir l\'arborescence des sections',section:'CONCEPTION',timing:-19,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Lister les contenus a integrer',section:'CONCEPTION',timing:-18,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Définir le branding visuel',section:'CONCEPTION',timing:-17,raci:{r:'Aurélia',a:'Aurélia',c:'VA' }},
-{title:'Créer l\'espace dans Circle',section:'CONFIGURATION',timing:-16,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Configurer les parametres',section:'CONFIGURATION',timing:-15,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Créer les sections de contenu',section:'CONFIGURATION',timing:-14,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Configurer les permissions',section:'CONFIGURATION',timing:-14,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Uploader le branding',section:'CONFIGURATION',timing:-13,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Configurer les emails de bienvenue',section:'CONFIGURATION',timing:-12,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Configurer les automatisations d\'onboarding',section:'CONFIGURATION',timing:-11,raci:{r:'Automatique',a:'Laurie' }},
-{title:'Rédiger la base de connaissances du chatbot (questions frequentes, reponses)',section:'CONFIGURATION',timing:-10,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Alimenter le chatbot avec les donnees de l\'espace',section:'CONFIGURATION',timing:-9,raci:{r:'Laurie',a:'Laurie' }},
-{title:'Tester le chatbot (poser les questions types, verifier les reponses)',section:'CONFIGURATION',timing:-8,raci:{r:'Laurie',a:'Laurie' }},
-{title:'Rédiger le contenu de bienvenue',section:'CONTENU',timing:-10,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Créer les premiers posts',section:'CONTENU',timing:-10,raci:{r:'Laurie',a:'Aurélia',c:'Externe' }},
-{title:'Préparer les visuels',section:'CONTENU',timing:-9,raci:{r:'VA',a:'Laurie' }},
-{title:'Integrer les videos existantes',section:'CONTENU',timing:-8,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Créer les drip contents',section:'CONTENU',timing:-7,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Programmer les contenus',section:'CONTENU',timing:-6,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Vérifier tous les liens et medias',section:'TESTS',timing:-5,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Tester l\'inscription d\'un membre test',section:'TESTS',timing:-5,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Tester le parcours de bienvenue',section:'TESTS',timing:-4,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Tester sur mobile',section:'TESTS',timing:-4,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Tester les notifications email',section:'TESTS',timing:-3,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Corriger les anomalies detectees',section:'TESTS',timing:-3,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Validation finale par Aurelia',section:'TESTS',timing:-2,raci:{r:'Aurélia',a:'Aurélia' }},
-{title:'Préparer l\'email d\'annonce',section:'LANCEMENT',timing:-1,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Activer l\'espace',section:'LANCEMENT',timing:0,raci:{r:'Laurie',a:'Aurélia' }},
-{title:'Envoyer l\'email d\'annonce',section:'LANCEMENT',timing:0,raci:{r:'Automatique',a:'Laurie' }},
-{title:'Publier sur les réseaux sociaux',section:'LANCEMENT',timing:0,raci:{r:'Laurie',a:'Aurélia' }}
-]},
-T2: {
-id: 'T2',
-name: 'Migrer un contenu existant vers Circle',
-category: 'Projet',
-description: 'Template pour migrer des contenus d\'une plateforme vers Circle',
-steps: [
-{ title: 'Inventorier tous les contenus a migrer', section: 'AUDIT', timing: -90, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Categoriser les contenus (video, texte, PDF, quiz)', section: 'AUDIT', timing: -88, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Identifier les contenus obsoletes a ne pas migrer', section: 'AUDIT', timing: -85, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Evaluer la qualité des contenus a migrer', section: 'AUDIT', timing: -83, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Documenter la structure actuelle', section: 'AUDIT', timing: -80, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Lister les membres actifs actuels', section: 'AUDIT', timing: -78, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Définir la nouvelle arborescence dans Circle', section: 'PREPARATION', timing: -75, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Créer les espaces et sections dans Circle', section: 'PREPARATION', timing: -70, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Configurer les permissions', section: 'PREPARATION', timing: -68, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Préparer les templates de publication', section: 'PREPARATION', timing: -65, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Telecharger/exporter tous les fichiers medias', section: 'PREPARATION', timing: -60, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Configurer les automatisations de migration', section: 'PREPARATION', timing: -58, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Migrer les contenus texte — lot 1', section: 'MIGRATION', timing: -55, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Migrer les contenus texte — lot 2', section: 'MIGRATION', timing: -50, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Migrer les videos — lot 1', section: 'MIGRATION', timing: -48, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Migrer les videos — lot 2', section: 'MIGRATION', timing: -43, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Migrer les PDF et documents', section: 'MIGRATION', timing: -40, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Migrer les quiz et evaluations', section: 'MIGRATION', timing: -37, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Mettre a jour les liens internes', section: 'MIGRATION', timing: -35, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Ajouter les ameliorations identifiees', section: 'MIGRATION', timing: -32, raci: { r: 'Laurie', a: 'Aurélia', c: 'Externe' } },
-{ title: 'Configurer les drip contents', section: 'MIGRATION', timing: -30, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Vérifier chaque contenu migre (texte)', section: 'VERIFICATION', timing: -25, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Vérifier chaque contenu migre (videos)', section: 'VERIFICATION', timing: -22, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Vérifier les liens et la navigation', section: 'VERIFICATION', timing: -20, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Tester sur mobile', section: 'VERIFICATION', timing: -18, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Tester l\'acces avec un compte membre', section: 'VERIFICATION', timing: -15, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Validation finale par Aurelia', section: 'VERIFICATION', timing: -10, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Envoyer la communication aux membres', section: 'POST-MIGRATION', timing: -5, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Importer les membres existants', section: 'POST-MIGRATION', timing: -3, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Activer le nouvel espace', section: 'POST-MIGRATION', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Désactiver l\'ancien espace', section: 'POST-MIGRATION', timing: 5, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Monitorer les retours membres pendant 2 semaines', section: 'POST-MIGRATION', timing: 7, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Corriger les problemes remontes', section: 'POST-MIGRATION', timing: 15, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Bilan de migration (retour d\'experience)', section: 'POST-MIGRATION', timing: 21, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Archiver l\'ancien espace', section: 'POST-MIGRATION', timing: 30, raci: { r: 'Laurie', a: 'Aurélia' } }
-]
-},
-T3: {
-id: 'T3',
-name: 'Lancer une formation en ligne',
-category: 'Lancement',
-steps: [
-{ title: 'Définir la thématique et l\'angle de la formation', section: 'CONCEPTION', timing: -120, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Définir le public cible et les prerequis', section: 'CONCEPTION', timing: -118, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Définir les objectifs pedagogiques', section: 'CONCEPTION', timing: -115, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Structurer le programme (modules et lecons)', section: 'CONCEPTION', timing: -112, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Définir le format (video, PDF, exercices, live)', section: 'CONCEPTION', timing: -110, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Laurie' } },
-{ title: 'Définir le prix et le modèle de vente', section: 'CONCEPTION', timing: -108, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Créer le plan détaillé de chaque module', section: 'CONCEPTION', timing: -105, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Rédiger les scripts video du module 1', section: 'PRODUCTION', timing: -100, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Tourner les videos du module 1', section: 'PRODUCTION', timing: -95, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Externe' } },
-{ title: 'Monter les videos du module 1', section: 'PRODUCTION', timing: -90, raci: { r: 'Externe', a: 'Aurélia' } },
-{ title: 'Créer les supports PDF du module 1', section: 'PRODUCTION', timing: -88, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Rédiger les scripts video des modules 2-3', section: 'PRODUCTION', timing: -85, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Tourner les videos des modules 2-3', section: 'PRODUCTION', timing: -80, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Externe' } },
-{ title: 'Monter les videos des modules 2-3', section: 'PRODUCTION', timing: -75, raci: { r: 'Externe', a: 'Aurélia' } },
-{ title: 'Créer les supports PDF des modules 2-3', section: 'PRODUCTION', timing: -73, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Créer les exercices et quiz', section: 'PRODUCTION', timing: -70, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Integrer tous les contenus dans Circle', section: 'PRODUCTION', timing: -60, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Configurer le drip content (deblocage progressif)', section: 'PRODUCTION', timing: -55, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Configurer les automatisations de suivi', section: 'PRODUCTION', timing: -50, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Définir la strategie de communication', section: 'COMMUNICATION', timing: -45, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Créer la page de vente', section: 'COMMUNICATION', timing: -40, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Créer les visuels de promotion', section: 'COMMUNICATION', timing: -38, raci: { r: 'VA', a: 'Aurélia' } },
-{ title: 'Rédiger les emails de lancement (sequence)', section: 'COMMUNICATION', timing: -35, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Préparer les publications réseaux sociaux', section: 'COMMUNICATION', timing: -30, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Configurer le systeme de paiement', section: 'PRE-LANCEMENT', timing: -25, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Tester le parcours d\'achat complet', section: 'PRE-LANCEMENT', timing: -20, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Tester tous les contenus (videos, PDF, quiz)', section: 'PRE-LANCEMENT', timing: -18, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Tester sur mobile', section: 'PRE-LANCEMENT', timing: -15, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Relecture finale par Aurelia', section: 'PRE-LANCEMENT', timing: -10, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Envoyer le teasing (email + réseaux)', section: 'PRE-LANCEMENT', timing: -7, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Offre early bird (si applicable)', section: 'PRE-LANCEMENT', timing: -5, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Lancer les inscriptions', section: 'LANCEMENT', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer l\'email de lancement', section: 'LANCEMENT', timing: 0, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Publier sur les réseaux sociaux', section: 'LANCEMENT', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Repondre aux questions entrantes', section: 'LANCEMENT', timing: 1, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Email de relance (J+3)', section: 'POST-LANCEMENT', timing: 3, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Suivi des premieres inscriptions', section: 'POST-LANCEMENT', timing: 7, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Email de relance finale', section: 'POST-LANCEMENT', timing: 14, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Recueillir les premiers retours', section: 'POST-LANCEMENT', timing: 30, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Analyser les métriques (inscriptions, progression, completion)', section: 'POST-LANCEMENT', timing: 60, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Ameliorer les contenus selon les retours', section: 'POST-LANCEMENT', timing: 90, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Bilan final de la formation', section: 'POST-LANCEMENT', timing: 120, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' } }
-]
-},
-T4: {
-id: 'T4',
-name: 'Lancer un challenge recrutement',
-category: 'Lancement',
-steps: [
-{ title: 'Définir le theme et la duree du challenge', section: 'CONCEPTION', timing: -60, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Définir la cible et le nombre de participants vise', section: 'CONCEPTION', timing: -58, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Définir les recompenses / incentives', section: 'CONCEPTION', timing: -55, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Créer le programme jour par jour', section: 'CONCEPTION', timing: -50, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Définir les KPIs de succes', section: 'CONCEPTION', timing: -48, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Créer l\'espace Circle dédié', section: 'PREPARATION', timing: -45, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Créer la page d\'inscription', section: 'PREPARATION', timing: -42, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Produire les contenus du challenge', section: 'PREPARATION', timing: -40, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Externe' } },
-{ title: 'Préparer les emails automatiques du challenge', section: 'PREPARATION', timing: -35, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Configurer les automatisations d\'inscription', section: 'PREPARATION', timing: -33, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Rédiger les reponses du chatbot pour le challenge (FAQ, motivation)', section: 'PREPARATION', timing: -30, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Alimenter le chatbot avec les donnees du challenge', section: 'PREPARATION', timing: -28, raci: { r: 'Laurie', a: 'Laurie' } },
-{ title: 'Tester le chatbot du challenge', section: 'PREPARATION', timing: -27, raci: { r: 'Laurie', a: 'Laurie' } },
-{ title: 'Integrer tous les contenus dans Circle', section: 'PREPARATION', timing: -30, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Tester le parcours complet (y compris chatbot)', section: 'PREPARATION', timing: -25, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Créer les visuels de promotion', section: 'COMMUNICATION', timing: -20, raci: { r: 'VA', a: 'Aurélia' } },
-{ title: 'Rédiger la sequence email de teasing', section: 'COMMUNICATION', timing: -18, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Planifier les publications réseaux sociaux', section: 'COMMUNICATION', timing: -15, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Lancer la campagne de teasing', section: 'COMMUNICATION', timing: -10, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Email de rappel d\'inscription', section: 'COMMUNICATION', timing: -3, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Email de dernier rappel', section: 'COMMUNICATION', timing: -1, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Lancer le challenge (Jour 1)', section: 'LANCEMENT', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Publication quotidienne du contenu', section: 'LANCEMENT', timing: 1, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Animation quotidienne (reponses, encouragements)', section: 'LANCEMENT', timing: 1, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Live de mi-parcours (si applicable)', section: 'LANCEMENT', timing: 3, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Dernier jour du challenge', section: 'SUIVI', timing: 7, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer le sondage de satisfaction', section: 'SUIVI', timing: 8, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Proposer l\'offre de conversion (abonnement)', section: 'SUIVI', timing: 8, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Email de relance conversion', section: 'SUIVI', timing: 10, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Analyser les resultats (inscriptions, engagement, conversion)', section: 'SUIVI', timing: 12, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Rédiger le bilan du challenge', section: 'SUIVI', timing: 14, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Archiver les contenus du challenge', section: 'SUIVI', timing: 15, raci: { r: 'Laurie', a: 'Aurélia' } }
-]
-},
-T5a: {
-id: 'T5a',
-name: 'Onboarder un nouveau membre Studio B2C',
-category: 'Cycle',
-steps: [
-{ title: 'Envoyer l\'email de bienvenue personnalisé', section: 'ACCUEIL', timing: 0, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Créer le compte Circle du membre', section: 'ACCUEIL', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer les identifiants de connexion', section: 'ACCUEIL', timing: 0, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Présenter le guide de démarrage', section: 'ACCUEIL', timing: 1, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Le chatbot accueille et oriente le nouveau membre (premiers pas, contenu recommande)', section: 'ACCUEIL', timing: 1, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Inviter au groupe de bienvenue', section: 'ACCUEIL', timing: 1, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Configurer l\'acces aux espaces du Studio', section: 'CONFIGURATION', timing: 1, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Activer l\'acces aux replays', section: 'CONFIGURATION', timing: 1, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Configurer les notifications du membre', section: 'CONFIGURATION', timing: 2, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Ajouter au calendrier des lives', section: 'CONFIGURATION', timing: 2, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Envoyer le rappel de premier cours', section: 'SUIVI', timing: 3, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Vérifier la premiere connexion du membre', section: 'SUIVI', timing: 5, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer le message de suivi J+7', section: 'SUIVI', timing: 7, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Vérifier l\'engagement a J+10', section: 'SUIVI', timing: 10, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Appel de bienvenue si non engage (n\'a pas participe)', section: 'SUIVI', timing: 12, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer le sondage de satisfaction onboarding', section: 'SUIVI', timing: 14, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Inviter a laisser un témoignage', section: 'SUIVI', timing: 21, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Vérifier l\'engagement a J+28', section: 'SUIVI', timing: 28, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Bilan du premier mois', section: 'SUIVI', timing: 30, raci: { r: 'Laurie', a: 'Aurélia' } }
-]
-},
-T5b: {
-id: 'T5b',
-name: 'Onboarder une certifiée MTM B2B',
-category: 'Cycle',
-steps: [
-{ title: 'Envoyer le contrat et les conditions', section: 'ACCUEIL', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Recevoir le contrat signe', section: 'ACCUEIL', timing: 2, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer l\'email de bienvenue officiel', section: 'ACCUEIL', timing: 3, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Créer le compte Circle dédié', section: 'ACCUEIL', timing: 3, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer le kit de bienvenue (digital)', section: 'ACCUEIL', timing: 3, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Le chatbot accompagne la certifiée (progression, rappels modules, FAQ formation)', section: 'ACCUEIL', timing: 3, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Planifier le premier appel de découverte', section: 'ACCUEIL', timing: 5, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Premier appel de découverte avec Aurelia', section: 'FORMATION', timing: 7, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Donner accès au module 1 de formation', section: 'FORMATION', timing: 7, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Suivi completion module 1', section: 'FORMATION', timing: 14, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Appel de suivi module 1', section: 'FORMATION', timing: 17, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Donner accès au module 2', section: 'FORMATION', timing: 21, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Suivi completion module 2', section: 'FORMATION', timing: 35, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Appel de suivi module 2', section: 'FORMATION', timing: 38, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Donner accès au module 3', section: 'FORMATION', timing: 42, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Suivi completion module 3', section: 'FORMATION', timing: 56, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Soumission du cas pratique', section: 'CERTIFICATION', timing: 60, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Evaluation du cas pratique par Aurelia', section: 'CERTIFICATION', timing: 67, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Session de certification (live)', section: 'CERTIFICATION', timing: 75, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Délivrer le certificat', section: 'CERTIFICATION', timing: 76, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Ajouter au répertoire des certifiées', section: 'CERTIFICATION', timing: 77, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Activer l\'acces a l\'espace certifiées', section: 'CERTIFICATION', timing: 77, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Donner accès aux ressources marketing', section: 'SUIVI', timing: 80, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Premiere session de supervision de groupe', section: 'SUIVI', timing: 85, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Envoyer le sondage de satisfaction formation', section: 'SUIVI', timing: 90, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Appel de suivi a 3 mois', section: 'SUIVI', timing: 90, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Inviter a témoigner', section: 'SUIVI', timing: 95, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Vérifier l\'activite dans la communauté certifiées', section: 'SUIVI', timing: 100, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Rappel supervision de groupe trimestrielle', section: 'SUIVI', timing: 110, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Point a 4 mois (retention et satisfaction)', section: 'SUIVI', timing: 115, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Bilan d\'onboarding complet', section: 'SUIVI', timing: 120, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' } }
-]
-},
-T6: {
-id: 'T6',
-name: 'Plan de communication lancement',
-category: 'Transverse',
-steps: [
-{ title: 'Définir les objectifs de communication (inscriptions cible, audience visee)', section: 'STRATÉGIE', timing: -30, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Identifier les canaux de diffusion', section: 'STRATÉGIE', timing: -29, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Définir le calendrier éditorial', section: 'STRATÉGIE', timing: -28, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Définir les messages cles et l\'angle', section: 'STRATÉGIE', timing: -27, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Définir le budget communication', section: 'STRATÉGIE', timing: -26, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Créer la charte visuelle du lancement', section: 'CONTENU', timing: -25, raci: { r: 'VA', a: 'Aurélia' } },
-{ title: 'Créer les visuels pour les réseaux sociaux', section: 'CONTENU', timing: -23, raci: { r: 'VA', a: 'Aurélia' } },
-{ title: 'Créer les visuels pour les emails', section: 'CONTENU', timing: -22, raci: { r: 'VA', a: 'Aurélia' } },
-{ title: 'Rédiger les posts Instagram (10 posts)', section: 'CONTENU', timing: -21, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Créer les stories Instagram', section: 'CONTENU', timing: -20, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Rédiger les posts Facebook', section: 'CONTENU', timing: -19, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Rédiger l\'email de teasing', section: 'CONTENU', timing: -18, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Rédiger la sequence email de lancement (5 emails)', section: 'CONTENU', timing: -17, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Enregistrer une video teaser', section: 'CONTENU', timing: -15, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Contacter les partenaires pour relayer', section: 'CONTENU', timing: -14, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Programmer les publications dans l\'outil de planification', section: 'DIFFUSION', timing: -12, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Configurer les automatisations email', section: 'DIFFUSION', timing: -11, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Publier le teasing (email)', section: 'DIFFUSION', timing: -10, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Publier le teasing (réseaux sociaux)', section: 'DIFFUSION', timing: -10, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Publier la video teaser', section: 'DIFFUSION', timing: -8, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Publication quotidienne réseaux (J-7 a J-1)', section: 'DIFFUSION', timing: -7, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Email de relance inscriptions', section: 'DIFFUSION', timing: -5, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Stories quotidiennes (J-5 a J-1)', section: 'DIFFUSION', timing: -5, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Relais partenaires', section: 'DIFFUSION', timing: -4, raci: { r: 'Externe', a: 'Aurélia' } },
-{ title: 'Email dernier rappel (J-2)', section: 'DIFFUSION', timing: -2, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Live countdown ou FAQ (J-1)', section: 'JOUR J', timing: -1, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Publication d\'ouverture Jour J', section: 'JOUR J', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Email d\'ouverture Jour J', section: 'JOUR J', timing: 0, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Stories de lancement', section: 'JOUR J', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Live d\'ouverture (si prévu)', section: 'JOUR J', timing: 0, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Repondre aux commentaires et DMs', section: 'JOUR J', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Email de relance post-lancement', section: 'JOUR J', timing: 0, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Bilan de la campagne de communication', section: 'JOUR J', timing: 0, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' } }
-]
-},
-T7: {
-id: 'T7',
-name: 'Lancer une retraite',
-category: 'Lancement',
-steps: [
-{ title: 'Définir le concept et la thématique de la retraite', section: 'CONCEPTION', timing: -270, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Définir les dates et la duree', section: 'CONCEPTION', timing: -265, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Définir le nombre de participants (min/max)', section: 'CONCEPTION', timing: -260, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Définir le programme jour par jour', section: 'CONCEPTION', timing: -255, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Définir le tarif et les options (hébergement, repas)', section: 'CONCEPTION', timing: -250, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Rechercher et visiter les lieux potentiels', section: 'LOGISTIQUE', timing: -240, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Laurie' } },
-{ title: 'Négocier et reserver le lieu', section: 'LOGISTIQUE', timing: -230, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Signer le contrat de location', section: 'LOGISTIQUE', timing: -225, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Organiser la restauration (traiteur/cuisinier)', section: 'LOGISTIQUE', timing: -220, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Organiser les transferts (si necessaire)', section: 'LOGISTIQUE', timing: -210, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Vérifier les assurances', section: 'LOGISTIQUE', timing: -200, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Commander le matériel (tapis, accessoires)', section: 'LOGISTIQUE', timing: -180, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Prevoir les intervenants externes', section: 'LOGISTIQUE', timing: -170, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Préparer les goodies/cadeaux participants', section: 'LOGISTIQUE', timing: -120, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Créer la page de vente de la retraite', section: 'COMMUNICATION', timing: -150, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Produire les visuels de promotion', section: 'COMMUNICATION', timing: -145, raci: { r: 'VA', a: 'Aurélia' } },
-{ title: 'Tourner la video de presentation', section: 'COMMUNICATION', timing: -140, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Externe' } },
-{ title: 'Rédiger la sequence email d\'annonce', section: 'COMMUNICATION', timing: -130, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Planifier les publications réseaux (3 mois)', section: 'COMMUNICATION', timing: -120, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Lancer les premieres communications', section: 'COMMUNICATION', timing: -120, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Activer les partenariats de diffusion', section: 'COMMUNICATION', timing: -100, raci: { r: 'Laurie', a: 'Aurélia', c: 'Externe' } },
-{ title: 'Configurer le systeme de paiement/acompte', section: 'COMMUNICATION', timing: -90, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer les rappels aux inscrits (logistique)', section: 'COMMUNICATION', timing: -60, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Relance des hesitants', section: 'COMMUNICATION', timing: -45, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Email de dernier appel', section: 'COMMUNICATION', timing: -30, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Confirmer le nombre final de participants', section: 'PRE-RETRAITE', timing: -21, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Confirmer la restauration (menus, allergies)', section: 'PRE-RETRAITE', timing: -14, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer le guide pratique aux participants', section: 'PRE-RETRAITE', timing: -10, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Préparer les supports de la retraite', section: 'PRE-RETRAITE', timing: -7, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Vérifier le lieu (etat, equipement)', section: 'PRE-RETRAITE', timing: -3, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Installer le matériel et la décoration', section: 'PRE-RETRAITE', timing: -1, raci: { r: 'Laurie', a: 'Aurélia', c: 'VA' } },
-{ title: 'Accueillir les participants', section: 'RETRAITE', timing: 0, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Laurie' } },
-{ title: 'Animer le programme jour 1', section: 'RETRAITE', timing: 0, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Animer le programme jour 2', section: 'RETRAITE', timing: 1, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Animer le programme jour 3', section: 'RETRAITE', timing: 2, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Prendre des photos/videos pendant la retraite', section: 'RETRAITE', timing: 0, raci: { r: 'VA', a: 'Aurélia' } },
-{ title: 'Gerer la logistique quotidienne', section: 'RETRAITE', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Cérémonie de cloture', section: 'RETRAITE', timing: 3, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Ranger et quitter le lieu', section: 'RETRAITE', timing: 3, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer l\'email de remerciement', section: 'POST-RETRAITE', timing: 1, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Partager les photos/videos', section: 'POST-RETRAITE', timing: 3, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer le sondage de satisfaction', section: 'POST-RETRAITE', timing: 5, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Inviter a témoigner', section: 'POST-RETRAITE', timing: 7, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Publier les témoignages (avec accord)', section: 'POST-RETRAITE', timing: 10, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Proposer l\'offre de suivi (abonnement Studio)', section: 'POST-RETRAITE', timing: 10, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Bilan financier de la retraite', section: 'POST-RETRAITE', timing: 15, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' } },
-{ title: 'Bilan qualitatif (satisfaction, apprentissages)', section: 'POST-RETRAITE', timing: 20, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Publier le recap sur les réseaux sociaux', section: 'POST-RETRAITE', timing: 14, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Decider de la prochaine edition', section: 'POST-RETRAITE', timing: 30, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Catherine' } }
-]
-},
-T8: {
-id: 'T8',
-name: 'Gerer une licence annuelle',
-category: 'Cycle',
-description: 'Template pour gerer le cycle de vie d\'une licence annuelle (certifiées MTM)',
-steps: [
-{ title: 'Envoyer le contrat de renouvellement', section: 'SIGNATURE', timing: 0, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Recevoir le contrat signe', section: 'SIGNATURE', timing: 7, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Confirmer le paiement', section: 'SIGNATURE', timing: 10, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer la facture', section: 'SIGNATURE', timing: 10, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Activer/renouveler l\'acces aux espaces Circle', section: 'INTEGRATION', timing: 10, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Mettre a jour le répertoire des certifiées', section: 'INTEGRATION', timing: 12, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Envoyer les nouvelles ressources de l\'annee', section: 'INTEGRATION', timing: 14, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Planifier l\'appel de démarrage d\'annee', section: 'INTEGRATION', timing: 15, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Appel de démarrage d\'annee avec Aurelia', section: 'INTEGRATION', timing: 21, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Point trimestriel Q1 — suivi activite', section: 'SUIVI TRIMESTRIEL', timing: 90, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Supervision de groupe Q1', section: 'SUIVI TRIMESTRIEL', timing: 90, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Envoyer les nouveaux contenus Q1', section: 'SUIVI TRIMESTRIEL', timing: 95, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Point trimestriel Q2 — suivi activite', section: 'SUIVI TRIMESTRIEL', timing: 180, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Supervision de groupe Q2', section: 'SUIVI TRIMESTRIEL', timing: 180, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Sondage de satisfaction semestriel', section: 'SUIVI TRIMESTRIEL', timing: 185, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Point trimestriel Q3 — suivi activite', section: 'SUIVI TRIMESTRIEL', timing: 270, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Supervision de groupe Q3', section: 'SUIVI TRIMESTRIEL', timing: 270, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Envoyer les nouveaux contenus Q3', section: 'SUIVI TRIMESTRIEL', timing: 275, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Bilan annuel de la certifiée', section: 'RENOUVELLEMENT', timing: 330, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Appel de bilan annuel avec Aurelia', section: 'RENOUVELLEMENT', timing: 335, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Sondage de satisfaction annuel', section: 'RENOUVELLEMENT', timing: 340, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Envoyer la proposition de renouvellement', section: 'RENOUVELLEMENT', timing: 345, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Premier rappel de renouvellement', section: 'RENOUVELLEMENT', timing: 352, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Deuxieme rappel de renouvellement', section: 'RENOUVELLEMENT', timing: 360, raci: { r: 'Automatique', a: 'Laurie' } },
-{ title: 'Appel de retention (si pas de reponse)', section: 'RENOUVELLEMENT', timing: 365, raci: { r: 'Aurélia', a: 'Aurélia' } },
-{ title: 'Confirmer le renouvellement ou noter le depart', section: 'RENOUVELLEMENT', timing: 370, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Désactiver l\'acces si non renouvellement', section: 'RENOUVELLEMENT', timing: 375, raci: { r: 'Laurie', a: 'Aurélia' } },
-{ title: 'Bilan cycle de licence (retour d\'experience)', section: 'RENOUVELLEMENT', timing: 375, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' } }
-]
-},
-T9: {
-id: 'T9',
-name: 'Animer et retenir les abonnées Studio B2C',
-category: 'CycleContinu',
-description: 'Template de cycle mensuel pour l\'animation et la retention du Studio B2C',
-steps: [
-{ title: 'Planifier le calendrier des cours du mois', section: 'CONTENU', timing: 0, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Laurie' }, récurrence: 'mensuel' },
-{ title: 'Préparer les playlists musicales', section: 'CONTENU', timing: 1, raci: { r: 'Aurélia', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Créer le contenu bonus du mois', section: 'CONTENU', timing: 2, raci: { r: 'Aurélia', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Publier le recap du mois precedent', section: 'CONTENU', timing: 1, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Mettre en ligne les replays de la semaine 1', section: 'CONTENU', timing: 7, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Envoyer la newsletter mensuelle', section: 'ANIMATION', timing: 3, raci: { r: 'Automatique', a: 'Laurie' }, récurrence: 'mensuel' },
-{ title: 'Animer le fil de discussion communautaire', section: 'ANIMATION', timing: 5, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Publier les stories inspirantes', section: 'ANIMATION', timing: 10, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Live surprise ou Q&A (optionnel)', section: 'ANIMATION', timing: 15, raci: { r: 'Aurélia', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Vérifier les métriques de fréquentation', section: 'SUIVI MENSUEL', timing: 20, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Identifier les membres inactifs', section: 'SUIVI MENSUEL', timing: 20, raci: { r: 'Automatique', a: 'Laurie' }, récurrence: 'mensuel' },
-{ title: 'Le chatbot relance automatiquement les membres inactifs (message personnalisé)', section: 'SUIVI MENSUEL', timing: 20, raci: { r: 'Automatique', a: 'Laurie' }, récurrence: 'mensuel' },
-{ title: 'Le chatbot gere les questions recurrentes des membres (support automatise)', section: 'ANIMATION', timing: 0, raci: { r: 'Automatique', a: 'Laurie' }, récurrence: 'mensuel' },
-{ title: 'Envoyer un message personnalisé aux inactifs', section: 'SUIVI MENSUEL', timing: 22, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Contacter les membres a risque de résiliation', section: 'SUIVI MENSUEL', timing: 23, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Suivre les renouvellements/résiliations du mois', section: 'SUIVI MENSUEL', timing: 25, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Célébrer les anniversaires d\'abonnement', section: 'SUIVI MENSUEL', timing: 25, raci: { r: 'Automatique', a: 'Laurie' }, récurrence: 'mensuel' },
-{ title: 'Préparer le rapport mensuel de retention', section: 'SUIVI MENSUEL', timing: 28, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' }, récurrence: 'mensuel' },
-{ title: 'Point avec Aurelia sur les actions du mois suivant', section: 'SUIVI MENSUEL', timing: 28, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'mensuel' }
-]
-},
-T10: {
-id: 'T10',
-name: 'Animer la communauté certifiées MTM',
-category: 'CycleContinu',
-description: 'Template de cycle trimestriel pour l\'animation de la communauté des certifiées MTM',
-steps: [
-{ title: 'Préparer le contenu exclusif du trimestre', section: 'CONTENU', timing: 0, raci: { r: 'Aurélia', a: 'Aurélia' }, récurrence: 'trimestriel' },
-{ title: 'Publier la newsletter trimestrielle', section: 'CONTENU', timing: 3, raci: { r: 'Automatique', a: 'Laurie' }, récurrence: 'trimestriel' },
-{ title: 'Mettre a jour les ressources partagees', section: 'CONTENU', timing: 5, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'trimestriel' },
-{ title: 'Publier un article ou une video de fond', section: 'CONTENU', timing: 10, raci: { r: 'Aurélia', a: 'Aurélia' }, récurrence: 'trimestriel' },
-{ title: 'Organiser la session de supervision de groupe', section: 'ÉVÉNEMENT', timing: 15, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'trimestriel' },
-{ title: 'Envoyer le rappel de supervision', section: 'ÉVÉNEMENT', timing: 25, raci: { r: 'Automatique', a: 'Laurie' }, récurrence: 'trimestriel' },
-{ title: 'Animer la session de supervision', section: 'ÉVÉNEMENT', timing: 30, raci: { r: 'Aurélia', a: 'Aurélia' }, récurrence: 'trimestriel' },
-{ title: 'Envoyer le compte-rendu de supervision', section: 'ÉVÉNEMENT', timing: 32, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'trimestriel' },
-{ title: 'Lancer le sujet de discussion du trimestre', section: 'ÉVÉNEMENT', timing: 35, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'trimestriel' },
-{ title: 'Vérifier l\'engagement des certifiées', section: 'SUIVI TRIMESTRIEL', timing: 60, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'trimestriel' },
-{ title: 'Contacter les certifiées inactives', section: 'SUIVI TRIMESTRIEL', timing: 62, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'trimestriel' },
-{ title: 'Recueillir les retours et suggestions', section: 'SUIVI TRIMESTRIEL', timing: 65, raci: { r: 'Automatique', a: 'Laurie' }, récurrence: 'trimestriel' },
-{ title: 'Mettre en avant les succes des certifiées', section: 'SUIVI TRIMESTRIEL', timing: 70, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'trimestriel' },
-{ title: 'Préparer le rapport trimestriel', section: 'SUIVI TRIMESTRIEL', timing: 80, raci: { r: 'Laurie', a: 'Aurélia', c: 'Catherine' }, récurrence: 'trimestriel' },
-{ title: 'Point strategique avec Aurelia', section: 'SUIVI TRIMESTRIEL', timing: 85, raci: { r: 'Aurélia', a: 'Aurélia', c: 'Catherine' }, récurrence: 'trimestriel' },
-{ title: 'Planifier les actions du trimestre suivant', section: 'SUIVI TRIMESTRIEL', timing: 88, raci: { r: 'Laurie', a: 'Aurélia' }, récurrence: 'trimestriel' }
-]
-},
-T11: {
-id: 'T11',
-name: 'Publier le contenu hebdo Studio B2C',
-category: 'CycleContinu',
-description: 'Cycle hebdomadaire de publication de contenu pour le Studio FSY (video, email, communauté)',
-steps: [
-{ title: 'Vérifier le planning du mois (videos prévues cette semaine)', section: 'PREPARATION', timing: 0, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'hebdo' },
-{ title: 'Récupérer la video montee aupres du monteur', section: 'PREPARATION', timing: 0, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'hebdo' },
-{ title: 'Vérifier la qualité video (son, sous-titres, duree)', section: 'PREPARATION', timing: 0, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'hebdo' },
-{ title: 'Uploader la video sur Bunny.net (CDN)', section: 'PUBLICATION', timing: 1, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'hebdo' },
-{ title: 'Publier la video sur Circle (espace Studio)', section: 'PUBLICATION', timing: 1, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'hebdo' },
-{ title: 'Rédiger le titre et la description (focus de la semaine)', section: 'PUBLICATION', timing: 1, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'hebdo' },
-{ title: 'Envoyer le reminder dimanche soir (chatbot WhatsApp)', section: 'DIFFUSION', timing: 0, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'hebdo' },
-{ title: 'Envoyer l\'email recap + astuce de la semaine (Brevo)', section: 'DIFFUSION', timing: 2, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'hebdo' },
-{ title: 'Publier la story Instagram teaser (video de la semaine)', section: 'DIFFUSION', timing: 3, raci: { r: 'Antoine', a: 'Aurélia' }, récurrence: 'hebdo' },
-{ title: 'Publier le post communauté Circle (question ou defi)', section: 'ANIMATION', timing: 4, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'hebdo' },
-{ title: 'Vérifier les commentaires et repondre si necessaire', section: 'ANIMATION', timing: 5, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'hebdo' },
-{ title: 'Vérifier les stats de la semaine precedente (vues, engagement)', section: 'SUIVI', timing: 5, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'hebdo' }
-]
-},
-T12: {
-id: 'T12',
-name: 'Gerer les abonnements Studio B2C',
-category: 'CycleContinu',
-description: 'Cycle mensuel de gestion des abonnements : inscriptions, paiements, relances, résiliations, retention',
-steps: [
-{ title: 'Vérifier les nouvelles inscriptions du mois', section: 'INSCRIPTIONS', timing: 1, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Déclencher la sequence onboarding pour chaque nouvel abonne (Brevo)', section: 'INSCRIPTIONS', timing: 1, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Vérifier les acces Circle des nouveaux (compte actif, espaces visibles)', section: 'INSCRIPTIONS', timing: 2, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Extraire le rapport de paiements du mois (Circle ou Stripe)', section: 'FACTURATION', timing: 5, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Identifier les paiements échoués', section: 'FACTURATION', timing: 5, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Envoyer relance automatique J+3 apres échec de paiement', section: 'RELANCES', timing: 8, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Envoyer relance J+7 si toujours impayé', section: 'RELANCES', timing: 12, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Contact personnel J+10 (email ou message WhatsApp)', section: 'RELANCES', timing: 15, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Suspendre l\'acces si impayé > 14 jours', section: 'RELANCES', timing: 19, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Lister les demandes de résiliation du mois', section: 'RESILIATION', timing: 20, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Envoyer l\'email de retention (offre ou question)', section: 'RESILIATION', timing: 20, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Si depart confirme : desactiver acces, envoyer email de depart bienveillant', section: 'RESILIATION', timing: 22, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Calculer le MRR du mois (abonnes x 17 EUR)', section: 'KPI MENSUEL', timing: 25, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Calculer le churn mensuel (departs / total)', section: 'KPI MENSUEL', timing: 25, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Calculer les nouveaux abonnes nets (entrees - sorties)', section: 'KPI MENSUEL', timing: 25, raci: { r: 'Automatique', a: 'CM' }, récurrence: 'mensuel' },
-{ title: 'Déclencher alerte si churn > 8% ou MRR < seuil', section: 'KPI MENSUEL', timing: 26, raci: { r: 'Automatique', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Préparer le tableau de bord mensuel abonnements', section: 'KPI MENSUEL', timing: 27, raci: { r: 'CM', a: 'Aurélia' }, récurrence: 'mensuel' },
-{ title: 'Point mensuel Aurelia : KPIs + decisions retention', section: 'KPI MENSUEL', timing: 28, raci: { r: 'Aurélia', a: 'Aurélia', c: 'CM' }, récurrence: 'mensuel' }
-]
-}
-};
+    let TEMPLATES = {};
+    // --- Load templates from Supabase playbook_templates table ---
+    // This function is called during initialization to populate TEMPLATES
+    // RLS policies ensure users only see templates for their client
+    async function loadTemplates() {
+      if (!supabaseClient || !appState.currentClientId) return;
+      try {
+        // RLS enforces client isolation - only templates for current user's client are returned
+        var result = await supabaseClient
+          .from('playbook_templates')
+          .select('id, name, category, steps')
+          .eq('client_id', appState.currentClientId);
 
-    // --- Fonctions pures ---
+        if (result.error) {
+          console.error('Error loading templates:', result.error);
+          return;
+        }
+
+        // Convert database rows to TEMPLATES object format
+        // Database returns: {id, name, category, steps, client_id, created_at, updated_at}
+        // We transform to: {[templateName]: {name, category, steps}}
+        result.data.forEach(function(t) {
+          // Use the name as key for backward compatibility
+          TEMPLATES[t.name] = {
+            id: t.id,
+            name: t.name,
+            category: t.category,
+            steps: Array.isArray(t.steps) ? t.steps : []
+          };
+        });
+
+        // Re-render template selector with loaded templates
+        renderTemplateSelector();
+      } catch (e) {
+        console.error('Failed to load templates:', e);
+      }
+    }
+
+    // --- Pure functions ---
 
     function calculateAbsoluteDate(dateCible, timing) {
       const date = new Date(dateCible);
@@ -1756,13 +1334,13 @@ steps: [
       if (!select || !supabaseClient) return;
       var result = await supabaseClient
         .from('profiles')
-        .select('id, full_name, company, role')
+        .select('id, full_name, company, role, client_id')
         .in('role', ['client', 'assistant'])
         .order('full_name');
       var clients = result.data || [];
       clients.forEach(function(c) {
         var opt = document.createElement('option');
-        opt.value = c.id;
+        opt.value = c.client_id;
         opt.textContent = c.full_name + (c.company ? ' — ' + c.company : '');
         select.appendChild(opt);
       });
@@ -1784,6 +1362,9 @@ steps: [
 
     async function loadAllData() {
       try {
+        // Load templates from database (RLS filters by client_id)
+        await loadTemplates();
+
         var processesResult = await db.processes.getAll();
         var ownersResult = await db.owners.getAll();
         // Admin avec filtre client : filtrer côté front (RLS retourne tout pour admin)
@@ -2067,16 +1648,19 @@ steps: [
     var db = {
       processes: {
         getAll: async function() {
-          if (!supabaseClient) return [];
+          if (!supabaseClient || !appState.currentClientId) return [];
+          // RLS enforces client_id filtering at database layer
           var result = await supabaseClient
             .from('playbook_processes')
             .select('*, playbook_steps(*)')
+            .eq('client_id', appState.currentClientId)
             .order('created_at', { ascending: false });
           if (result.error) throw result.error;
           return result.data || [];
         },
         create: async function(process) {
           if (!supabaseClient) return process;
+          // RLS requires client_id in payload for INSERT enforcement
           var toInsert = {
             id: process.id,
             name: process.name,
@@ -2096,24 +1680,29 @@ steps: [
         },
         update: async function(id, fields) {
           if (!supabaseClient) { showToast('Non connecte — modifications non sauvegardees'); return; }
+          // RLS enforces client_id isolation on UPDATE
           var result = await supabaseClient
             .from('playbook_processes')
             .update(fields)
-            .eq('id', id);
+            .eq('id', id)
+            .eq('client_id', appState.currentClientId);
           if (result.error) throw result.error;
         },
         delete: async function(id) {
           if (!supabaseClient) return;
+          // RLS enforces client_id isolation on DELETE
           var result = await supabaseClient
             .from('playbook_processes')
             .delete()
-            .eq('id', id);
+            .eq('id', id)
+            .eq('client_id', appState.currentClientId);
           if (result.error) throw result.error;
         }
       },
       steps: {
         bulkCreate: async function(steps) {
           if (!supabaseClient) return steps;
+          // RLS enforces client isolation via FK chain (process_id → client_id)
           var result = await supabaseClient
             .from('playbook_steps')
             .insert(steps);
@@ -2122,6 +1711,7 @@ steps: [
         },
         update: async function(id, fields) {
           if (!supabaseClient) { showToast('Non connecte — modifications non sauvegardees'); return; }
+          // RLS enforces isolation via subquery: (SELECT client_id FROM playbook_processes WHERE id = process_id)
           var result = await supabaseClient
             .from('playbook_steps')
             .update(fields)
@@ -2130,6 +1720,7 @@ steps: [
         },
         remove: async function(id) {
           if (!supabaseClient) return;
+          // RLS enforces isolation via subquery: (SELECT client_id FROM playbook_processes WHERE id = process_id)
           var result = await supabaseClient
             .from('playbook_steps')
             .delete()
@@ -2140,15 +1731,18 @@ steps: [
       owners: {
         getAll: async function() {
           if (!supabaseClient) return [];
+          // RLS enforces client_id filtering at database layer
           var result = await supabaseClient
             .from('playbook_owners')
             .select('*')
+            .eq('client_id', appState.currentClientId)
             .order('name');
           if (result.error) throw result.error;
           return result.data || [];
         },
         create: async function(owner) {
           if (!supabaseClient) return owner;
+          // RLS requires client_id in payload for INSERT enforcement
           var result = await supabaseClient
             .from('playbook_owners')
             .insert(owner)
@@ -3276,15 +2870,15 @@ steps: [
           window.location.href = 'index.html';
           return;
         }
-        // Récupérer le profil pour déterminer le rôle
+        // Récupérer le profil pour déterminer le rôle et client_id
         var profileResult = await supabaseClient
           .from('profiles')
-          .select('id, role, full_name, company')
+          .select('id, role, full_name, company, client_id')
           .eq('id', session.user.id)
           .single();
         if (profileResult.data) {
           appState.isAdmin = (profileResult.data.role === 'admin');
-          appState.currentClientId = profileResult.data.id;
+          appState.currentClientId = profileResult.data.client_id;
           // Titre dynamique
           var titleEl = document.getElementById('playbook-title');
           if (!appState.isAdmin && profileResult.data.company) {
