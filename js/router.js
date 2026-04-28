@@ -56,9 +56,10 @@ async function initApp() {
 }
 
 async function initClientPortal(profile) {
-  // Compatibility: some datasets now key business data by profiles.client_id
-  // instead of profiles.id (auth user id). Fallback keeps legacy behavior.
-  var portalClientId = profile.client_id || profile.id;
+  // Compatibility: datasets may still be keyed by either profiles.client_id
+  // or legacy profiles.id depending on migration state.
+  var preferredClientId = profile.client_id || profile.id;
+  var portalClientId = await resolvePortalClientId(preferredClientId, profile.id);
   var scopedProfile = Object.assign({}, profile, { id: portalClientId });
 
   // Header
@@ -149,6 +150,35 @@ async function initClientPortal(profile) {
   // Check badges (async, non-blocking)
   checkAllBadges(portalClientId);
   updatePlaybookBadge(portalClientId);
+}
+
+async function resolvePortalClientId(preferredClientId, legacyProfileId) {
+  if (!preferredClientId) return legacyProfileId;
+  if (!legacyProfileId || preferredClientId === legacyProfileId) return preferredClientId;
+
+  async function hasDataForClient(tableName, clientId) {
+    try {
+      var result = await db
+        .from(tableName)
+        .select('id')
+        .eq('client_id', clientId)
+        .limit(1);
+      return !!(result && result.data && result.data.length > 0);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  var tables = ['sessions', 'actions', 'contracts'];
+  for (var i = 0; i < tables.length; i++) {
+    var table = tables[i];
+    var hasPreferred = await hasDataForClient(table, preferredClientId);
+    var hasLegacy = await hasDataForClient(table, legacyProfileId);
+    if (hasPreferred && !hasLegacy) return preferredClientId;
+    if (hasLegacy && !hasPreferred) return legacyProfileId;
+  }
+
+  return preferredClientId;
 }
 
 // Password change modal
