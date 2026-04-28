@@ -1,5 +1,26 @@
 let currentProfile = null;
 
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function sanitizeExternalUrl(url) {
+  try {
+    var parsed = new URL(url, window.location.origin);
+    if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+      return parsed.href;
+    }
+  } catch (e) {
+    return null;
+  }
+  return null;
+}
+
 async function initApp() {
   const session = await requireAuth();
   if (!session) return;
@@ -35,6 +56,11 @@ async function initApp() {
 }
 
 async function initClientPortal(profile) {
+  // Compatibility: some datasets now key business data by profiles.client_id
+  // instead of profiles.id (auth user id). Fallback keeps legacy behavior.
+  var portalClientId = profile.client_id || profile.id;
+  var scopedProfile = Object.assign({}, profile, { id: portalClientId });
+
   // Header
   var firstName = (profile.full_name || '').split(' ')[0];
   document.getElementById('client-title').textContent = 'Salut ' + firstName;
@@ -48,9 +74,15 @@ async function initClientPortal(profile) {
   // Logo
   var logoEl = document.getElementById('client-logo');
   if (profile.logo_url) {
-    logoEl.innerHTML = '<img src="' + profile.logo_url + '" alt="" style="max-height:48px;max-width:120px;border-radius:8px">';
+    var safeLogo = sanitizeExternalUrl(profile.logo_url);
+    if (safeLogo) {
+      logoEl.innerHTML = '<img src="' + safeLogo + '" alt="" style="max-height:48px;max-width:120px;border-radius:8px">';
+    } else {
+      var initialsInvalid = escapeHtml(firstName.charAt(0).toUpperCase());
+      logoEl.innerHTML = '<div style="width:48px;height:48px;border-radius:12px;background:rgba(194,122,90,0.15);color:#d4956f;display:flex;align-items:center;justify-content:center;font-family:Playfair Display,serif;font-size:1.4rem;font-weight:700">' + initialsInvalid + '</div>';
+    }
   } else {
-    var initials = firstName.charAt(0).toUpperCase();
+    var initials = escapeHtml(firstName.charAt(0).toUpperCase());
     logoEl.innerHTML = '<div style="width:48px;height:48px;border-radius:12px;background:rgba(194,122,90,0.15);color:#d4956f;display:flex;align-items:center;justify-content:center;font-family:Playfair Display,serif;font-size:1.4rem;font-weight:700">' + initials + '</div>';
   }
 
@@ -59,7 +91,7 @@ async function initClientPortal(profile) {
   var { data: sessions } = await db
     .from('sessions')
     .select('session_number, status')
-    .eq('client_id', profile.id);
+    .eq('client_id', portalClientId);
 
   var completedSessions = sessions ? sessions.filter(function(s) { return s.status === 'completed'; }).length : 0;
   var totalSessions = profile.total_sessions || '?';
@@ -70,7 +102,7 @@ async function initClientPortal(profile) {
   var { data: actions } = await db
     .from('actions')
     .select('is_completed, status')
-    .eq('client_id', profile.id);
+    .eq('client_id', portalClientId);
 
   var pendingActions = actions ? actions.filter(function(a) {
     return a.status !== 'done' && a.status !== 'abandoned' && !a.is_completed;
@@ -103,20 +135,20 @@ async function initClientPortal(profile) {
   });
 
   // Load all data
-  loadClientDashboard(profile);
-  loadActions(profile.id);
-  loadBrainDumps(profile.id);
-  loadTools(profile.id);
-  loadTutos(profile.id);
-  loadSessions(profile.id);
-  loadProject(profile.id);
-  loadAutomations(profile.id);
-  loadContract(profile.id);
-  loadPlaybook(profile.id);
+  loadClientDashboard(scopedProfile);
+  loadActions(portalClientId);
+  loadBrainDumps(portalClientId);
+  loadTools(portalClientId);
+  loadTutos(portalClientId);
+  loadSessions(portalClientId);
+  loadProject(portalClientId);
+  loadAutomations(portalClientId);
+  loadContract(portalClientId);
+  loadPlaybook(portalClientId);
 
   // Check badges (async, non-blocking)
-  checkAllBadges(profile.id);
-  updatePlaybookBadge(profile.id);
+  checkAllBadges(portalClientId);
+  updatePlaybookBadge(portalClientId);
 }
 
 // Password change modal
