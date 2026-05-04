@@ -3,7 +3,7 @@
   "intro": "Ressources, tutos et guides préparés avec Catherine — chaque lien s'ouvre dans un nouvel onglet (accessible de chez toi, mobile ou ordinateur).",
   "sections": [
     {
-      "heading": "1) Circle — vidéo de démarrage + page sous la vidéo",
+      "heading": "Circle — vidéo de démarrage + page sous la vidéo",
       "items": [
         {
           "file": "script-video-circle-onboarding-fsy.html",
@@ -20,7 +20,7 @@
       ]
     },
     {
-      "heading": "2) Recrutement d'un bras droit",
+      "heading": "Recrutement d'un bras droit",
       "items": [
         {
           "file": "fiche-poste-recrutement-bras-droit-fsy.html",

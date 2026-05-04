@@ -36,10 +36,10 @@ function buildFsyResourcesHtml() {
   var base = new URL('/clients/fsy/', window.location.origin).href;
   var html = '';
   html += '<div style="margin-bottom:24px;padding:16px;border:1px solid rgba(194,122,90,0.35);border-radius:12px;background:#151515">';
-  html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:0 0 12px">1) Circle — vidéo de démarrage + page sous la vidéo</h3>';
+  html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:0 0 12px">Circle — vidéo de démarrage + page sous la vidéo</h3>';
   html += buildFsyRow(base + 'script-video-circle-onboarding-fsy.html', 'Script vidéo — bienvenue sur Circle', 'Texte prêt à enregistrer pour la vidéo de démarrage.', '🎬');
   html += buildFsyRow(base + 'premieres-actions-circle-fsy.html', 'Page à mettre sous la vidéo de démarrage', 'Tes 3 premières actions sur Circle.', '⭕');
-  html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:18px 0 12px">2) Recrutement d\'un bras droit</h3>';
+  html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:18px 0 12px">Recrutement d\'un bras droit</h3>';
   html += buildFsyRow(base + 'fiche-poste-recrutement-bras-droit-fsy.html', 'Fiche de poste — annonce recrutement', 'Texte public pour diffuser l\'offre.', '📣');
   html += buildFsyRow(base + 'fiche-poste-bras-droit-fsy.html', 'Fiche de poste — bras droit opérations', 'Version détaillée du rôle.', '📋');
   html += buildFsyRow(base + 'grille-entretien-bras-droit-fsy.html', 'Grille d\'entretien candidats', 'Structure et critères pour les entretiens.', '✅');
