@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 88" role="img" aria-labelledby="title desc">
+  <title id="title">Face Soul Yoga</title>
+  <desc id="desc">Logo horizontal Face Soul Yoga, tons ocre</desc>
+  <defs>
+    <linearGradient id="fsyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c49a72"/>
+      <stop offset="55%" stop-color="#b48a64"/>
+      <stop offset="100%" stop-color="#8b6848"/>
+    </linearGradient>
+  </defs>
+  <circle cx="44" cy="44" r="28" fill="none" stroke="url(#fsyGrad)" stroke-width="3.5"/>
+  <path d="M44 22v44M30 36h28M30 52h28" stroke="url(#fsyGrad)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <text x="92" y="42" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="600" fill="#8b6848" letter-spacing="0.04em">FACE SOUL</text>
+  <text x="92" y="68" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="600" fill="#b48a64" letter-spacing="0.12em">YOGA</text>
+  <line x1="92" y1="76" x2="340" y2="76" stroke="#e7d8ca" stroke-width="2" stroke-linecap="round"/>
+</svg>
