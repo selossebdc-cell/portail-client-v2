@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FSY - Tes 3 premières actions sur Circle</title>
+  <style>
+    :root { --fsy-primary: #b48a64; --fsy-primary-dark: #8b6848; --fsy-bg-soft: #f8f3ee; --fsy-border: #e7d8ca; }
+    body { font-family: Arial, sans-serif; color: #1f2937; margin: 0; background: #fcfaf8; }
+    .page { max-width: 800px; margin: 24px auto; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 28px; }
+    .header { text-align: center; margin-bottom: 18px; }
+    .logo-wrap { margin-bottom: 10px; }
+    .logo {
+      max-width: 340px;
+      width: 100%;
+      height: auto;
+    }
+    h1 { margin: 8px 0 4px; color: var(--fsy-primary-dark); font-size: 28px; }
+    .subtitle { color: #4b5563; margin: 0; }
+    .intro { background: var(--fsy-bg-soft); border: 1px solid var(--fsy-border); border-radius: 10px; padding: 12px 14px; margin: 18px 0; }
+    .step { border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px 16px; margin: 12px 0; }
+    .step h2 { margin: 0 0 8px; color: #111827; font-size: 20px; }
+    .step p { margin: 0 0 8px; }
+    .action { color: var(--fsy-primary-dark); font-weight: 700; }
+    .footer-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin-top: 16px; }
+    ul { margin: 8px 0; }
+    @page { size: A4; margin: 14mm; }
+    @media print {
+      body { background: #ffffff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { margin: 0; max-width: none; border: 0; border-radius: 0; padding: 0; }
+      .step, .intro, .footer-box, h1, h2, p, ul { break-inside: avoid; page-break-inside: avoid; }
+      h1, h2 { page-break-after: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="logo-wrap" style="font-family:Georgia,serif;font-size:1.35rem;color:var(--fsy-primary-dark);letter-spacing:0.04em">Face Soul Yoga</div>
+      <h1>Tes 3 premières actions sur Circle</h1>
+      <p class="subtitle">Bienvenue dans la communauté Face Soul Yoga</p>
+    </div>
+
+    <div class="intro">
+      Prends 5 à 10 minutes pour faire ces 3 actions simples.
+      Elles te permettent de démarrer dans de bonnes conditions, à ton rythme.
+    </div>
+
+    <div class="step">
+      <h2>1) Complète ton profil</h2>
+      <p><span class="action">Action :</span> clique sur ton avatar puis sur ton profil.</p>
+      <ul>
+        <li>Ajoute ton prénom.</li>
+        <li>Ajoute une photo (si tu veux).</li>
+        <li>Active les notifications utiles.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h2>2) Va dans « Commencer ici »</h2>
+      <p><span class="action">Action :</span> dans le menu de gauche, ouvre l’espace <strong>Commencer ici</strong>.</p>
+      <ul>
+        <li>Lis le post de bienvenue épinglé.</li>
+        <li>Repère les 3 premières actions de la semaine.</li>
+        <li>Suis les étapes dans l’ordre, sans pression.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h2>3) Publie ton premier message dans « Questions »</h2>
+      <p><span class="action">Action :</span> ouvre l’espace <strong>Questions</strong> puis clique sur <strong>Nouveau post</strong>.</p>
+      <ul>
+        <li>Présente-toi en quelques lignes.</li>
+        <li>Ou pose ta première question du moment.</li>
+        <li>Exemple : « Je débute, par quoi commencer cette semaine ? »</li>
+      </ul>
+    </div>
+
+    <div class="footer-box">
+      <strong>Besoin d’aide ?</strong><br />
+      Poste directement ta question dans l’espace <strong>Questions</strong>, on te répond rapidement.
+    </div>
+  </div>
+</body>
+</html>

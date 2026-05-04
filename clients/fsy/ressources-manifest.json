@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "intro": "Ressources, tutos et guides préparés avec Catherine — chaque lien s'ouvre dans un nouvel onglet (accessible de chez toi, mobile ou ordinateur).",
+  "sections": [
+    {
+      "heading": "1) Circle — vidéo de démarrage + page sous la vidéo",
+      "items": [
+        {
+          "file": "script-video-circle-onboarding-fsy.html",
+          "title": "Script vidéo — bienvenue sur Circle",
+          "desc": "Texte prêt à enregistrer pour la vidéo de démarrage.",
+          "icon": "🎬"
+        },
+        {
+          "file": "premieres-actions-circle-fsy.html",
+          "title": "Page à mettre sous la vidéo de démarrage",
+          "desc": "Tes 3 premières actions sur Circle.",
+          "icon": "⭕"
+        }
+      ]
+    },
+    {
+      "heading": "2) Recrutement d'un bras droit",
+      "items": [
+        {
+          "file": "fiche-poste-recrutement-bras-droit-fsy.html",
+          "title": "Fiche de poste — annonce recrutement",
+          "desc": "Texte public pour diffuser l'offre.",
+          "icon": "📣"
+        },
+        {
+          "file": "fiche-poste-bras-droit-fsy.html",
+          "title": "Fiche de poste — bras droit opérations",
+          "desc": "Version détaillée du rôle.",
+          "icon": "📋"
+        },
+        {
+          "file": "grille-entretien-bras-droit-fsy.html",
+          "title": "Grille d'entretien candidats",
+          "desc": "Structure et critères pour les entretiens.",
+          "icon": "✅"
+        }
+      ]
+    }
+  ]
+}
