@@ -3,6 +3,12 @@
 async function loadClientDashboard(profile) {
   const container = document.getElementById('dashboard-content');
   let html = '';
+  var safeText = (typeof escapeHtml === 'function')
+    ? escapeHtml
+    : function(value) { return String(value || ''); };
+  var safeUrl = (typeof sanitizeExternalUrl === 'function')
+    ? sanitizeExternalUrl
+    : function(url) { return url || null; };
 
   // ─── Alerte RDV ───
   const { data: plannedSessions } = await db
@@ -120,6 +126,44 @@ async function loadClientDashboard(profile) {
   }
 
   // ─── Raccourcis ───
+  const { data: latestReports } = await db
+    .from('sessions')
+    .select('session_number, title, cr_url, date')
+    .eq('client_id', profile.id)
+    .not('cr_url', 'is', null)
+    .order('date', { ascending: false })
+    .limit(3);
+
+  if (latestReports && latestReports.length > 0) {
+    html += '<div style="margin-bottom:24px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
+        '<h3 style="font-family:Playfair Display,serif;font-size:1.1rem">Derniers compte-rendus</h3>' +
+        '<span style="font-size:0.8rem;color:#d4956f;cursor:pointer" onclick="switchToTab(\'tab-sessions\')">Voir toutes les séances →</span>' +
+      '</div>';
+
+    latestReports.forEach(function(cr) {
+      var crLink = safeUrl(cr.cr_url);
+      if (!crLink) return;
+      var crDate = cr.date ? new Date(cr.date + 'T00:00:00') : null;
+      var crDateStr = crDate
+        ? crDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+        : 'Date non renseignee';
+      var crTitle = safeText(cr.title || ('Seance ' + cr.session_number));
+      html += '<a href="' + crLink + '" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;text-decoration:none;color:inherit;margin-bottom:8px;transition:border-color 0.2s" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
+        '<div style="display:flex;align-items:flex-start;gap:10px;min-width:0">' +
+          '<span style="font-size:1rem">📄</span>' +
+          '<div style="min-width:0">' +
+            '<div style="font-size:0.86rem;font-weight:600;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + crTitle + '</div>' +
+            '<div style="font-size:0.76rem;color:#8a8a8a">S' + cr.session_number + ' • ' + crDateStr + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<span style="font-size:0.76rem;color:#d4956f;flex-shrink:0">Ouvrir →</span>' +
+      '</a>';
+    });
+
+    html += '</div>';
+  }
+
   html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px">';
 
   html += '<div style="padding:16px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;cursor:pointer;transition:border-color 0.2s" onclick="switchToTab(\'tab-braindump\')" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
@@ -134,21 +178,14 @@ async function loadClientDashboard(profile) {
     '<div style="font-size:0.75rem;color:#666666">KPI, avancement, dashboards</div>' +
   '</div>';
 
-  // Dernier CR
-  const { data: lastCR } = await db
-    .from('sessions')
-    .select('session_number, title, cr_url')
-    .eq('client_id', profile.id)
-    .not('cr_url', 'is', null)
-    .order('session_number', { ascending: false })
-    .limit(1);
-
-  if (lastCR && lastCR.length > 0 && lastCR[0].cr_url) {
-    html += '<a href="' + lastCR[0].cr_url + '" target="_blank" style="padding:16px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;text-decoration:none;color:inherit;transition:border-color 0.2s" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
+  // Acces seances / CR
+  if (latestReports && latestReports.length > 0) {
+    var latestSafeTitle = safeText(latestReports[0].title || '');
+    html += '<div style="padding:16px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;cursor:pointer;transition:border-color 0.2s" onclick="switchToTab(\'tab-sessions\')" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
       '<div style="font-size:1.2rem;margin-bottom:4px">📄</div>' +
-      '<div style="font-size:0.85rem;font-weight:600">Dernier CR</div>' +
-      '<div style="font-size:0.75rem;color:#666666">S' + lastCR[0].session_number + ' — ' + (lastCR[0].title || '') + '</div>' +
-    '</a>';
+      '<div style="font-size:0.85rem;font-weight:600">Mes compte-rendus</div>' +
+      '<div style="font-size:0.75rem;color:#666666">Dernier: S' + latestReports[0].session_number + (latestSafeTitle ? ' — ' + latestSafeTitle : '') + '</div>' +
+    '</div>';
   } else {
     html += '<div style="padding:16px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;cursor:pointer;transition:border-color 0.2s" onclick="switchToTab(\'tab-sessions\')" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
       '<div style="font-size:1.2rem;margin-bottom:4px">📅</div>' +
