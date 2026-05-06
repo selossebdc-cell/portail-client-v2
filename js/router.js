@@ -24,6 +24,19 @@ function sanitizeExternalUrl(url) {
   return null;
 }
 
+function openHelpWhatsapp(event) {
+  var link = document.getElementById('help-whatsapp');
+  if (!link) return true;
+  var url = link.getAttribute('href') || DEFAULT_HELP_WHATSAPP_URL;
+  if (event && typeof event.preventDefault === 'function') event.preventDefault();
+  try {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } catch (e) {
+    window.location.href = url;
+  }
+  return false;
+}
+
 function shouldUseSimplifiedClientPortal(profile) {
   if (!profile) return false;
   var cid = String(profile.client_id || profile.id || '').toLowerCase();
