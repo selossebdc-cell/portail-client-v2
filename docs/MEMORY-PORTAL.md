@@ -25,8 +25,12 @@ Mis à jour le 2026-05-06
 - Onglets actifs: Accueil, Ressources, Sessions, Mon contrat, Brain Dump
 - Bloc stats d'en-tête masqué pour DotMarket
 - Bouton WhatsApp supprimé (instable selon device/browser), email conservé
-- Contrat affiché en cohérence HT/TTC
-- Ressources nettoyées (docs de travail uniquement, sans contrat)
+- Contrat affiché avec montant total forcé en HT (10 000 € HT)
+- Ressources nettoyées (docs de travail uniquement, sans contrat, sans doublons CR)
+- Sessions:
+  - vrais CR session 1 et session 2 publiés et reliés
+  - rendez-vous planifiés ajoutés (14/05 09:30, 19/05 16:00) avec liens Meet
+  - résumés sessions linkifiés (URLs cliquables)
 
 ## Points de vigilance
 - Vérifier les 404 après publication GitHub Pages (cache CDN)
