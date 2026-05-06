@@ -10,6 +10,17 @@ async function loadSessions(clientId) {
 }
 
 function renderSessions(sessions, allActions) {
+  function linkifyText(text) {
+    var raw = String(text || '');
+    var escaped = raw
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    return escaped.replace(/(https?:\/\/[^\s<]+)/g, function(url) {
+      return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:#d4956f;text-decoration:underline">' + url + '</a>';
+    });
+  }
+
   const container = document.getElementById('sessions-list');
   const subtitleEl = document.getElementById('sessions-subtitle');
 
@@ -43,7 +54,7 @@ function renderSessions(sessions, allActions) {
 
     // Summary V1
     const summaryHtml = session.summary
-      ? '<p style="font-size:0.85rem; color:#ccc; margin-top:12px;">' + session.summary + '</p>'
+      ? '<p style="font-size:0.85rem; color:#ccc; margin-top:12px;">' + linkifyText(session.summary) + '</p>'
       : '<p style="color:#666666;font-size:0.85rem;padding-top:16px">Le résumé sera ajoute après la séance.</p>';
 
     // CR link button
