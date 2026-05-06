@@ -36,3 +36,27 @@ Mis à jour le 2026-05-06
 - Vérifier les 404 après publication GitHub Pages (cache CDN)
 - Éviter les doublons de contenus entre Sessions et Ressources
 - Toujours valider le repo réellement connecté au domaine avant patch
+
+## Security audit archive — 2026-05-06
+
+Scope: empirical RLS/runtime checks from client token + anon token.
+
+### Summary
+- Verdict: GO (no blocking security issue found).
+- Cross-tenant isolation validated on tested tables.
+- Anonymous reads return empty result sets on sensitive tables.
+- Cross-client write attempt blocked by RLS (`42501`).
+
+### Checks performed
+- Secrets scan (runtime code): no exposed server secret found.
+- Anon access checks:
+  - `profiles`, `sessions`, `actions`, `tutos`, `contracts` => `[]`
+- Client-token isolation checks (Kevin / DotMarket):
+  - own client reads => data visible
+  - other client reads => `[]`
+  - `profiles` by other client email => `[]`
+- Cross-client write probe:
+  - insert `tutos` with foreign `client_id` => `403` / RLS violation
+
+### Note
+- `playbook_steps` direct filter with `client_id` is invalid (column does not exist), so that specific probe is not applicable for this table.
