@@ -52,10 +52,7 @@ function renderContract(contract) {
     return;
   }
 
-  var paymentLabels = Array.isArray(contract.payment_schedule)
-    ? contract.payment_schedule.map(function(p) { return String(p && p.label || '').toUpperCase(); }).join(' ')
-    : '';
-  var totalAmountSuffix = paymentLabels.indexOf('TTC') !== -1 ? '€ TTC' : '€ HT';
+  var totalAmountSuffix = '€ HT';
 
   // Programme card
   let gridHtml =
