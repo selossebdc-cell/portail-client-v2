@@ -172,12 +172,6 @@ async function loadClientDashboard(profile) {
     '<div style="font-size:0.75rem;color:#666666">Note tes idees, blocages...</div>' +
   '</div>';
 
-  html += '<div style="padding:16px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;cursor:pointer;transition:border-color 0.2s" onclick="switchToTab(\'tab-project\')" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
-    '<div style="font-size:1.2rem;margin-bottom:4px">📊</div>' +
-    '<div style="font-size:0.85rem;font-weight:600">Mon projet</div>' +
-    '<div style="font-size:0.75rem;color:#666666">KPI, avancement, dashboards</div>' +
-  '</div>';
-
   // Acces seances / CR
   if (latestReports && latestReports.length > 0) {
     var latestSafeTitle = safeText(latestReports[0].title || '');

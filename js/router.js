@@ -165,6 +165,12 @@ async function initClientPortal(profile) {
     '<div class="stat-box"><div class="stat-value">' + sessionPct + '%</div><div class="stat-label">Avancement</div></div>' +
     '<div class="stat-box"><div class="stat-value">' + pendingActions + '</div><div class="stat-label">A faire</div></div>' +
     '<div class="stat-box"><div class="stat-value">' + doneActions + ' ✓</div><div class="stat-label">Bravo !</div></div>';
+  if (shouldUseSimplifiedClientPortal(scopedProfile)) {
+    statsEl.style.display = 'none';
+    statsEl.innerHTML = '';
+  } else {
+    statsEl.style.display = '';
+  }
 
   // Tabs
   var tabs = document.querySelectorAll('#client-tabs .tab');
