@@ -1,6 +1,7 @@
 let currentProfile = null;
 var DOTMARKET_CLIENT_ID = '8d9428ce-184a-4232-a225-4c8ee6e2acb1';
-var DOTMARKET_SIMPLIFIED_TABS = ['tab-dashboard', 'tab-tutos', 'tab-sessions', 'tab-braindump', 'tab-contract'];
+var DOTMARKET_SIMPLIFIED_TABS = ['tab-dashboard', 'tab-tutos', 'tab-sessions', 'tab-contract', 'tab-braindump'];
+var DEFAULT_HELP_WHATSAPP_URL = 'https://wa.me/33661864016';
 
 function escapeHtml(value) {
   return String(value || '')
@@ -118,6 +119,13 @@ async function initClientPortal(profile) {
   if (profile.company && profile.program) subtitle += ' — ';
   if (profile.program) subtitle += profile.program;
   document.getElementById('client-subtitle').textContent = subtitle;
+  var helpWhatsapp = document.getElementById('help-whatsapp');
+  if (helpWhatsapp) {
+    var profileWhatsapp = sanitizeExternalUrl(profile.whatsapp_url || '');
+    helpWhatsapp.href = profileWhatsapp || DEFAULT_HELP_WHATSAPP_URL;
+    helpWhatsapp.target = '_blank';
+    helpWhatsapp.rel = 'noopener noreferrer';
+  }
 
   // Logo
   var logoEl = document.getElementById('client-logo');
