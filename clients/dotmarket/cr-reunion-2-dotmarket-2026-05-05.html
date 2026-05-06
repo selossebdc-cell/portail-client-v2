@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CR Réunion 2 — Dot Market — 5 mai 2026</title>
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1a1a2e;
+      background: #f4f6f9;
+    }
+
+    /* ===== PAGE WRAPPER ===== */
+    .page {
+      max-width: 860px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      overflow: hidden;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, #0d4f3c 0%, #0a3d2e 60%, #145a46 100%);
+      color: #ffffff;
+      padding: 40px 48px 32px;
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.30);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .header .subtitle {
+      font-size: 13px;
+      opacity: 0.75;
+      margin-bottom: 28px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding-top: 24px;
+    }
+
+    .meta-item label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      opacity: 0.60;
+      margin-bottom: 4px;
+    }
+
+    .meta-item span {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* ===== BODY ===== */
+    .body {
+      padding: 40px 48px 48px;
+    }
+
+    /* ===== SECTION ===== */
+    .section {
+      margin-bottom: 36px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #0d4f3c;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e0ede9;
+    }
+
+    .section-title .icon {
+      width: 28px;
+      height: 28px;
+      background: #0d4f3c;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    /* ===== CONTEXT BOX ===== */
+    .context-box {
+      background: #f0f7f4;
+      border-left: 4px solid #0d4f3c;
+      border-radius: 0 6px 6px 0;
+      padding: 16px 20px;
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: #1a3d30;
+    }
+
+    /* ===== PROGRESS STRIP ===== */
+    .progress-strip {
+      display: flex;
+      gap: 0;
+      margin-bottom: 20px;
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid #d1e8df;
+    }
+
+    .progress-item {
+      flex: 1;
+      padding: 10px 12px;
+      background: #f0f7f4;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #0d4f3c;
+      border-right: 1px solid #d1e8df;
+      line-height: 1.4;
+    }
+
+    .progress-item:last-child { border-right: none; }
+
+    .progress-item .step-num {
+      display: block;
+      font-size: 16px;
+      font-weight: 800;
+      color: #0a3d2e;
+      margin-bottom: 2px;
+    }
+
+    .progress-item.active {
+      background: #0d4f3c;
+      color: #fff;
+    }
+
+    .progress-item.active .step-num { color: #a7f3d0; }
+
+    /* ===== LIST ITEMS ===== */
+    ul.clean {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul.clean li {
+      padding: 8px 0 8px 22px;
+      position: relative;
+      font-size: 13.5px;
+      border-bottom: 1px solid #f0f5f2;
+      line-height: 1.55;
+    }
+
+    ul.clean li:last-child {
+      border-bottom: none;
+    }
+
+    ul.clean li::before {
+      content: '›';
+      position: absolute;
+      left: 4px;
+      color: #0d4f3c;
+      font-weight: 700;
+      font-size: 16px;
+      top: 5px;
+    }
+
+    ul.clean.check li::before {
+      content: '✓';
+      font-size: 12px;
+      top: 9px;
+      color: #059669;
+    }
+
+    /* ===== NUMBERED POINTS ===== */
+    .numbered-list {
+      list-style: none;
+      padding: 0;
+      counter-reset: num;
+    }
+
+    .numbered-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f5f2;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .numbered-list li:last-child { border-bottom: none; }
+
+    .num-badge {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      background: #0d4f3c;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    /* ===== ACTION TABLE ===== */
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .action-table thead tr {
+      background: #0d4f3c;
+      color: #fff;
+    }
+
+    .action-table thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .action-table tbody tr {
+      border-bottom: 1px solid #e0ede9;
+    }
+
+    .action-table tbody tr:last-child { border-bottom: none; }
+
+    .action-table tbody tr:nth-child(even) { background: #f8fbf9; }
+
+    .action-table tbody td {
+      padding: 10px 14px;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .owner-tag {
+      display: inline-block;
+      background: #d1fae5;
+      color: #064e3b;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .owner-tag.multi {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .priority-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #059669;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .priority-dot.urgent { background: #dc2626; }
+
+    /* ===== INFO BLOCK ===== */
+    .info-block {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-left: 4px solid #f59e0b;
+      border-radius: 0 6px 6px 0;
+      padding: 16px 20px;
+      font-size: 13px;
+      color: #78350f;
+      line-height: 1.6;
+    }
+
+    .info-block strong { color: #92400e; }
+
+    /* ===== NEXT STEPS BOX ===== */
+    .next-box {
+      background: #f0f7f4;
+      border: 1px solid #a7d7c5;
+      border-radius: 7px;
+      padding: 18px 20px;
+    }
+
+    .next-box p {
+      font-size: 13.5px;
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: #f4f6f9;
+      border-top: 1px solid #e0e5ef;
+      padding: 18px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #8892b0;
+    }
+
+    .footer strong { color: #0d4f3c; }
+
+    /* ===== PRINT ===== */
+    @media print {
+      body { background: #fff; font-size: 12px; }
+      .page { box-shadow: none; margin: 0; border-radius: 0; max-width: 100%; }
+      .header { background: #0d4f3c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .action-table thead tr { background: #0d4f3c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .section { page-break-inside: avoid; }
+    }
+
+    @media (max-width: 640px) {
+      .header, .body { padding: 24px 20px; }
+      .meta-grid { grid-template-columns: 1fr; }
+      .progress-strip { flex-direction: column; }
+      .footer { flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">Compte-rendu de réunion</div>
+    <h1>Point d'avancement cadrage</h1>
+    <div class="subtitle">Mission Dashboards & Data — Dot Market / Dot Advisory / School</div>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <label>Date</label>
+        <span>5 mai 2026</span>
+      </div>
+      <div class="meta-item">
+        <label>Type</label>
+        <span>Point d'avancement</span>
+      </div>
+      <div class="meta-item">
+        <label>Réunion</label>
+        <span>Session n° 2</span>
+      </div>
+      <div class="meta-item">
+        <label>Participants</label>
+        <span>Catherine Selosse</span>
+      </div>
+      <div class="meta-item">
+        <label>&nbsp;</label>
+        <span>Elsa Fanjul</span>
+      </div>
+      <div class="meta-item">
+        <label>Statut</label>
+        <span>Cadrage en cours</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- APPROCHE VALIDEE -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">✓</div>
+        Approche validée — Vision globale
+      </div>
+      <div class="context-box" style="margin-bottom: 16px;">
+        La session a permis de valider l'approche structurante de la mission : partir de la vision stratégique pour descendre jusqu'aux alertes et décisions opérationnelles.
+      </div>
+
+      <div class="progress-strip">
+        <div class="progress-item">
+          <span class="step-num">1</span>
+          Vision
+        </div>
+        <div class="progress-item">
+          <span class="step-num">2</span>
+          Leviers
+        </div>
+        <div class="progress-item">
+          <span class="step-num">3</span>
+          KPI
+        </div>
+        <div class="progress-item active">
+          <span class="step-num">4</span>
+          Alertes
+        </div>
+        <div class="progress-item active">
+          <span class="step-num">5</span>
+          Décisions
+        </div>
+      </div>
+
+      <ul class="clean check">
+        <li>Confirmation du besoin d'une <strong>vue direction (macro)</strong> + <strong>vues opérationnelles granulaires</strong> par pôle</li>
+        <li>Accord sur l'intérêt d'une <strong>couche "action"</strong> derrière les KPI en dérive — pas seulement constater, mais piloter</li>
+      </ul>
+    </div>
+
+    <!-- POINTS ABORDES -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">📋</div>
+        Points abordés en session
+      </div>
+      <ul class="numbered-list">
+        <li>
+          <div class="num-badge">1</div>
+          <div>Validation de l'approche structurante : <strong>vision → leviers → KPI → alertes → décisions</strong></div>
+        </li>
+        <li>
+          <div class="num-badge">2</div>
+          <div>Confirmation du besoin d'une <strong>vue direction (macro)</strong> complétée par des <strong>vues opérationnelles granulaires</strong></div>
+        </li>
+        <li>
+          <div class="num-badge">3</div>
+          <div>Accord sur l'importance d'une <strong>couche "action"</strong> associée aux KPI en dérive : le dashboard doit déclencher des décisions, pas seulement constater</div>
+        </li>
+        <li>
+          <div class="num-badge">4</div>
+          <div>Point finance identifié : fiabiliser les données financières (exports, cadences, règles de calcul) — sera traité dans une phase ultérieure</div>
+        </li>
+        <li>
+          <div class="num-badge">5</div>
+          <div>Besoin de formaliser les <strong>sources d'information</strong> via la feuille Elsa pour avancer vers le CDC v1</div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- POINT FINANCE -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">⚠</div>
+        Point de vigilance — Données financières
+      </div>
+      <div class="info-block">
+        <strong>Note :</strong> L'axe financier (exports, cadence de mise à jour, règles de calcul commission/time-to-cash) sera traité dans une phase ultérieure. Pour le moment, se concentrer sur la validation de la structure KPI opérationnelle.
+      </div>
+    </div>
+
+    <!-- PROCHAINE ETAPE -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">→</div>
+        Prochaine étape clé
+      </div>
+      <div class="next-box">
+        <p><strong>Passe de validation stratégique</strong> lors du prochain point à trois (Kevin + Elsa + Catherine).</p>
+        <p>Objectif : valider la structure KPI complète avant rédaction du CDC v1 définitif.</p>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">→</div>
+        Actions attendues
+      </div>
+      <table class="action-table">
+        <thead>
+          <tr>
+            <th style="width:22%">Responsable</th>
+            <th>Action</th>
+            <th style="width:24%">Priorité / Échéance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="owner-tag">Elsa</span></td>
+            <td>Compléter la feuille <em>"où trouver l'information"</em> — inventaire des sources par KPI</td>
+            <td><span class="priority-dot urgent"></span>Avant point à 3</td>
+          </tr>
+          <tr>
+            <td><span class="owner-tag">Catherine</span></td>
+            <td>Envoyer 2 documents guides : bons réflexes / bonnes pratiques Claude pour les équipes</td>
+            <td><span class="priority-dot urgent"></span>Aujourd'hui (6 mai)</td>
+          </tr>
+          <tr>
+            <td><span class="owner-tag">Catherine</span></td>
+            <td>Prendre rendez-vous avec <strong>Mathis et Roxane</strong> pour point KPI opérationnel</td>
+            <td><span class="priority-dot urgent"></span>Avant point à 3</td>
+          </tr>
+          <tr>
+            <td><span class="owner-tag">Catherine</span></td>
+            <td>Point de présentation avec <strong>Kevin</strong> : tableaux, images, lettre de cadrage v1 + retours</td>
+            <td><span class="priority-dot"></span>Avant point à 3</td>
+          </tr>
+          <tr>
+            <td><span class="owner-tag multi">Kevin + Elsa + Catherine</span></td>
+            <td>Validation stratégique de la structure KPI complète</td>
+            <td><span class="priority-dot"></span>Prochain point à 3</td>
+          </tr>
+          <tr>
+            <td><span class="owner-tag">Catherine</span></td>
+            <td>Point financier avec <strong>Abdenasseir</strong> : exports, cadence, règles de calcul <em>(après go d'Elsa/Kevin)</em></td>
+            <td><span class="priority-dot"></span>Après validation à 3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div><strong>Dot Market</strong> — Point d'avancement cadrage</div>
+    <div>Réunion du <strong>5 mai 2026</strong> — Rédigé par <strong>Catherine Selosse</strong></div>
+    <div>Document confidentiel</div>
+  </div>
+
+</div><!-- /page -->
+
+</body>
+</html>

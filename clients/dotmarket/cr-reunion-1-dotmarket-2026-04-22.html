@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CR Réunion 1 — Dot Market — 22 avril 2026</title>
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1a1a2e;
+      background: #f4f6f9;
+    }
+
+    /* ===== PAGE WRAPPER ===== */
+    .page {
+      max-width: 860px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      overflow: hidden;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, #1a1a5e 0%, #16213e 60%, #0f3460 100%);
+      color: #ffffff;
+      padding: 40px 48px 32px;
+      position: relative;
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.30);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .header .subtitle {
+      font-size: 13px;
+      opacity: 0.75;
+      margin-bottom: 28px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding-top: 24px;
+    }
+
+    .meta-item label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      opacity: 0.60;
+      margin-bottom: 4px;
+    }
+
+    .meta-item span {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* ===== BODY ===== */
+    .body {
+      padding: 40px 48px 48px;
+    }
+
+    /* ===== SECTION ===== */
+    .section {
+      margin-bottom: 36px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #1a1a5e;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8ecf4;
+    }
+
+    .section-title .icon {
+      width: 28px;
+      height: 28px;
+      background: #1a1a5e;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    /* ===== CONTEXT BOX ===== */
+    .context-box {
+      background: #f0f3fa;
+      border-left: 4px solid #1a1a5e;
+      border-radius: 0 6px 6px 0;
+      padding: 16px 20px;
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: #2c3e70;
+      margin-bottom: 12px;
+    }
+
+    /* ===== CARDS GRID ===== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      background: #f8f9fc;
+      border: 1px solid #e4e9f2;
+      border-radius: 7px;
+      padding: 16px 18px;
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8892b0;
+      margin-bottom: 8px;
+    }
+
+    /* ===== LIST ITEMS ===== */
+    ul.clean {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul.clean li {
+      padding: 7px 0 7px 22px;
+      position: relative;
+      font-size: 13.5px;
+      border-bottom: 1px solid #f0f2f7;
+      line-height: 1.55;
+    }
+
+    ul.clean li:last-child {
+      border-bottom: none;
+    }
+
+    ul.clean li::before {
+      content: '›';
+      position: absolute;
+      left: 4px;
+      color: #1a1a5e;
+      font-weight: 700;
+      font-size: 16px;
+      top: 5px;
+    }
+
+    /* ===== HIGHLIGHT LIST ===== */
+    ul.highlight li::before {
+      content: '✓';
+      font-size: 12px;
+      top: 8px;
+      color: #2e7d32;
+    }
+
+    /* ===== ALERT LIST ===== */
+    ul.alert li::before {
+      content: '!';
+      font-size: 12px;
+      font-weight: 900;
+      top: 8px;
+      color: #b45309;
+    }
+
+    /* ===== PRIORITY BADGE ===== */
+    .kpi-badge {
+      display: inline-block;
+      background: #fff3cd;
+      border: 1px solid #f59e0b;
+      color: #92400e;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* ===== DECISIONS ===== */
+    .decision-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .decision-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f2f7;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .decision-list li:last-child {
+      border-bottom: none;
+    }
+
+    .decision-num {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      background: #1a1a5e;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    /* ===== ACTION TABLE ===== */
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .action-table thead tr {
+      background: #1a1a5e;
+      color: #fff;
+    }
+
+    .action-table thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .action-table tbody tr {
+      border-bottom: 1px solid #e8ecf4;
+    }
+
+    .action-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .action-table tbody tr:nth-child(even) {
+      background: #f8f9fc;
+    }
+
+    .action-table tbody td {
+      padding: 10px 14px;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .owner-tag {
+      display: inline-block;
+      background: #e8f0fe;
+      color: #1a4db8;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .owner-tag.multi {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    /* ===== VIGILANCE BOX ===== */
+    .vigilance-box {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-left: 4px solid #f59e0b;
+      border-radius: 0 6px 6px 0;
+      padding: 16px 20px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: #f4f6f9;
+      border-top: 1px solid #e0e5ef;
+      padding: 18px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #8892b0;
+    }
+
+    .footer strong {
+      color: #1a1a5e;
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      body { background: #fff; font-size: 12px; }
+      .page { box-shadow: none; margin: 0; border-radius: 0; max-width: 100%; }
+      .header { background: #1a1a5e !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .action-table thead tr { background: #1a1a5e !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .section { page-break-inside: avoid; }
+    }
+
+    @media (max-width: 640px) {
+      .header, .body { padding: 24px 20px; }
+      .meta-grid { grid-template-columns: 1fr; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .footer { flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">Compte-rendu de réunion</div>
+    <h1>Session de cadrage — Phase 0</h1>
+    <div class="subtitle">Mission Dashboards & Data — Dot Market / Dot Advisory / School</div>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <label>Date</label>
+        <span>22 avril 2026</span>
+      </div>
+      <div class="meta-item">
+        <label>Durée</label>
+        <span>1 h 38</span>
+      </div>
+      <div class="meta-item">
+        <label>Type</label>
+        <span>Réunion de cadrage initial</span>
+      </div>
+      <div class="meta-item">
+        <label>Participants</label>
+        <span>Catherine Selosse</span>
+      </div>
+      <div class="meta-item">
+        <label>&nbsp;</label>
+        <span>Kevin Jourdan</span>
+      </div>
+      <div class="meta-item">
+        <label>&nbsp;</label>
+        <span>Elsa Fanjul</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- OBJECTIFS -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">🎯</div>
+        Objectifs de la session
+      </div>
+      <div class="context-box">
+        Poser les bases de la mission dashboards/data : clarifier les entités, identifier les enjeux de pilotage, et aligner une première direction KPI et structure de dashboard.
+      </div>
+      <ul class="clean">
+        <li>Clarifier les entités <strong>Dot Market</strong>, <strong>Dot Advisory</strong> et <strong>School</strong> et leurs logiques propres</li>
+        <li>Identifier les enjeux de pilotage prioritaires pour la direction</li>
+        <li>Aligner une première direction KPI et une structure de dashboard cible</li>
+      </ul>
+    </div>
+
+    <!-- CLARIFICATIONS -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">💡</div>
+        Points clarifiés lors de la session
+      </div>
+      <ul class="clean highlight">
+        <li>Les 3 entités ont des logiques différentes mais un <strong>besoin commun de pilotage fiable</strong></li>
+        <li>Le manque principal n'est pas l'absence de data, mais <strong>l'absence de lecture centralisée et actionnable</strong></li>
+        <li>Le <strong>time-to-cash</strong> est confirmé comme indicateur prioritaire à structurer <span class="kpi-badge">KPI #1</span></li>
+        <li>Le pilotage doit permettre une <strong>lecture macro direction</strong> + une <strong>granularité opérationnelle</strong> par pôle</li>
+      </ul>
+    </div>
+
+    <!-- DECISIONS -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">✅</div>
+        Décisions prises
+      </div>
+      <ul class="decision-list">
+        <li>
+          <div class="decision-num">1</div>
+          <div>Structure cible confirmée : <strong>vue consolidée + drill-down</strong>, avec axe acheteur / vendeur</div>
+        </li>
+        <li>
+          <div class="decision-num">2</div>
+          <div>Accès au dashboard global accordé à : <strong>Kevin Jourdan</strong>, <strong>Elsa Fanjul</strong></div>
+        </li>
+        <li>
+          <div class="decision-num">3</div>
+          <div>Approche KPI : combiner <strong>indicateurs direction</strong> (vue macro) + <strong>indicateurs métier</strong> par équipe/pôle</div>
+        </li>
+        <li>
+          <div class="decision-num">4</div>
+          <div>Définition des délais : privilégier la logique <strong>jours client</strong> (pas seulement temps interne)</div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- POINTS DE VIGILANCE -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">⚠</div>
+        Points de vigilance
+      </div>
+      <div class="vigilance-box">
+        <ul class="clean alert">
+          <li>Besoin d'<strong>aligner les définitions KPI</strong> pour éviter les écarts d'interprétation entre entités</li>
+          <li>Besoin de <strong>valider les règles de calcul</strong> (notamment time-to-cash, taux de conversion, commission)</li>
+          <li>Besoin de <strong>relier les différentes sources</strong> (Pipedrive, MemberStack, finance) dans un cadre unique</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">→</div>
+        Actions décidées
+      </div>
+      <table class="action-table">
+        <thead>
+          <tr>
+            <th style="width:22%">Responsable</th>
+            <th>Action</th>
+            <th style="width:20%">Échéance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="owner-tag">Catherine</span></td>
+            <td>Produire une première ébauche macro des dashboards</td>
+            <td>Avant prochain point</td>
+          </tr>
+          <tr>
+            <td><span class="owner-tag">Catherine</span></td>
+            <td>Préparer le document définition data / KPI (glossaire + règles de calcul)</td>
+            <td>Avant prochain point</td>
+          </tr>
+          <tr>
+            <td><span class="owner-tag multi">Elsa / Kevin</span></td>
+            <td>Confirmer les priorités métier et les owners par bloc de données</td>
+            <td>Avant prochain point</td>
+          </tr>
+          <tr>
+            <td><span class="owner-tag multi">Elsa / Kevin</span></td>
+            <td>Partager les éléments de vision stratégique pour alimenter la structure KPI</td>
+            <td>Avant prochain point</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CONTEXTE ENTITES -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon">🏢</div>
+        Contexte des entités
+      </div>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-title">Dot Market</div>
+          <ul class="clean">
+            <li>Logique de transaction et de commission</li>
+            <li>Suivi acheteur / vendeur</li>
+            <li>Time-to-cash critique</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">Dot Advisory</div>
+          <ul class="clean">
+            <li>Logique d'accompagnement / conseil</li>
+            <li>Pilotage par dossier / mission</li>
+            <li>KPI de conversion et suivi client</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">School</div>
+          <ul class="clean">
+            <li>Logique de formation / communauté</li>
+            <li>Source : MemberStack</li>
+            <li>Indicateurs de rétention et engagement</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">Sources de données identifiées</div>
+          <ul class="clean">
+            <li>Pipedrive (CRM)</li>
+            <li>MemberStack</li>
+            <li>Données financières internes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div><strong>Dot Market</strong> — Session de cadrage Phase 0</div>
+    <div>Réunion du <strong>22 avril 2026</strong> — Rédigé par <strong>Catherine Selosse</strong></div>
+    <div>Document confidentiel</div>
+  </div>
+
+</div><!-- /page -->
+
+</body>
+</html>
