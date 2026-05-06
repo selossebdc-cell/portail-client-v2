@@ -1,4 +1,6 @@
 let currentProfile = null;
+var DOTMARKET_CLIENT_ID = '8d9428ce-184a-4232-a225-4c8ee6e2acb1';
+var DOTMARKET_SIMPLIFIED_TABS = ['tab-dashboard', 'tab-tutos', 'tab-braindump', 'tab-contract'];
 
 function escapeHtml(value) {
   return String(value || '')
@@ -19,6 +21,50 @@ function sanitizeExternalUrl(url) {
     return null;
   }
   return null;
+}
+
+function shouldUseSimplifiedClientPortal(profile) {
+  if (!profile) return false;
+  var cid = String(profile.client_id || profile.id || '').toLowerCase();
+  if (cid === DOTMARKET_CLIENT_ID) return true;
+  var company = String(profile.company || '').toLowerCase();
+  return company.indexOf('dotmarket') !== -1 || company.indexOf('dot market') !== -1;
+}
+
+function applyClientTabPreset(profile) {
+  var tabs = document.querySelectorAll('#client-tabs .tab');
+  var panels = document.querySelectorAll('#client-view .tab-panel');
+
+  tabs.forEach(function(tab) { tab.style.display = ''; });
+  panels.forEach(function(panel) { panel.style.display = ''; });
+  window.allowedClientTabs = null;
+
+  if (!shouldUseSimplifiedClientPortal(profile)) return;
+
+  window.allowedClientTabs = DOTMARKET_SIMPLIFIED_TABS.slice();
+
+  tabs.forEach(function(tab) {
+    var target = tab.dataset.tab;
+    if (window.allowedClientTabs.indexOf(target) === -1) {
+      tab.style.display = 'none';
+      tab.classList.remove('active');
+    }
+  });
+
+  panels.forEach(function(panel) {
+    if (window.allowedClientTabs.indexOf(panel.id) === -1) {
+      panel.style.display = 'none';
+      panel.classList.remove('active');
+    }
+  });
+
+  var activeAllowed = document.querySelector('#client-tabs .tab.active:not([style*="display: none"])');
+  if (!activeAllowed) {
+    var defaultTab = document.querySelector('#client-tabs .tab[data-tab="tab-dashboard"]');
+    var defaultPanel = document.getElementById('tab-dashboard');
+    if (defaultTab) defaultTab.classList.add('active');
+    if (defaultPanel) defaultPanel.classList.add('active');
+  }
 }
 
 async function initApp() {
@@ -61,6 +107,7 @@ async function initClientPortal(profile) {
   var preferredClientId = profile.client_id || profile.id;
   var portalClientId = await resolvePortalClientId(preferredClientId, profile.id);
   var scopedProfile = Object.assign({}, profile, { id: portalClientId });
+  applyClientTabPreset(scopedProfile);
 
   // Header
   var firstName = (profile.full_name || '').split(' ')[0];

@@ -210,6 +210,9 @@ async function loadClientDashboard(profile) {
 }
 
 function switchToTab(tabId) {
+  if (Array.isArray(window.allowedClientTabs) && window.allowedClientTabs.indexOf(tabId) === -1) {
+    tabId = 'tab-dashboard';
+  }
   const tabs = document.querySelectorAll('#client-tabs .tab');
   const panels = document.querySelectorAll('#client-view .tab-panel');
   tabs.forEach(function(t) { t.classList.remove('active'); });
