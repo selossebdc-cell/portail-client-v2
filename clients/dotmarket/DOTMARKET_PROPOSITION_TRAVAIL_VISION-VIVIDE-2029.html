@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dotmarket — Lettre de cadrage v1 (vision, leviers, dashboards → cahier des charges)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #1a1a1a;
+      background: #f0f4f8;
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 36px 22px 60px; }
+    header {
+      background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+      color: #fff;
+      padding: 48px 28px;
+      border-radius: 12px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(15, 118, 110, 0.25);
+    }
+    header h1 { font-size: 1.65rem; font-weight: 700; margin-bottom: 10px; line-height: 1.3; }
+    header .sub { opacity: 0.92; font-size: 1rem; font-weight: 400; }
+    header .meta { margin-top: 14px; font-size: 0.88rem; opacity: 0.88; }
+    .banner {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-left: 5px solid #d97706;
+      padding: 16px 20px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 28px;
+    }
+    .banner strong { color: #92400e; }
+    h2 {
+      font-size: 1.35rem;
+      color: #134e4a;
+      margin: 36px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #14b8a6;
+    }
+    h3 { font-size: 1.1rem; color: #0f766e; margin: 22px 0 10px; }
+    p { margin-bottom: 12px; }
+    ul, ol { margin: 10px 0 14px 22px; }
+    li { margin-bottom: 8px; }
+    .section {
+      background: #fff;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+    }
+    .section.muted { background: #f8fafc; }
+    table.src {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 0.92rem;
+    }
+    .src th, .src td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    .src th { background: #134e4a; color: #fff; font-weight: 600; }
+    a { color: #0d9488; font-weight: 600; word-break: break-word; }
+    a:hover { text-decoration: underline; }
+    .path { font-family: ui-monospace, monospace; font-size: 0.85rem; color: #475569; }
+    .quote {
+      border-left: 4px solid #14b8a6;
+      padding: 12px 0 12px 18px;
+      margin: 14px 0;
+      color: #334155;
+      font-style: italic;
+      background: #f0fdfa;
+      border-radius: 0 8px 8px 0;
+    }
+    footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid #cbd5e1;
+      color: #64748b;
+      font-size: 0.88rem;
+      text-align: center;
+    }
+    .flow-chain {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0;
+      font-size: 0.88rem;
+      color: #334155;
+    }
+    .flow-chain span {
+      background: #ecfeff;
+      border: 1px solid #99f6e4;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .flow-chain .arrow { background: none; border: none; padding: 0 4px; color: #0f766e; }
+    .mock-dash {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 18px;
+      margin: 14px 0;
+      font-size: 0.86rem;
+    }
+    .mock-dash h4 { color: #5eead4; font-size: 0.95rem; margin-bottom: 12px; }
+    .mock-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+    .mock-tile {
+      flex: 1 1 140px;
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 10px 12px;
+      border-left: 3px solid #64748b;
+    }
+    .mock-tile.warn { border-left-color: #f59e0b; }
+    .mock-tile.danger { border-left-color: #ef4444; }
+    .mock-tile.ok { border-left-color: #22c55e; }
+    .mock-tile .lbl { font-size: 0.72rem; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.04em; }
+    .mock-tile .val { font-size: 1.05rem; font-weight: 700; margin-top: 4px; }
+    .mock-tile .sub { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; }
+    .alert-list { margin: 0; padding-left: 18px; }
+    .alert-list li { margin-bottom: 10px; }
+    .kbd {
+      display: inline-block;
+      background: #e2e8f0;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-family: ui-monospace, monospace;
+    }
+    @media print {
+      body { background: #fff; }
+      .section { box-shadow: none; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Lettre de cadrage (v1) — Vision, pilotage data &amp; stratégie</h1>
+      <p class="sub">Articulation <strong>VISION VIVIDE 2029</strong> (Notion) · cadre stratégique &amp; dashboards · <strong>couche stratégie &amp; leviers pour Kévin</strong> · cadrage du 22 avril 2026</p>
+      <p class="meta">CS Consulting Stratégique — Catherine Selosse · <strong>Mission en cours</strong> (contrat signé) · mai 2026 — Première version servant de base au <strong>cahier des charges</strong></p>
+    </header>
+
+    <div class="banner">
+      <strong>Nature du document :</strong> il s’agit d’une <strong>lettre de cadrage</strong> — première version pour figer le périmètre fonctionnel et data des dashboards (y compris la vue stratégie / leviers / alertes). Elle <strong>complète</strong> le contrat en cours : elle ne le remplace pas et ne rouvre pas le périmètre commercial.<br><br>
+      <strong>Données financières :</strong> le raccordement des <strong>chiffres financiers</strong> (agrégats, commissions, trésorerie, cohérence avec Pennylane, etc.) sera fait avec <strong>Abdenasseir</strong>, qui met à disposition ces éléments côté Dotmarket — point dédié à planifier entre Catherine, Elsa et Abdenasseir pour définir exports, accès et fréquence.<br><br>
+      <strong>Inventaire des sources :</strong> une <a href="DOTMARKET_FEUILLE-SOURCES-INFORMATIONS_ELSA.html">feuille à compléter par Elsa</a> recense, ligne par ligne, <em>où</em> se trouve chaque information aujourd’hui (outil, lien, responsable). Elle alimentera directement le cahier des charges technique.<br><br>
+      <strong>Dossier Kévin :</strong> vous êtes dans le dossier livrables ; la même lettre et la feuille Elsa sont aussi dans <span class="path">../documents/</span> pour la version de travail côté Catherine.
+    </div>
+
+    <h2>0. Objet, statut &amp; chaîne documentaire</h2>
+    <div class="section muted">
+      <p><strong>Objet.</strong> Formaliser ce qui a été compris et convenu sur le plan <strong>vision → objectifs → leviers → KPIs → alertes → aide à la décision</strong>, en lien avec le <a href="DOTMARKET_STRATEGIC_FRAMEWORK.html">cadre stratégique &amp; ébauche dashboards</a> et la vision Notion.</p>
+      <p><strong>Statut.</strong> Le projet est <strong>engagé</strong> ; cette lettre est la <strong>v1</strong> de cadrage — elle sera affinée après retours (Elsa sur les sources, Abdenasseir sur la finance, ateliers direction) puis déclinée en <strong>cahier des charges</strong> détaillé (fonctionnel + technique + données).</p>
+      <p><strong>Chaîne.</strong> Lettre de cadrage v1 → feuille sources (Elsa + finance) → ateliers définitions KPI → CDC → réalisation.</p>
+    </div>
+
+    <h2>1. Sources reliées entre elles</h2>
+    <div class="section">
+      <table class="src">
+        <thead>
+          <tr><th>Source</th><th>Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="DOTMARKET_STRATEGIC_FRAMEWORK.html">DOTMARKET_STRATEGIC_FRAMEWORK.html</a></td>
+            <td>Cadre stratégique &amp; ébauche détaillée des tableaux de bord (fil conducteur, entités, funnel, gouvernance). Fichier dans ce dossier livrables.</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.notion.so/VISION-VIVIDE-2029-Dotmarket-2f2824a6972880b4bbeaf840c5892bc3?source=copy_link" target="_blank" rel="noopener noreferrer">VISION VIVIDE 2029 — Dotmarket (Notion)</a></td>
+            <td>Vision cible 2029 : cap, convictions, écosystème, culture, technologie &amp; pilotage par la data.</td>
+          </tr>
+          <tr>
+            <td><a href="1er-RDV-DOTMARKET-abc308a5-1742.html">1er-RDV-DOTMARKET-abc308a5-1742.html</a></td>
+            <td>Compte-rendu texte du <strong>cadrage du 22 avril 2026</strong> (Kévin, Elsa) : stratégie 12 mois / 3 ans, trois entités, besoins KPI acheteur-vendeur, time-to-cash, qualification des dossiers.</td>
+          </tr>
+          <tr>
+            <td><a href="proposition-dotmarket.html">proposition-dotmarket.html</a></td>
+            <td><strong>Proposition commerciale signée</strong> (référence, inchangée).</td>
+          </tr>
+          <tr>
+            <td><a href="DOTMARKET_FEUILLE-SOURCES-INFORMATIONS_ELSA.html">DOTMARKET_FEUILLE-SOURCES-INFORMATIONS_ELSA.html</a></td>
+            <td><strong>Feuille « où est l’info »</strong> — à compléter par Elsa (et lignes financières avec Abdenasseir) ; base pour le cahier des charges données.</td>
+          </tr>
+          <tr>
+            <td><a href="VISION-VIVIDE-2029-Dotmarket.pdf">VISION-VIVIDE-2029-Dotmarket.pdf</a></td>
+            <td>Export PDF de la vision, pour relecture hors ligne.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2. Ce que prescrit la vision VIVIDE 2029 (Notion) — pour le pilotage</h2>
+    <div class="section">
+      <p>La vision fixe une destination à l’horizon <strong>2029</strong> : Dotmarket comme <strong>référence du M&amp;A digital</strong>, infrastructure du marché, écosystème résilient, avec qualité et rentabilité comme garde-fous (« le CA est une vanité, la rentabilité est une clé »). Les outils <strong>augmentent</strong> les équipes ; la vitesse vient de la structure et de la donnée, pas de l’imprudence.</p>
+      <h3>Exigences déjà formulées dans la vision, directement utiles aux dashboards</h3>
+      <ul>
+        <li><strong>Time-to-cash</strong> : indicateur clé, <strong>piloté et optimisé en continu</strong> — combinaison de mise en ligne, diffusion et obtention d’offres ; automatisation poussée des tâches répétitives + <strong>validation humaine</strong> sur les étapes critiques.</li>
+        <li><strong>Pilotage par la data (#8)</strong> : fin du pilotage au seul ressenti ; <strong>dashboards temps réel</strong>, lisibles, orientés décisions ; <strong>funnel mesuré de bout en bout</strong> (visites → comptes → estimations → qualifications → annonces → messages → offres → closings…).</li>
+        <li><strong>Lecture par typologies</strong> : quels deals entrent, se vendent, à quel prix, dans quels délais, avec quels profils acheteurs — pour prioriser sourcing, matching et diffusion.</li>
+        <li><strong>Vue financière opérationnelle</strong> : CA, commissions en cours, projections de cash, time-to-cash — pour ajuster le rythme et sécuriser la trésorerie.</li>
+        <li><strong>Technologie &amp; IA (#7)</strong> : plateforme de M&amp;A <strong>augmentée</strong> ; IA intégrée aux métiers (audit, matching, sales, AM, support, marketing, data…) pour accélérer et fiabiliser ; décisions et responsabilité <strong>humaines</strong>.</li>
+      </ul>
+      <p class="quote">« Cette vision se projette à l’horizon 2029… un GPS. Avec une destination entrée, que nous pouvons désormais suivre. » — intention du document VIVIDE (Notion).</p>
+    </div>
+
+    <h2>3. Couche exécutive pour Kévin : vision, objectifs par année, leviers, alertes, décisions</h2>
+    <div class="section">
+      <p>En complément des tableaux de bord <strong>opérationnels</strong> (funnel, Pipedrive, pôles — voir <a href="DOTMARKET_STRATEGIC_FRAMEWORK.html">cadre stratégique</a>), Kévin dispose d’une <strong>vue stratégique unique</strong> : elle relie la <strong>vision</strong> (Notion / VIVIDE 2029) aux <strong>objectifs intermédiaires par année</strong>, aux <strong>leviers</strong> qui portent ces objectifs, puis aux <strong>écarts</strong> et <strong>alertes</strong>. Chaque levier est traçable jusqu’à l’impact sur l’objectif final ; en cas de dérive, un <strong>clic</strong> ouvre l’analyse (risques, options, impact chiffré) pour sécuriser les décisions.</p>
+
+      <h3>3.1 Chaîne de lecture (du « pourquoi » au « quoi faire »)</h3>
+      <div class="flow-chain">
+        <span>Vision &amp; cap</span><span class="arrow">→</span>
+        <span>Objectifs jalons<br><small style="font-weight:400">2026 · 2027 · 2029 · au-delà*</small></span><span class="arrow">→</span>
+        <span>Leviers stratégiques<br><small style="font-weight:400">pondérés</small></span><span class="arrow">→</span>
+        <span>Objectifs par levier</span><span class="arrow">→</span>
+        <span>KPIs opérationnels</span><span class="arrow">→</span>
+        <span>Alertes &amp; drill-down</span>
+      </div>
+      <p style="font-size: 0.88rem; color: #64748b;">*La vision officielle est calée sur <strong>2029</strong> ; on peut toutefois afficher un <strong>horizon long</strong> (ex. 10 ans) en scénario ou en projection, à partir des mêmes leviers, pour ne pas figer le regard uniquement sur le triennal.</p>
+
+      <h3>3.2 Écran « Stratégie &amp; leviers » (synthèse direction)</h3>
+      <p>Cet écran — en première page pour Kévin ou onglet dédié — ne remplace pas les dashboards existants : il les <strong>agrège</strong> du point de vue stratégique.</p>
+      <ul>
+        <li><strong>Rappel vision</strong> : extrait court du cap VIVIDE + lien Notion ; indicateur de <strong>progression sur jalons majeurs</strong> (qualitatif ou checklist trimestrielle, comme le prévoit la vision).</li>
+        <li><strong>Objectifs par année</strong> : pour chaque année (ex. 2026 consolidation, 2027–2029 scale), les <strong>cibles chiffrées ou milestones</strong> déjà discutées (CA, deals, notoriété, School, rentabilité) positionnées sur une <strong>frise temporelle</strong>.</li>
+        <li><strong>Carte des leviers</strong> : chaque levier (ex. volume deals marketplace, deals &gt;1 M€ advisory, panier moyen, time-to-cash, notoriété / partenariats, pipeline School, qualité données, productivité équipe…) avec : <strong>poids</strong> vers l’objectif global, <strong>cible annuelle</strong> du levier, <strong>réalisé</strong>, <strong>écart %</strong>, <strong>statut</strong> (OK / attention / critique).</li>
+        <li><strong>Contribution au gap global</strong> : lecture « si ce levier reste en retard, combien de points de CA ou de marge on perd sur l’objectif 2029 » — <strong>ordre de grandeur</strong>, mis à jour avec la data disponible.</li>
+      </ul>
+
+      <div class="mock-dash" aria-hidden="true">
+        <h4>Maquette conceptuelle — vue Kévin (exemple)</h4>
+        <div class="mock-row">
+          <div class="mock-tile ok"><div class="lbl">Vision 2029</div><div class="val">Jalons Q2</div><div class="sub">3 / 5 jalons critiques OK</div></div>
+          <div class="mock-tile warn"><div class="lbl">Objectif 2026 CA</div><div class="val">−8 % vs trajectoire</div><div class="sub">2 leviers tirent la moyenne vers le bas</div></div>
+          <div class="mock-tile danger"><div class="lbl">Levier « Deals &gt;1 M€ »</div><div class="val">−35 % vs cible levier</div><div class="sub">Impact estimé −X % sur objectif global</div></div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-tile" style="flex:1 1 100%; border-left-color:#38bdf8;"><div class="lbl">Flux stratégie</div><div class="sub">Vision → objectifs année → leviers → KPIs opérationnels (dashboards pôles) ; les flèches indiquent où la donnée remonte.</div></div>
+        </div>
+      </div>
+
+      <h3>3.3 Alertes (temps réel ou rythme convenu)</h3>
+      <p>Sur <strong>chaque</strong> tableau de bord (exécutif, pôle, et surtout la vue stratégie Kévin), des <strong>alertes</strong> signalent les écarts — pas seulement un chiffre rouge, mais la <strong>relation à la vision</strong> :</p>
+      <ul class="alert-list">
+        <li><strong>Alerte levier</strong> : écart entre <strong>réalisé</strong> et <strong>objectif du levier</strong> (seuil configurable : %, délai, volume).</li>
+        <li><strong>Alerte cascading</strong> : si l’objectif du levier n’est pas tenu, impact sur <strong>l’objectif intermédiaire d’année</strong> puis sur le <strong>cap vision</strong> (message du type : « à ce rythme, le jalon 2027 est menacé »).</li>
+        <li><strong>Alerte tendance</strong> : dérive progressive avant franchissement du seuil (ex. conversion estimation qui glisse sur 4 semaines — déjà évoqué dans le cadrage).</li>
+        <li><strong>Statut atteinte</strong> : vert si dans le corridor ; ambre si risque ; rouge si hors trajectoire ; possibilité d’accusé « objectif levier atteint / dépassé / non atteint ».</li>
+      </ul>
+      <p>Ces alertes alimentent une <strong>liste priorisée</strong> pour Kévin (et la direction), avec lien direct vers le levier concerné.</p>
+
+      <h3>3.4 Clic sur un levier ou objectif en difficulté — analyse &amp; décision</h3>
+      <p>Lorsque Kévin <strong>sélectionne</strong> un levier en alerte (ou un objectif annuel sous-performant), un panneau ou une page détail apporte :</p>
+      <ol>
+        <li><strong>Conséquences</strong> : risques trésorerie, deal flow, notoriété, charge équipe, dépendances entre pôles — en langage stratégique, pas seulement technique.</li>
+        <li><strong>Données contextualisées</strong> : les KPIs opérationnels qui expliquent l’écart (avec renvoi vers le bon sous-dashboard du cadre stratégique).</li>
+        <li><strong>Options de décision</strong> : 2 ou 3 leviers d’action possibles (ex. renforcer sourcing, ajuster pricing commission, campagne ciblée, priorisation équipe) avec <strong>trade-offs</strong> explicites.</li>
+        <li><strong>Impact chiffré</strong> : quand la data le permet, ordre de grandeur sur CA, marge ou délai si l’option A vs B est prise (sinon « à modéliser » avec hypothèses).</li>
+        <li><strong>Historique de décision</strong> (optionnel) : qu’avait-on décidé la dernière fois qu’un signal similaire est apparu — pour éviter les réactions en circuit court.</li>
+      </ol>
+      <p>L’objectif est de faire voir <strong>l’impact du chiffre et de la data actuelle</strong> par rapport à <strong>l’objectif final</strong> que porte la vision, et de réduire le temps entre « je vois le problème » et « je choisis une ligne ».</p>
+
+      <h3>3.5 Lien avec les dashboards déjà décrits dans le cadre stratégique</h3>
+      <p>Les <strong>Dashboards 1 à 4</strong> du fichier stratégique restent la <strong>couche données détaillée</strong>. La vue « Stratégie &amp; leviers » s’appuie sur leurs agrégats : chaque tuile levier est alimentée par un <strong>sous-ensemble de KPIs</strong> déjà listés (exécutif, dotMarket, Advisory, School). Les alertes <strong>remontent</strong> depuis la granularité fine vers la synthèse Kévin ; le clic <strong>redescend</strong> vers la granularité pour décider.</p>
+    </div>
+
+    <h2>4. Ce que le cadrage du 22 avril 2026 confirme</h2>
+    <div class="section muted">
+      <p>Le transcript du 22 avril recoupe le cadre stratégique et la vision sur les points suivants (sans les remplacer) :</p>
+      <ul>
+        <li><strong>Horizons</strong> : consolidation sur ~12 mois ; ambition de <strong>scale ×3 à ×5</strong> sur ~3 ans sans croissance proportionnelle des coûts (équipe déjà ~80 % complète).</li>
+        <li><strong>Trois entités</strong> : marketplace (&lt; ~1 M€), advisory (≥ ~1 M€), School — avec besoin de <strong>clarté sur les leviers</strong> et parfois de constat « empirique » faute de vue unifiée sur la donnée.</li>
+        <li><strong>KPIs acheteur / vendeur</strong> : parcours détaillé (visites, comptes, cohortes, RDV Cindy, offres formation, achat…) — aligné avec le funnel décrit dans la vision et dans le fichier stratégique.</li>
+        <li><strong>Time-to-cash</strong> : conscience des délais côté client (jours calendaires) et volonté de savoir <strong>où ça bloque</strong> par étape et typologie.</li>
+      </ul>
+    </div>
+
+    <h2>5. Suite vers le cahier des charges — jalons</h2>
+    <div class="section">
+      <p>À partir du <a href="DOTMARKET_STRATEGIC_FRAMEWORK.html">cadre stratégique &amp; ébauche dashboards</a>, de la <strong>VISION VIVIDE 2029</strong>, de la <strong>couche stratégie &amp; leviers</strong> (section 3) et de la <a href="DOTMARKET_FEUILLE-SOURCES-INFORMATIONS_ELSA.html">feuille sources Elsa</a>, la suite du mandat peut se découper ainsi :</p>
+      <ol>
+        <li><strong>Feuille sources complétée</strong> : Elsa (opérationnel) + validation des lignes <strong>financières</strong> avec <strong>Abdenasseir</strong> — objectif : zéro zone grise sur l’origine des chiffres affichés dans les dashboards.</li>
+        <li><strong>Point finance / data</strong> : Catherine × Abdenasseir (et Elsa si utile) — accès, exports Pennylane ou équivalent, règles d’agrégation, confidentialité.</li>
+        <li><strong>Arbre vision → objectifs → leviers</strong> : atelier avec Kévin (et Elsa) pour figer la liste des leviers, leurs poids, les cibles par année et les seuils d’alerte — document maître versionné (hors proposition signée).</li>
+        <li><strong>Matrice d’alignement</strong> : chaque bloc du cadre dashboards → quel levier / quel objectif annuel / quel paragraphe de la vision ; trous à combler.</li>
+        <li><strong>Définitions KPI « source de vérité »</strong> : liste « à finaliser » du cadre stratégique + règles de calcul pour les <strong>agrégats direction</strong> (éviter double comptage entre entités).</li>
+        <li><strong>Spécification UX</strong> : maquettes de la <strong>vue Stratégie &amp; leviers</strong>, du <strong>panneau drill-down</strong> (risques, options, impact) et des <strong>types d’alertes</strong> (wording, fréquence, canaux : email, Slack, in-app).</li>
+        <li><strong>Priorisation en deux vagues</strong> : (A) vision + leviers + alertes critiques + TTC / cash ; (B) raffinement par pôle et scénarios « impact chiffré ».</li>
+        <li><strong>Rituels de gouvernance</strong> : relecture vision (trimestre) ; revue mensuelle des écarts leviers vs objectifs annuels ; revues hebdo opérationnelles inchangées.</li>
+      </ol>
+      <p><strong>Ce document ne modifie rien au contrat signé</strong> : il formalise le cadrage pour passer au <strong>cahier des charges</strong> (définition data, vues, alertes, finance) en restant aligné sur la vision 2029 et le transcript du 22 avril.</p>
+    </div>
+
+    <footer>
+      <p><strong>Dotmarket</strong> — Lettre de cadrage v1 (vision × cadre data × sources)</p>
+      <p>Confidentiel — usage Dotmarket &amp; CS Consulting</p>
+    </footer>
+  </div>
+</body>
+</html>

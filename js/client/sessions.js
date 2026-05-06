@@ -21,7 +21,7 @@ function renderSessions(sessions, allActions) {
   const completed = sessions.filter(function(s) { return s.status === 'completed'; }).length;
   const total = currentProfile.total_sessions || '?';
   if (subtitleEl) {
-    subtitleEl.textContent = completed + ' séance' + (completed > 1 ? 's' : '') + ' réalisée' + (completed > 1 ? 's' : '') + ' sur ' + total;
+    subtitleEl.textContent = '';
   }
 
   // Grouper actions par session d'origine

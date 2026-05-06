@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dotmarket — Session 2 (Elsa) | Présentation process & décisions</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Inter, system-ui, sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.6; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 18px 50px; }
+    header {
+      background: linear-gradient(135deg, #0f766e, #134e4a);
+      color: #fff; border-radius: 12px; padding: 34px 26px; margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(15, 118, 110, .24);
+    }
+    header h1 { font-size: 1.5rem; margin-bottom: 8px; }
+    header p { opacity: .94; }
+    .tagline { margin-top: 10px; font-size: .9rem; opacity: .9; }
+    .card {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+      padding: 18px 20px; margin-bottom: 16px;
+    }
+    h2 { font-size: 1.2rem; color: #0f766e; margin-bottom: 10px; }
+    h3 { font-size: 1rem; color: #0f766e; margin: 14px 0 8px; }
+    ul, ol { margin-left: 18px; }
+    li { margin-bottom: 7px; }
+    .note {
+      background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0;
+      padding: 12px 14px; margin-top: 10px; font-size: .93rem;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; margin-top: 8px; }
+    th, td { border: 1px solid #e2e8f0; padding: 9px 10px; vertical-align: top; text-align: left; }
+    th { background: #134e4a; color: #fff; }
+    .ok { color: #166534; font-weight: 600; }
+    .todo { color: #92400e; font-weight: 600; }
+    .danger { color: #b91c1c; font-weight: 600; }
+    .small { font-size: .84rem; color: #64748b; }
+    a { color: #0f766e; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Dotmarket — Session 2 (Elsa) : cadrage process & données</h1>
+      <p>Objectif : avancer concrètement vers le cahier des charges (sans rouvrir la proposition signée).</p>
+      <p class="tagline">Version de travail orientée process — réutilisable ensuite avec Kévin.</p>
+    </header>
+
+    <section class="card">
+      <h2>1) Ce qu’on valide aujourd’hui</h2>
+      <ol>
+        <li>Le flux de lecture cible: <strong>vision → objectifs annuels → leviers → KPI → alertes → décisions</strong>.</li>
+        <li>Les 10-15 KPI V1 à implémenter en priorité (pas la liste complète finale).</li>
+        <li>La responsabilité des sources: Elsa (opérationnel), Abdenasseir (finance), Catherine (consolidation + CDC).</li>
+        <li>Le rythme de pilotage: hebdo pôle / mensuel direction / trimestriel vision.</li>
+      </ol>
+      <div class="note"><strong>Sortie attendue de la réunion :</strong> un accord explicite sur la V1 du périmètre, pas une perfection théorique.</div>
+    </section>
+
+    <section class="card">
+      <h2>2) Rappel contexte utile (session du 22 avril)</h2>
+      <ul>
+        <li>Kévin veut une lecture macro immédiate + capacité de descendre dans la granularité pôle.</li>
+        <li>Elsa confirme que les équipes ont des KPI en tête mais manquent d’arbitrage centralisé.</li>
+        <li>Point clé de méthode: mesurer les délais en <strong>jours client</strong> (pas seulement jours de travail).</li>
+      </ul>
+      <p class="small">Référence transcript: <a href="../Transcript/1er-RDV-DOTMARKET-abc308a5-1742.md">1er-RDV-DOTMARKET-abc308a5-1742.md</a></p>
+    </section>
+
+    <section class="card">
+      <h2>3) “Qui fournit quoi” (version réunion)</h2>
+      <table>
+        <thead>
+          <tr><th>Bloc</th><th>Responsable principal</th><th>Ce qu’on attend</th><th>Statut</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sources opérationnelles (vendeur / acheteur)</td>
+            <td>Elsa</td>
+            <td>Où vit chaque donnée, fréquence MAJ, personne référente</td>
+            <td class="todo">À compléter</td>
+          </tr>
+          <tr>
+            <td>Sources financières (CA, commissions, trésorerie, projections)</td>
+            <td>Abdenasseir</td>
+            <td>Exports, règles d’agrégation, cadence de mise à jour, limites</td>
+            <td class="todo">Point dédié à planifier</td>
+          </tr>
+          <tr>
+            <td>Dictionnaire KPI + cohérence globale</td>
+            <td>Catherine</td>
+            <td>Définitions, formules, seuils d’alerte, mapping vers dashboards</td>
+            <td class="todo">CDC v1 à produire</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="small">Feuille à remplir pendant/après réunion : <a href="DOTMARKET_FEUILLE-SOURCES-INFORMATIONS_ELSA.html">DOTMARKET_FEUILLE-SOURCES-INFORMATIONS_ELSA.html</a></p>
+    </section>
+
+    <section class="card">
+      <h2>4) Décisions de design dashboard à trancher maintenant</h2>
+      <ul>
+        <li><strong>Vue direction</strong> : une page “stratégie & leviers” avec alertes d’écart vers objectif annuel.</li>
+        <li><strong>Vues pôles</strong> : dashboards opérationnels (dotMarket, dotAdvisory, School) avec drill-down.</li>
+        <li><strong>Alertes</strong> : seuils et canaux (in-app / email / Slack) ; qui reçoit quoi.</li>
+        <li><strong>Historique</strong> : horizon par KPI (semaine / mois / année) à figer par usage.</li>
+        <li><strong>Fréquence refresh</strong> : ce qui est vraiment temps réel vs batch 1x/jour.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>5) Points de vigilance (pour éviter un CDC fragile)</h2>
+      <ul>
+        <li class="danger">Date de référence incohérente dans certains supports (22 vs 23 avril) -> unifier avant diffusion finale.</li>
+        <li class="danger">Orthographe des noms et rôles -> verrouiller dans tous les livrables partagés.</li>
+        <li class="todo">Ne pas noyer Elsa sous la théorie : sortir avec un plan d’action J+7 clair.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>6) Plan d’action J+7 (post-réunion)</h2>
+      <ol>
+        <li>Feuille sources Elsa complétée (avec colonnes “où”, “qui”, “MAJ”).</li>
+        <li>Point finance Catherine × Abdenasseir (accès + exports + règles).</li>
+        <li>Version “dictionnaire KPI v1” partagée pour validation Elsa/Kévin.</li>
+        <li>CDC fonctionnel/data v1 envoyé (lot 1 prioritaire + lot 2).</li>
+      </ol>
+      <p class="small">Base de cadrage complète : <a href="DOTMARKET_PROPOSITION_TRAVAIL_VISION-VIVIDE-2029.html">DOTMARKET_PROPOSITION_TRAVAIL_VISION-VIVIDE-2029.html</a></p>
+    </section>
+  </div>
+</body>
+</html>

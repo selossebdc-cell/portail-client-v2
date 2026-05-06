@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dotmarket — Feuille « où trouver l’info » (pour Elsa)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Inter, system-ui, sans-serif; color: #1e293b; line-height: 1.55; font-size: 14px; background: #f8fafc; padding: 24px 16px 48px; }
+    .wrap { max-width: 1100px; margin: 0 auto; background: #fff; padding: 28px 24px 36px; border-radius: 10px; box-shadow: 0 1px 8px rgba(0,0,0,.06); border: 1px solid #e2e8f0; }
+    h1 { font-size: 1.35rem; color: #0f766e; margin-bottom: 8px; }
+    .intro { background: #f0fdfa; border-left: 4px solid #14b8a6; padding: 14px 16px; margin: 16px 0 22px; border-radius: 0 8px 8px 0; font-size: 0.95rem; }
+    .intro strong { color: #115e59; }
+    p.note { font-size: 0.88rem; color: #64748b; margin: 12px 0 18px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th { background: #134e4a; color: #fff; text-align: left; padding: 10px 8px; font-weight: 600; position: sticky; top: 0; }
+    td { border: 1px solid #e2e8f0; padding: 8px 6px; vertical-align: top; min-height: 2.5rem; }
+    td.fill { background: #fafafa; min-height: 3.2rem; }
+    .cat { font-weight: 600; color: #0f766e; white-space: nowrap; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
+    .btn {
+      border: 1px solid #0f766e; background: #0f766e; color: #fff;
+      border-radius: 6px; padding: 8px 10px; cursor: pointer; font-size: 0.83rem;
+    }
+    .btn.secondary { background: #fff; color: #0f766e; }
+    .status { font-size: 0.82rem; color: #64748b; margin: 6px 0 10px; }
+    input.cell, textarea.cell {
+      width: 100%; border: 1px solid #cbd5e1; border-radius: 5px; padding: 6px;
+      font-size: 0.8rem; font-family: inherit; background: #fff;
+    }
+    input.cell { min-height: 30px; }
+    textarea.cell { min-height: 62px; resize: vertical; }
+    footer { margin-top: 28px; font-size: 0.82rem; color: #94a3b8; text-align: center; }
+    @media print { body { background: #fff; } .wrap { box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Feuille « où trouver l’information »</h1>
+    <p style="color:#64748b;font-size:0.95rem;">Dotmarket × CS Consulting — à compléter par <strong>Elsa</strong> (et points financiers avec <strong>Abdenasseir</strong>)</p>
+
+    <div class="intro">
+      <strong>Objectif :</strong> pour chaque type de donnée utile aux tableaux de bord (cadre stratégique + lettre de cadrage), indiquer <em>où</em> elle vit aujourd’hui (outil, fichier, export, personne). Une ligne = une donnée ou un regroupement cohérent. Les lignes pré-remplies en <strong>catégorie</strong> sont des exemples issus du cadrage — à adapter, compléter ou barrer.
+    </div>
+
+    <p class="note">Colonnes : <strong>Catégorie</strong> (vendeur / acheteur / financier / outil interne…) · <strong>Donnée ou indicateur</strong> · <strong>Où la trouver</strong> (URL, nom de vue Pipedrive, dossier Drive, Notion, etc.) · <strong>Responsable / contact</strong> · <strong>Fréquence de mise à jour</strong> · <strong>Commentaire</strong> (accès, limites, doublons).</p>
+
+    <div class="toolbar">
+      <button class="btn" type="button" onclick="saveDraft()">Sauvegarder le brouillon</button>
+      <button class="btn secondary" type="button" onclick="addRow()">Ajouter une ligne</button>
+      <button class="btn secondary" type="button" onclick="removeLastRow()">Supprimer la dernière ligne</button>
+      <button class="btn secondary" type="button" onclick="downloadJSON()">Télécharger JSON</button>
+      <button class="btn secondary" type="button" onclick="window.print()">Exporter PDF</button>
+    </div>
+    <p class="status" id="status">Astuce: elle peut remplir, sauvegarder localement, puis te renvoyer un export JSON ou PDF.</p>
+
+    <table id="sources-table">
+      <thead>
+        <tr>
+          <th style="width:11%">Catégorie</th>
+          <th style="width:20%">Donnée / indicateur</th>
+          <th style="width:26%">Où la trouver (outil, chemin, lien)</th>
+          <th style="width:14%">Responsable</th>
+          <th style="width:12%">Fréquence MAJ</th>
+          <th style="width:17%">Commentaire</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="cat">Vendeur</td><td>Estimations reçues / qualifiées</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">Vendeur</td><td>Pipeline mandats / audits / listings</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">Vendeur</td><td>Time-to-cash par étape</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">Acheteur</td><td>Visites, comptes, cohortes</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">Acheteur</td><td>MemberStack / investisseurs</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">Acheteur</td><td>School — leads, RDV, ventes formation</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">Financier</td><td>CA / commissions (réalisé vs prévisionnel)</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">Financier</td><td>Encaissements, trésorerie, Pennylane</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">Financier</td><td>Commissions négociées par deal</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">Interne</td><td>Process / procédures à jour</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">Interne</td><td>Exports manuels récurrents (si any)</td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">—</td><td><input class="cell" placeholder="Nouvelle donnée / indicateur" /></td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">—</td><td><input class="cell" placeholder="Nouvelle donnée / indicateur" /></td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">—</td><td><input class="cell" placeholder="Nouvelle donnée / indicateur" /></td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+        <tr><td class="cat">—</td><td><input class="cell" placeholder="Nouvelle donnée / indicateur" /></td><td><textarea class="cell"></textarea></td><td><input class="cell" /></td><td><input class="cell" /></td><td><textarea class="cell"></textarea></td></tr>
+      </tbody>
+    </table>
+
+    <p class="note" style="margin-top:20px;">Retour souhaité : cliquer sur <strong>Télécharger JSON</strong> ou <strong>Exporter PDF</strong>, puis transmettre le fichier à Catherine pour intégration au <strong>cahier des charges</strong>. (La sauvegarde “brouillon” reste locale au navigateur.)</p>
+
+    <footer>Confidentiel — Dotmarket &amp; CS Consulting</footer>
+  </div>
+  <script>
+    const KEY = 'dotmarket_elsa_sources_v1';
+    const table = document.getElementById('sources-table');
+    const statusEl = document.getElementById('status');
+
+    function getRowsData() {
+      const rows = [...table.querySelectorAll('tbody tr')];
+      return rows.map((tr) => {
+        const cells = tr.querySelectorAll('td');
+        const cat = cells[0].innerText.trim();
+        const metricCell = cells[1];
+        const metricInput = metricCell.querySelector('input');
+        const metric = metricInput ? metricInput.value : metricCell.innerText.trim();
+        const source = cells[2].querySelector('.cell')?.value || '';
+        const owner = cells[3].querySelector('.cell')?.value || '';
+        const freq = cells[4].querySelector('.cell')?.value || '';
+        const comment = cells[5].querySelector('.cell')?.value || '';
+        return { categorie: cat, indicateur: metric, source, responsable: owner, frequence: freq, commentaire: comment };
+      });
+    }
+
+    function setRowsData(data) {
+      const rows = [...table.querySelectorAll('tbody tr')];
+      rows.forEach((tr, i) => {
+        if (!data[i]) return;
+        const cells = tr.querySelectorAll('td');
+        const metricInput = cells[1].querySelector('input');
+        if (metricInput) metricInput.value = data[i].indicateur || '';
+        const src = cells[2].querySelector('.cell');
+        const own = cells[3].querySelector('.cell');
+        const frq = cells[4].querySelector('.cell');
+        const cmt = cells[5].querySelector('.cell');
+        if (src) src.value = data[i].source || '';
+        if (own) own.value = data[i].responsable || '';
+        if (frq) frq.value = data[i].frequence || '';
+        if (cmt) cmt.value = data[i].commentaire || '';
+      });
+    }
+
+    function saveDraft() {
+      const payload = { savedAt: new Date().toISOString(), rows: getRowsData() };
+      localStorage.setItem(KEY, JSON.stringify(payload));
+      statusEl.textContent = 'Brouillon sauvegardé localement le ' + new Date().toLocaleString();
+    }
+
+    function loadDraft() {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      try {
+        const payload = JSON.parse(raw);
+        if (payload?.rows) setRowsData(payload.rows);
+        if (payload?.savedAt) statusEl.textContent = 'Brouillon local chargé (sauvegardé le ' + new Date(payload.savedAt).toLocaleString() + ')';
+      } catch (_) {}
+    }
+
+    function download(filename, content, mime) {
+      const blob = new Blob([content], { type: mime });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadJSON() {
+      const content = JSON.stringify({ exportedAt: new Date().toISOString(), rows: getRowsData() }, null, 2);
+      download('DOTMARKET_FEUILLE-SOURCES-INFORMATIONS_ELSA-rempli.json', content, 'application/json');
+    }
+
+    function addRow() {
+      const tbody = table.querySelector('tbody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="cat">—</td>
+        <td><input class="cell" placeholder="Nouvelle donnée / indicateur" /></td>
+        <td><textarea class="cell"></textarea></td>
+        <td><input class="cell" /></td>
+        <td><input class="cell" /></td>
+        <td><textarea class="cell"></textarea></td>
+      `;
+      tbody.appendChild(tr);
+      statusEl.textContent = 'Ligne ajoutée.';
+      tr.querySelector('.cell')?.focus();
+    }
+
+    function removeLastRow() {
+      const tbody = table.querySelector('tbody');
+      const rows = tbody.querySelectorAll('tr');
+      if (rows.length <= 1) return;
+      const last = rows[rows.length - 1];
+      const hasValue = [...last.querySelectorAll('.cell')].some((el) => (el.value || '').trim() !== '');
+      if (hasValue && !confirm('La dernière ligne contient des données. La supprimer quand même ?')) return;
+      tbody.removeChild(last);
+      statusEl.textContent = 'Dernière ligne supprimée.';
+    }
+
+    window.saveDraft = saveDraft;
+    window.addRow = addRow;
+    window.removeLastRow = removeLastRow;
+    window.downloadJSON = downloadJSON;
+
+    loadDraft();
+  </script>
+</body>
+</html>

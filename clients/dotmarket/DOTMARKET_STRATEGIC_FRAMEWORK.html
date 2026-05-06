@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dotMarket - Cadre Stratégique &amp; Ébauche Tableaux de Bord</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            margin: -40px -20px 60px -20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+            color: #2c3e50;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .section.highlight {
+            background: #ecf0f1;
+            border-left: 4px solid #3498db;
+        }
+
+        .section.definition {
+            background: #fffaf0;
+            border-left: 4px solid #e67e22;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #34495e;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+
+        .card h4 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        .metric {
+            display: inline-block;
+            background: #e8f4f8;
+            padding: 8px 15px;
+            border-radius: 4px;
+            margin: 5px 5px 5px 0;
+            font-size: 0.95em;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .kpi-category {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .flow-step::before {
+            content: "→";
+            font-size: 1.8em;
+            color: #3498db;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .flow-step:first-child::before {
+            content: "◆";
+        }
+
+        .flow-step:last-child::before {
+            content: "✓";
+        }
+
+        .note {
+            background: #fef5e7;
+            padding: 15px;
+            border-left: 4px solid #f39c12;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .note strong {
+            color: #e67e22;
+        }
+
+        .dashboard-visual {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border: 2px dashed #3498db;
+        }
+
+        .dashboard-section {
+            margin: 20px 0;
+        }
+
+        .dashboard-section h5 {
+            color: #2c3e50;
+            font-size: 1em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .widget-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .widget {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .widget-label {
+            font-weight: 600;
+            color: #34495e;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .data-source {
+            display: inline-block;
+            background: #e8f8f5;
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            color: #16a085;
+            font-weight: 500;
+            margin: 3px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #7f8c8d;
+            border-top: 1px solid #ddd;
+            margin-top: 60px;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #ecf0f1 0%, #d5dbdb 100%);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 5px solid #3498db;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>dotMarket</h1>
+            <p>Cadre Stratégique & Ébauche Tableaux de Bord</p>
+            <p style="font-size: 0.95em; margin-top: 15px; opacity: 0.9;">Réunion du 22 avril 2026 — Présentation stratégique</p>
+            <p style="font-size: 0.88em; margin-top: 18px; opacity: 0.92; max-width: 720px; margin-left: auto; margin-right: auto;">Complément (mai 2026) : <strong>lettre de cadrage v1</strong> (vision → leviers → alertes → CDC) + feuille sources Elsa dans <a href="DOTMARKET_PROPOSITION_TRAVAIL_VISION-VIVIDE-2029.html" style="color:#7dd3fc;font-weight:600;">DOTMARKET_PROPOSITION_TRAVAIL_VISION-VIVIDE-2029.html</a> et <a href="DOTMARKET_FEUILLE-SOURCES-INFORMATIONS_ELSA.html" style="color:#7dd3fc;font-weight:600;">DOTMARKET_FEUILLE-SOURCES-INFORMATIONS_ELSA.html</a> — sans modifier ce cadre opérationnel.</p>
+        </header>
+
+        <!-- PARTIE 1: FIL CONDUCTEUR -->
+        <h2>Partie 1 : Fil Conducteur — Narratif Stratégique</h2>
+
+        <div class="section summary-box">
+            <h3 style="margin-top: 0; color: #2c3e50;">Vision Unifiée</h3>
+            <p><strong>dotMarket est une plateforme de transactions d'entreprises digitales</strong> structurée autour de trois entités distinctes, chacune servant une mission spécifique dans un écosystème cohérent de création de valeur.</p>
+            <p>Le modèle économique repose sur la <strong>commission</strong> (acheteur + vendeur). Les trois entités convergent vers un objectif partagé : <strong>consolider sur 12 mois, puis scaler 3-5x sur 3 ans sans augmenter proportionnellement la structure de coûts.</strong></p>
+        </div>
+
+        <div class="section">
+            <h3>Les Trois Entités</h3>
+
+            <div class="grid-2">
+                <div class="kpi-category">
+                    <h4>dotMarket</h4>
+                    <p><strong>Petites & moyennes affaires (PLafond 1M€)</strong></p>
+                    <ul>
+                        <li>Marketplace structurée, processus standardisé</li>
+                        <li>Économie de volume + panier moyen croissant</li>
+                        <li>Maturité reconnue dans l'univers digital</li>
+                        <li>Levier d'acquisition : outil d'estimation + SEO</li>
+                    </ul>
+                    <p><strong>Défi :</strong> Augmenter le panier moyen tout en accroissant le volume</p>
+                </div>
+
+                <div class="kpi-category">
+                    <h4>dotAdvisory</h4>
+                    <p><strong>Gros deals &amp; M&A (Seuil 1M€+)</strong></p>
+                    <ul>
+                        <li>Approche cabinet : sourcing, due diligence approfondie, matching curé</li>
+                        <li>Processus de négociation de commission</li>
+                        <li>Croissance en reconnaissance institutionnelle</li>
+                        <li>Levier primaire : relations directes et recommandations</li>
+                    </ul>
+                    <p><strong>Défi :</strong> Augmenter la fréquence tout en maintenant la qualité</p>
+                </div>
+            </div>
+
+            <div class="kpi-category">
+                <h4>dotMarket School</h4>
+                <p><strong>Formation & accompagnement des acheteurs</strong></p>
+                <ul>
+                    <li><strong>Persona 1 (Ready-to-act):</strong> Prêts à acheter immédiatement, formation/accompagnement 2k-8k€</li>
+                    <li><strong>Persona 2 (Early-stage):</strong> Apprentissage du digital, formation evergreen &lt;1k€</li>
+                    <li>Marché éducatif avec marge quasi exponentielle</li>
+                    <li>Objectif : éduquer le marché et créer un pipeline de qualité</li>
+                </ul>
+                <p><strong>Défi :</strong> Lancer les premières offres et tester le modèle dès 2026</p>
+            </div>
+        </div>
+
+        <div class="section definition">
+            <h3>Les Deux Dimensions Transversales</h3>
+            <p>L'architecture des tableaux de bord doit respecter deux axes d'analyse distincts :</p>
+
+            <h4>Axe 1 : Côté Vendeur → Côté Acheteur</h4>
+            <ul>
+                <li><strong>Vendeur :</strong> Estimation → Audit → Listing → Diffusion → Offre → Signature</li>
+                <li><strong>Acheteur :</strong> Sensibilisation → Qualification → Engagement → Action (School ou Purchase)</li>
+            </ul>
+
+            <h4>Axe 2 : Par Entité</h4>
+            <ul>
+                <li>dotMarket : KPIs vendeur + acheteur marketplace</li>
+                <li>dotAdvisory : KPIs vendeur + acheteur advisory</li>
+                <li>School : KPIs acheteur éducation (leads → engagés → formations vendues)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>Parcours Client Unifié</h3>
+            <p>Chaque "deal" suit un cycle de vie structuré, mesurable à chaque étape :</p>
+
+            <div class="flow-step"><strong>Arrivée :</strong> Estimation (Outgrow/outil d'estimation) ou Mise en relation</div>
+            <div class="flow-step"><strong>Qualif :</strong> Premier contact + demande de vente validée</div>
+            <div class="flow-step"><strong>Éligibilité :</strong> Vérification critères qualité & profitabilité</div>
+            <div class="flow-step"><strong>Valorisation :</strong> Estimation première valeur</div>
+            <div class="flow-step"><strong>Mandat :</strong> Pitch + signature du mandat exclusif (4 mois)</div>
+            <div class="flow-step"><strong>Audit :</strong> Due diligence complète (Gilles/Yann/Fred)</div>
+            <div class="flow-step"><strong>Listing :</strong> Annonce publiée sur marketplace + diffusion partenaires</div>
+            <div class="flow-step"><strong>Diffusion :</strong> Temps entre publication et offre première</div>
+            <div class="flow-step"><strong>Offre :</strong> Réception 1ère offre sérieuse</div>
+            <div class="flow-step"><strong>Signature SPA :</strong> Accord conclu entre parties</div>
+            <div class="flow-step"><strong>Clôture :</strong> Encaissement commission</div>
+        </div>
+
+        <div class="note">
+            <strong>Définition Critique :</strong> Un "deal" commence à la réception d'une estimation ou mise en relation valide. Le succès est mesuré au paiement final, pas à la signature du mandat. Le temps-à-valeur idéal : 30j de la première estimation à la mise en ligne, +30j jusqu'à offre, max 90j total avant liste.
+        </div>
+
+        <div class="section">
+            <h3>Facteurs de Succès Clés</h3>
+
+            <h4>Taux de Réussite par Cohorte</h4>
+            <p>L'objectif n'est pas la volume brut mais la <strong>volume qualified + taux de réussite corrélé</strong>. Exemples :</p>
+            <ul>
+                <li><strong>dotMarket :</strong> 1,4M€ minimum/mois idéalement ÷ 2 deals (ex: 10 deals × 100k€ minimum)</li>
+                <li><strong>dotAdvisory :</strong> 2M€ minimum/mois idéalement ÷ 2 deals (ex: deals de 1-5M€ chacun)</li>
+                <li><strong>Réussite :</strong> Un deal listé doit se vendre (objectif 100%). Si on liste moins mais avec succès 100%, c'est équivalent au moins au objectif.</li>
+            </ul>
+
+            <h4>Saisonnalité</h4>
+            <p>Patterns observés (à valider avec data) :</p>
+            <ul>
+                <li><strong>Février-Avril :</strong> Creux (bilans comptables)</li>
+                <li><strong>Mai-Juin :</strong> Vague (clôtures fiscales)</li>
+                <li><strong>Juillet-Août :</strong> Creux (congés)</li>
+                <li><strong>Octobre-Novembre :</strong> Pic (clôtures annuelles, projets fin d'année)</li>
+                <li><strong>Décembre :</strong> Ralentissement</li>
+            </ul>
+            <p><em>Impact trésorerie majeur :</em> Nécessite lissage d'équipe et prévision de cash-flow.</p>
+
+            <h4>Qualité des Leads vs. Volume</h4>
+            <ul>
+                <li>Éliminer les &lt;20k€ (non rentable)</li>
+                <li>Viser densité 100-500k€ pour dotMarket (sweet spot actuel)</li>
+                <li>Explorer le gap 500k-1M€ (trou détecté, étudier cause marché)</li>
+                <li>Sur dotAdvisory : relations vs. outils d'estimation</li>
+            </ul>
+        </div>
+
+        <div class="section highlight">
+            <h3>Objectifs 12 Mois & Vision 3 Ans</h3>
+            <h4>12 Mois : Consolidation</h4>
+            <ul>
+                <li>Équipe stabilisée à ~80% (quelques postes manquants)</li>
+                <li>Canaux d'acquisition optimisés et documentés</li>
+                <li>Tendance CA à la hausse confirmée</li>
+                <li>Rentabilité préservée</li>
+                <li>Data centralisée et exploitable</li>
+            </ul>
+
+            <h4>3 Ans : Scaling 3-5x</h4>
+            <ul>
+                <li>Plus de deals (volume + panier moyen) : dotMarket 1,4M€ → 4-7M€</li>
+                <li>Offres d'accompagnement (School) : marge quasi exponentielle</li>
+                <li>Reconnaissance corporate/institutionnelle renforcée</li>
+                <li><strong>Sans multiplier par 3-5 les coûts</strong> → rentabilité accrue</li>
+            </ul>
+        </div>
+
+        <!-- PARTIE 2: ÉBAUCHE TABLEAUX DE BORD -->
+        <h2 style="margin-top: 80px;">Partie 2 : Ébauche Tableaux de Bord</h2>
+
+        <div class="note">
+            <strong>Note :</strong> Cette ébauche propose une structure hiérarchique de KPIs. Le tableau de bord exécutif (pour Elsa/Kévin) sera synthétique ; les tableaux de pôles seront détaillés pour permettre l'action quotidienne. Tous les KPIs puiseront dans PipeDrive centralisé, Outgrow/outil d'estimation, et outils de messagerie.
+        </div>
+
+        <div class="section">
+            <h3>Dashboard 1 : Exécutif (Directeurs)</h3>
+            <p><strong>Accès :</strong> Elsa, Kévin, Abdenasseir (financier)<br/>
+            <strong>Fréquence :</strong> Temps réel (mise à jour quotidienne)</p>
+
+            <div class="dashboard-visual">
+                <div class="dashboard-section">
+                    <h5>📊 Vue Consolidée Entreprise</h5>
+                    <div class="widget-row">
+                        <div class="widget">
+                            <div class="widget-label">CA Réalisé (Mois)</div>
+                            €€€€
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Deals en Cours</div>
+                            #
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Deals Listés (Mois)</div>
+                            # deals
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Taux Succès Global</div>
+                            %
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>🎯 Répartition par Entité</h5>
+                    <table>
+                        <tr>
+                            <th>Entité</th>
+                            <th>CA Mois</th>
+                            <th>Deals en Cours</th>
+                            <th>Deals Listés</th>
+                            <th>Taux Réussite</th>
+                        </tr>
+                        <tr>
+                            <td><strong>dotMarket</strong></td>
+                            <td>€1,4M (objectif)</td>
+                            <td># deals</td>
+                            <td># deals</td>
+                            <td>% (tgt 50%+)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>dotAdvisory</strong></td>
+                            <td>€2M (objectif)</td>
+                            <td># deals</td>
+                            <td># deals</td>
+                            <td>% (tgt 100%)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>School</strong></td>
+                            <td>€ (formations)</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>% conversion</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>💰 Trésorerie &amp; Encaissements</h5>
+                    <div class="widget-row">
+                        <div class="widget">
+                            <div class="widget-label">En Attente Paiement</div>
+                            €€€ (#deals)
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">J+ Moyen depuis SPA</div>
+                            # jours
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Encaissements Prévus (30j)</div>
+                            €€€€
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>📈 Tendances (Graphiques)</h5>
+                    <ul>
+                        <li>Évolution CA sur 12 mois (courbe)</li>
+                        <li>Volume deals listés/signés par mois (barres)</li>
+                        <li>Saisonnalité identifiée (superposition mois sur mois)</li>
+                        <li>Composition revenus : % dotMarket vs. Advisory vs. School</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Dashboard 2 : dotMarket (Équipe Marketplace)</h3>
+            <p><strong>Accès :</strong> Roxane (Account Manager), Gilles/Yann/Fred (Audit), Mathis (Acheteurs), Amena (Aftermarket)<br/>
+            <strong>Fréquence :</strong> Mise à jour quotidienne, revue hebdo mardi</p>
+
+            <div class="dashboard-visual">
+                <div class="dashboard-section">
+                    <h5>📥 CÔTÉ VENDEUR : Pipeline Incoming</h5>
+                    <table>
+                        <tr>
+                            <th>Étape</th>
+                            <th>Volume (# deals)</th>
+                            <th>Valeur Totale</th>
+                            <th>Panier Moyen</th>
+                            <th>Taux Conversion Étape</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Estimations reçues</strong></td>
+                            <td># (semaine/mois)</td>
+                            <td>€€</td>
+                            <td>€</td>
+                            <td>→ siguiente étape %</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qualifiées (intent to sell)</strong></td>
+                            <td>#</td>
+                            <td>€€</td>
+                            <td>€</td>
+                            <td>→ elig %</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Éligibles</strong></td>
+                            <td>#</td>
+                            <td>€€</td>
+                            <td>€</td>
+                            <td>→ mandat %</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mandats Signés</strong></td>
+                            <td>#</td>
+                            <td>€€</td>
+                            <td>€</td>
+                            <td>→ audit %</td>
+                        </tr>
+                        <tr>
+                            <td><strong>En Audit</strong></td>
+                            <td>#</td>
+                            <td>€€</td>
+                            <td>€</td>
+                            <td>→ listing %</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Listés (Live)</strong></td>
+                            <td>#</td>
+                            <td>€€</td>
+                            <td>€</td>
+                            <td>→ offre %</td>
+                        </tr>
+                    </table>
+
+                    <h5 style="margin-top: 25px;">Métriques Temps-à-Valeur</h5>
+                    <div class="widget-row">
+                        <div class="widget">
+                            <div class="widget-label">Estimation → Audit (j)</div>
+                            Avg: # (tgt: ≤30)
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Audit → Listing (j)</div>
+                            Avg: # (tgt: ≤15)
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Listing → Offre (j)</div>
+                            Avg: # (tgt: ≤30)
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Total Estimation→Offre</div>
+                            Avg: # (tgt: ≤90)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>📊 Analyse Qualité &amp; Sectorielle</h5>
+                    <ul>
+                        <li><strong>Par secteur :</strong> Taux réussite, panier moyen, délais (tableau comparatif)</li>
+                        <li><strong>Par fourchette de prix :</strong> &lt;100k€, 100-300k€, 300-500k€, &gt;500k€ (conversion, volume)</li>
+                        <li><strong>Défaillances :</strong> Vendeurs non qualifiés (%), raisons d'abandons</li>
+                        <li><strong>Dossiers refusés :</strong> Critères & % refus par raison</li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>💬 CÔTÉ ACHETEUR (dotMarket Marketplace)</h5>
+                    <div class="widget-row">
+                        <div class="widget">
+                            <div class="widget-label">Visites Site</div>
+                            # (semaine)
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Accounts Créés</div>
+                            # (semaine)
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Taux Conversion Site→Account</div>
+                            %
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Budgets Déclarés</div>
+                            Avg: €
+                        </div>
+                    </div>
+
+                    <h5 style="margin-top: 20px;">Engagement Acheteurs (par cohorte/semaine)</h5>
+                    <table>
+                        <tr>
+                            <th>Cohorte</th>
+                            <th>Accounts</th>
+                            <th>RDV Pris (Cindy)</th>
+                            <th>Offres Formation</th>
+                            <th>Achats Réalisés</th>
+                        </tr>
+                        <tr>
+                            <td>Semaine X</td>
+                            <td>#</td>
+                            <td># (%)</td>
+                            <td># (%)</td>
+                            <td># (%)</td>
+                        </tr>
+                    </table>
+
+                    <h5 style="margin-top: 20px;">Annonces (Live Metrics)</h5>
+                    <ul>
+                        <li><strong>Visites/annonce :</strong> Min/max/avg (permet ID dossiers faibles)</li>
+                        <li><strong>Messages reçus/annonce :</strong> Corrélé avec visites (engagement qualité)</li>
+                        <li><strong>Offres reçues/annonce :</strong> Taux conversion visites → offres</li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>🔍 Axes d'Optimisation (Quick Wins)</h5>
+                    <ul>
+                        <li>Pages/funnels avec plus forte déperdition (segment identification)</li>
+                        <li>Secteurs/fourchettes à focaliser (ROI temps équipe)</li>
+                        <li>Tests de conversion (A/B sur pages)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="data-source">PipeDrive</div>
+            <div class="data-source">Outgrow / Outil Estimation</div>
+            <div class="data-source">Webflow Analytics</div>
+            <div class="data-source">Outil Messagerie</div>
+        </div>
+
+        <div class="section">
+            <h3>Dashboard 3 : dotAdvisory (Équipe Advisory)</h3>
+            <p><strong>Accès :</strong> Solène (Analyst), Gilles/Yann/Fred (Audit), Sales (matching), Kevin/Elsa (direction)<br/>
+            <strong>Fréquence :</strong> Mise à jour quotidienne, revue hebdo</p>
+
+            <div class="dashboard-visual">
+                <div class="dashboard-section">
+                    <h5>📥 Pipeline Incoming (Sourcing Direct)</h5>
+                    <table>
+                        <tr>
+                            <th>Étape</th>
+                            <th>Deals en Cours</th>
+                            <th>Valeur Totale</th>
+                            <th>Valeur Moyenne</th>
+                            <th>J+ Moyen à Cette Étape</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Leads Sources</strong></td>
+                            <td>#</td>
+                            <td>€€M</td>
+                            <td>€€ avg</td>
+                            <td>- (entrée)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>En Audit Sommaire</strong></td>
+                            <td>#</td>
+                            <td>€€M</td>
+                            <td>€€ avg</td>
+                            <td>#j</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mandats Signés</strong></td>
+                            <td>#</td>
+                            <td>€€M</td>
+                            <td>€€ avg</td>
+                            <td>#j</td>
+                        </tr>
+                        <tr>
+                            <td><strong>En Due Diligence</strong></td>
+                            <td>#</td>
+                            <td>€€M</td>
+                            <td>€€ avg</td>
+                            <td>#j</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Listés (Matchmakers)</strong></td>
+                            <td>#</td>
+                            <td>€€M</td>
+                            <td>€€ avg</td>
+                            <td>#j depuis listing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Offers Received</strong></td>
+                            <td>#</td>
+                            <td>€€M</td>
+                            <td>€€ avg</td>
+                            <td>J depuis offre</td>
+                        </tr>
+                    </table>
+
+                    <h5 style="margin-top: 25px;">Métriques Clés</h5>
+                    <div class="widget-row">
+                        <div class="widget">
+                            <div class="widget-label">Deals/Mois (Listing)</div>
+                            # (tgt: 2+)
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Valeur Moyenne</div>
+                            €€M (tgt: 1M+ chacun)
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Taux Réussite</div>
+                            % (tgt: 100%)
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Commission Négociée</div>
+                            Avg: %
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>💰 Sourcing &amp; Canaux</h5>
+                    <table>
+                        <tr>
+                            <th>Canal</th>
+                            <th>Deals Sourcés</th>
+                            <th>% du Total</th>
+                            <th>Taux Conversion Sourcing→Mandat</th>
+                        </tr>
+                        <tr>
+                            <td>Recommandations (Kévin direct)</td>
+                            <td>#</td>
+                            <td>%</td>
+                            <td>% (très haut attendu)</td>
+                        </tr>
+                        <tr>
+                            <td>Outil Estimation Upgraded</td>
+                            <td>#</td>
+                            <td>%</td>
+                            <td>%</td>
+                        </tr>
+                        <tr>
+                            <td>Partenaires / Référents</td>
+                            <td>#</td>
+                            <td>%</td>
+                            <td>%</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>💬 Côté Acheteur (Advisory)</h5>
+                    <ul>
+                        <li><strong>Leads Acquéreurs potentiels :</strong> # identifiés (Mathis)</li>
+                        <li><strong>Matchings en cours :</strong> # deals en negotiation</li>
+                        <li><strong>Cycle négociation :</strong> J+ moyen signature vs. listing</li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>⚠️ Risques &amp; Alertes</h5>
+                    <ul>
+                        <li>Deals bloqués (raisons) + actions correctives</li>
+                        <li>Mandats arrivant à expiration (4 mois) = relances vendeurs</li>
+                        <li>Gaps détectés (ex: aucun deal 500k-1M€) → investigation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="data-source">PipeDrive</div>
+            <div class="data-source">Google Drive (Data Rooms)</div>
+            <div class="data-source">Email / Slack</div>
+        </div>
+
+        <div class="section">
+            <h3>Dashboard 4 : dotMarket School (Équipe Formation)</h3>
+            <p><strong>Accès :</strong> Cindy (Responsable School)<br/>
+            <strong>Fréquence :</strong> Mise à jour quotidienne</p>
+
+            <div class="dashboard-visual">
+                <div class="dashboard-section">
+                    <h5>👥 Pipeline Acheteurs Éducation</h5>
+                    <table>
+                        <tr>
+                            <th>Persona</th>
+                            <th>Leads</th>
+                            <th>Engagés</th>
+                            <th>Formations Vendues</th>
+                            <th>Taux Conversion</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Ready-to-Act</strong> (80+ abil.)</td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td>% (formation 2-8k€)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Early-Stage</strong> (10-60 abil.)</td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td>#</td>
+                            <td>% (formation &lt;1k€)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>📈 KPIs (Modèle Infoprenariat)</h5>
+                    <div class="widget-row">
+                        <div class="widget">
+                            <div class="widget-label">Visites Funnels School</div>
+                            #
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Leads Collectés</div>
+                            #
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Leads Engagés (RDV)</div>
+                            #
+                        </div>
+                        <div class="widget">
+                            <div class="widget-label">Formations Vendues</div>
+                            # (€€€)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>💰 Économie</h5>
+                    <ul>
+                        <li><strong>Coûts :</strong> Production formation + marketing</li>
+                        <li><strong>Revenus :</strong> € par formation × nombre</li>
+                        <li><strong>Marge :</strong> % (objectif : exponentielle une fois lancée)</li>
+                        <li><strong>Intégration Pipeline :</strong> % formations → acheteurs école passant à dotMarket</li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-section">
+                    <h5>🎯 Lancements Prévus</h5>
+                    <ul>
+                        <li>Offre Ready-to-Act : Accompagnement 2-8k€ (tests Cindy en cours)</li>
+                        <li>Offre Early-Stage : Formation evergreen &lt;1k€ (volume education)</li>
+                        <li>Timeline : Lancement 2026</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="data-source">PipeDrive</div>
+            <div class="data-source">Webflow / Funnels</div>
+            <div class="data-source">CRM Education (à définir)</div>
+        </div>
+
+        <!-- GOUVERNANCE & PROCHAINES ÉTAPES -->
+        <h2>Gouvernance & Structure de Mise en Œuvre</h2>
+
+        <div class="section">
+            <h3>Hiérarchie d'Accès & Responsabilités</h3>
+
+            <div class="grid-2">
+                <div class="kpi-category">
+                    <h4>🎯 Niveau Exécutif</h4>
+                    <p><strong>Elsa, Kévin, Abdenasseir</strong></p>
+                    <ul>
+                        <li>Dashboard synthétique global</li>
+                        <li>Vue mensuelle (tendances, prévisions)</li>
+                        <li>Alertes sur KPIs critiques</li>
+                        <li>Décisions stratégiques</li>
+                    </ul>
+                </div>
+
+                <div class="kpi-category">
+                    <h4>🔧 Niveau Pôle</h4>
+                    <p><strong>Roxane, Solène, Cindy (+ équipes)</strong></p>
+                    <ul>
+                        <li>Dashboard opérationnel détaillé</li>
+                        <li>Vue quotidienne / hebdo</li>
+                        <li>Actions d'optimisation</li>
+                        <li>Recommandations direction</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Fréquence de Revue</h3>
+            <ul>
+                <li><strong>Quotidien (pôles) :</strong> Accès aux dashboards + alertes (Slack si nécessaire)</li>
+                <li><strong>Hebdo (mardi) :</strong> Point collectif par pôle (blocker, quick wins, tendances)</li>
+                <li><strong>Mensuel (direction) :</strong> Revue stratégique + ajustement objectifs</li>
+                <li><strong>Trimestriel :</strong> Analyse saisonnalité + plan ajustements</li>
+            </ul>
+
+            <h3>Définition de Métriques Critiques (à Finaliser)</h3>
+            <p>Les KPIs doivent être rigoureusement définis avant build, avec accord d'équipe :</p>
+            <ul>
+                <li><strong>Quand démarre un "deal" ?</strong> Estimation reçue (Outgrow) ou mise en relation (Advisory)</li>
+                <li><strong>Qualification "intent-to-sell" :</strong> Critères objectifs (budget déclaré, timeline, motivation)</li>
+                <li><strong>Éligibilité :</strong> Seuil de valorisation, secteur, profitabilité</li>
+                <li><strong>Temps-à-valeur :</strong> Jours calendaires (impact client), pas ETP</li>
+                <li><strong>Taux réussite :</strong> Un deal est réussi = offre signée (pas = mandat signé)</li>
+                <li><strong>Commission moyenne :</strong> Moyenne pondérée par deal, pas brut additif</li>
+            </ul>
+
+            <div class="note">
+                <strong>⚠️ Enjeu Data :</strong> Chaque définition doit être validée par Roxane/Solène/Cindy. Une incompréhension sur la définition crée des conflits (ex: temps travail vs. temps client). Lister ces définitions dans un document partagé et signalé.
+            </div>
+        </div>
+
+        <div class="section highlight">
+            <h3>Prochaines Étapes (Roadmap 2 Semaines)</h3>
+            <ol>
+                <li><strong>Semaine 1 (avant réunion Elsa) :</strong>
+                    <ul>
+                        <li>Validation ébauche & fil conducteur (cette doc)</li>
+                        <li>Définition précise des 10-15 KPIs prioritaires (par pôle)</li>
+                        <li>Mapping données → sources PipeDrive/Outgrow/outils</li>
+                    </ul>
+                </li>
+                <li><strong>Réunion 2 (mardi ~15h avec Elsa) :</strong> Validation parcours + premières KPIs</li>
+                <li><strong>Semaine 2 :</strong>
+                    <ul>
+                        <li>Entretiens équipes (Roxane, Solène, Cindy, Gilles, Mathis) pour validation opérationnelle</li>
+                        <li>Ajustements définitions basés sur feedback</li>
+                    </ul>
+                </li>
+                <li><strong>Réunion 3 (14 mai 9h30 avec Kévin) :</strong> Finalisation structure & approbation pour build</li>
+                <li><strong>Phase Build :</strong> Développement tableaux de bord (outils, API, visualisations)</li>
+            </ol>
+        </div>
+
+        <!-- SÉCURITÉ & CONFORMITÉ -->
+        <h2>Sécurité, Conformité & Infra</h2>
+
+        <div class="section">
+            <h3>Points à Valider</h3>
+            <ul>
+                <li><strong>RGPD :</strong> PipeDrive compliance (données personnelles/cartes ID dans datarooms)</li>
+                <li><strong>Accès :</strong> Qui a accès aux données sensibles (datarooms, budgets, identités)</li>
+                <li><strong>API :</strong> Intégration sécurisée PipeDrive → dashboards</li>
+                <li><strong>Anonymisation :</strong> Certains dashboards peuvent nécessiter dénomination partielle</li>
+                <li><strong>Backup :</strong> Historique data centralisée</li>
+            </ul>
+            <p style="margin-top: 20px;">→ <em>Avec développeur (sécurité prioritaire)</em></p>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p><strong>dotMarket — Cadre Stratégique &amp; Ébauche Tableaux de Bord</strong></p>
+            <p>Réunion du 22 avril 2026 | Préparé par Catherine Selosse</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">Document confidentiel — À usage interne</p>
+        </div>
+    </div>
+</body>
+</html>
