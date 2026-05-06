@@ -52,6 +52,11 @@ function renderContract(contract) {
     return;
   }
 
+  var paymentLabels = Array.isArray(contract.payment_schedule)
+    ? contract.payment_schedule.map(function(p) { return String(p && p.label || '').toUpperCase(); }).join(' ')
+    : '';
+  var totalAmountSuffix = paymentLabels.indexOf('TTC') !== -1 ? '€ TTC' : '€ HT';
+
   // Programme card
   let gridHtml =
     '<div class="admin-card">' +
@@ -59,7 +64,7 @@ function renderContract(contract) {
       '<div class="admin-row"><span class="label">Formule</span><span class="value">' + (contract.program_name || '') + '</span></div>' +
       (contract.start_date ? '<div class="admin-row"><span class="label">Début</span><span class="value">' + formatDate(contract.start_date) + '</span></div>' : '') +
       (contract.end_date ? '<div class="admin-row"><span class="label">Fin</span><span class="value">' + formatDate(contract.end_date) + '</span></div>' : '') +
-      '<div class="admin-row"><span class="label">Montant total</span><span class="value">' + (contract.total_amount ? contract.total_amount.toLocaleString('fr-FR') + ' € HT' : '—') + '</span></div>' +
+      '<div class="admin-row"><span class="label">Montant total</span><span class="value">' + (contract.total_amount ? contract.total_amount.toLocaleString('fr-FR') + ' ' + totalAmountSuffix : '—') + '</span></div>' +
     '</div>';
 
   // Paiements card
