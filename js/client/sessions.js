@@ -20,14 +20,15 @@ function isFsyProfile(profile) {
 
 function augmentFsySessionsIfNeeded(sessions) {
   if (!isFsyProfile(currentProfile)) return sessions;
+  var baseUrl = new URL('/clients/fsy/', window.location.origin).href;
   var extras = [
-    { session_number: 7, title: 'Session 7', date: '2026-05-05', status: 'completed', summary: '', cr_url: null },
-    { session_number: 6, title: 'Session 6', date: '2026-05-04', status: 'completed', summary: '', cr_url: null },
-    { session_number: 5, title: 'Session 5', date: '2026-04-23', status: 'completed', summary: '', cr_url: null },
-    { session_number: 4, title: 'Session 4', date: '2026-04-23', status: 'completed', summary: '', cr_url: null },
-    { session_number: 3, title: 'Session 3', date: '2026-04-21', status: 'completed', summary: '', cr_url: null },
-    { session_number: 2, title: 'Session 2', date: '2026-04-20', status: 'completed', summary: '', cr_url: null },
-    { session_number: 1, title: 'Session 1', date: '2026-04-09', status: 'completed', summary: '', cr_url: null }
+    { session_number: 7, title: 'Session 7', date: '2026-05-05', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'coaching-session-2026-05-05.html' },
+    { session_number: 6, title: 'Session 6', date: '2026-05-04', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'coaching-session-2026-05-04.html' },
+    { session_number: 5, title: 'Session 5', date: '2026-04-23', status: 'completed', summary: 'Session comptabilisée.', cr_url: null },
+    { session_number: 4, title: 'Session 4', date: '2026-04-23', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'coaching-session-2026-04-23.html' },
+    { session_number: 3, title: 'Session 3', date: '2026-04-21', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'coaching-session-2026-04-21.html' },
+    { session_number: 2, title: 'Session 2', date: '2026-04-20', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'coaching-session-2026-04-20.html' },
+    { session_number: 1, title: 'Session 1', date: '2026-04-09', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'coaching-session-2026-04-09.html' }
   ];
   var byNumber = {};
   (sessions || []).forEach(function(s) {
@@ -37,8 +38,9 @@ function augmentFsySessionsIfNeeded(sessions) {
     if (!byNumber[extra.session_number]) {
       sessions.push(extra);
     } else {
-      // Coaching sessions are counted, but no CR link is shown.
-      byNumber[extra.session_number].cr_url = null;
+      // Keep session counted, and attach CR when available.
+      byNumber[extra.session_number].cr_url = extra.cr_url;
+      if (!byNumber[extra.session_number].summary) byNumber[extra.session_number].summary = extra.summary;
       if (!byNumber[extra.session_number].title) byNumber[extra.session_number].title = extra.title;
     }
   });
