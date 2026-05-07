@@ -8,6 +8,7 @@ Objectif : standardiser la publication des CR coaching dans l'espace client.
 - Ne parler que des personnes présentes à la réunion.
 - Ne jamais résumer le contenu d'une séance de coaching.
 - Titre standard : `Session X — Séance de coaching`.
+- S'il existe 2 CR pour une même session/thématique, fusionner en un seul CR publié.
 - Inclure uniquement :
   - Objectif principal
   - Où on en est
