@@ -191,7 +191,7 @@ async function initClientPortal(profile) {
   var totalSessions = Math.max(profileTotalSessions, maxSessionNumber, completedSessions + plannedSessions);
   var sessionPct;
   if (isFsyClient(profile) && typeof getFsyPortalSessionStats === 'function') {
-    var st = getFsyPortalSessionStats(sessions);
+    var st = getFsyPortalSessionStats(sessions, profile);
     completedSessions = st.completed;
     totalSessions = st.total;
     sessionPct = st.pct;

@@ -33,7 +33,7 @@ function renderSessions(sessions, allActions) {
     var on = Number(originSession);
     if (!Number.isFinite(on)) return originSession;
     if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
-      if (on >= 6 && on <= 11) return 6;
+      if (on >= 6) return 6;
     }
     return on;
   }
@@ -52,7 +52,11 @@ function renderSessions(sessions, allActions) {
     totalForSub = Math.max(Number(currentProfile.total_sessions || 0), sessions.length) || '?';
   }
   if (subtitleEl) {
-    subtitleEl.textContent = completed + ' / ' + totalForSub + ' sessions';
+    if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
+      subtitleEl.textContent = '';
+    } else {
+      subtitleEl.textContent = completed + ' / ' + totalForSub + ' sessions';
+    }
   }
 
   function buildGlobalSummaryHtml() {
@@ -96,6 +100,8 @@ function renderSessions(sessions, allActions) {
     if (!actionsBySession[k]) actionsBySession[k] = [];
     actionsBySession[k].push(a);
   });
+
+  var isFsy = typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile);
 
   let html = buildGlobalSummaryHtml();
   sessions.forEach(function(session, i) {
@@ -156,9 +162,12 @@ function renderSessions(sessions, allActions) {
       actionsHtml += '</div>';
     }
 
-    html += '<div class="session-card' + (i === 0 ? ' open' : '') + '">' +
+    var numCell = isFsy
+      ? ''
+      : '<div class="session-num">' + session.session_number + '</div>';
+    html += '<div class="session-card' + (i === 0 ? ' open' : '') + (isFsy ? ' session-card-fsy' : '') + '">' +
       '<div class="session-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
-        '<div class="session-num">' + session.session_number + '</div>' +
+        numCell +
         '<div class="session-info">' +
           '<div class="session-title">' + (session.title || (isPlanned ? 'Prochaine session' : ('Session ' + session.session_number))) + '</div>' +
           '<div class="session-date">' + dateStr + (isPlanned ? ' — A venir' : '') + '</div>' +

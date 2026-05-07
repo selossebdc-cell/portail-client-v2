@@ -172,12 +172,15 @@ async function loadClientDashboard(profile) {
         : 'Date non renseignee';
       var crBadge = cr.session_label != null ? cr.session_label : String(cr.session_number);
       var crTitle = safeText(cr.title || ('Seance ' + crBadge));
+      var metaLine = cr.hide_session_badge
+        ? crDateStr
+        : ('S' + crBadge + ' • ' + crDateStr);
       html += '<a href="' + crLink + '" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;text-decoration:none;color:inherit;margin-bottom:8px;transition:border-color 0.2s" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
         '<div style="display:flex;align-items:flex-start;gap:10px;min-width:0">' +
           '<span style="font-size:1rem">📄</span>' +
           '<div style="min-width:0">' +
             '<div style="font-size:0.86rem;font-weight:600;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + crTitle + '</div>' +
-            '<div style="font-size:0.76rem;color:#8a8a8a">S' + crBadge + ' • ' + crDateStr + '</div>' +
+            '<div style="font-size:0.76rem;color:#8a8a8a">' + metaLine + '</div>' +
           '</div>' +
         '</div>' +
         '<span style="font-size:0.76rem;color:#d4956f;flex-shrink:0">Ouvrir →</span>' +

@@ -1,4 +1,7 @@
-// FSY — timeline portail : 5 jalons amont + 1 séance coaching (à ce jour).
+// FSY — timeline portail : 5 jalons amont + 1 point de suivi mai 2026 (PDF / compte-rendu).
+
+/** Séances prévues au contrat (bandeau) : profil Supabase `total_sessions`, sinon aligné CR « X/19 ». */
+var FSY_PORTAL_CONTRACT_SESSIONS_FALLBACK = 19;
 
 function isFsyPortalClient(profile) {
   if (!profile) return false;
@@ -15,13 +18,13 @@ function isFsyPortalClient(profile) {
     program.indexOf('aurelia') !== -1;
 }
 
-/** 1–5 = févr.–mars | 6 = unique séance coaching enregistrée (CR PDF mai 2026). */
+/** 1–5 = févr.–mars | 6 = point du 5 mai 2026 (intitulé comme le compte-rendu). */
 function getFsyPortalTimelineEntries() {
   var base = new URL('/clients/fsy/', window.location.origin).href;
   return [
     {
       session_number: 1,
-      title: 'Session 1 — Lancement stratégique & cadrage des priorités',
+      title: 'Lancement stratégique & cadrage des priorités',
       date: '2026-02-19',
       status: 'completed',
       summary: 'Audit initial, mapping des process, identification des 5 piliers. Cadrage priorités : process > outils. Objectif 500K€ CA 2026. CEO time 2h/semaine.',
@@ -36,7 +39,7 @@ function getFsyPortalTimelineEntries() {
     },
     {
       session_number: 2,
-      title: 'Session 2 — Migration Kajabi + Bunny, architecture offre FSY',
+      title: 'Migration Kajabi + Bunny, architecture offre FSY',
       date: '2026-03-02',
       status: 'completed',
       summary: 'Validation stack Circle + Bunny.net. Séparation FSY (mass-market) vs Aurélia Del Sol (premium). Arrêt des lives hebdo → evergreen. Freelance pour migration.',
@@ -51,7 +54,7 @@ function getFsyPortalTimelineEntries() {
     },
     {
       session_number: 3,
-      title: 'Session 3 — Stratégie offre FSY (evergreen + pricing) & Chatbot Telegram',
+      title: 'Stratégie offre FSY (evergreen + pricing) & Chatbot Telegram',
       date: '2026-03-11',
       status: 'completed',
       summary: 'Session avec Laurie seule (Aurélia absente). Formation evergreen mai 2026. Grille tarifaire : Studio 17€/mois, MTM en hausse (au-delà de 1 000 € ; ordre de grandeur interne ~1 499 €), coaching sommeil 399€. Chatbot mention-only validé. Projection CA révisée selon grille.',
@@ -67,7 +70,7 @@ function getFsyPortalTimelineEntries() {
     },
     {
       session_number: 4,
-      title: 'Session 4 — Repositionnement des marques & feuille de route opérationnelle',
+      title: 'Repositionnement des marques & feuille de route opérationnelle',
       date: '2026-03-16',
       status: 'completed',
       summary: 'SESSION PIVOT. 3 entités distinctes actées : FSY Studio B2C (17€/mois, Laurie gère), Master The Method B2B (tarif MTM au-delà de 1 000 €, repère ~1 499 €), Aurélia Del Sol Premium (390€+). Migration Uscreen+Kajabi → Circle avant juillet 2026. VA recrutée (Upwork, 500$).',
@@ -85,7 +88,7 @@ function getFsyPortalTimelineEntries() {
     },
     {
       session_number: 5,
-      title: 'Session 5 — Validation parcours clients + Circle + session Claude',
+      title: 'Validation parcours clients + Circle + session Claude',
       date: '2026-03-24',
       status: 'planned',
       summary: 'Séance prévue dans le plan d’accompagnement initial (mars). Statut repris de la base si elle a été mise à jour.',
@@ -94,10 +97,11 @@ function getFsyPortalTimelineEntries() {
     },
     {
       session_number: 6,
-      title: 'Session 6 — Coaching stratégique & suivi',
+      title: 'Mise en place et débogage des plateformes de formation et de marketing',
       date: '2026-05-05',
       status: 'completed',
-      summary: 'Compte-rendu de la séance de coaching (automatisation, Brevo, Stripe, Circle). Séance unique à ce stade dans le parcours affiché.',
+      summary:
+        'Point du 5 mai 2026 : Brevo (campagnes / lists), communauté Circle, automatisations Stripe ↔ Circle ↔ Brevo, clarification des workflows (journeys). Compte-rendu détaillé dans le PDF joint.',
       cr_url: base + 'pdfs/coaching-session-2026-05-05.pdf',
       decisions: []
     }
@@ -105,18 +109,20 @@ function getFsyPortalTimelineEntries() {
 }
 
 /**
- * Rattache une ligne Supabase au créneau portail 1–6.
- * Toute ligne datée à partir d’avril 2026 alimente le seul créneau coaching n°6.
+ * Rattache une ligne Supabase au créneau portail 1–6 (toute entrée post-mars ou n° ≥ 6 → créneau 6).
  */
 function fsyTimelineSlotForDbRow(s) {
   var n = s.session_number;
-  if (n === undefined || n === null) return null;
   var d = s.date ? String(s.date) : '';
 
   if (n >= 101 && n <= 105) return n - 100;
-  if (n >= 1 && n <= 5 && d && d < '2026-04-01') return n;
+  if (n >= 1 && n <= 5) {
+    if (!d || d < '2026-04-01') return n;
+    return 6;
+  }
+  if (Number.isFinite(Number(n)) && Number(n) >= 6) return 6;
   if (d && d >= '2026-04-01') return 6;
-  return null;
+  return 6;
 }
 
 function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
@@ -133,20 +139,9 @@ function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
   }
 
   var extras = getFsyPortalTimelineEntries();
-  var allowedNums = {};
-  extras.forEach(function(e) { allowedNums[e.session_number] = true; });
-
   var byNumDb = {};
-  var byNumOrphan = {};
   (dbSessions || []).forEach(function(s) {
     var key = fsyTimelineSlotForDbRow(s);
-    if (key === null || key === undefined) {
-      key = s.session_number;
-    }
-    if (!allowedNums[key]) {
-      byNumOrphan[key] = pickBest(byNumOrphan[key], s);
-      return;
-    }
     byNumDb[key] = pickBest(byNumDb[key], s);
   });
 
@@ -156,7 +151,6 @@ function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
     if (db) {
       if (db.summary) row.summary = db.summary;
       if (db.decisions != null) row.decisions = db.decisions;
-      if (db.title) row.title = db.title;
       if (db.status) row.status = db.status;
       if (db.id) row.id = db.id;
       if (!e.cr_url && db.cr_url) row.cr_url = db.cr_url;
@@ -167,26 +161,23 @@ function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
     return row;
   });
 
-  Object.keys(byNumOrphan).forEach(function(k) {
-    sessions.push(byNumOrphan[k]);
-  });
-
   sessions.sort(function(a, b) {
-    var da = a.date ? new Date(a.date + 'T00:00:00').getTime() : 0;
-    var dbd = b.date ? new Date(b.date + 'T00:00:00').getTime() : 0;
-    if (dbd !== da) return dbd - da;
-    return (b.session_number || 0) - (a.session_number || 0);
+    return (a.session_number || 0) - (b.session_number || 0);
   });
 
   return sessions;
 }
 
-function getFsyPortalSessionStats(dbSessions) {
+function getFsyPortalSessionStats(dbSessions, profile) {
   var merged = mergeDbSessionsWithFsyPortalTimeline(dbSessions || []);
-  var total = merged.length;
-  var completed = merged.filter(function(s) { return s.status === 'completed'; }).length;
-  var pct = total > 0 ? Math.round((completed / total) * 100) : 0;
-  return { total: total, completed: completed, pct: pct };
+  var completed = merged.filter(function(s) {
+    return s.status === 'completed';
+  }).length;
+  var contractTotal = profile && Number(profile.total_sessions) > 0
+    ? Number(profile.total_sessions)
+    : FSY_PORTAL_CONTRACT_SESSIONS_FALLBACK;
+  var pct = contractTotal > 0 ? Math.round((completed / contractTotal) * 100) : 0;
+  return { total: contractTotal, completed: completed, pct: pct };
 }
 
 function getFsyLatestReportsForDashboard(limit) {
@@ -202,7 +193,8 @@ function getFsyLatestReportsForDashboard(limit) {
     .map(function(e) {
       return {
         session_number: e.session_number,
-        session_label: String(e.session_number),
+        session_label: '',
+        hide_session_badge: true,
         title: e.title,
         cr_url: e.cr_url,
         date: e.date
