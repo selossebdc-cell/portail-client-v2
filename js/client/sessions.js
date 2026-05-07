@@ -29,6 +29,15 @@ function renderSessions(sessions, allActions) {
     });
   }
 
+  function fsyActionsBucketKey(originSession) {
+    var on = Number(originSession);
+    if (!Number.isFinite(on)) return originSession;
+    if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
+      if (on >= 6 && on <= 11) return 6;
+    }
+    return on;
+  }
+
   const container = document.getElementById('sessions-list');
   const subtitleEl = document.getElementById('sessions-subtitle');
 
@@ -81,8 +90,9 @@ function renderSessions(sessions, allActions) {
   var actionsBySession = {};
   allActions.forEach(function(a) {
     if (a.origin_session === undefined || a.origin_session === null || a.origin_session === '') return;
-    var k = Number(a.origin_session);
-    if (!Number.isFinite(k)) return;
+    var k = fsyActionsBucketKey(Number(a.origin_session));
+    if (!Number.isFinite(Number(k))) return;
+    k = Number(k);
     if (!actionsBySession[k]) actionsBySession[k] = [];
     actionsBySession[k].push(a);
   });

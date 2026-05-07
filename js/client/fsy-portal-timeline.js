@@ -1,4 +1,4 @@
-// FSY — timeline portail (source unique) : affichage Sessions, accueil « derniers CR », stats bandeau.
+// FSY — timeline portail : 5 jalons amont + 1 séance coaching (à ce jour).
 
 function isFsyPortalClient(profile) {
   if (!profile) return false;
@@ -15,7 +15,7 @@ function isFsyPortalClient(profile) {
     program.indexOf('aurelia') !== -1;
 }
 
-/** Jalons 1–11 : ordre chronologique (1 = plus ancienne, 11 = plus récente). */
+/** 1–5 = févr.–mars | 6 = unique séance coaching enregistrée (CR PDF mai 2026). */
 function getFsyPortalTimelineEntries() {
   var base = new URL('/clients/fsy/', window.location.origin).href;
   return [
@@ -44,7 +44,7 @@ function getFsyPortalTimelineEntries() {
       decisions: [
         'Kajabi + Bunny.net confirmés comme stack cible',
         'Circle éliminé puis réintégré session pivot',
-        'FSY = mass-market (17-1950€) vs Aurélia Del Sol = premium (3-15K€)',
+        'FSY Studio (B2C) vs MTM (B2B) ; tarif MTM actuel : plus de 1 000 € (repère projet ~1 499 € sur Stripe)',
         'Arrêt des lives hebdo → contenu evergreen',
         'Recruter freelance pour migration'
       ]
@@ -54,16 +54,15 @@ function getFsyPortalTimelineEntries() {
       title: 'Session 3 — Stratégie offre FSY (evergreen + pricing) & Chatbot Telegram',
       date: '2026-03-11',
       status: 'completed',
-      summary: 'Session avec Laurie seule (Aurélia absente). Formation evergreen mai 2026. Pricing verrouillé : MTM 1950€ (early bird 1550€), abo 17€/mois, coaching sommeil 399€. Chatbot mention-only validé. Projection CA 634K€/an.',
+      summary: 'Session avec Laurie seule (Aurélia absente). Formation evergreen mai 2026. Grille tarifaire : Studio 17€/mois, MTM en hausse (au-delà de 1 000 € ; ordre de grandeur interne ~1 499 €), coaching sommeil 399€. Chatbot mention-only validé. Projection CA révisée selon grille.',
       cr_url: null,
       decisions: [
         'Formation evergreen : lancement mai 2026',
-        'MTM : 1 950€ (early bird 1 550€) — relevé à 2 900€ en session pivot',
+        'MTM : tarif public supérieur à 1 000 € (caler sur Stripe / paywall Circle ; repère ~1 499 €)',
         'Abonnement Studio : 17€/mois',
         'Coaching sommeil : 399€ (lancement juin)',
         'Uscreen gardé 1 an pendant migration',
-        'Chatbot Telegram : mode mention-only uniquement',
-        'Projection CA réaliste : 634K€/an'
+        'Chatbot Telegram : mode mention-only uniquement'
       ]
     },
     {
@@ -71,13 +70,13 @@ function getFsyPortalTimelineEntries() {
       title: 'Session 4 — Repositionnement des marques & feuille de route opérationnelle',
       date: '2026-03-16',
       status: 'completed',
-      summary: 'SESSION PIVOT. 3 entités distinctes actées : FSY Studio B2C (17€/mois, Laurie gère), Master The Method B2B (2 900€ evergreen), Aurélia Del Sol Premium (390€+). Migration Uscreen+Kajabi → Circle avant juillet 2026. VA recrutée (Upwork, 500$). Prix MTM relevé de 1 950€ à 2 900€.',
+      summary: 'SESSION PIVOT. 3 entités distinctes actées : FSY Studio B2C (17€/mois, Laurie gère), Master The Method B2B (tarif MTM au-delà de 1 000 €, repère ~1 499 €), Aurélia Del Sol Premium (390€+). Migration Uscreen+Kajabi → Circle avant juillet 2026. VA recrutée (Upwork, 500$).',
       cr_url: base + 'cr-session4-fsy.html',
       decisions: [
         '3 entités distinctes : FSY Studio B2C + MTM B2B + Aurélia Del Sol Premium',
         'Migration Uscreen+Kajabi → Circle avant juillet 2026',
         'VA recrutée Upwork (Anam, 500$) pour migration vidéos',
-        'Prix MTM : 1 950€ → 2 900€ (early bird 2 500€)',
+        'MTM : prix catalogue > 1 000 € (vérifier Stripe / offre active ; indicatif ~1 499 €)',
         'Site FSY = purement éducatif (exit lifestyle)',
         '4 challenges/an pour FSY Studio',
         'Licence annuelle MTM 100€/an',
@@ -95,62 +94,20 @@ function getFsyPortalTimelineEntries() {
     },
     {
       session_number: 6,
-      title: 'Session 6 — Coaching',
-      date: '2026-04-09',
-      status: 'completed',
-      summary: '',
-      cr_url: base + 'pdfs/coaching-session-2026-04-09.pdf',
-      decisions: []
-    },
-    {
-      session_number: 7,
-      title: 'Session 7 — Coaching',
-      date: '2026-04-20',
-      status: 'completed',
-      summary: '',
-      cr_url: base + 'pdfs/coaching-session-2026-04-20.pdf',
-      decisions: []
-    },
-    {
-      session_number: 8,
-      title: 'Session 8 — Coaching',
-      date: '2026-04-21',
-      status: 'completed',
-      summary: '',
-      cr_url: base + 'pdfs/coaching-session-2026-04-21.pdf',
-      decisions: []
-    },
-    {
-      session_number: 9,
-      title: 'Session 9 — Coaching',
-      date: '2026-04-23',
-      status: 'completed',
-      summary: '',
-      cr_url: base + 'pdfs/coaching-session-2026-04-23.pdf',
-      decisions: []
-    },
-    {
-      session_number: 10,
-      title: 'Session 10 — Coaching',
-      date: '2026-04-23',
-      status: 'completed',
-      summary: '',
-      cr_url: null,
-      decisions: []
-    },
-    {
-      session_number: 11,
-      title: 'Session 11 — Coaching',
+      title: 'Session 6 — Coaching stratégique & suivi',
       date: '2026-05-05',
       status: 'completed',
-      summary: '',
+      summary: 'Compte-rendu de la séance de coaching (automatisation, Brevo, Stripe, Circle). Séance unique à ce stade dans le parcours affiché.',
       cr_url: base + 'pdfs/coaching-session-2026-05-05.pdf',
       decisions: []
     }
   ];
 }
 
-/** Rattache une ligne Supabase au numéro de session portail 1–11 (ancienne numérotation ou 101–105). */
+/**
+ * Rattache une ligne Supabase au créneau portail 1–6.
+ * Toute ligne datée à partir d’avril 2026 alimente le seul créneau coaching n°6.
+ */
 function fsyTimelineSlotForDbRow(s) {
   var n = s.session_number;
   if (n === undefined || n === null) return null;
@@ -158,8 +115,7 @@ function fsyTimelineSlotForDbRow(s) {
 
   if (n >= 101 && n <= 105) return n - 100;
   if (n >= 1 && n <= 5 && d && d < '2026-04-01') return n;
-  if (n >= 1 && n <= 6 && d && d >= '2026-04-01') return n + 5;
-  if (n >= 6 && n <= 11) return n;
+  if (d && d >= '2026-04-01') return 6;
   return null;
 }
 
@@ -225,7 +181,6 @@ function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
   return sessions;
 }
 
-/** Même agrégat que l’onglet Sessions → aligne le bandeau « Séances X/Y » et le %. */
 function getFsyPortalSessionStats(dbSessions) {
   var merged = mergeDbSessionsWithFsyPortalTimeline(dbSessions || []);
   var total = merged.length;
@@ -245,10 +200,9 @@ function getFsyLatestReportsForDashboard(limit) {
     })
     .slice(0, lim)
     .map(function(e) {
-      var label = String(e.session_number);
       return {
         session_number: e.session_number,
-        session_label: label,
+        session_label: String(e.session_number),
         title: e.title,
         cr_url: e.cr_url,
         date: e.date
