@@ -11,7 +11,7 @@ async function loadClientDashboard(profile) {
     : function(url) { return url || null; };
 
   // ─── Alerte RDV ───
-  const { data: plannedSessions } = await db
+  let { data: plannedSessions } = await db
     .from('sessions')
     .select('*')
     .eq('client_id', profile.id)
