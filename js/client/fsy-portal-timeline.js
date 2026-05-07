@@ -61,8 +61,11 @@ function getFsyPortalTimelineEntries() {
       title: 'Migration Kajabi + Bunny, architecture offre FSY',
       date: '2026-03-02',
       status: 'completed',
-      summary: 'Validation stack Circle + Bunny.net. Séparation FSY (mass-market) vs Aurélia Del Sol (premium). Arrêt des lives hebdo → evergreen. Freelance pour migration.',
-      cr_url: null,
+      summary:
+        'Validation stack Circle + Bunny.net. Séparation FSY (mass-market) vs Aurélia Del Sol (premium). Réunion du 5 mars : notes jointes (entre le 2 et le 11).',
+      cr_url: base + 'pdfs/fsy-cr-2026-03-02.html',
+      cr_url_extra: base + 'pdfs/fsy-cr-2026-03-05.html',
+      cr_url_extra_label: 'Compte-rendu du 5 mars',
       decisions: [
         'Kajabi + Bunny.net confirmés comme stack cible',
         'Circle éliminé puis réintégré session pivot',
@@ -76,8 +79,11 @@ function getFsyPortalTimelineEntries() {
       title: 'Stratégie offre FSY (evergreen + pricing) & Chatbot Telegram',
       date: '2026-03-11',
       status: 'completed',
-      summary: 'Session avec Laurie seule (Aurélia absente). Formation evergreen mai 2026. Grille tarifaire : Studio 17€/mois, MTM en hausse (au-delà de 1 000 € ; ordre de grandeur interne ~1 499 €), coaching sommeil 399€. Chatbot mention-only validé. Projection CA révisée selon grille.',
-      cr_url: null,
+      summary:
+        'Session avec Laurie seule (Aurélia absente). Formation evergreen mai 2026. Grille tarifaire : Studio 17€/mois, MTM en hausse (au-delà de 1 000 € ; ordre de grandeur interne ~1 499 €), coaching sommeil 399€. Chatbot mention-only validé.',
+      cr_url: base + 'pdfs/fsy-cr-2026-03-11.html',
+      cr_url_extra: base + 'pdfs/fsy-cr-2026-03-11-notes.rtf',
+      cr_url_extra_label: 'Source RTF',
       decisions: [
         'Formation evergreen : lancement mai 2026',
         'MTM : tarif public supérieur à 1 000 € (caler sur Stripe / paywall Circle ; repère ~1 499 €)',
@@ -96,6 +102,8 @@ function getFsyPortalTimelineEntries() {
       cr_url: base + 'cr-session4-fsy.html',
       cr_url_extra: base + 'pdfs/fsy-cr-2026-03-16-synthese.pdf',
       cr_url_extra_label: 'PDF — synthèse transcript 16 mars',
+      cr_url_extra_2: base + 'pdfs/fsy-cr-2026-03-16-rtf-export.html',
+      cr_url_extra_2_label: 'Notes du 16 mars (export RTF → HTML)',
       decisions: [
         '3 entités distinctes : FSY Studio B2C + MTM B2B + Aurélia Del Sol Premium',
         'Migration Uscreen+Kajabi → Circle avant juillet 2026',
