@@ -46,6 +46,15 @@ function renderSessions(sessions, allActions) {
     return;
   }
 
+  if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
+    sessions = sessions.slice().sort(function(a, b) {
+      var da = a && a.date ? new Date(String(a.date).slice(0, 10) + 'T00:00:00').getTime() : 0;
+      var db = b && b.date ? new Date(String(b.date).slice(0, 10) + 'T00:00:00').getTime() : 0;
+      if (db !== da) return db - da;
+      return (Number(b && b.session_number) || 0) - (Number(a && a.session_number) || 0);
+    });
+  }
+
   const completed = sessions.filter(function(s) { return s.status === 'completed'; }).length;
   var totalForSub = sessions.length;
   if (!(typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile))) {
