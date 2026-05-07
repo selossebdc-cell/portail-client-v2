@@ -1,7 +1,24 @@
-// FSY — timeline portail : 5 jalons amont + 1 point de suivi mai 2026 (PDF / compte-rendu).
+// FSY — timeline portail : 10 points réalisés / planifiés (févr. → mai 2026), contrat 19 séances (bandeau).
 
-/** Séances prévues au contrat (bandeau) : profil Supabase `total_sessions`, sinon aligné CR « X/19 ». */
+/** Séances prévues au contrat (bandeau) : profil Supabase `total_sessions`, sinon 19. */
 var FSY_PORTAL_CONTRACT_SESSIONS_FALLBACK = 19;
+
+/**
+ * Rattache une ligne Supabase à une ligne portail 1–10 (priorité à la date exacte).
+ * Les deux RDV du 23/04 sont regroupés sur le créneau 8.
+ */
+var FSY_PORTAL_DATE_TO_SLOT = {
+  '2026-02-19': 1,
+  '2026-03-02': 2,
+  '2026-03-11': 3,
+  '2026-03-16': 4,
+  '2026-03-24': 5,
+  '2026-04-09': 6,
+  '2026-04-20': 7,
+  '2026-04-23': 8,
+  '2026-05-04': 9,
+  '2026-05-05': 10
+};
 
 function isFsyPortalClient(profile) {
   if (!profile) return false;
@@ -18,7 +35,7 @@ function isFsyPortalClient(profile) {
     program.indexOf('aurelia') !== -1;
 }
 
-/** 1–5 = févr.–mars | 6 = point du 5 mai 2026 (intitulé comme le compte-rendu). */
+/** Intitulés alignés sur les compte-rendus / synthèses de réunion (sous-titres CR). */
 function getFsyPortalTimelineEntries() {
   var base = new URL('/clients/fsy/', window.location.origin).href;
   return [
@@ -90,39 +107,72 @@ function getFsyPortalTimelineEntries() {
       session_number: 5,
       title: 'Validation parcours clients + Circle + session Claude',
       date: '2026-03-24',
-      status: 'planned',
-      summary: 'Séance prévue dans le plan d’accompagnement initial (mars). Statut repris de la base si elle a été mise à jour.',
+      status: 'completed',
+      summary: 'Point d’avancement sur le parcours client, Circle et la session d’outillage (Claude). Statut complété côté parcours affiché ; à synchroniser depuis la base si besoin.',
       cr_url: null,
       decisions: []
     },
     {
       session_number: 6,
+      title: 'Offre atelier premium, automatisations n8n/Brevo/Stripe/Circle & acquisition LinkedIn MTM',
+      date: '2026-04-09',
+      status: 'completed',
+      summary: 'Réunion hebdomadaire : suivi automatisations, UTMs, migration YouScreen → Circle, parcours MTM (signature, onboarding), blocages Brevo/campagnes. Pistes d’optimisation acquisition MTM (LinkedIn).',
+      cr_url: null,
+      decisions: []
+    },
+    {
+      session_number: 7,
+      title: 'Mise en place et optimisation du parcours client automatisé',
+      date: '2026-04-20',
+      status: 'completed',
+      summary: 'Réunion hebdomadaire : UX Circle (calendrier, tutoriels), architecture bout en bout (UTM, n8n, Stripe, Brevo, onboarding, anti-churn), migration abonnées Uscreen.',
+      cr_url: null,
+      decisions: []
+    },
+    {
+      session_number: 8,
+      title: 'Migration Uscreen → Circle & Stripe, CRM unifié et automatisations Brevo',
+      date: '2026-04-23',
+      status: 'completed',
+      summary: 'Journée du 23 avril : cadrage migration (abonnements, Bunny, bugs Circle, escalade support) et alignement CRM unifié, UTM, workflows n8n + documentation pour l’équipe.',
+      cr_url: null,
+      decisions: []
+    },
+    {
+      session_number: 9,
+      title: 'Automatisations Stripe/Brevo/n8n, reporting FSY, ManyChat & e-signature',
+      date: '2026-05-04',
+      status: 'completed',
+      summary: 'Point hebdomadaire : migration Circle, refonte workflows MTM (nodes natifs), coûts e-signature, rapport hebdo FSY, quiz Manychat / chatbots.',
+      cr_url: null,
+      decisions: []
+    },
+    {
+      session_number: 10,
       title: 'Mise en place et débogage des plateformes de formation et de marketing',
       date: '2026-05-05',
       status: 'completed',
       summary:
-        'Point du 5 mai 2026 : Brevo (campagnes / lists), communauté Circle, automatisations Stripe ↔ Circle ↔ Brevo, clarification des workflows (journeys). Compte-rendu détaillé dans le PDF joint.',
+        'Point du 5 mai 2026 : Brevo (campagnes / listes), communauté Circle, automatisations Stripe ↔ Circle ↔ Brevo, clarification des workflows (journeys). Détail dans le compte-rendu PDF.',
       cr_url: base + 'pdfs/coaching-session-2026-05-05.pdf',
       decisions: []
     }
   ];
 }
 
-/**
- * Rattache une ligne Supabase au créneau portail 1–6 (toute entrée post-mars ou n° ≥ 6 → créneau 6).
- */
 function fsyTimelineSlotForDbRow(s) {
-  var n = s.session_number;
-  var d = s.date ? String(s.date) : '';
+  var d = s.date ? String(s.date).slice(0, 10) : '';
+  if (d && FSY_PORTAL_DATE_TO_SLOT[d] != null) return FSY_PORTAL_DATE_TO_SLOT[d];
 
+  var n = s.session_number;
   if (n >= 101 && n <= 105) return n - 100;
-  if (n >= 1 && n <= 5) {
-    if (!d || d < '2026-04-01') return n;
-    return 6;
-  }
-  if (Number.isFinite(Number(n)) && Number(n) >= 6) return 6;
-  if (d && d >= '2026-04-01') return 6;
-  return 6;
+
+  var num = Number(n);
+  if (Number.isFinite(num) && num >= 1 && num <= 10) return num;
+  if (Number.isFinite(num) && num >= 11) return 10;
+
+  return null;
 }
 
 function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
@@ -142,6 +192,7 @@ function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
   var byNumDb = {};
   (dbSessions || []).forEach(function(s) {
     var key = fsyTimelineSlotForDbRow(s);
+    if (key === null || key === undefined) return;
     byNumDb[key] = pickBest(byNumDb[key], s);
   });
 

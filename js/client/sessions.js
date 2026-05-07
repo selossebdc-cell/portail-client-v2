@@ -33,7 +33,7 @@ function renderSessions(sessions, allActions) {
     var on = Number(originSession);
     if (!Number.isFinite(on)) return originSession;
     if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
-      if (on >= 6) return 6;
+      if (on >= 11) return 10;
     }
     return on;
   }
