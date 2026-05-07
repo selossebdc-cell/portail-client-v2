@@ -6,7 +6,44 @@ async function loadSessions(clientId) {
   ]);
 
   if (sessionsRes.error) { console.error('Erreur chargement sessions:', sessionsRes.error); return; }
-  renderSessions(sessionsRes.data, actionsRes.data || []);
+  var sessions = sessionsRes.data || [];
+  sessions = augmentFsySessionsIfNeeded(sessions);
+  renderSessions(sessions, actionsRes.data || []);
+}
+
+function isFsyProfile(profile) {
+  if (!profile) return false;
+  var company = String(profile.company || '').toLowerCase();
+  var email = String(profile.email || '').toLowerCase();
+  return company.indexOf('face soul') !== -1 || company.indexOf('facesoul') !== -1 || email.indexOf('facesoulyoga') !== -1;
+}
+
+function augmentFsySessionsIfNeeded(sessions) {
+  if (!isFsyProfile(currentProfile)) return sessions;
+  var extras = [
+    { session_number: 7, title: 'Session 7', date: '2026-05-05', status: 'completed', summary: '', cr_url: null },
+    { session_number: 6, title: 'Session 6', date: '2026-05-04', status: 'completed', summary: '', cr_url: null },
+    { session_number: 5, title: 'Session 5', date: '2026-04-23', status: 'completed', summary: '', cr_url: null },
+    { session_number: 4, title: 'Session 4', date: '2026-04-23', status: 'completed', summary: '', cr_url: null },
+    { session_number: 3, title: 'Session 3', date: '2026-04-21', status: 'completed', summary: '', cr_url: null },
+    { session_number: 2, title: 'Session 2', date: '2026-04-20', status: 'completed', summary: '', cr_url: null },
+    { session_number: 1, title: 'Session 1', date: '2026-04-09', status: 'completed', summary: '', cr_url: null }
+  ];
+  var byNumber = {};
+  (sessions || []).forEach(function(s) {
+    byNumber[s.session_number] = s;
+  });
+  extras.forEach(function(extra) {
+    if (!byNumber[extra.session_number]) {
+      sessions.push(extra);
+    } else {
+      // Coaching sessions are counted, but no CR link is shown.
+      byNumber[extra.session_number].cr_url = null;
+      if (!byNumber[extra.session_number].title) byNumber[extra.session_number].title = extra.title;
+    }
+  });
+  sessions.sort(function(a, b) { return (b.session_number || 0) - (a.session_number || 0); });
+  return sessions;
 }
 
 function renderSessions(sessions, allActions) {
@@ -30,9 +67,9 @@ function renderSessions(sessions, allActions) {
   }
 
   const completed = sessions.filter(function(s) { return s.status === 'completed'; }).length;
-  const total = currentProfile.total_sessions || '?';
+  const total = Math.max(Number(currentProfile.total_sessions || 0), sessions.length) || '?';
   if (subtitleEl) {
-    subtitleEl.textContent = '';
+    subtitleEl.textContent = completed + ' / ' + total + ' sessions';
   }
 
   // Grouper actions par session d'origine
@@ -107,7 +144,7 @@ function renderSessions(sessions, allActions) {
       '<div class="session-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
         '<div class="session-num">' + session.session_number + '</div>' +
         '<div class="session-info">' +
-          '<div class="session-title">' + (session.title || (isPlanned ? 'Prochaine séance' : 'Séance ' + session.session_number)) + '</div>' +
+          '<div class="session-title">' + (session.title || (isPlanned ? 'Prochaine session' : 'Session ' + session.session_number)) + '</div>' +
           '<div class="session-date">' + dateStr + (isPlanned ? ' — A venir' : '') + '</div>' +
         '</div>' +
         '<span class="session-chevron">▼</span>' +

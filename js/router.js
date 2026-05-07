@@ -47,6 +47,13 @@ function shouldUseSimplifiedClientPortal(profile) {
   return company.indexOf('dotmarket') !== -1 || company.indexOf('dot market') !== -1;
 }
 
+function isFsyClient(profile) {
+  if (!profile) return false;
+  var company = String(profile.company || '').toLowerCase();
+  var email = String(profile.email || '').toLowerCase();
+  return company.indexOf('face soul') !== -1 || company.indexOf('facesoul') !== -1 || email.indexOf('facesoulyoga') !== -1;
+}
+
 function applyClientTabPreset(profile) {
   var tabs = document.querySelectorAll('#client-tabs .tab');
   var panels = document.querySelectorAll('#client-view .tab-panel');
@@ -175,6 +182,10 @@ async function initClientPortal(profile) {
   // Keep indicators aligned with real session data even if profile.total_sessions is stale.
   var profileTotalSessions = Number(profile.total_sessions || 0);
   var totalSessions = Math.max(profileTotalSessions, maxSessionNumber, completedSessions + plannedSessions);
+  if (isFsyClient(profile)) {
+    completedSessions = Math.max(completedSessions, 7);
+    totalSessions = Math.max(totalSessions, 7);
+  }
   var sessionPct = totalSessions > 0 ? Math.round((completedSessions / totalSessions) * 100) : 0;
   // Stocker pour réutiliser dans le dashboard
   window._sessionPct = sessionPct;
