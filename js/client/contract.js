@@ -105,11 +105,28 @@ function renderContract(contract) {
   gridContainer.innerHTML = gridHtml;
 
   // Documents
-  if (contract.documents && contract.documents.length > 0) {
+  var docsList = Array.isArray(contract.documents) ? contract.documents.slice() : [];
+  // FSY fallback: keep latest invoice visible even before storage sync.
+  if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
+    var fsyInvoiceUrl = new URL('/clients/fsy/pdfs/facture-fsy-2026-05-06.pdf', window.location.origin).href;
+    var hasFsyInvoice = docsList.some(function(d) {
+      return (d && d.url === fsyInvoiceUrl) || (d && d.name === 'Facture — paiement du 06/05/2026');
+    });
+    if (!hasFsyInvoice) {
+      docsList.push({
+        name: 'Facture — paiement du 06/05/2026',
+        type: 'facture',
+        date: '2026-05-06',
+        url: fsyInvoiceUrl
+      });
+    }
+  }
+
+  if (docsList.length > 0) {
     docsTitle.style.display = 'block';
     let docsHtml = '';
 
-    contract.documents.forEach(function(doc, idx) {
+    docsList.forEach(function(doc, idx) {
       const icon = doc.type === 'contrat' ? '📋' : '🧾';
       const hasUrl = doc.url && doc.url.length > 0;
       const hasPath = doc.path && doc.path.length > 0;
