@@ -235,7 +235,7 @@ function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
   });
 
   sessions.sort(function(a, b) {
-    return (a.session_number || 0) - (b.session_number || 0);
+    return (b.session_number || 0) - (a.session_number || 0);
   });
 
   return sessions;
