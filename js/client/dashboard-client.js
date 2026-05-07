@@ -19,6 +19,22 @@ async function loadClientDashboard(profile) {
     .order('date', { ascending: true })
     .limit(1);
 
+  if (typeof isFsyPortalClient === 'function' && isFsyPortalClient(profile) && plannedSessions && plannedSessions.length > 0) {
+    var lastDoneMs = 0;
+    if (typeof getFsyPortalTimelineEntries === 'function') {
+      getFsyPortalTimelineEntries().forEach(function(e) {
+        if (e.status === 'completed' && e.date) {
+          var t = new Date(e.date + 'T00:00:00').getTime();
+          if (t > lastDoneMs) lastDoneMs = t;
+        }
+      });
+    }
+    plannedSessions = plannedSessions.filter(function(p) {
+      if (!p.date || !lastDoneMs) return true;
+      return new Date(p.date + 'T00:00:00').getTime() > lastDoneMs;
+    });
+  }
+
   if (plannedSessions && plannedSessions.length > 0) {
     const next = plannedSessions[0];
     const d = next.date ? new Date(next.date + 'T00:00:00') : null;
@@ -125,14 +141,20 @@ async function loadClientDashboard(profile) {
     html += '</div>';
   }
 
-  // ─── Raccourcis ───
-  const { data: latestReports } = await db
-    .from('sessions')
-    .select('session_number, title, cr_url, date')
-    .eq('client_id', profile.id)
-    .not('cr_url', 'is', null)
-    .order('date', { ascending: false })
-    .limit(3);
+  // ─── Raccourcis (même source que l'onglet Sessions pour FSY) ───
+  var latestReports = null;
+  if (typeof isFsyPortalClient === 'function' && isFsyPortalClient(profile) && typeof getFsyLatestReportsForDashboard === 'function') {
+    latestReports = getFsyLatestReportsForDashboard(3);
+  } else {
+    const res = await db
+      .from('sessions')
+      .select('session_number, title, cr_url, date')
+      .eq('client_id', profile.id)
+      .not('cr_url', 'is', null)
+      .order('date', { ascending: false })
+      .limit(3);
+    latestReports = res.data;
+  }
 
   if (latestReports && latestReports.length > 0) {
     html += '<div style="margin-bottom:24px">' +

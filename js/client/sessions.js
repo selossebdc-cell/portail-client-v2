@@ -11,66 +11,10 @@ async function loadSessions(clientId) {
   renderSessions(sessions, actionsRes.data || []);
 }
 
-function isFsyProfile(profile) {
-  if (!profile) return false;
-  var company = String(profile.company || '').toLowerCase();
-  var email = String(profile.email || '').toLowerCase();
-  var program = String(profile.program || '').toLowerCase();
-  return company.indexOf('face soul') !== -1 ||
-    company.indexOf('facesoul') !== -1 ||
-    company.indexOf('fsy') !== -1 ||
-    company.indexOf('aurelia') !== -1 ||
-    email.indexOf('facesoulyoga') !== -1 ||
-    email.indexOf('aurelia') !== -1 ||
-    program.indexOf('fsy') !== -1 ||
-    program.indexOf('aurelia') !== -1;
-}
-
 function augmentFsySessionsIfNeeded(sessions) {
-  if (!isFsyProfile(currentProfile)) return sessions;
-  var baseUrl = new URL('/clients/fsy/', window.location.origin).href;
-  var extras = [
-    { session_number: 7, title: 'Session 7', date: '2026-05-05', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'pdfs/coaching-session-2026-05-05.pdf' },
-    { session_number: 6, title: 'Session 6', date: '2026-05-04', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'pdfs/coaching-session-2026-05-04.pdf' },
-    { session_number: 5, title: 'Session 5', date: '2026-04-23', status: 'completed', summary: 'Session comptabilisée.', cr_url: null },
-    { session_number: 4, title: 'Session 4', date: '2026-04-23', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'pdfs/coaching-session-2026-04-23.pdf' },
-    { session_number: 3, title: 'Session 3', date: '2026-04-21', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'pdfs/coaching-session-2026-04-21.pdf' },
-    { session_number: 2, title: 'Session 2', date: '2026-04-20', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'pdfs/coaching-session-2026-04-20.pdf' },
-    { session_number: 1, title: 'Session 1', date: '2026-04-09', status: 'completed', summary: 'Point global mis à jour après la session.', cr_url: baseUrl + 'pdfs/coaching-session-2026-04-09.pdf' }
-  ];
-  var extrasByDate = {};
-  extras.forEach(function(extra) {
-    extrasByDate[extra.date] = extra;
-  });
-  var byNumber = {};
-  var byDate = {};
-  (sessions || []).forEach(function(s) {
-    byNumber[s.session_number] = s;
-    if (s.date) byDate[s.date] = s;
-    var matchingExtra = extrasByDate[s.date];
-    if (matchingExtra) {
-      // Date match wins to avoid wrong CR/session association.
-      s.cr_url = matchingExtra.cr_url;
-      if (!s.summary) s.summary = matchingExtra.summary;
-      if (!s.title) s.title = matchingExtra.title;
-    }
-  });
-  extras.forEach(function(extra) {
-    if (!byNumber[extra.session_number] && !byDate[extra.date]) {
-      sessions.push(extra);
-    } else {
-      // Update whichever existing session matches first by date, then by number.
-      var target = byDate[extra.date] || byNumber[extra.session_number];
-      if (!target) return;
-      if (!target.cr_url) target.cr_url = extra.cr_url;
-      if (!target.summary) target.summary = extra.summary;
-      if (!target.title) target.title = extra.title;
-      if (!target.date) target.date = extra.date;
-      if (!target.status) target.status = extra.status;
-    }
-  });
-  sessions.sort(function(a, b) { return (b.session_number || 0) - (a.session_number || 0); });
-  return sessions;
+  if (typeof mergeDbSessionsWithFsyPortalTimeline !== 'function' || typeof isFsyPortalClient !== 'function') return sessions;
+  if (!isFsyPortalClient(currentProfile)) return sessions;
+  return mergeDbSessionsWithFsyPortalTimeline(sessions);
 }
 
 function renderSessions(sessions, allActions) {
@@ -101,6 +45,11 @@ function renderSessions(sessions, allActions) {
 
   function buildGlobalSummaryHtml() {
     var completedSessions = sessions.filter(function(s) { return s.status === 'completed'; });
+    completedSessions.sort(function(a, b) {
+      var da = a.date ? new Date(a.date + 'T00:00:00').getTime() : 0;
+      var db = b.date ? new Date(b.date + 'T00:00:00').getTime() : 0;
+      return db - da;
+    });
     var latestCompleted = completedSessions.length ? completedSessions[0] : null;
     var pendingCount = allActions.filter(function(a) {
       return a.status !== 'done' && a.status !== 'abandoned' && !a.is_completed;
