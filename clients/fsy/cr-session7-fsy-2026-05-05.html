@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FSY — CR Session 7 (2026-05-05)</title>
+  <style>
+    :root {
+      --fsy-primary: #b48a64;
+      --fsy-primary-dark: #8b6848;
+      --fsy-bg: #f6f1eb;
+      --fsy-surface: #ffffff;
+      --fsy-border: #e6d7c8;
+      --fsy-text: #2e2a26;
+      --fsy-muted: #6d6258;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--fsy-bg);
+      color: var(--fsy-text);
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      line-height: 1.65;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 24px 16px 40px; }
+    .hero {
+      background: linear-gradient(135deg, #f5e9dc 0%, #eadbc8 100%);
+      border: 1px solid var(--fsy-border);
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin-bottom: 20px;
+    }
+    .hero h1 { margin: 0; font-size: 1.6rem; color: var(--fsy-primary-dark); line-height: 1.35; }
+    .meta { margin-top: 6px; font-size: 0.92rem; color: var(--fsy-muted); }
+    .lead { margin-top: 14px; color: #463d36; }
+    .card {
+      background: var(--fsy-surface);
+      border: 1px solid var(--fsy-border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin: 14px 0;
+      box-shadow: 0 1px 0 rgba(139,104,72,.06);
+    }
+    h2 { margin: 0 0 10px; font-size: 1.14rem; color: var(--fsy-primary-dark); }
+    h3 { margin: 16px 0 8px; font-size: 0.98rem; color: var(--fsy-primary); }
+    p { margin: 0 0 10px; }
+    ul { margin: 0 0 8px; padding-left: 20px; }
+    li { margin-bottom: 7px; }
+    strong { color: #4b4036; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <h1>Mise en place et débogage des plateformes de formation et de marketing</h1>
+      <div class="meta">FSY - 2026-05-05 12:16:11</div>
+      <p class="lead">Compte-rendu de session FSY — version client.</p>
+    </header>
+    <p>Cette discussion porte sur la résolution de problèmes techniques et l&#x27;alignement des processus pour le lancement de nouvelles offres de formation. Les participants abordent les difficultés liées à la plateforme d&#x27;emailing Brevo, la configuration de la nouvelle communauté Circle, l&#x27;intégration des paiements via Stripe, et clarifient les malentendus sur la mise en place des automatisations marketing. L&#x27;objectif principal est de débloquer les points techniques pour rendre les nouvelles formations et le studio en ligne pleinement opérationnels.</p><section class="card"><h2>Stratégie commerciale et recrutement</h2><p>Cette section initiale établit le contexte stratégique de la conversation. L&#x27;interlocutrice principale exprime le besoin de renforcer la stratégie de vente en créant des &quot;landing pages&quot; et des tunnels de vente plus efficaces, distincts du site principal, afin de pouvoir tester différentes approches de communication. Elle souhaite déléguer entièrement cet aspect &quot;business&quot; pour se consacrer à la création de contenu. Dans cette optique, le profil de Stéphanie Allaire, une consultante expérimentée ayant collaboré avec de grandes marques, est envisagé pour un partenariat à long terme, une approche jugée plus pérenne que des missions ponctuelles. Cette démarche est motivée par une expérience antérieure avec une collaboratrice, Laurie, dont la rémunération (jusqu&#x27;à 2 000 € pour 5-6 jours par mois) était devenue disproportionnée par rapport à son manque d&#x27;autonomie, soulignant le besoin d&#x27;un profil plus proactif et orienté business.</p></section><section class="card"><h2>Diagnostic des problèmes sur la plateforme Brevo</h2><p>Cette partie se concentre sur l&#x27;identification et la tentative de résolution d&#x27;un problème technique majeur sur la plateforme d&#x27;emailing Brevo. Les interlocutrices constatent une anomalie critique : bien que la base de données compte plus de 13 000 contacts, les campagnes email ne sont envoyées qu&#x27;à une fraction de l&#x27;audience, environ 9 000 personnes. Malgré la sélection de toutes les listes et segments disponibles lors de la configuration des campagnes, une partie significative des contacts n&#x27;est pas atteinte. Elles explorent les paramètres, suspectant un problème de configuration, la présence de doublons ou un bug propre à Brevo, mais ne parviennent pas à identifier la cause exacte du blocage. Cette situation est préoccupante car elle entrave la communication et limite la portée des lancements, notamment pour la formation MTM, pour laquelle de nouveaux inscrits sont acquis mais ne semblent pas être sollicités efficacement.</p></section><section class="card"><h2>Configuration de la communauté Circle et migration</h2><p>La discussion bascule sur la mise en place de la nouvelle plateforme communautaire Circle, destinée à remplacer à terme Uscreen (utilisé jusqu&#x27;en août). Les intervenantes travaillent activement à la configuration de l&#x27;interface pour optimiser l&#x27;expérience utilisateur. Elles s&#x27;inspirent de &quot;best practices&quot; observées sur d&#x27;autres communautés pour structurer l&#x27;accueil des membres, en créant des espaces dédiés comme &quot;Bienvenue&quot;, &quot;Commence ici&quot;, &quot;Présente-toi&quot; et &quot;Annonces&quot;. Des ajustements techniques sont effectués en direct, comme la création de groupes d&#x27;espaces, la gestion des permissions d&#x27;accès (espaces publics ou privés), et la correction d&#x27;un bug d&#x27;affichage qui tronquait les publications. L&#x27;objectif est de préparer la plateforme pour une mise en production imminente, qui sera initiée par l&#x27;enregistrement d&#x27;une vidéo de bienvenue.</p></section><section class="card"><h2>Déblocage technique pour l&#x27;automatisation des paiements</h2><p>Cette section relate l&#x27;intervention de Michael, un expert technique, pour résoudre des points bloquants liés à l&#x27;automatisation des processus. La discussion se focalise sur l&#x27;intégration entre les paiements sur Stripe, l&#x27;accès aux cours sur Circle et l&#x27;inscription sur les listes marketing de Brevo. Pour finaliser les scénarios d&#x27;automatisation, les participants identifient et transmettent à Michael les identifiants techniques nécessaires : les &quot;Product ID&quot; et &quot;Price ID&quot; depuis Stripe pour la nouvelle formation &quot;Master the Method&quot; (paiement en 1 fois et en 4 fois) ainsi que pour l&#x27;abonnement au studio en ligne (annuel et mensuel). Ces informations sont cruciales pour que le système puisse automatiquement reconnaître un achat et déclencher les actions correspondantes, notamment l&#x27;ajout du client aux bons groupes d&#x27;accès et listes de diffusion.</p></section><section class="card"><h2>Clarification des responsabilités sur les workflows d&#x27;emailing</h2><p>Un point de friction majeur est abordé : la mise en place des séquences d&#x27;emails automatisées (&quot;journeys&quot;) sur Brevo. Un malentendu important est révélé entre Catherine et Laurie. Laurie clarifie qu&#x27;elle avait interrompu son travail sur les automatisations suite à une conversation où elle avait compris que Catherine s&#x27;en chargerait. Plus fondamentalement, elle explique une contrainte technique majeure : pour que les automatisations sur Brevo se déclenchent instantanément, le point de départ doit être &quot;l&#x27;ajout d&#x27;un contact à une liste&quot;. La méthode initialement envisagée, basée sur la &quot;mise à jour d&#x27;un attribut de contact&quot;, créerait des délais inacceptables (jusqu&#x27;à 24h). Cette clarification est essentielle pour que Michael configure correctement les automatisations en amont et que Laurie puisse ensuite construire les campagnes sur la bonne base technique.</p></section><section class="card"><h2>Actions à venir</h2><h3>@Michael</h3><ul><li>☐ Vérifier le processus de paiement de la formation MTM sur Stripe - [TBD]</li><li>☐ Confirmer les listes d&#x27;utilisateurs à utiliser sur Brevo à partir du mail de Laurie - [TBD]</li><li>☐ Envoyer un email à Laurie avec les instructions pour les modifications à faire sur WordPress (UTM, headers, etc.) - [TBD]</li></ul><h3>@Laurie</h3><ul><li>☐ Créer un nouveau &quot;paywall&quot; sur Circle pour le paiement en une fois de la formation MTM - [TBD]</li><li>☐ Changer les liens de paiement sur le site internet pour qu&#x27;ils redirigent vers les nouveaux &quot;paywalls&quot; Circle/Stripe (au lieu d&#x27;Uscreen) - [TBD]</li><li>☐ Répondre à Michael pour confirmer si les formulaires du site utilisent Elementor ou Brevo pour la collecte des UTM - [TBD]</li><li>☐ Créer sur Brevo les listes nécessaires qui serviront de déclencheurs pour les automatisations et les communiquer à Catherine - [TBD]</li><li>☐ Mettre en place les programmes &quot;Sculpt and Glow&quot; sur Circle en mode caché, accessibles uniquement aux acheteurs - [TBD]</li><li>☐ Vérifier avec Michael l&#x27;état de l&#x27;automatisation de la publication quotidienne des vidéos sur Circle - [TBD]</li><li>☐ Mettre en place les &quot;journeys&quot; (séquences email) sur Brevo une fois les déclencheurs par listes confirmés - [TBD]</li></ul><h3>@Aurélia </h3><ul><li>☐ Enregistrer la vidéo de bienvenue pour la plateforme Circle - [TBD]</li><li>☐ Publier la vidéo de bienvenue dans l&#x27;espace &quot;Commence ici&quot; sur Circle - [TBD]</li></ul><h3>@Catherine </h3><ul><li>☐ Mettre à jour le document de plan d&#x27;implémentation avec les nouvelles listes créées par Laurie pour les déclencheurs Brevo - [TBD]</li><li>☐ Faire le point avec Michael sur la nécessité d&#x27;utiliser des &quot;listes&quot; comme déclencheurs sur Brevo - [TBD]</li></ul></section>
+  </main>
+</body>
+</html>
