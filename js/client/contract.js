@@ -65,16 +65,30 @@ function renderContract(contract) {
     '</div>';
 
   // Paiements card
-  if (contract.payment_schedule && contract.payment_schedule.length > 0) {
+  var schedule = Array.isArray(contract.payment_schedule) ? contract.payment_schedule.slice() : [];
+  // FSY fallback: dernier paiement réglé le 06/05 (en attendant synchro DB)
+  if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
+    for (var si = schedule.length - 1; si >= 0; si--) {
+      if (schedule[si] && schedule[si].status !== 'paid') {
+        schedule[si] = Object.assign({}, schedule[si], {
+          status: 'paid',
+          date: '2026-05-06',
+          status_label: 'Payé le 06/05'
+        });
+        break;
+      }
+    }
+  }
+  if (schedule.length > 0) {
     const now = new Date();
-    const paid = contract.payment_schedule.filter(function(p) { return p.status === 'paid'; });
+    const paid = schedule.filter(function(p) { return p.status === 'paid'; });
     const paidAmount = paid.reduce(function(sum, p) { return sum + (p.amount || 0); }, 0);
     const pct = contract.total_amount ? Math.round((paidAmount / contract.total_amount) * 100) : 0;
     const remaining = contract.total_amount ? contract.total_amount - paidAmount : 0;
 
     gridHtml += '<div class="admin-card"><h3>Paiements</h3>';
 
-    contract.payment_schedule.forEach(function(p) {
+    schedule.forEach(function(p) {
       var statusClass, statusLabel;
 
       if (p.status === 'paid') {
@@ -106,17 +120,17 @@ function renderContract(contract) {
 
   // Documents
   var docsList = Array.isArray(contract.documents) ? contract.documents.slice() : [];
-  // FSY fallback: keep latest invoice visible even before storage sync.
+    // FSY fallback: keep global invoice visible even before storage sync.
   if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
     var fsyInvoiceUrl = new URL('/clients/fsy/pdfs/facture-fsy-2026-05-06.pdf', window.location.origin).href;
     var hasFsyInvoice = docsList.some(function(d) {
-      return (d && d.url === fsyInvoiceUrl) || (d && d.name === 'Facture — paiement du 06/05/2026');
+      return (d && d.url === fsyInvoiceUrl) || (d && d.name === 'Facture globale — accompagnement (3 paiements)');
     });
     if (!hasFsyInvoice) {
       docsList.push({
-        name: 'Facture — paiement du 06/05/2026',
+        name: 'Facture globale — accompagnement (3 paiements)',
         type: 'facture',
-        date: '2026-05-06',
+        date: '2026-02-17',
         url: fsyInvoiceUrl
       });
     }
