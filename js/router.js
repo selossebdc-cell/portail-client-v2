@@ -165,8 +165,17 @@ async function initClientPortal(profile) {
     .eq('client_id', portalClientId);
 
   var completedSessions = sessions ? sessions.filter(function(s) { return s.status === 'completed'; }).length : 0;
-  var totalSessions = profile.total_sessions || '?';
-  var sessionPct = totalSessions !== '?' ? Math.round((completedSessions / totalSessions) * 100) : 0;
+  var plannedSessions = sessions ? sessions.filter(function(s) { return s.status === 'planned'; }).length : 0;
+  var maxSessionNumber = sessions && sessions.length
+    ? sessions.reduce(function(max, s) {
+        var n = Number(s && s.session_number);
+        return Number.isFinite(n) ? Math.max(max, n) : max;
+      }, 0)
+    : 0;
+  // Keep indicators aligned with real session data even if profile.total_sessions is stale.
+  var profileTotalSessions = Number(profile.total_sessions || 0);
+  var totalSessions = Math.max(profileTotalSessions, maxSessionNumber, completedSessions + plannedSessions);
+  var sessionPct = totalSessions > 0 ? Math.round((completedSessions / totalSessions) * 100) : 0;
   // Stocker pour réutiliser dans le dashboard
   window._sessionPct = sessionPct;
 
@@ -184,7 +193,7 @@ async function initClientPortal(profile) {
   }).length : 0;
 
   statsEl.innerHTML =
-    '<div class="stat-box"><div class="stat-value">' + completedSessions + '/' + totalSessions + '</div><div class="stat-label">Séances</div></div>' +
+    '<div class="stat-box"><div class="stat-value">' + completedSessions + '/' + (totalSessions || '?') + '</div><div class="stat-label">Séances</div></div>' +
     '<div class="stat-box"><div class="stat-value">' + sessionPct + '%</div><div class="stat-label">Avancement</div></div>' +
     '<div class="stat-box"><div class="stat-value">' + pendingActions + '</div><div class="stat-label">A faire</div></div>' +
     '<div class="stat-box"><div class="stat-value">' + doneActions + ' ✓</div><div class="stat-label">Bravo !</div></div>';
