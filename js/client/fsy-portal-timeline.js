@@ -28,33 +28,51 @@ function getFsyPortalTimelineEntries() {
 }
 
 function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
-  var extras = getFsyPortalTimelineEntries();
-  var allowedNums = {};
-  extras.forEach(function(e) { allowedNums[e.session_number] = true; });
-
-  var byNumDb = {};
-  (dbSessions || []).forEach(function(s) {
-    var n = s.session_number;
-    if (n === undefined || n === null || !allowedNums[n]) return;
-    if (!byNumDb[n]) {
-      byNumDb[n] = s;
-      return;
-    }
-    var prev = byNumDb[n];
+  function pickBest(prev, s) {
+    if (!prev) return s;
     var rank = function(row) {
       if (row.status === 'completed') return 2;
       if (row.status === 'planned') return 0;
       return 1;
     };
-    if (rank(s) > rank(prev)) byNumDb[n] = s;
-    else if (rank(s) === rank(prev) && s.date && prev.date && s.date > prev.date) byNumDb[n] = s;
+    if (rank(s) > rank(prev)) return s;
+    if (rank(s) === rank(prev) && s.date && prev.date && s.date > prev.date) return s;
+    return prev;
+  }
+
+  var extras = getFsyPortalTimelineEntries();
+  var allowedNums = {};
+  extras.forEach(function(e) { allowedNums[e.session_number] = true; });
+
+  var byNumDb = {};
+  var byNumOrphan = {};
+  (dbSessions || []).forEach(function(s) {
+    var n = s.session_number;
+    if (n === undefined || n === null) return;
+    if (!allowedNums[n]) {
+      byNumOrphan[n] = pickBest(byNumOrphan[n], s);
+      return;
+    }
+    byNumDb[n] = pickBest(byNumDb[n], s);
   });
 
   var sessions = extras.map(function(e) {
     var row = Object.assign({}, e);
     var db = byNumDb[e.session_number];
-    if (db && db.summary) row.summary = db.summary;
+    if (db) {
+      if (db.summary) row.summary = db.summary;
+      if (db.decisions != null) row.decisions = db.decisions;
+      if (db.title) row.title = db.title;
+      if (db.status) row.status = db.status;
+      if (db.id) row.id = db.id;
+      if (!e.cr_url && db.cr_url) row.cr_url = db.cr_url;
+      if (!e.cr_url && db.date) row.date = db.date;
+    }
     return row;
+  });
+
+  Object.keys(byNumOrphan).forEach(function(k) {
+    sessions.push(byNumOrphan[k]);
   });
 
   sessions.sort(function(a, b) {
