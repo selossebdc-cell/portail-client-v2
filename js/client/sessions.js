@@ -116,22 +116,22 @@ function renderSessions(sessions, allActions) {
       ? '<p style="font-size:0.85rem; color:#ccc; margin-top:12px;">' + linkifyText(session.summary) + '</p>'
       : '<p style="color:#666666;font-size:0.85rem;padding-top:16px">Le résumé sera ajoute après la séance.</p>';
 
-    // Compte-rendus (lien principal + PDF / MD associés)
+    // Compte-rendus : uniquement HTML / PDF (jusqu’à 5 boutons : cr_url + 4 extras)
     const crLinkClass =
       'display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;background:rgba(194,122,90,0.1);border:1px solid rgba(194,122,90,0.3);border-radius:8px;color:#d4956f;font-size:0.8rem;font-weight:500;text-decoration:none;transition:all 0.2s';
     function crAnchor(href, label) {
       return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" style="' + crLinkClass + '" onmouseover="this.style.background=\'rgba(194,122,90,0.2)\'" onmouseout="this.style.background=\'rgba(194,122,90,0.1)\'">📄 ' + label + ' →</a>';
     }
     let crHtml = '';
-    if (session.cr_url) {
-      crHtml += crAnchor(session.cr_url, 'Voir le compte-rendu');
-    }
-    if (session.cr_url_extra) {
-      crHtml += crAnchor(session.cr_url_extra, session.cr_url_extra_label || 'Document associé');
-    }
-    if (session.cr_url_extra_2) {
-      crHtml += crAnchor(session.cr_url_extra_2, session.cr_url_extra_2_label || 'Autre document');
-    }
+    var crPairs = [];
+    if (session.cr_url) crPairs.push([session.cr_url, session.cr_url_label || 'Voir le compte-rendu']);
+    if (session.cr_url_extra) crPairs.push([session.cr_url_extra, session.cr_url_extra_label || 'Document associé']);
+    if (session.cr_url_extra_2) crPairs.push([session.cr_url_extra_2, session.cr_url_extra_2_label || 'Autre document']);
+    if (session.cr_url_extra_3) crPairs.push([session.cr_url_extra_3, session.cr_url_extra_3_label || 'Autre document']);
+    if (session.cr_url_extra_4) crPairs.push([session.cr_url_extra_4, session.cr_url_extra_4_label || 'Autre document']);
+    crPairs.forEach(function(p) {
+      crHtml += crAnchor(p[0], p[1]);
+    });
 
     // Decisions V1
     let decisionsHtml = '';

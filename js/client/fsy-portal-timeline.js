@@ -45,9 +45,12 @@ function getFsyPortalTimelineEntries() {
       date: '2026-02-19',
       status: 'completed',
       summary: 'Audit initial, mapping des process, identification des 5 piliers. Cadrage priorités : process > outils. Objectif 500K€ CA 2026. CEO time 2h/semaine.',
-      cr_url: base + 'pdfs/fsy-cr-2026-02-19.pdf',
-      cr_url_extra: base + 'pdfs/fsy-cr-2026-02-19-summary.md',
-      cr_url_extra_label: 'Synthèse Markdown',
+      cr_url: base + 'pdfs/fsy-cr-2026-02-19-transcript.html',
+      cr_url_label: 'HTML — transcript 19 févr.',
+      cr_url_extra: base + 'pdfs/fsy-cr-2026-02-19-transcript.pdf',
+      cr_url_extra_label: 'PDF — transcript',
+      cr_url_extra_2: base + 'pdfs/fsy-cr-2026-02-19.pdf',
+      cr_url_extra_2_label: 'PDF — synthèse',
       decisions: [
         'Process mapping = priorité n°1',
         'CEO time : 2h/semaine bloquées',
@@ -64,8 +67,13 @@ function getFsyPortalTimelineEntries() {
       summary:
         'Validation stack Circle + Bunny.net. Séparation FSY (mass-market) vs Aurélia Del Sol (premium). Réunion du 5 mars : notes jointes (entre le 2 et le 11).',
       cr_url: base + 'pdfs/fsy-cr-2026-03-02.html',
-      cr_url_extra: base + 'pdfs/fsy-cr-2026-03-05.html',
-      cr_url_extra_label: 'Compte-rendu du 5 mars',
+      cr_url_label: 'HTML — 2 mars',
+      cr_url_extra: base + 'pdfs/fsy-cr-2026-03-02.pdf',
+      cr_url_extra_label: 'PDF — 2 mars',
+      cr_url_extra_2: base + 'pdfs/fsy-cr-2026-03-05.html',
+      cr_url_extra_2_label: 'HTML — 5 mars',
+      cr_url_extra_3: base + 'pdfs/fsy-cr-2026-03-05.pdf',
+      cr_url_extra_3_label: 'PDF — 5 mars',
       decisions: [
         'Kajabi + Bunny.net confirmés comme stack cible',
         'Circle éliminé puis réintégré session pivot',
@@ -82,8 +90,9 @@ function getFsyPortalTimelineEntries() {
       summary:
         'Session avec Laurie seule (Aurélia absente). Formation evergreen mai 2026. Grille tarifaire : Studio 17€/mois, MTM en hausse (au-delà de 1 000 € ; ordre de grandeur interne ~1 499 €), coaching sommeil 399€. Chatbot mention-only validé.',
       cr_url: base + 'pdfs/fsy-cr-2026-03-11.html',
-      cr_url_extra: base + 'pdfs/fsy-cr-2026-03-11-notes.rtf',
-      cr_url_extra_label: 'Source RTF',
+      cr_url_label: 'HTML — 11 mars',
+      cr_url_extra: base + 'pdfs/fsy-cr-2026-03-11.pdf',
+      cr_url_extra_label: 'PDF — 11 mars',
       decisions: [
         'Formation evergreen : lancement mai 2026',
         'MTM : tarif public supérieur à 1 000 € (caler sur Stripe / paywall Circle ; repère ~1 499 €)',
@@ -102,8 +111,10 @@ function getFsyPortalTimelineEntries() {
       cr_url: base + 'cr-session4-fsy.html',
       cr_url_extra: base + 'pdfs/fsy-cr-2026-03-16-synthese.pdf',
       cr_url_extra_label: 'PDF — synthèse transcript 16 mars',
-      cr_url_extra_2: base + 'pdfs/fsy-cr-2026-03-16-rtf-export.html',
-      cr_url_extra_2_label: 'Notes du 16 mars (export RTF → HTML)',
+      cr_url_extra_2: base + 'pdfs/fsy-cr-2026-03-16-notes.html',
+      cr_url_extra_2_label: 'HTML — notes 16 mars',
+      cr_url_extra_3: base + 'pdfs/fsy-cr-2026-03-16-notes.pdf',
+      cr_url_extra_3_label: 'PDF — notes 16 mars',
       decisions: [
         '3 entités distinctes : FSY Studio B2C + MTM B2B + Aurélia Del Sol Premium',
         'Migration Uscreen+Kajabi → Circle avant juillet 2026',
@@ -122,7 +133,10 @@ function getFsyPortalTimelineEntries() {
       status: 'completed',
       summary:
         'Point de fin mars sur le parcours client, Circle et l’outillage (Claude). Compte-rendu retrouvé : consultation du 30/03 (délégation, automatisations, migration Circle/WhatsApp, tunnel premium).',
-      cr_url: base + 'pdfs/fsy-cr-2026-03-30.pdf',
+      cr_url: base + 'pdfs/fsy-cr-2026-03-30.html',
+      cr_url_label: 'HTML — 30 mars',
+      cr_url_extra: base + 'pdfs/fsy-cr-2026-03-30.pdf',
+      cr_url_extra_label: 'PDF — 30 mars',
       decisions: []
     },
     {
@@ -133,7 +147,11 @@ function getFsyPortalTimelineEntries() {
       summary: 'Réunion hebdomadaire : suivi automatisations, UTMs, migration YouScreen → Circle, parcours MTM (signature, onboarding), blocages Brevo/campagnes. Pistes d’optimisation acquisition MTM (LinkedIn).',
       cr_url: base + 'coaching-session-2026-04-09.html',
       cr_url_extra: base + 'pdfs/coaching-session-2026-04-09.pdf',
-      cr_url_extra_label: 'PDF — export',
+      cr_url_extra_label: 'PDF — fiche réunion',
+      cr_url_extra_2: base + 'pdfs/fsy-cr-2026-04-09-transcript.html',
+      cr_url_extra_2_label: 'HTML — transcript',
+      cr_url_extra_3: base + 'pdfs/fsy-cr-2026-04-09-transcript.pdf',
+      cr_url_extra_3_label: 'PDF — transcript',
       decisions: []
     },
     {
@@ -144,7 +162,11 @@ function getFsyPortalTimelineEntries() {
       summary: 'Réunion hebdomadaire : UX Circle (calendrier, tutoriels), architecture bout en bout (UTM, n8n, Stripe, Brevo, onboarding, anti-churn), migration abonnées Uscreen.',
       cr_url: base + 'coaching-session-2026-04-20.html',
       cr_url_extra: base + 'pdfs/coaching-session-2026-04-20.pdf',
-      cr_url_extra_label: 'PDF — export',
+      cr_url_extra_label: 'PDF — fiche réunion',
+      cr_url_extra_2: base + 'pdfs/fsy-cr-2026-04-20-transcript.html',
+      cr_url_extra_2_label: 'HTML — transcript',
+      cr_url_extra_3: base + 'pdfs/fsy-cr-2026-04-20-transcript.pdf',
+      cr_url_extra_3_label: 'PDF — transcript',
       decisions: []
     },
     {
@@ -155,9 +177,13 @@ function getFsyPortalTimelineEntries() {
       summary: 'Journée du 23 avril : cadrage migration (abonnements, Bunny, bugs Circle, escalade support) et alignement CRM unifié, UTM, workflows n8n + documentation pour l’équipe.',
       cr_url: base + 'coaching-session-2026-04-23.html',
       cr_url_extra: base + 'pdfs/fsy-cr-2026-04-23-cadrage-migration.pdf',
-      cr_url_extra_label: 'PDF — cadrage migration Uscreen/Circle',
+      cr_url_extra_label: 'PDF — cadrage migration',
       cr_url_extra_2: base + 'pdfs/fsy-cr-2026-04-23-crm.pdf',
-      cr_url_extra_2_label: 'PDF — CRM, Stripe & automatisations',
+      cr_url_extra_2_label: 'PDF dossier CRM',
+      cr_url_extra_3: base + 'pdfs/fsy-cr-2026-04-23-cadrage-transcript.pdf',
+      cr_url_extra_3_label: 'PDF — transcript cadrage',
+      cr_url_extra_4: base + 'pdfs/fsy-cr-2026-04-23-crm-transcript.pdf',
+      cr_url_extra_4_label: 'PDF — transcript CRM',
       decisions: []
     },
     {
