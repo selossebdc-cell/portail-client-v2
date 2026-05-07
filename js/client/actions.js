@@ -157,7 +157,8 @@ async function changeActionStatus(actionId, newStatus) {
     .eq('id', actionId);
 
   if (error) { console.error('Erreur mise a jour action:', error); return; }
-  loadActions(currentProfile.id);
+  var reloadId = typeof getPortalDataClientId === 'function' ? getPortalDataClientId() : (currentProfile && currentProfile.id);
+  if (reloadId) loadActions(reloadId);
 }
 
 // Legacy compat

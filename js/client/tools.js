@@ -93,10 +93,17 @@ async function submitTool() {
   btn.disabled = true;
   btn.textContent = 'Ajout...';
 
+  var portalCid = typeof getPortalDataClientId === 'function' ? getPortalDataClientId() : (currentProfile && currentProfile.id);
+  if (!portalCid) {
+    btn.disabled = false;
+    btn.textContent = 'Ajouter';
+    return;
+  }
+
   const { error } = await db
     .from('tools')
     .insert({
-      client_id: currentProfile.id,
+      client_id: portalCid,
       name: name,
       description: desc || null,
       status: 'in_progress',
@@ -112,5 +119,5 @@ async function submitTool() {
 
   btn.disabled = false;
   btn.textContent = 'Ajouter';
-  loadTools(currentProfile.id);
+  loadTools(portalCid);
 }

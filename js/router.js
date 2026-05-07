@@ -39,6 +39,15 @@ function openHelpWhatsapp(event) {
   return false;
 }
 
+/** UUID client pour sessions/actions/après resolvePortalClientId (legacy + compte assistant). */
+function getPortalDataClientId() {
+  if (typeof window !== 'undefined' && window.portalDataClientId) {
+    return window.portalDataClientId;
+  }
+  if (!currentProfile) return null;
+  return currentProfile.client_id || currentProfile.id;
+}
+
 function shouldUseSimplifiedClientPortal(profile) {
   if (!profile) return false;
   var cid = String(profile.client_id || profile.id || '').toLowerCase();
@@ -126,6 +135,7 @@ async function initClientPortal(profile) {
   // or legacy profiles.id depending on migration state.
   var preferredClientId = profile.client_id || profile.id;
   var portalClientId = await resolvePortalClientId(preferredClientId, profile.id);
+  window.portalDataClientId = portalClientId;
   var scopedProfile = Object.assign({}, profile, { id: portalClientId });
   applyClientTabPreset(scopedProfile);
 

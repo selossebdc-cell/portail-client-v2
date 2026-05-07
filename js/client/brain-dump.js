@@ -92,9 +92,16 @@ async function submitBrainDump() {
   btn.disabled = true;
   btn.textContent = 'Envoi...';
 
+  var portalCid = typeof getPortalDataClientId === 'function' ? getPortalDataClientId() : (currentProfile && currentProfile.id);
+  if (!portalCid) {
+    btn.disabled = false;
+    btn.textContent = 'Envoyer';
+    return;
+  }
+
   var { error } = await db
     .from('brain_dumps')
-    .insert({ client_id: currentProfile.id, content: content });
+    .insert({ client_id: portalCid, content: content });
 
   if (error) {
     console.error('Erreur envoi brain dump:', error);
@@ -107,7 +114,7 @@ async function submitBrainDump() {
   btn.disabled = false;
   btn.textContent = 'Envoyer';
 
-  loadBrainDumps(currentProfile.id);
+  loadBrainDumps(portalCid);
 }
 
 function escapeHtml(text) {

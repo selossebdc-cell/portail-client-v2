@@ -143,6 +143,7 @@ function addClientViewControls(profile) {
 
 async function backToAdmin() {
   viewingAsClientId = null;
+  window.portalDataClientId = null;
   const session = await getSession();
   const adminProfile = await getProfile(session.user.id);
   currentProfile = adminProfile;
