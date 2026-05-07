@@ -116,10 +116,21 @@ function renderSessions(sessions, allActions) {
       ? '<p style="font-size:0.85rem; color:#ccc; margin-top:12px;">' + linkifyText(session.summary) + '</p>'
       : '<p style="color:#666666;font-size:0.85rem;padding-top:16px">Le résumé sera ajoute après la séance.</p>';
 
-    // CR link button
+    // Compte-rendus (lien principal + PDF / MD associés)
+    const crLinkClass =
+      'display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;background:rgba(194,122,90,0.1);border:1px solid rgba(194,122,90,0.3);border-radius:8px;color:#d4956f;font-size:0.8rem;font-weight:500;text-decoration:none;transition:all 0.2s';
+    function crAnchor(href, label) {
+      return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" style="' + crLinkClass + '" onmouseover="this.style.background=\'rgba(194,122,90,0.2)\'" onmouseout="this.style.background=\'rgba(194,122,90,0.1)\'">📄 ' + label + ' →</a>';
+    }
     let crHtml = '';
     if (session.cr_url) {
-      crHtml = '<a href="' + session.cr_url + '" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;background:rgba(194,122,90,0.1);border:1px solid rgba(194,122,90,0.3);border-radius:8px;color:#d4956f;font-size:0.8rem;font-weight:500;text-decoration:none;transition:all 0.2s" onmouseover="this.style.background=\'rgba(194,122,90,0.2)\'" onmouseout="this.style.background=\'rgba(194,122,90,0.1)\'">📄 Voir le compte-rendu complet →</a>';
+      crHtml += crAnchor(session.cr_url, 'Voir le compte-rendu');
+    }
+    if (session.cr_url_extra) {
+      crHtml += crAnchor(session.cr_url_extra, session.cr_url_extra_label || 'Document associé');
+    }
+    if (session.cr_url_extra_2) {
+      crHtml += crAnchor(session.cr_url_extra_2, session.cr_url_extra_2_label || 'Autre document');
     }
 
     // Decisions V1

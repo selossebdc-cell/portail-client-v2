@@ -45,7 +45,9 @@ function getFsyPortalTimelineEntries() {
       date: '2026-02-19',
       status: 'completed',
       summary: 'Audit initial, mapping des process, identification des 5 piliers. Cadrage priorités : process > outils. Objectif 500K€ CA 2026. CEO time 2h/semaine.',
-      cr_url: null,
+      cr_url: base + 'pdfs/fsy-cr-2026-02-19.pdf',
+      cr_url_extra: base + 'pdfs/fsy-cr-2026-02-19-summary.md',
+      cr_url_extra_label: 'Synthèse Markdown',
       decisions: [
         'Process mapping = priorité n°1',
         'CEO time : 2h/semaine bloquées',
@@ -92,6 +94,8 @@ function getFsyPortalTimelineEntries() {
       status: 'completed',
       summary: 'SESSION PIVOT. 3 entités distinctes actées : FSY Studio B2C (17€/mois, Laurie gère), Master The Method B2B (tarif MTM au-delà de 1 000 €, repère ~1 499 €), Aurélia Del Sol Premium (390€+). Migration Uscreen+Kajabi → Circle avant juillet 2026. VA recrutée (Upwork, 500$).',
       cr_url: base + 'cr-session4-fsy.html',
+      cr_url_extra: base + 'pdfs/fsy-cr-2026-03-16-synthese.pdf',
+      cr_url_extra_label: 'PDF — synthèse transcript 16 mars',
       decisions: [
         '3 entités distinctes : FSY Studio B2C + MTM B2B + Aurélia Del Sol Premium',
         'Migration Uscreen+Kajabi → Circle avant juillet 2026',
@@ -108,8 +112,9 @@ function getFsyPortalTimelineEntries() {
       title: 'Validation parcours clients + Circle + session Claude',
       date: '2026-03-24',
       status: 'completed',
-      summary: 'Point d’avancement sur le parcours client, Circle et la session d’outillage (Claude). Statut complété côté parcours affiché ; à synchroniser depuis la base si besoin.',
-      cr_url: null,
+      summary:
+        'Point de fin mars sur le parcours client, Circle et l’outillage (Claude). Compte-rendu retrouvé : consultation du 30/03 (délégation, automatisations, migration Circle/WhatsApp, tunnel premium).',
+      cr_url: base + 'pdfs/fsy-cr-2026-03-30.pdf',
       decisions: []
     },
     {
@@ -118,7 +123,9 @@ function getFsyPortalTimelineEntries() {
       date: '2026-04-09',
       status: 'completed',
       summary: 'Réunion hebdomadaire : suivi automatisations, UTMs, migration YouScreen → Circle, parcours MTM (signature, onboarding), blocages Brevo/campagnes. Pistes d’optimisation acquisition MTM (LinkedIn).',
-      cr_url: null,
+      cr_url: base + 'coaching-session-2026-04-09.html',
+      cr_url_extra: base + 'pdfs/coaching-session-2026-04-09.pdf',
+      cr_url_extra_label: 'PDF — export',
       decisions: []
     },
     {
@@ -127,7 +134,9 @@ function getFsyPortalTimelineEntries() {
       date: '2026-04-20',
       status: 'completed',
       summary: 'Réunion hebdomadaire : UX Circle (calendrier, tutoriels), architecture bout en bout (UTM, n8n, Stripe, Brevo, onboarding, anti-churn), migration abonnées Uscreen.',
-      cr_url: null,
+      cr_url: base + 'coaching-session-2026-04-20.html',
+      cr_url_extra: base + 'pdfs/coaching-session-2026-04-20.pdf',
+      cr_url_extra_label: 'PDF — export',
       decisions: []
     },
     {
@@ -136,7 +145,11 @@ function getFsyPortalTimelineEntries() {
       date: '2026-04-23',
       status: 'completed',
       summary: 'Journée du 23 avril : cadrage migration (abonnements, Bunny, bugs Circle, escalade support) et alignement CRM unifié, UTM, workflows n8n + documentation pour l’équipe.',
-      cr_url: null,
+      cr_url: base + 'coaching-session-2026-04-23.html',
+      cr_url_extra: base + 'pdfs/fsy-cr-2026-04-23-cadrage-migration.pdf',
+      cr_url_extra_label: 'PDF — cadrage migration Uscreen/Circle',
+      cr_url_extra_2: base + 'pdfs/fsy-cr-2026-04-23-crm.pdf',
+      cr_url_extra_2_label: 'PDF — CRM, Stripe & automatisations',
       decisions: []
     },
     {
@@ -145,7 +158,7 @@ function getFsyPortalTimelineEntries() {
       date: '2026-05-04',
       status: 'completed',
       summary: 'Point hebdomadaire : migration Circle, refonte workflows MTM (nodes natifs), coûts e-signature, rapport hebdo FSY, quiz Manychat / chatbots.',
-      cr_url: null,
+      cr_url: base + 'pdfs/fsy-cr-2026-05-04.pdf',
       decisions: []
     },
     {
@@ -155,7 +168,9 @@ function getFsyPortalTimelineEntries() {
       status: 'completed',
       summary:
         'Point du 5 mai 2026 : Brevo (campagnes / listes), communauté Circle, automatisations Stripe ↔ Circle ↔ Brevo, clarification des workflows (journeys). Détail dans le compte-rendu PDF.',
-      cr_url: base + 'pdfs/coaching-session-2026-05-05.pdf',
+      cr_url: base + 'coaching-session-2026-05-05.html',
+      cr_url_extra: base + 'pdfs/coaching-session-2026-05-05.pdf',
+      cr_url_extra_label: 'PDF — export',
       decisions: []
     }
   ];
