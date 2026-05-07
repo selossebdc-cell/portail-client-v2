@@ -19,6 +19,10 @@ function sanitizeExternalUrl(url) {
   return null;
 }
 
+function isPdfUrl(url) {
+  return /\.pdf(?:[?#].*)?$/i.test(String(url || ''));
+}
+
 function buildFsyRow(href, title, desc, icon) {
   var safeUrl = sanitizeExternalUrl(href);
   if (!safeUrl) return '';
@@ -135,8 +139,18 @@ function renderTutos(tutos, fsyIntroHtml) {
       '</div>';
 
     if (hasUrl) {
-      var btnLabel = isVideo ? '▶ Regarder' : '▶ Voir';
-      html += '<a href="' + safeUrl + '" target="_blank" rel="noopener noreferrer" class="tuto-btn">' + escapeHtml(btnLabel) + '</a>';
+      var explicitPdfUrl = sanitizeExternalUrl(tuto.pdf_url || '');
+      var hasPdfFallback = !!explicitPdfUrl;
+
+      if (isPdfUrl(safeUrl)) {
+        html += '<a href="' + safeUrl + '" target="_blank" rel="noopener noreferrer" class="tuto-btn" style="background:#334155">⬇ PDF</a>';
+      } else {
+        var btnLabel = isVideo ? '▶ Regarder' : '▶ Voir';
+        html += '<div style="display:flex;align-items:center;white-space:nowrap">' +
+          '<a href="' + safeUrl + '" target="_blank" rel="noopener noreferrer" class="tuto-btn">' + escapeHtml(btnLabel) + '</a>' +
+          (hasPdfFallback ? '<a href="' + explicitPdfUrl + '" target="_blank" rel="noopener noreferrer" class="tuto-btn" style="margin-left:8px;background:#334155">⬇ PDF</a>' : '') +
+        '</div>';
+      }
     } else {
       html += '<span style="font-size:0.75rem;color:#666666;font-style:italic;white-space:nowrap">Bientot dispo</span>';
     }
