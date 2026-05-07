@@ -62,10 +62,13 @@ function buildFsyResourcesHtml() {
   var html = '';
   html += '<div style="margin-bottom:24px;padding:16px;border:1px solid rgba(194,122,90,0.35);border-radius:12px;background:#151515">';
   html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:0 0 12px">Comptes-rendus de sessions</h3>';
-  html += buildFsyRowWithPdf(base + 'cr-session4-fsy.html', base + 'pdfs/CR-session4-fsy.pdf', 'CR Session 4', 'Compte-rendu historique validé.', '📝');
-  html += buildFsyRowWithPdf(base + 'cr-session6-fsy.html', base + 'pdfs/CR-session6-fsy.pdf', 'CR Session 6', 'Compte-rendu historique validé.', '📝');
-  html += buildFsyRowWithPdf(base + 'cr-session7-fsy-2026-05-05.html', base + 'pdfs/FSY - 2026-05-05 12_16_11-Summary.pdf', 'CR Session 7', 'Dernier compte-rendu ajouté.', '📝');
-  html += buildFsyRow(base + 'tasks-session7-fsy-2026-05-05.html', 'Session 7 — Tâches à valider', 'Version rapide pour validation des actions.', '✅');
+  html += buildFsyRowWithPdf(base + 'coaching-session-2026-05-05.html', base + 'pdfs/coaching-session-2026-05-05.pdf', 'Session — Séance de coaching (05/05/2026)', 'Mise à jour objectif, avancement, reste à faire et actions.', '📝');
+  html += buildFsyRowWithPdf(base + 'coaching-session-2026-05-04.html', base + 'pdfs/coaching-session-2026-05-04.pdf', 'Session — Séance de coaching (04/05/2026)', 'Mise à jour objectif, avancement, reste à faire et actions.', '📝');
+  html += buildFsyRowWithPdf(base + 'coaching-session-2026-04-23-2.html', base + 'pdfs/coaching-session-2026-04-23-2.pdf', 'Session — Séance de coaching (23/04/2026 • 2)', 'Mise à jour objectif, avancement, reste à faire et actions.', '📝');
+  html += buildFsyRowWithPdf(base + 'coaching-session-2026-04-23.html', base + 'pdfs/coaching-session-2026-04-23.pdf', 'Session — Séance de coaching (23/04/2026)', 'Mise à jour objectif, avancement, reste à faire et actions.', '📝');
+  html += buildFsyRowWithPdf(base + 'coaching-session-2026-04-21.html', base + 'pdfs/coaching-session-2026-04-21.pdf', 'Session — Séance de coaching (21/04/2026)', 'Mise à jour objectif, avancement, reste à faire et actions.', '📝');
+  html += buildFsyRowWithPdf(base + 'coaching-session-2026-04-20.html', base + 'pdfs/coaching-session-2026-04-20.pdf', 'Session — Séance de coaching (20/04/2026)', 'Mise à jour objectif, avancement, reste à faire et actions.', '📝');
+  html += buildFsyRowWithPdf(base + 'coaching-session-2026-04-09.html', base + 'pdfs/coaching-session-2026-04-09.pdf', 'Session — Séance de coaching (09/04/2026)', 'Mise à jour objectif, avancement, reste à faire et actions.', '📝');
   html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:0 0 12px">Circle — vidéo de démarrage + page sous la vidéo</h3>';
   html += buildFsyRow(base + 'script-video-circle-onboarding-fsy.html', 'Script vidéo — bienvenue sur Circle', 'Texte prêt à enregistrer pour la vidéo de démarrage.', '🎬');
   html += buildFsyRow(base + 'premieres-actions-circle-fsy.html', 'Page à mettre sous la vidéo de démarrage', 'Tes 3 premières actions sur Circle.', '⭕');
