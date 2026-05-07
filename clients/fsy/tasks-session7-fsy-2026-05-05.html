@@ -3,30 +3,56 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>FSY — Tâches à valider (Session 7)</title>
+<title>FSY — Session 7</title>
 <style>
 :root{--fsy-primary:#b48a64;--fsy-primary-dark:#8b6848;--fsy-bg:#f6f1eb;--fsy-surface:#fff;--fsy-border:#e6d7c8;--fsy-text:#2e2a26;--fsy-muted:#6d6258;}
-body{margin:0;background:var(--fsy-bg);color:var(--fsy-text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;}
-.wrap{max-width:920px;margin:0 auto;padding:24px 16px 42px;}
-.hero{background:linear-gradient(135deg,#f5e9dc,#eadbc8);border:1px solid var(--fsy-border);border-radius:14px;padding:18px 20px;margin-bottom:16px;}
+body{margin:0;background:var(--fsy-bg);color:var(--fsy-text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.6;}
+.wrap{max-width:960px;margin:0 auto;padding:24px 16px 40px;}
+.hero{background:linear-gradient(135deg,#f5e9dc,#eadbc8);border:1px solid var(--fsy-border);border-radius:14px;padding:18px 20px;margin-bottom:14px;}
 h1{margin:0;color:var(--fsy-primary-dark);font-size:1.5rem;}
 .meta{margin-top:6px;color:var(--fsy-muted);font-size:.92rem;}
 .card{background:var(--fsy-surface);border:1px solid var(--fsy-border);border-radius:12px;padding:14px 16px;margin:12px 0;}
-h2{margin:0 0 10px;color:var(--fsy-primary-dark);font-size:1.05rem;}
-ul{margin:0;padding-left:0;list-style:none;}
-li{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-top:1px dashed #efe3d8;}
-li:first-child{border-top:0;}
+h2{margin:0 0 8px;color:var(--fsy-primary-dark);font-size:1.08rem;}
+h3{margin:0 0 8px;color:var(--fsy-primary);font-size:1rem;}
+ul{margin:0;padding-left:18px;}
+li{margin:6px 0;}
+.checklist{list-style:none;padding-left:0;}
+.checklist li{display:flex;gap:8px;align-items:flex-start;border-top:1px dashed #efe3d8;padding:8px 0;}
+.checklist li:first-child{border-top:0;}
 input{margin-top:3px;accent-color:var(--fsy-primary);}
-span{line-height:1.5;}
 </style>
 </head>
 <body>
 <main class="wrap">
 <header class="hero">
-<h1>FSY — Tâches à valider rapidement</h1>
-<div class="meta">Session du 05 mai 2026</div>
+<h1>Session 7 — Séance de coaching</h1>
+<div class="meta">FSY • 05/05/2026</div>
 </header>
-<section class='card'><h2>@Michael</h2><ul><li><input type='checkbox'/> <span>Vérifier le processus de paiement de la formation MTM sur Stripe - [TBD]</span></li><li><input type='checkbox'/> <span>Confirmer les listes d&#x27;utilisateurs à utiliser sur Brevo à partir du mail de Laurie - [TBD]</span></li><li><input type='checkbox'/> <span>Envoyer un email à Laurie avec les instructions pour les modifications à faire sur WordPress (UTM, headers, etc.) - [TBD]</span></li></ul></section><section class='card'><h2>@Laurie</h2><ul><li><input type='checkbox'/> <span>Créer un nouveau &quot;paywall&quot; sur Circle pour le paiement en une fois de la formation MTM - [TBD]</span></li><li><input type='checkbox'/> <span>Changer les liens de paiement sur le site internet pour qu&#x27;ils redirigent vers les nouveaux &quot;paywalls&quot; Circle/Stripe (au lieu d&#x27;Uscreen) - [TBD]</span></li><li><input type='checkbox'/> <span>Répondre à Michael pour confirmer si les formulaires du site utilisent Elementor ou Brevo pour la collecte des UTM - [TBD]</span></li><li><input type='checkbox'/> <span>Créer sur Brevo les listes nécessaires qui serviront de déclencheurs pour les automatisations et les communiquer à Catherine - [TBD]</span></li><li><input type='checkbox'/> <span>Mettre en place les programmes &quot;Sculpt and Glow&quot; sur Circle en mode caché, accessibles uniquement aux acheteurs - [TBD]</span></li><li><input type='checkbox'/> <span>Vérifier avec Michael l&#x27;état de l&#x27;automatisation de la publication quotidienne des vidéos sur Circle - [TBD]</span></li><li><input type='checkbox'/> <span>Mettre en place les &quot;journeys&quot; (séquences email) sur Brevo une fois les déclencheurs par listes confirmés - [TBD]</span></li></ul></section><section class='card'><h2>@Aurélia</h2><ul><li><input type='checkbox'/> <span>Enregistrer la vidéo de bienvenue pour la plateforme Circle - [TBD]</span></li><li><input type='checkbox'/> <span>Publier la vidéo de bienvenue dans l&#x27;espace &quot;Commence ici&quot; sur Circle - [TBD]</span></li></ul></section><section class='card'><h2>@Catherine</h2><ul><li><input type='checkbox'/> <span>Mettre à jour le document de plan d&#x27;implémentation avec les nouvelles listes créées par Laurie pour les déclencheurs Brevo - [TBD]</span></li><li><input type='checkbox'/> <span>Faire le point avec Michael sur la nécessité d&#x27;utiliser des &quot;listes&quot; comme déclencheurs sur Brevo - [TBD]</span></li></ul></section>
+
+<section class="card">
+<h2>Objectif principal</h2>
+<p>Mise en place et débogage des plateformes de formation et de marketing.</p>
+</section>
+
+<section class="card">
+<h2>Où on en est</h2>
+<ul><li>Vérifier le processus de paiement de la formation MTM sur Stripe - [TBD]</li><li>Confirmer les listes d&#x27;utilisateurs à utiliser sur Brevo à partir du mail de Laurie - [TBD]</li><li>Envoyer un email à Laurie avec les instructions pour les modifications à faire sur WordPress (UTM, headers, etc.) - [TBD]</li><li>Créer un nouveau &quot;paywall&quot; sur Circle pour le paiement en une fois de la formation MTM - [TBD]</li></ul>
+</section>
+
+<section class="card">
+<h2>Ce qu'il reste à faire</h2>
+<ul><li>Changer les liens de paiement sur le site internet pour qu&#x27;ils redirigent vers les nouveaux &quot;paywalls&quot; Circle/Stripe (au lieu d&#x27;Uscreen) - [TBD]</li><li>Répondre à Michael pour confirmer si les formulaires du site utilisent Elementor ou Brevo pour la collecte des UTM - [TBD]</li><li>Créer sur Brevo les listes nécessaires qui serviront de déclencheurs pour les automatisations et les communiquer à Catherine - [TBD]</li><li>Mettre en place les programmes &quot;Sculpt and Glow&quot; sur Circle en mode caché, accessibles uniquement aux acheteurs - [TBD]</li><li>Vérifier avec Michael l&#x27;état de l&#x27;automatisation de la publication quotidienne des vidéos sur Circle - [TBD]</li><li>Mettre en place les &quot;journeys&quot; (séquences email) sur Brevo une fois les déclencheurs par listes confirmés - [TBD]</li></ul>
+</section>
+
+<section class="card">
+<h2>Prochaine session</h2>
+<p>À confirmer (date non détectée explicitement en fin de CR source).</p>
+</section>
+
+<section class="card">
+<h2>Actions à valider</h2>
+<section class="card"><h3>@Michael</h3><ul class="checklist"><li><input type="checkbox"/> <span>Vérifier le processus de paiement de la formation MTM sur Stripe - [TBD]</span></li><li><input type="checkbox"/> <span>Confirmer les listes d&#x27;utilisateurs à utiliser sur Brevo à partir du mail de Laurie - [TBD]</span></li><li><input type="checkbox"/> <span>Envoyer un email à Laurie avec les instructions pour les modifications à faire sur WordPress (UTM, headers, etc.) - [TBD]</span></li></ul></section><section class="card"><h3>@Laurie</h3><ul><li><input type="checkbox"/> <span>Créer un nouveau &quot;paywall&quot; sur Circle pour le paiement en une fois de la formation MTM - [TBD]</span></li><li><input type="checkbox"/> <span>Changer les liens de paiement sur le site internet pour qu&#x27;ils redirigent vers les nouveaux &quot;paywalls&quot; Circle/Stripe (au lieu d&#x27;Uscreen) - [TBD]</span></li><li><input type="checkbox"/> <span>Répondre à Michael pour confirmer si les formulaires du site utilisent Elementor ou Brevo pour la collecte des UTM - [TBD]</span></li><li><input type="checkbox"/> <span>Créer sur Brevo les listes nécessaires qui serviront de déclencheurs pour les automatisations et les communiquer à Catherine - [TBD]</span></li><li><input type="checkbox"/> <span>Mettre en place les programmes &quot;Sculpt and Glow&quot; sur Circle en mode caché, accessibles uniquement aux acheteurs - [TBD]</span></li><li><input type="checkbox"/> <span>Vérifier avec Michael l&#x27;état de l&#x27;automatisation de la publication quotidienne des vidéos sur Circle - [TBD]</span></li><li><input type="checkbox"/> <span>Mettre en place les &quot;journeys&quot; (séquences email) sur Brevo une fois les déclencheurs par listes confirmés - [TBD]</span></li></ul></section><section class="card"><h3>@Aurélia</h3><ul><li><input type="checkbox"/> <span>Enregistrer la vidéo de bienvenue pour la plateforme Circle - [TBD]</span></li><li><input type="checkbox"/> <span>Publier la vidéo de bienvenue dans l&#x27;espace &quot;Commence ici&quot; sur Circle - [TBD]</span></li></ul></section><section class="card"><h3>@Catherine</h3><ul><li><input type="checkbox"/> <span>Mettre à jour le document de plan d&#x27;implémentation avec les nouvelles listes créées par Laurie pour les déclencheurs Brevo - [TBD]</span></li><li><input type="checkbox"/> <span>Faire le point avec Michael sur la nécessité d&#x27;utiliser des &quot;listes&quot; comme déclencheurs sur Brevo - [TBD]</span></li></ul></section>
+</section>
 </main>
 </body>
 </html>
