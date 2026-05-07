@@ -72,6 +72,32 @@ function renderSessions(sessions, allActions) {
     subtitleEl.textContent = completed + ' / ' + total + ' sessions';
   }
 
+  function buildGlobalSummaryHtml() {
+    var completedSessions = sessions.filter(function(s) { return s.status === 'completed'; });
+    var latestCompleted = completedSessions.length ? completedSessions[0] : null;
+    var pendingCount = allActions.filter(function(a) {
+      return a.status !== 'done' && a.status !== 'abandoned' && !a.is_completed;
+    }).length;
+    var doneCount = allActions.filter(function(a) {
+      return a.status === 'done' || a.is_completed;
+    }).length;
+    var latestDate = latestCompleted && latestCompleted.date ? formatDate(latestCompleted.date) : 'Non renseignée';
+    var latestTitle = latestCompleted && latestCompleted.title ? latestCompleted.title : 'Dernière session';
+    var latestSummary = latestCompleted && latestCompleted.summary ? linkifyText(latestCompleted.summary) : '';
+
+    var html = '<div style="margin-bottom:14px;padding:14px 16px;background:rgba(194,122,90,0.08);border:1px solid rgba(194,122,90,0.25);border-radius:10px">';
+    html += '<h3 style="margin:0 0 8px;font-size:0.95rem;color:#d4956f">Résumé global du projet</h3>';
+    html += '<div style="font-size:0.85rem;color:#ddd;line-height:1.55">';
+    html += '<p style="margin:0 0 6px"><strong>Dernier point :</strong> ' + latestTitle + ' (' + latestDate + ')</p>';
+    html += '<p style="margin:0 0 6px"><strong>Avancement :</strong> ' + doneCount + ' actions finalisées, ' + pendingCount + ' actions en cours.</p>';
+    html += '<p style="margin:0"><strong>Priorité :</strong> finaliser les actions en cours avant la prochaine session.</p>';
+    if (latestSummary) {
+      html += '<p style="margin:8px 0 0;color:#cfcfcf"><strong>Note de suivi :</strong> ' + latestSummary + '</p>';
+    }
+    html += '</div></div>';
+    return html;
+  }
+
   // Grouper actions par session d'origine
   var actionsBySession = {};
   allActions.forEach(function(a) {
@@ -81,7 +107,7 @@ function renderSessions(sessions, allActions) {
     }
   });
 
-  let html = '';
+  let html = buildGlobalSummaryHtml();
   sessions.forEach(function(session, i) {
     const dateStr = session.date
       ? formatDate(session.date)
