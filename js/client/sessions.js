@@ -15,7 +15,15 @@ function isFsyProfile(profile) {
   if (!profile) return false;
   var company = String(profile.company || '').toLowerCase();
   var email = String(profile.email || '').toLowerCase();
-  return company.indexOf('face soul') !== -1 || company.indexOf('facesoul') !== -1 || email.indexOf('facesoulyoga') !== -1;
+  var program = String(profile.program || '').toLowerCase();
+  return company.indexOf('face soul') !== -1 ||
+    company.indexOf('facesoul') !== -1 ||
+    company.indexOf('fsy') !== -1 ||
+    company.indexOf('aurelia') !== -1 ||
+    email.indexOf('facesoulyoga') !== -1 ||
+    email.indexOf('aurelia') !== -1 ||
+    program.indexOf('fsy') !== -1 ||
+    program.indexOf('aurelia') !== -1;
 }
 
 function augmentFsySessionsIfNeeded(sessions) {
@@ -35,24 +43,30 @@ function augmentFsySessionsIfNeeded(sessions) {
     extrasByDate[extra.date] = extra;
   });
   var byNumber = {};
+  var byDate = {};
   (sessions || []).forEach(function(s) {
     byNumber[s.session_number] = s;
-    var byDate = extrasByDate[s.date];
-    if (byDate) {
+    if (s.date) byDate[s.date] = s;
+    var matchingExtra = extrasByDate[s.date];
+    if (matchingExtra) {
       // Date match wins to avoid wrong CR/session association.
-      s.cr_url = byDate.cr_url;
-      if (!s.summary) s.summary = byDate.summary;
-      if (!s.title) s.title = byDate.title;
+      s.cr_url = matchingExtra.cr_url;
+      if (!s.summary) s.summary = matchingExtra.summary;
+      if (!s.title) s.title = matchingExtra.title;
     }
   });
   extras.forEach(function(extra) {
-    if (!byNumber[extra.session_number]) {
+    if (!byNumber[extra.session_number] && !byDate[extra.date]) {
       sessions.push(extra);
     } else {
-      // If no date match was possible, fallback on session number.
-      if (!byNumber[extra.session_number].cr_url) byNumber[extra.session_number].cr_url = extra.cr_url;
-      if (!byNumber[extra.session_number].summary) byNumber[extra.session_number].summary = extra.summary;
-      if (!byNumber[extra.session_number].title) byNumber[extra.session_number].title = extra.title;
+      // Update whichever existing session matches first by date, then by number.
+      var target = byDate[extra.date] || byNumber[extra.session_number];
+      if (!target) return;
+      if (!target.cr_url) target.cr_url = extra.cr_url;
+      if (!target.summary) target.summary = extra.summary;
+      if (!target.title) target.title = extra.title;
+      if (!target.date) target.date = extra.date;
+      if (!target.status) target.status = extra.status;
     }
   });
   sessions.sort(function(a, b) { return (b.session_number || 0) - (a.session_number || 0); });
