@@ -18,8 +18,7 @@ function isFsyPortalClient(profile) {
 function getFsyPortalTimelineEntries() {
   var base = new URL('/clients/fsy/', window.location.origin).href;
   return [
-    { session_number: 7, title: 'Session 7', date: '2026-05-05', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-05-05.pdf' },
-    { session_number: 6, title: 'Session 6', date: '2026-05-04', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-05-04.pdf' },
+    { session_number: 6, title: 'Session 6', date: '2026-05-05', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-05-05.pdf' },
     { session_number: 5, title: 'Session 5', date: '2026-04-23', status: 'completed', summary: '', cr_url: null },
     { session_number: 4, title: 'Session 4', date: '2026-04-23', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-04-23.pdf' },
     { session_number: 3, title: 'Session 3', date: '2026-04-21', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-04-21.pdf' },
@@ -30,55 +29,38 @@ function getFsyPortalTimelineEntries() {
 
 function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
   var extras = getFsyPortalTimelineEntries();
-  var extrasByNum = {};
-  extras.forEach(function(e) { extrasByNum[e.session_number] = e; });
+  var allowedNums = {};
+  extras.forEach(function(e) { allowedNums[e.session_number] = true; });
 
-  var raw = (dbSessions || []).slice();
-
-  // Une entrée par session_number (completed gagne sur planned).
-  var byNum = {};
-  raw.forEach(function(s) {
+  var byNumDb = {};
+  (dbSessions || []).forEach(function(s) {
     var n = s.session_number;
-    if (n === undefined || n === null) return;
-    if (!byNum[n]) {
-      byNum[n] = s;
+    if (n === undefined || n === null || !allowedNums[n]) return;
+    if (!byNumDb[n]) {
+      byNumDb[n] = s;
       return;
     }
-    var prev = byNum[n];
+    var prev = byNumDb[n];
     var rank = function(row) {
       if (row.status === 'completed') return 2;
       if (row.status === 'planned') return 0;
       return 1;
     };
-    if (rank(s) > rank(prev)) byNum[n] = s;
-    else if (rank(s) === rank(prev) && s.date && prev.date && s.date > prev.date) byNum[n] = s;
+    if (rank(s) > rank(prev)) byNumDb[n] = s;
+    else if (rank(s) === rank(prev) && s.date && prev.date && s.date > prev.date) byNumDb[n] = s;
   });
 
-  var sessions = Object.keys(byNum).map(function(k) { return byNum[k]; });
-
-  sessions.forEach(function(s) {
-    var m = extrasByNum[s.session_number];
-    if (m) {
-      s.cr_url = m.cr_url;
-      s.status = m.status;
-      s.date = m.date;
-      s.title = m.title;
-      if (m.summary) s.summary = m.summary;
-    }
-  });
-
-  extras.forEach(function(extra) {
-    if (!byNum[extra.session_number]) {
-      var copy = Object.assign({}, extra);
-      sessions.push(copy);
-      byNum[extra.session_number] = copy;
-    }
+  var sessions = extras.map(function(e) {
+    var row = Object.assign({}, e);
+    var db = byNumDb[e.session_number];
+    if (db && db.summary) row.summary = db.summary;
+    return row;
   });
 
   sessions.sort(function(a, b) {
     var da = a.date ? new Date(a.date + 'T00:00:00').getTime() : 0;
-    var db = b.date ? new Date(b.date + 'T00:00:00').getTime() : 0;
-    if (db !== da) return db - da;
+    var dbd = b.date ? new Date(b.date + 'T00:00:00').getTime() : 0;
+    if (dbd !== da) return dbd - da;
     return (b.session_number || 0) - (a.session_number || 0);
   });
 
