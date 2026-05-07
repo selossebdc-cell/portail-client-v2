@@ -32,14 +32,35 @@ function buildFsyRow(href, title, desc, icon) {
   '</div>';
 }
 
+function buildFsyRowWithPdf(htmlHref, pdfHref, title, desc, icon) {
+  var safeHtmlUrl = sanitizeExternalUrl(htmlHref);
+  var safePdfUrl = sanitizeExternalUrl(pdfHref);
+  if (!safeHtmlUrl) return '';
+  var pdfBtn = '';
+  if (safePdfUrl) {
+    pdfBtn = '<a href="' + safePdfUrl + '" target="_blank" rel="noopener noreferrer" class="tuto-btn" style="margin-left:8px;background:#334155">⬇ PDF</a>';
+  }
+  return '<div class="tuto-card">' +
+    '<div class="tuto-icon">' + escapeHtml(icon) + '</div>' +
+    '<div class="tuto-info">' +
+      '<div class="tuto-name">' + escapeHtml(title) + '</div>' +
+      '<div class="tuto-desc">' + escapeHtml(desc) + '</div>' +
+    '</div>' +
+    '<div style="display:flex;align-items:center;white-space:nowrap">' +
+      '<a href="' + safeHtmlUrl + '" target="_blank" rel="noopener noreferrer" class="tuto-btn">▶ Ouvrir</a>' +
+      pdfBtn +
+    '</div>' +
+  '</div>';
+}
+
 function buildFsyResourcesHtml() {
   var base = new URL('/clients/fsy/', window.location.origin).href;
   var html = '';
   html += '<div style="margin-bottom:24px;padding:16px;border:1px solid rgba(194,122,90,0.35);border-radius:12px;background:#151515">';
   html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:0 0 12px">Comptes-rendus de sessions</h3>';
-  html += buildFsyRow(base + 'pdfs/CR-session4-fsy.pdf', 'CR Session 4 (PDF)', 'Compte-rendu historique validé.', '📝');
-  html += buildFsyRow(base + 'pdfs/CR-session6-fsy.pdf', 'CR Session 6 (PDF)', 'Compte-rendu historique validé.', '📝');
-  html += buildFsyRow(base + 'pdfs/FSY - 2026-05-05 12_16_11-Summary.pdf', 'CR Session 7 (PDF)', 'Dernier compte-rendu ajouté.', '📝');
+  html += buildFsyRowWithPdf(base + 'cr-session4-fsy.html', base + 'pdfs/CR-session4-fsy.pdf', 'CR Session 4', 'Compte-rendu historique validé.', '📝');
+  html += buildFsyRowWithPdf(base + 'cr-session6-fsy.html', base + 'pdfs/CR-session6-fsy.pdf', 'CR Session 6', 'Compte-rendu historique validé.', '📝');
+  html += buildFsyRowWithPdf(base + 'cr-session7-fsy-2026-05-05.html', base + 'pdfs/FSY - 2026-05-05 12_16_11-Summary.pdf', 'CR Session 7', 'Dernier compte-rendu ajouté.', '📝');
   html += buildFsyRow(base + 'tasks-session7-fsy-2026-05-05.html', 'Session 7 — Tâches à valider', 'Version rapide pour validation des actions.', '✅');
   html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:0 0 12px">Circle — vidéo de démarrage + page sous la vidéo</h3>';
   html += buildFsyRow(base + 'script-video-circle-onboarding-fsy.html', 'Script vidéo — bienvenue sur Circle', 'Texte prêt à enregistrer pour la vidéo de démarrage.', '🎬');
