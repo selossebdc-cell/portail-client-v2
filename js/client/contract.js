@@ -68,16 +68,18 @@ function renderContract(contract) {
   var schedule = Array.isArray(contract.payment_schedule) ? contract.payment_schedule.slice() : [];
   // FSY fallback: dernier paiement réglé le 06/05 (en attendant synchro DB)
   if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
-    for (var si = schedule.length - 1; si >= 0; si--) {
-      if (schedule[si] && schedule[si].status !== 'paid') {
-        schedule[si] = Object.assign({}, schedule[si], {
-          status: 'paid',
-          date: '2026-05-06',
-          status_label: 'Payé le 06/05'
-        });
-        break;
-      }
+    var unpaidIdx = [];
+    for (var si = 0; si < schedule.length; si++) {
+      if (schedule[si] && schedule[si].status !== 'paid') unpaidIdx.push(si);
     }
+    unpaidIdx.forEach(function(idx, pos) {
+      var patch = { status: 'paid' };
+      if (pos === unpaidIdx.length - 1) {
+        patch.date = '2026-05-06';
+        patch.status_label = 'Payé le 06/05';
+      }
+      schedule[idx] = Object.assign({}, schedule[idx], patch);
+    });
   }
   if (schedule.length > 0) {
     const now = new Date();
