@@ -29,23 +29,6 @@ function renderSessions(sessions, allActions) {
     });
   }
 
-  function fsySessionListBadge(session) {
-    var n = Number(session.session_number);
-    if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
-      if (n >= 101 && n <= 105) return 'A' + (n - 100);
-    }
-    return String(session.session_number);
-  }
-
-  function fsyActionsBucketKey(originSession) {
-    var on = Number(originSession);
-    if (!Number.isFinite(on)) return originSession;
-    if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
-      if (on >= 1 && on <= 5) return on + 100;
-    }
-    return on;
-  }
-
   const container = document.getElementById('sessions-list');
   const subtitleEl = document.getElementById('sessions-subtitle');
 
@@ -55,9 +38,12 @@ function renderSessions(sessions, allActions) {
   }
 
   const completed = sessions.filter(function(s) { return s.status === 'completed'; }).length;
-  const total = Math.max(Number(currentProfile.total_sessions || 0), sessions.length) || '?';
+  var totalForSub = sessions.length;
+  if (!(typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile))) {
+    totalForSub = Math.max(Number(currentProfile.total_sessions || 0), sessions.length) || '?';
+  }
   if (subtitleEl) {
-    subtitleEl.textContent = completed + ' / ' + total + ' sessions';
+    subtitleEl.textContent = completed + ' / ' + totalForSub + ' sessions';
   }
 
   function buildGlobalSummaryHtml() {
@@ -95,7 +81,8 @@ function renderSessions(sessions, allActions) {
   var actionsBySession = {};
   allActions.forEach(function(a) {
     if (a.origin_session === undefined || a.origin_session === null || a.origin_session === '') return;
-    var k = fsyActionsBucketKey(a.origin_session);
+    var k = Number(a.origin_session);
+    if (!Number.isFinite(k)) return;
     if (!actionsBySession[k]) actionsBySession[k] = [];
     actionsBySession[k].push(a);
   });
@@ -161,9 +148,9 @@ function renderSessions(sessions, allActions) {
 
     html += '<div class="session-card' + (i === 0 ? ' open' : '') + '">' +
       '<div class="session-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
-        '<div class="session-num">' + fsySessionListBadge(session) + '</div>' +
+        '<div class="session-num">' + session.session_number + '</div>' +
         '<div class="session-info">' +
-          '<div class="session-title">' + (session.title || (isPlanned ? 'Prochaine session' : ('Session ' + fsySessionListBadge(session)))) + '</div>' +
+          '<div class="session-title">' + (session.title || (isPlanned ? 'Prochaine session' : ('Session ' + session.session_number))) + '</div>' +
           '<div class="session-date">' + dateStr + (isPlanned ? ' — A venir' : '') + '</div>' +
         '</div>' +
         '<span class="session-chevron">▼</span>' +

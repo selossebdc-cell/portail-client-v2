@@ -173,9 +173,10 @@ async function initClientPortal(profile) {
 
   // Stats : Séances + Avancement + A faire
   var statsEl = document.getElementById('client-stats');
+  var sessionsSelect = isFsyClient(profile) ? '*' : 'session_number, status';
   var { data: sessions } = await db
     .from('sessions')
-    .select('session_number, status')
+    .select(sessionsSelect)
     .eq('client_id', portalClientId);
 
   var completedSessions = sessions ? sessions.filter(function(s) { return s.status === 'completed'; }).length : 0;
@@ -186,16 +187,17 @@ async function initClientPortal(profile) {
         return Number.isFinite(n) ? Math.max(max, n) : max;
       }, 0)
     : 0;
-  // Keep indicators aligned with real session data even if profile.total_sessions is stale.
   var profileTotalSessions = Number(profile.total_sessions || 0);
   var totalSessions = Math.max(profileTotalSessions, maxSessionNumber, completedSessions + plannedSessions);
-  if (isFsyClient(profile) && typeof getFsyPortalTimelineEntries === 'function') {
-    var tl = getFsyPortalTimelineEntries();
-    var tlCompleted = tl.filter(function(s) { return s.status === 'completed'; }).length;
-    completedSessions = Math.max(completedSessions, tlCompleted);
-    totalSessions = Math.max(totalSessions, tl.length);
+  var sessionPct;
+  if (isFsyClient(profile) && typeof getFsyPortalSessionStats === 'function') {
+    var st = getFsyPortalSessionStats(sessions);
+    completedSessions = st.completed;
+    totalSessions = st.total;
+    sessionPct = st.pct;
+  } else {
+    sessionPct = totalSessions > 0 ? Math.round((completedSessions / totalSessions) * 100) : 0;
   }
-  var sessionPct = totalSessions > 0 ? Math.round((completedSessions / totalSessions) * 100) : 0;
   // Stocker pour réutiliser dans le dashboard
   window._sessionPct = sessionPct;
 
