@@ -170,13 +170,14 @@ async function loadClientDashboard(profile) {
       var crDateStr = crDate
         ? crDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
         : 'Date non renseignee';
-      var crTitle = safeText(cr.title || ('Seance ' + cr.session_number));
+      var crBadge = cr.session_label != null ? cr.session_label : String(cr.session_number);
+      var crTitle = safeText(cr.title || ('Seance ' + crBadge));
       html += '<a href="' + crLink + '" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;text-decoration:none;color:inherit;margin-bottom:8px;transition:border-color 0.2s" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
         '<div style="display:flex;align-items:flex-start;gap:10px;min-width:0">' +
           '<span style="font-size:1rem">📄</span>' +
           '<div style="min-width:0">' +
             '<div style="font-size:0.86rem;font-weight:600;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + crTitle + '</div>' +
-            '<div style="font-size:0.76rem;color:#8a8a8a">S' + cr.session_number + ' • ' + crDateStr + '</div>' +
+            '<div style="font-size:0.76rem;color:#8a8a8a">S' + crBadge + ' • ' + crDateStr + '</div>' +
           '</div>' +
         '</div>' +
         '<span style="font-size:0.76rem;color:#d4956f;flex-shrink:0">Ouvrir →</span>' +
@@ -200,7 +201,7 @@ async function loadClientDashboard(profile) {
     html += '<div style="padding:16px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;cursor:pointer;transition:border-color 0.2s" onclick="switchToTab(\'tab-sessions\')" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
       '<div style="font-size:1.2rem;margin-bottom:4px">📄</div>' +
       '<div style="font-size:0.85rem;font-weight:600">Mes compte-rendus</div>' +
-      '<div style="font-size:0.75rem;color:#666666">Dernier: S' + latestReports[0].session_number + (latestSafeTitle ? ' — ' + latestSafeTitle : '') + '</div>' +
+      '<div style="font-size:0.75rem;color:#666666">Dernier: S' + (latestReports[0].session_label != null ? latestReports[0].session_label : latestReports[0].session_number) + (latestSafeTitle ? ' — ' + latestSafeTitle : '') + '</div>' +
     '</div>';
   } else {
     html += '<div style="padding:16px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;cursor:pointer;transition:border-color 0.2s" onclick="switchToTab(\'tab-sessions\')" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +

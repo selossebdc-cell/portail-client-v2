@@ -17,13 +17,88 @@ function isFsyPortalClient(profile) {
 
 function getFsyPortalTimelineEntries() {
   var base = new URL('/clients/fsy/', window.location.origin).href;
+  // 101–105 = amont fév.–mars (évite collision avec la série coaching 1–6 à partir du 9 avril).
   return [
-    { session_number: 6, title: 'Session 6', date: '2026-05-05', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-05-05.pdf' },
-    { session_number: 5, title: 'Session 5', date: '2026-04-23', status: 'completed', summary: '', cr_url: null },
-    { session_number: 4, title: 'Session 4', date: '2026-04-23', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-04-23.pdf' },
-    { session_number: 3, title: 'Session 3', date: '2026-04-21', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-04-21.pdf' },
-    { session_number: 2, title: 'Session 2', date: '2026-04-20', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-04-20.pdf' },
-    { session_number: 1, title: 'Session 1', date: '2026-04-09', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-04-09.pdf' }
+    { session_number: 6, title: 'Session 6 — Coaching', date: '2026-05-05', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-05-05.pdf' },
+    { session_number: 5, title: 'Session 5 — Coaching', date: '2026-04-23', status: 'completed', summary: '', cr_url: null },
+    { session_number: 4, title: 'Session 4 — Coaching', date: '2026-04-23', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-04-23.pdf' },
+    { session_number: 3, title: 'Session 3 — Coaching', date: '2026-04-21', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-04-21.pdf' },
+    { session_number: 2, title: 'Session 2 — Coaching', date: '2026-04-20', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-04-20.pdf' },
+    { session_number: 1, title: 'Session 1 — Coaching', date: '2026-04-09', status: 'completed', summary: '', cr_url: base + 'pdfs/coaching-session-2026-04-09.pdf' },
+    {
+      session_number: 105,
+      title: 'Validation parcours clients + Circle + session Claude',
+      date: '2026-03-24',
+      status: 'planned',
+      summary: 'Séance prévue dans le plan d’accompagnement initial (mars). Statut repris de la base si elle a été mise à jour.',
+      cr_url: null,
+      decisions: []
+    },
+    {
+      session_number: 104,
+      title: 'Repositionnement des marques & feuille de route opérationnelle',
+      date: '2026-03-16',
+      status: 'completed',
+      summary: 'SESSION PIVOT. 3 entités distinctes actées : FSY Studio B2C (17€/mois, Laurie gère), Master The Method B2B (2 900€ evergreen), Aurélia Del Sol Premium (390€+). Migration Uscreen+Kajabi → Circle avant juillet 2026. VA recrutée (Upwork, 500$). Prix MTM relevé de 1 950€ à 2 900€.',
+      cr_url: base + 'cr-session4-fsy.html',
+      decisions: [
+        '3 entités distinctes : FSY Studio B2C + MTM B2B + Aurélia Del Sol Premium',
+        'Migration Uscreen+Kajabi → Circle avant juillet 2026',
+        'VA recrutée Upwork (Anam, 500$) pour migration vidéos',
+        'Prix MTM : 1 950€ → 2 900€ (early bird 2 500€)',
+        'Site FSY = purement éducatif (exit lifestyle)',
+        '4 challenges/an pour FSY Studio',
+        'Licence annuelle MTM 100€/an',
+        'Programme ambassadrices MTM (10-15% commission)'
+      ]
+    },
+    {
+      session_number: 103,
+      title: 'Stratégie offre FSY (evergreen + pricing) & Chatbot Telegram',
+      date: '2026-03-11',
+      status: 'completed',
+      summary: 'Session avec Laurie seule (Aurélia absente). Formation evergreen mai 2026. Pricing verrouillé : MTM 1950€ (early bird 1550€), abo 17€/mois, coaching sommeil 399€. Chatbot mention-only validé. Projection CA 634K€/an.',
+      cr_url: null,
+      decisions: [
+        'Formation evergreen : lancement mai 2026',
+        'MTM : 1 950€ (early bird 1 550€) — relevé à 2 900€ en session pivot',
+        'Abonnement Studio : 17€/mois',
+        'Coaching sommeil : 399€ (lancement juin)',
+        'Uscreen gardé 1 an pendant migration',
+        'Chatbot Telegram : mode mention-only uniquement',
+        'Projection CA réaliste : 634K€/an'
+      ]
+    },
+    {
+      session_number: 102,
+      title: 'Migration Kajabi + Bunny, Architecture offre FSY',
+      date: '2026-03-02',
+      status: 'completed',
+      summary: 'Validation stack Circle + Bunny.net. Séparation FSY (mass-market) vs Aurélia Del Sol (premium). Arrêt des lives hebdo → evergreen. Freelance pour migration.',
+      cr_url: null,
+      decisions: [
+        'Kajabi + Bunny.net confirmés comme stack cible',
+        'Circle éliminé puis réintégré session pivot',
+        'FSY = mass-market (17-1950€) vs Aurélia Del Sol = premium (3-15K€)',
+        'Arrêt des lives hebdo → contenu evergreen',
+        'Recruter freelance pour migration'
+      ]
+    },
+    {
+      session_number: 101,
+      title: 'Lancement stratégique & cadrage des priorités',
+      date: '2026-02-19',
+      status: 'completed',
+      summary: 'Audit initial, mapping des process, identification des 5 piliers. Cadrage priorités : process > outils. Objectif 500K€ CA 2026. CEO time 2h/semaine.',
+      cr_url: null,
+      decisions: [
+        'Process mapping = priorité n°1',
+        'CEO time : 2h/semaine bloquées',
+        'Pricing B2C : 299€ → 399€ coaching sommeil',
+        'Migration plateforme mi-mars',
+        'Objectif CA 500K€ 2026'
+      ]
+    }
   ];
 }
 
@@ -49,11 +124,16 @@ function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
   (dbSessions || []).forEach(function(s) {
     var n = s.session_number;
     if (n === undefined || n === null) return;
-    if (!allowedNums[n]) {
-      byNumOrphan[n] = pickBest(byNumOrphan[n], s);
+    var d = s.date ? String(s.date) : '';
+    var key = n;
+    if (n >= 1 && n <= 5 && d && d < '2026-04-01') {
+      key = 100 + n;
+    }
+    if (!allowedNums[key]) {
+      byNumOrphan[key] = pickBest(byNumOrphan[key], s);
       return;
     }
-    byNumDb[n] = pickBest(byNumDb[n], s);
+    byNumDb[key] = pickBest(byNumDb[key], s);
   });
 
   var sessions = extras.map(function(e) {
@@ -68,6 +148,8 @@ function mergeDbSessionsWithFsyPortalTimeline(dbSessions) {
       if (!e.cr_url && db.cr_url) row.cr_url = db.cr_url;
       if (!e.cr_url && db.date) row.date = db.date;
     }
+    if (row.decisions == null && e.decisions != null) row.decisions = e.decisions;
+    if (!row.summary && e.summary) row.summary = e.summary;
     return row;
   });
 
@@ -96,8 +178,11 @@ function getFsyLatestReportsForDashboard(limit) {
     })
     .slice(0, lim)
     .map(function(e) {
+      var n = Number(e.session_number);
+      var label = (n >= 101 && n <= 105) ? ('A' + (n - 100)) : String(e.session_number);
       return {
         session_number: e.session_number,
+        session_label: label,
         title: e.title,
         cr_url: e.cr_url,
         date: e.date
