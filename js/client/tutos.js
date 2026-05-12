@@ -60,9 +60,23 @@ function buildFsyRowWithPdf(htmlHref, pdfHref, title, desc, icon) {
 function buildFsyResourcesHtml() {
   var base = new URL('/clients/fsy/', window.location.origin).href;
   var html = '';
+
+  html += '<div style="margin-bottom:24px;padding:16px;border:1px solid rgba(194,122,90,0.35);border-radius:12px;background:#151515">';
+  html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:0 0 12px">Guides opérationnels</h3>';
+  html += buildFsyRow(base + 'plan-implementation-workflow.html', 'Plan d\'implémentation — workflow', 'Étapes de déploiement et coordination.', '🗺️');
+  html += buildFsyRow(base + 'tuto-utm-tracking.html', 'Tuto tracking UTM', 'Balises UTM et mesure des campagnes.', '🎯');
+  html += buildFsyRow(base + 'parcours-client-complet.html', 'Parcours client complet', 'Vue d\'ensemble du parcours utilisateur.', '🛤️');
+  html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:18px 0 12px">Documents & liens utiles</h3>';
+  html += buildFsyRow(base + 'liste-utm.html', 'Liste UTM', 'Référentiel des paramètres UTM.', '📋');
+  html += buildFsyRow(base + 'script-video-circle-onboarding-fsy.html', 'Vidéo FSY — onboarding Circle', 'Script et vidéo d\'accueil communauté.', '🎬');
+  html += buildFsyRow(base + 'feuille-de-route-fsy.html', 'Feuille de route & jalons', 'Planning projet et repères calendrier.', '📅');
+  html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:18px 0 12px">Écosystème outils & accès</h3>';
+  html += buildFsyRow(base + 'ecosysteme-outils-fsy.html', 'Identifiants & stack', 'Outils, comptes et liens utiles (page dédiée).', '🔐');
+  html += '</div>';
+
   html += '<div style="margin-bottom:24px;padding:16px;border:1px solid rgba(194,122,90,0.35);border-radius:12px;background:#151515">';
   html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:0 0 12px">Circle — vidéo de démarrage + page sous la vidéo</h3>';
-  html += buildFsyRow(base + 'script-video-circle-onboarding-fsy.html', 'Script vidéo — bienvenue sur Circle', 'Texte prêt à enregistrer pour la vidéo de démarrage.', '🎬');
+  html += '<p style="font-size:0.78rem;color:#888;margin:-6px 0 12px;line-height:1.4">Le script vidéo est aussi dans « Documents & liens utiles » ci-dessus.</p>';
   html += buildFsyRow(base + 'premieres-actions-circle-fsy.html', 'Page à mettre sous la vidéo de démarrage', 'Tes 3 premières actions sur Circle.', '⭕');
   html += '<h3 style="font-family:Playfair Display,serif;color:#d4956f;font-size:1.05rem;margin:18px 0 12px">Recrutement d\'un bras droit</h3>';
   html += buildFsyRow(base + 'fiche-poste-recrutement-bras-droit-fsy.html', 'Fiche de poste — annonce recrutement', 'Texte public pour diffuser l\'offre.', '📣');

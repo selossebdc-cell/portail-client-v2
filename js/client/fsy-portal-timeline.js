@@ -274,3 +274,53 @@ function getFsyLatestReportsForDashboard(limit) {
       };
     });
 }
+
+/** Guides opérationnels (pages statiques sous /clients/fsy/) — tableau de bord & Ressources */
+function getFsyOperationalGuideLinks() {
+  var base = new URL('/clients/fsy/', window.location.origin).href;
+  return [
+    {
+      title: 'Plan d\'implémentation — workflow',
+      desc: 'Étapes de déploiement et coordination.',
+      url: base + 'plan-implementation-workflow.html',
+      icon: '🗺️'
+    },
+    {
+      title: 'Tuto tracking UTM',
+      desc: 'Balises UTM et mesure des campagnes.',
+      url: base + 'tuto-utm-tracking.html',
+      icon: '🎯'
+    },
+    {
+      title: 'Parcours client complet',
+      desc: 'Vue d\'ensemble du parcours utilisateur.',
+      url: base + 'parcours-client-complet.html',
+      icon: '🛤️'
+    }
+  ];
+}
+
+/** Documents et pages satellite (liste UTM, vidéo, calendrier / planning) */
+function getFsyQuickDocumentLinks() {
+  var base = new URL('/clients/fsy/', window.location.origin).href;
+  return [
+    { title: 'Liste UTM', desc: 'Référentiel des paramètres UTM.', url: base + 'liste-utm.html', icon: '📋' },
+    {
+      title: 'Vidéo FSY — onboarding Circle',
+      desc: 'Script et mise en ligne de la vidéo d\'accueil communauté.',
+      url: base + 'script-video-circle-onboarding-fsy.html',
+      icon: '🎬'
+    },
+    {
+      title: 'Feuille de route & jalons',
+      desc: 'Planning projet (repères calendrier / livraisons).',
+      url: base + 'feuille-de-route-fsy.html',
+      icon: '📅'
+    }
+  ];
+}
+
+/** Page HTML avec stack, identifiants et liens outils (historique « page Outils ») */
+function getFsyEcosystemToolsPageUrl() {
+  return new URL('/clients/fsy/ecosysteme-outils-fsy.html', window.location.origin).href;
+}

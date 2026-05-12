@@ -16,6 +16,25 @@ function renderTools(tools) {
 
   let html = '';
 
+  if (typeof isFsyPortalClient === 'function' && currentProfile && isFsyPortalClient(currentProfile)) {
+    var ecoHref = '';
+    try {
+      ecoHref = new URL('/clients/fsy/ecosysteme-outils-fsy.html', window.location.origin).href;
+    } catch (e) {
+      ecoHref = '';
+    }
+    if (ecoHref) {
+      html += '<div class="tuto-card" style="border-color:rgba(194,122,90,0.35);margin-bottom:16px;background:rgba(194,122,90,0.06)">' +
+        '<div class="tuto-icon">🔐</div>' +
+        '<div class="tuto-info">' +
+          '<div class="tuto-name">Écosystème outils & accès</div>' +
+          '<div class="tuto-desc">Page dédiée avec identifiants et liens (à garder sous la main avec l\'onglet ci-dessous).</div>' +
+        '</div>' +
+        '<a href="' + ecoHref + '" target="_blank" rel="noopener noreferrer" class="tuto-btn">Ouvrir la page</a>' +
+      '</div>';
+    }
+  }
+
   if (tools && tools.length > 0) {
     tools.forEach(function(tool) {
       var statusBadge, statusColor;

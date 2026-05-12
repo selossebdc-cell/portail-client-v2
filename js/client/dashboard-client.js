@@ -61,6 +61,55 @@ async function loadClientDashboard(profile) {
     html += '</div>';
   }
 
+  // ─── FSY : guides opérationnels + documents (Lori / équipe) ───
+  if (typeof isFsyPortalClient === 'function' && isFsyPortalClient(profile) &&
+      typeof getFsyOperationalGuideLinks === 'function') {
+    var guides = getFsyOperationalGuideLinks();
+    var docs = typeof getFsyQuickDocumentLinks === 'function' ? getFsyQuickDocumentLinks() : [];
+    var ecoSafe = (typeof getFsyEcosystemToolsPageUrl === 'function' && safeUrl(getFsyEcosystemToolsPageUrl())) || null;
+
+    html += '<div style="margin-bottom:24px;padding:18px 20px;background:rgba(194,122,90,0.06);border:1px solid rgba(194,122,90,0.25);border-radius:14px">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px">';
+    html += '<div><h3 style="font-family:Playfair Display,serif;font-size:1.05rem;margin:0 0 4px;color:#d4956f">Guides & mise en œuvre</h3>';
+    html += '<p style="margin:0;font-size:0.8rem;color:#888">Liens permanents vers les pages HTML de ton espace (pas besoin de retrouver les mails).</p></div>';
+    if (ecoSafe) {
+      html += '<a href="' + ecoSafe + '" target="_blank" rel="noopener noreferrer" class="tuto-btn" style="font-size:0.8rem;padding:8px 14px;white-space:nowrap">🔐 Écosystème outils & accès</a>';
+    }
+    html += '</div>';
+
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:14px">';
+    guides.forEach(function(g) {
+      var u = safeUrl(g.url);
+      if (!u) return;
+      html += '<a href="' + u + '" target="_blank" rel="noopener noreferrer" style="display:block;padding:12px 14px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;text-decoration:none;color:inherit;transition:border-color 0.2s" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
+        '<div style="font-size:1rem;margin-bottom:4px">' + g.icon + '</div>' +
+        '<div style="font-size:0.85rem;font-weight:600;color:#e6e6e6">' + safeText(g.title) + '</div>' +
+        '<div style="font-size:0.72rem;color:#888;margin-top:4px;line-height:1.35">' + safeText(g.desc) + '</div>' +
+        '<div style="font-size:0.72rem;color:#d4956f;margin-top:8px">Ouvrir →</div>' +
+      '</a>';
+    });
+    html += '</div>';
+
+    if (docs.length > 0) {
+      html += '<div style="font-size:0.72rem;color:#666;text-transform:uppercase;letter-spacing:0.06em;margin:8px 0 10px">Documents & liens utiles</div>';
+      html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px">';
+      docs.forEach(function(g) {
+        var u = safeUrl(g.url);
+        if (!u) return;
+        html += '<a href="' + u + '" target="_blank" rel="noopener noreferrer" style="display:block;padding:12px 14px;background:#151515;border:1px solid #2a2a2a;border-radius:10px;text-decoration:none;color:inherit;transition:border-color 0.2s" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
+          '<div style="font-size:1rem;margin-bottom:4px">' + g.icon + '</div>' +
+          '<div style="font-size:0.85rem;font-weight:600;color:#e6e6e6">' + safeText(g.title) + '</div>' +
+          '<div style="font-size:0.72rem;color:#888;margin-top:4px;line-height:1.35">' + safeText(g.desc) + '</div>' +
+          '<div style="font-size:0.72rem;color:#d4956f;margin-top:8px">Ouvrir →</div>' +
+        '</a>';
+      });
+      html += '</div>';
+    }
+
+    html += '<div style="margin-top:14px;font-size:0.78rem;color:#777;line-height:1.45">Onglet <strong style="color:#b0b0b0">Outils</strong> : suivi des outils dans le portail · page <strong style="color:#b0b0b0">Écosystème outils</strong> ci-dessus pour les identifiants détaillés.</div>';
+    html += '</div>';
+  }
+
   // ─── Objectifs (si renseignés) ───
   if (profile.objectives && profile.objectives.length > 0) {
     html += '<div style="margin-bottom:24px;padding:20px;background:rgba(194,122,90,0.05);border:1px solid rgba(194,122,90,0.15);border-radius:12px">' +
