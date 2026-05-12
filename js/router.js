@@ -60,40 +60,29 @@ function isFsyClient(profile) {
   return typeof isFsyPortalClient === 'function' && isFsyPortalClient(profile);
 }
 
-/** Titre header — FSY : même vue pour toute l'équipe → salutation à la marque */
+/** Titre header — uniquement le nom d'entreprise (repère plateforme / bon client), sans salutation */
 function getClientPortalTitle(profile) {
-  if (!profile) return 'Salut';
-  if (isFsyClient(profile)) {
-    var company = String(profile.company || '').trim();
-    return 'Bonjour ' + (company || 'Face Soul Yoga');
-  }
-  var firstName = (profile.full_name || '').split(' ')[0];
-  return 'Salut ' + firstName;
+  if (!profile) return 'Mon espace';
+  var company = String(profile.company || '').trim();
+  if (company) return company;
+  var name = String(profile.full_name || '').trim();
+  if (name) return name;
+  return 'Mon espace';
 }
 
-/** Sous-titre — FSY : pas de répétition du nom société (déjà dans le titre) */
+/** Sous-titre — programme / accompagnement uniquement (le titre porte déjà la société ou la personne) */
 function getClientPortalSubtitle(profile) {
   if (!profile) return '';
-  if (isFsyClient(profile)) {
-    return String(profile.program || '').trim();
-  }
-  var subtitle = '';
-  if (profile.company) subtitle += profile.company;
-  if (profile.company && profile.program) subtitle += ' — ';
-  if (profile.program) subtitle += profile.program;
-  return subtitle;
+  return String(profile.program || '').trim();
 }
 
-/** Initiale du bloc logo sans image — FSY : première lettre de la marque */
+/** Initiale du bloc logo sans image — entreprise prioritaire, sinon personne */
 function getClientPortalAvatarLetter(profile) {
   if (!profile) return '?';
-  if (isFsyClient(profile)) {
-    var company = String(profile.company || '').trim();
-    if (company) return company.charAt(0).toUpperCase();
-    return 'F';
-  }
+  var company = String(profile.company || '').trim();
+  if (company) return company.charAt(0).toUpperCase();
   var firstName = (profile.full_name || '').split(' ')[0];
-  return firstName.charAt(0).toUpperCase();
+  return firstName ? firstName.charAt(0).toUpperCase() : '?';
 }
 
 function applyClientTabPreset(profile) {

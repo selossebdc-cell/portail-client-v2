@@ -78,7 +78,7 @@ async function switchToClientView(clientId) {
   document.getElementById('admin-view').classList.add('hidden');
   document.getElementById('client-view').classList.remove('hidden');
 
-  // Update header (FSY : titre marque — fonctions dans router.js)
+  // Update header (titre = entreprise — fonctions dans router.js)
   document.getElementById('client-title').textContent = getClientPortalTitle(profile);
   document.getElementById('client-subtitle').textContent = getClientPortalSubtitle(profile);
 
