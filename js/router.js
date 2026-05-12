@@ -60,6 +60,42 @@ function isFsyClient(profile) {
   return typeof isFsyPortalClient === 'function' && isFsyPortalClient(profile);
 }
 
+/** Titre header — FSY : même vue pour toute l'équipe → salutation à la marque */
+function getClientPortalTitle(profile) {
+  if (!profile) return 'Salut';
+  if (isFsyClient(profile)) {
+    var company = String(profile.company || '').trim();
+    return 'Bonjour ' + (company || 'Face Soul Yoga');
+  }
+  var firstName = (profile.full_name || '').split(' ')[0];
+  return 'Salut ' + firstName;
+}
+
+/** Sous-titre — FSY : pas de répétition du nom société (déjà dans le titre) */
+function getClientPortalSubtitle(profile) {
+  if (!profile) return '';
+  if (isFsyClient(profile)) {
+    return String(profile.program || '').trim();
+  }
+  var subtitle = '';
+  if (profile.company) subtitle += profile.company;
+  if (profile.company && profile.program) subtitle += ' — ';
+  if (profile.program) subtitle += profile.program;
+  return subtitle;
+}
+
+/** Initiale du bloc logo sans image — FSY : première lettre de la marque */
+function getClientPortalAvatarLetter(profile) {
+  if (!profile) return '?';
+  if (isFsyClient(profile)) {
+    var company = String(profile.company || '').trim();
+    if (company) return company.charAt(0).toUpperCase();
+    return 'F';
+  }
+  var firstName = (profile.full_name || '').split(' ')[0];
+  return firstName.charAt(0).toUpperCase();
+}
+
 function applyClientTabPreset(profile) {
   var tabs = document.querySelectorAll('#client-tabs .tab');
   var panels = document.querySelectorAll('#client-view .tab-panel');
@@ -140,14 +176,8 @@ async function initClientPortal(profile) {
   applyClientTabPreset(scopedProfile);
 
   // Header
-  var firstName = (profile.full_name || '').split(' ')[0];
-  document.getElementById('client-title').textContent = 'Salut ' + firstName;
-
-  var subtitle = '';
-  if (profile.company) subtitle += profile.company;
-  if (profile.company && profile.program) subtitle += ' — ';
-  if (profile.program) subtitle += profile.program;
-  document.getElementById('client-subtitle').textContent = subtitle;
+  document.getElementById('client-title').textContent = getClientPortalTitle(profile);
+  document.getElementById('client-subtitle').textContent = getClientPortalSubtitle(profile);
   var helpWhatsapp = document.getElementById('help-whatsapp');
   if (helpWhatsapp) {
     var profileWhatsapp = sanitizeExternalUrl(profile.whatsapp_url || '');
@@ -163,11 +193,11 @@ async function initClientPortal(profile) {
     if (safeLogo) {
       logoEl.innerHTML = '<img src="' + safeLogo + '" alt="" style="max-height:48px;max-width:120px;border-radius:8px">';
     } else {
-      var initialsInvalid = escapeHtml(firstName.charAt(0).toUpperCase());
+      var initialsInvalid = escapeHtml(getClientPortalAvatarLetter(profile));
       logoEl.innerHTML = '<div style="width:48px;height:48px;border-radius:12px;background:rgba(194,122,90,0.15);color:#d4956f;display:flex;align-items:center;justify-content:center;font-family:Playfair Display,serif;font-size:1.4rem;font-weight:700">' + initialsInvalid + '</div>';
     }
   } else {
-    var initials = escapeHtml(firstName.charAt(0).toUpperCase());
+    var initials = escapeHtml(getClientPortalAvatarLetter(profile));
     logoEl.innerHTML = '<div style="width:48px;height:48px;border-radius:12px;background:rgba(194,122,90,0.15);color:#d4956f;display:flex;align-items:center;justify-content:center;font-family:Playfair Display,serif;font-size:1.4rem;font-weight:700">' + initials + '</div>';
   }
 

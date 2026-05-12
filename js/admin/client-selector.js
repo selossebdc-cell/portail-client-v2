@@ -1,6 +1,15 @@
 // TASK-0015: Selecteur multi-clients admin + modules actives
 // Couche: Application + UI
 
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 let allClients = [];
 let viewingAsClientId = null;
 
@@ -69,14 +78,9 @@ async function switchToClientView(clientId) {
   document.getElementById('admin-view').classList.add('hidden');
   document.getElementById('client-view').classList.remove('hidden');
 
-  // Update header
-  var firstName = (profile.full_name || '').split(' ')[0];
-  document.getElementById('client-title').textContent = 'Salut ' + firstName;
-  var subtitle = '';
-  if (profile.company) subtitle += profile.company;
-  if (profile.company && profile.program) subtitle += ' — ';
-  if (profile.program) subtitle += profile.program;
-  document.getElementById('client-subtitle').textContent = subtitle;
+  // Update header (FSY : titre marque — fonctions dans router.js)
+  document.getElementById('client-title').textContent = getClientPortalTitle(profile);
+  document.getElementById('client-subtitle').textContent = getClientPortalSubtitle(profile);
 
   // Apply conditional tabs
   applyConditionalTabs(profile);
@@ -85,12 +89,8 @@ async function switchToClientView(clientId) {
   addClientViewControls(profile);
 
   // Load client data
-  initClientPortal(profile);
-  loadClientDashboard(profile);
-  loadTools(profile.id);
-  loadProject(profile.id);
-  loadAutomations(profile.id);
-  checkAllBadges(profile.id);
+  // initClientPortal handles all downstream loads using resolved scope id.
+  await initClientPortal(profile);
 }
 
 function addClientViewControls(profile) {
@@ -246,13 +246,13 @@ function toggleModulesPanel() {
   allClients.filter(c => c.role === 'client').forEach(client => {
     const modules = client.enabled_modules || [];
     html += '<div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #333">';
-    html += '<div style="font-weight:600;margin-bottom:8px;color:#e8e0d8">' + client.full_name + '</div>';
+    html += '<div style="font-weight:600;margin-bottom:8px;color:#e8e0d8">' + escapeHtml(client.full_name) + '</div>';
 
     Object.entries(V2_MODULES).forEach(([key, config]) => {
       const checked = modules.includes(key) ? 'checked' : '';
       html += '<label style="display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer;font-size:0.85rem;color:#aaa">';
-      html += '<input type="checkbox" ' + checked + ' onchange="updateClientModule(\'' + client.id + '\', \'' + key + '\', this.checked)" style="accent-color:#C27A5A">';
-      html += config.label;
+      html += '<input type="checkbox" ' + checked + ' onchange="updateClientModule(' + JSON.stringify(client.id) + ', ' + JSON.stringify(key) + ', this.checked)" style="accent-color:#C27A5A">';
+      html += escapeHtml(config.label);
       html += '</label>';
     });
     html += '</div>';
