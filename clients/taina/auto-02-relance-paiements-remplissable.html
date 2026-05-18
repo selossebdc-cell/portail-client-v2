@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto 02 Paiements — fiche remplissable</title>
+  <style>
+    :root { --bg:#0f1115; --card:#181c24; --text:#e9edf5; --muted:#a8b0bf; --line:#2a3140; --accent:#7cc4ff; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif; background:var(--bg); color:var(--text); padding:24px; }
+    .wrap { max-width:950px; margin:0 auto; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px; }
+    h1 { font-size:1.45rem; margin-bottom:6px; } h2 { font-size:1.08rem; margin-bottom:6px; color:var(--accent); }
+    p,label { color:var(--muted); font-size:0.93rem; } ul { margin-left:18px; } li { margin:6px 0; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+    input[type=text], textarea, select { width:100%; background:#11151d; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:9px; margin-top:5px; }
+    textarea { min-height:82px; } .check label { display:block; color:var(--text); margin:6px 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Auto 02 — Relances paiements</h1>
+      <p>But: améliorer encaissement et réduire les relances manuelles.</p>
+    </div>
+    <div class="card">
+      <h2>Cadence de relance (propositions)</h2>
+      <div class="check">
+        <label><input type="checkbox"> Option A: J-30 / J-15 / J-7 / J-1</label>
+        <label><input type="checkbox"> Option B: J-21 / J-10 / J-3</label>
+        <label><input type="checkbox"> Option C: cadence différente selon type de client</label>
+      </div>
+      <label>Cadence finale validée</label>
+      <input type="text" placeholder="Séquence retenue + motif">
+    </div>
+    <div class="card">
+      <h2>Source de vérité paiement (propositions)</h2>
+      <select>
+        <option>-- Choisir --</option>
+        <option>Crédit Mutuel (validation manuelle)</option>
+        <option>Stripe (statut auto)</option>
+        <option>Mix CM + Stripe avec règle de priorité</option>
+      </select>
+      <label>Règle d'arbitrage en cas de doute</label>
+      <textarea placeholder="Ex: si doute, pas d'envoi auto, passer en validation humaine"></textarea>
+    </div>
+    <div class="card">
+      <h2>Canaux de relance (propositions)</h2>
+      <div class="grid">
+        <div>
+          <label>Canal principal</label>
+          <select>
+            <option>Email</option>
+            <option>WhatsApp</option>
+            <option>SMS</option>
+          </select>
+        </div>
+        <div>
+          <label>Canal de secours</label>
+          <select>
+            <option>-- Optionnel --</option>
+            <option>Email</option>
+            <option>WhatsApp</option>
+            <option>SMS</option>
+          </select>
+        </div>
+      </div>
+      <label>Template relance validé</label>
+      <textarea placeholder="Texte final relance 1 / relance 2 / relance finale"></textarea>
+    </div>
+    <div class="card">
+      <h2>Checklist installation</h2>
+      <div class="check">
+        <label><input type="checkbox"> Vérifier données de 10 réservations.</label>
+        <label><input type="checkbox"> Simuler relances en dry-run.</label>
+        <label><input type="checkbox"> Vérifier arrêt automatique après paiement.</label>
+        <label><input type="checkbox"> Activer escalade vers Taina sur cas non réglés.</label>
+      </div>
+      <label>Décisions finales + owner + date</label>
+      <textarea placeholder="- Décision / Responsable / Date"></textarea>
+    </div>
+  </div>
+</body>
+</html>

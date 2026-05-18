@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto 04 — Post excursion feedback</title>
+  <style>
+    :root { --bg:#0f1115; --card:#181c24; --text:#e9edf5; --muted:#a8b0bf; --line:#2a3140; --accent:#7cc4ff; --ok:#7be495; --warn:#ffd166; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+    .wrap { max-width:1000px; margin:0 auto; padding:28px 20px 56px; }
+    .hero,.card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; }
+    .hero { border-left:5px solid var(--accent); margin-bottom:14px; }
+    h1 { font-size:1.55rem; margin-bottom:6px; }
+    .meta { color:var(--muted); font-size:0.92rem; }
+    h2 { margin:18px 0 8px; font-size:1.15rem; border-bottom:1px solid var(--line); padding-bottom:6px; }
+    ul { margin-left:18px; }
+    li { margin:6px 0; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:10px; }
+    .pill { display:inline-block; font-size:0.78rem; padding:2px 8px; border-radius:999px; border:1px solid transparent; margin-bottom:8px; }
+    .pill-ok { color:var(--ok); border-color:rgba(123,228,149,0.45); }
+    .pill-warn { color:var(--warn); border-color:rgba(255,209,102,0.45); }
+    .footer { margin-top:18px; color:var(--muted); font-size:0.88rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Auto 04 — Post-excursion : feedback + synthèse + actions</h1>
+      <p class="meta">Objectif : transformer chaque excursion en apprentissage opérationnel exploitable.</p>
+    </div>
+
+    <h2>1) Trigger(s)</h2>
+    <div class="card">
+      <ul>
+        <li>Auto à T+3h après l'heure de fin excursion : envoi formulaire client.</li>
+        <li>Auto à T+24h : rappel si pas de réponse.</li>
+        <li>Auto à T+48h : création synthèse interne et tâches d'amélioration.</li>
+      </ul>
+    </div>
+
+    <h2>2) Données nécessaires</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="pill pill-ok">Client</span>
+        <ul>
+          <li>Contact post-excursion</li>
+          <li>Langue de communication</li>
+          <li>Référence réservation</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-ok">Opération</span>
+        <ul>
+          <li>Guide du jour</li>
+          <li>Prestataires engagés</li>
+          <li>Nb participants réel</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-warn">Feedback</span>
+        <ul>
+          <li>Note globale (ex: /10)</li>
+          <li>Points forts / irritants</li>
+          <li>Actions à corriger</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>3) Logique de traitement</h2>
+    <div class="card">
+      <ul>
+        <li>Collecter feedback client + feedback guide dans un format standard.</li>
+        <li>Générer une synthèse courte (ce qui a marché / ce qui coince / actions).</li>
+        <li>Créer automatiquement des tâches d'amélioration assignées.</li>
+        <li>Taguer les problèmes récurrents pour prioriser les corrections.</li>
+      </ul>
+    </div>
+
+    <h2>4) Exceptions / garde-fous</h2>
+    <div class="card">
+      <ul>
+        <li>Si incident critique, escalade directe sans attendre T+48h.</li>
+        <li>Pas de relance client au-delà de 2 messages.</li>
+        <li>Anonymiser si le retour est utilisé pour communication externe.</li>
+        <li>Validation humaine obligatoire avant publication d'un avis.</li>
+      </ul>
+    </div>
+
+    <h2>5) Décisions à figer avec Taïna</h2>
+    <div class="card">
+      <ul>
+        <li>[ ] Questionnaire client final (court vs détaillé).</li>
+        <li>[ ] Format de feedback guide (mobile-friendly).</li>
+        <li>[ ] Règles de création de tâches automatiques.</li>
+        <li>[ ] Rythme revue hebdo des synthèses (30 min dédié).</li>
+      </ul>
+    </div>
+
+    <h2>6) Checklist installation</h2>
+    <div class="card">
+      <ul>
+        <li>[ ] Valider les 2 formulaires (client et guide).</li>
+        <li>[ ] Tester sur 3 excursions passées.</li>
+        <li>[ ] Vérifier attribution correcte des tâches.</li>
+        <li>[ ] Définir tableau de suivi des irritants récurrents.</li>
+      </ul>
+    </div>
+
+    <p class="footer">KPI : taux réponse feedback, score satisfaction moyen, nb actions correctives closes / mois.</p>
+  </div>
+</body>
+</html>

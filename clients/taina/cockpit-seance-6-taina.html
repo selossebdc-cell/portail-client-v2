@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Séance 6 — Cockpit décision · Guadeloupe Explor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --lin: #F3EADA;
+      --white: #FFFFFF;
+      --terre: #433F3C;
+      --terra: #D17C61;
+      --cuivre: #AE7558;
+      --sable: #C19E8A;
+      --ok: #2d6a4f;
+      --warn: #b45309;
+      --line: rgba(67, 63, 60, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      background: var(--lin);
+      color: var(--terre);
+      line-height: 1.55;
+      font-size: 16px;
+    }
+    .top {
+      background: var(--terre);
+      color: var(--lin);
+      padding: 28px 20px 24px;
+    }
+    .top-inner { max-width: 1040px; margin: 0 auto; }
+    .brand { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sable); margin-bottom: 8px; }
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .meta { font-size: 0.92rem; color: var(--sable); max-width: 52rem; }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .stat {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(243, 234, 218, 0.2);
+      border-radius: 10px;
+      padding: 10px 14px;
+      min-width: 120px;
+    }
+    .stat strong { display: block; font-size: 1.35rem; color: var(--white); }
+    .stat span { font-size: 0.78rem; color: var(--sable); }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      padding: 10px 16px;
+      overflow-x: auto;
+    }
+    .nav-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+    .nav a {
+      white-space: nowrap;
+      text-decoration: none;
+      color: var(--terre);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav a:hover { background: var(--lin); color: var(--terra); }
+
+    main { max-width: 1040px; margin: 0 auto; padding: 24px 16px 64px; }
+
+    section { margin-bottom: 28px; }
+    h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      color: var(--terra);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(209, 124, 97, 0.35);
+    }
+    h3 { font-size: 0.95rem; margin: 14px 0 8px; color: var(--cuivre); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card h3 { margin: 0; font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--terre); }
+    .card p { font-size: 0.88rem; color: #5c5652; flex: 1; }
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(209, 124, 97, 0.12);
+      color: var(--terra);
+      width: fit-content;
+    }
+    .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    a.btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      color: var(--terre);
+      background: var(--lin);
+    }
+    a.btn.primary {
+      background: var(--terra);
+      color: var(--white);
+      border-color: var(--terra);
+    }
+    a.btn:hover { filter: brightness(0.96); }
+
+    .decision-box {
+      background: var(--white);
+      border: 2px solid var(--terra);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .auto-pick {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .pick-card {
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .pick-card:has(input:checked) {
+      border-color: var(--terra);
+      box-shadow: 0 0 0 3px rgba(209, 124, 97, 0.2);
+    }
+    .pick-card input { margin-right: 8px; accent-color: var(--terra); }
+    .pick-card label { cursor: pointer; font-weight: 600; display: flex; align-items: flex-start; gap: 4px; }
+    .pick-card .hint { font-size: 0.82rem; color: #5c5652; margin-top: 8px; font-weight: 400; }
+
+    table.score {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    table.score th, table.score td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: center;
+    }
+    table.score th {
+      background: var(--lin);
+      font-weight: 600;
+      font-size: 0.78rem;
+    }
+    table.score td:first-child { text-align: left; font-weight: 600; }
+    table.score input {
+      width: 48px;
+      text-align: center;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4px;
+      font: inherit;
+    }
+    .total-cell { font-weight: 700; color: var(--terra); }
+
+    .form-row { margin-bottom: 12px; }
+    .form-row label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px; }
+    .form-row input, .form-row select, .form-row textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      font: inherit;
+      background: var(--white);
+    }
+    .form-row textarea { min-height: 72px; resize: vertical; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    button {
+      font: inherit;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--white);
+      color: var(--terre);
+      cursor: pointer;
+    }
+    button.primary { background: var(--terra); color: var(--white); border-color: var(--terra); }
+
+    #decision-output {
+      margin-top: 14px;
+      padding: 14px;
+      background: var(--lin);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      min-height: 80px;
+    }
+
+    .checklist label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 0;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .checklist input { margin-top: 4px; accent-color: var(--terra); }
+
+    .agenda ol { margin-left: 1.2rem; }
+    .agenda li { margin-bottom: 8px; }
+    .agenda strong { color: var(--terra); }
+
+    .prose {
+      font-size: 0.94rem;
+      color: #5c5652;
+      margin-bottom: 16px;
+      max-width: 52rem;
+    }
+    .prose strong { color: var(--terre); }
+
+    .auto-detail {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+    .auto-detail header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .auto-detail h3 {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.12rem;
+      color: var(--terre);
+    }
+    .gain {
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(45, 106, 79, 0.1);
+      color: var(--ok);
+      white-space: nowrap;
+    }
+    .auto-detail .body { font-size: 0.88rem; color: #5c5652; }
+    .auto-detail ul { margin: 8px 0 8px 1.1rem; }
+    .auto-detail li { margin: 4px 0; }
+    .auto-detail .meta-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin: 10px 0;
+      font-size: 0.84rem;
+    }
+    .auto-detail .meta-row dt { font-weight: 600; color: var(--cuivre); margin-bottom: 2px; }
+    .auto-detail .meta-row dd { margin: 0 0 8px; color: #5c5652; }
+    .score-name { font-weight: 600; }
+    .score-sub { font-size: 0.78rem; font-weight: 400; color: #7a746f; display: block; margin-top: 2px; max-width: 220px; }
+
+    .map-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .map-table th, .map-table td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+    .map-table th { background: var(--lin); font-size: 0.78rem; }
+
+    footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--sable);
+      padding: 24px;
+    }
+
+    @media print {
+      .nav, .toolbar { display: none; }
+      .top { background: var(--terre); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">CS Consulting Stratégique · Usage interne séance</div>
+      <h1>Guadeloupe Explor — Cockpit séance 6</h1>
+      <p class="meta">18 mai 2026 · 10h30 (Guadeloupe) · Objectif : <strong>choisir une automatisation V1</strong> et valider les prérequis. Garde cette page ouverte pendant l’appel.</p>
+      <div class="stats">
+        <div class="stat"><strong>5 / 18</strong><span>Séances réalisées</span></div>
+        <div class="stat"><strong>S6</strong><span>Aujourd’hui</span></div>
+        <div class="stat"><strong>1</strong><span>Auto V1 à trancher</span></div>
+        <div class="stat"><strong>6 mois</strong><span>Programme</span></div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Sections">
+    <div class="nav-inner">
+      <a href="#agenda">Ordre du jour</a>
+      <a href="#cartographie">Cartographie</a>
+      <a href="#catalogue">Catalogue autos</a>
+      <a href="#portail">Portail & CR</a>
+      <a href="#outils">Outils</a>
+      <a href="#decision">Scoring & V1</a>
+      <a href="#synthese">Synthèse</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <section id="agenda" class="agenda">
+      <h2>Ordre du jour (≈ 1h15)</h2>
+      <div class="card">
+        <ol>
+          <li><strong>10 min</strong> — Où on en est (portail 5 CR, facture juillet OK, QuotaTrip ?)</li>
+          <li><strong>15 min</strong> — Quick check : Plaud, agenda à jour, Claude Drive</li>
+          <li><strong>15 min</strong> — <strong>Cartographie</strong> : valider la vue d’ensemble des process + où l’auto aide (section Cartographie)</li>
+          <li><strong>35 min</strong> — Parcourir le <strong>catalogue des 5 automatisations</strong>, remplir la grille de score, choisir <strong>une V1</strong></li>
+          <li><strong>10 min</strong> — 3 actions Taina + 2 actions Catherine + date S7</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="cartographie">
+      <h2>Cartographie des process — livrable & moment séance 6</h2>
+      <p class="prose">
+        <strong>Objectif de cette séance :</strong> passer de la liste d’idées à une <strong>carte lisible</strong> de tout ce qui se passe chez Guadeloupe Explor
+        (client, prestataire, guide, paiement, excursion), puis décider <strong>où une automatisation V1</strong> enlève le plus de charge à Taina.
+        Tu lui présentes / partages l’écran sur les documents ci-dessous ; elle valide ou corrige à la voix.
+      </p>
+      <div class="card" style="margin-bottom:16px">
+        <h3 style="margin:0 0 8px">Documents de cartographie (à ouvrir en séance)</h3>
+        <div class="links">
+          <a class="btn primary" href="parcours-client-complet-taina.html" target="_blank">Parcours client complet (3 flux)</a>
+          <a class="btn" href="feuille-de-route-taina.html" target="_blank">Feuille de route</a>
+          <a class="btn" href="process-excursions-types-alertes-remplissable.html" target="_blank">Process par type d’excursion + alertes</a>
+          <a class="btn" href="fiche-type-excursion-template-remplissable.html" target="_blank">Template 1 type d’excursion</a>
+        </div>
+        <p style="font-size:0.86rem;color:#5c5652;margin-top:10px">
+          <strong>Phrase clé :</strong> « On ne code rien tant que le process n’est pas écrit. L’automatisation ne fait que répéter ce qu’on a décidé ensemble. »
+        </p>
+      </div>
+
+      <h3>Vue process → automatisation possible → gain (à valider avec Taina)</h3>
+      <table class="map-table">
+        <thead>
+          <tr>
+            <th>Étape du parcours</th>
+            <th>Ce qui se passe aujourd’hui (manuel)</th>
+            <th>Automatisation liée</th>
+            <th>Gain estimé si V1 en place</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Lead entrant</strong> (mail, site, QuotaTrip)</td>
+            <td>Délai de réponse, leads oubliés, mails en spam, reprise de style à chaque fois</td>
+            <td><strong>Auto 01</strong> (+ projet Claude QuotaTrip déjà amorcé S5)</td>
+            <td>≈ <strong>2–4 h / semaine</strong> + meilleure conversion</td>
+          </tr>
+          <tr>
+            <td><strong>Devis & acompte 50 %</strong></td>
+            <td>Relances oubliées, suivi paiement hétérogène (CM / futur Stripe)</td>
+            <td><strong>Auto 02</strong></td>
+            <td>≈ <strong>1–3 h / semaine</strong> + trésorerie plus prévisible</td>
+          </tr>
+          <tr>
+            <td><strong>Préparation excursion</strong> (menus, effectifs)</td>
+            <td>Allers-retours client + consolidation manuelle pour prestataires</td>
+            <td><strong>Auto 03</strong></td>
+            <td>≈ <strong>2–3 h / semaine</strong> en haute saison</td>
+          </tr>
+          <tr>
+            <td><strong>Jour J & terrain</strong> (guides, prestataires)</td>
+            <td>Rappels à la main, consignes oubliées, effectifs réels tardifs</td>
+            <td><strong>Process 05</strong> (alertes J-30 → J+1) + rappels guides</td>
+            <td>≈ <strong>3–5 h / semaine</strong> + moins d’erreurs facturation</td>
+          </tr>
+          <tr>
+            <td><strong>Après excursion</strong></td>
+            <td>Peu de feedback structuré, pas de synthèse ni tâches auto</td>
+            <td><strong>Auto 04</strong></td>
+            <td>≈ <strong>1–2 h / semaine</strong> + qualité service</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="prose" style="margin-top:12px">
+        Les gains sont des <strong>ordres de grandeur</strong> à affiner avec Taina (« combien de fois par semaine ? combien de minutes à chaque fois ? »).
+        Total si tout était automatisé : <strong>9–17 h / semaine</strong> — d’où l’importance de ne lancer qu’<strong>une V1</strong> maintenant.
+      </p>
+    </section>
+
+    <section id="catalogue">
+      <h2>Catalogue des automatisations — fiches à remplir</h2>
+      <p class="prose">
+        Chaque bloc ci-dessous = une automatisation cadrée (HTML dédié + version <strong>remplissable</strong> pour la séance).
+        Ouvre la fiche remplissable pendant l’échange pour noter trigger, règles, templates et checklist installation.
+        <a class="btn" style="display:inline-flex;margin-left:4px" href="automatisations-taina-plan-global.html" target="_blank">Plan global</a>
+        <a class="btn" style="display:inline-flex" href="automatisations-taina-atelier-remplissable.html" target="_blank">Atelier global remplissable</a>
+      </p>
+
+      <article class="auto-detail" id="auto-01">
+        <header>
+          <h3>Auto 01 — Lead entrant → qualification → brouillon de réponse</h3>
+          <span class="gain">Gain estimé : 2–4 h / sem.</span>
+        </header>
+        <p class="body">Réduire le délai de réponse et ne plus perdre de demandes (contact@, info@, <strong>QuotaTrip</strong>). En V1 : brouillon Claude validé par Taina avant envoi.</p>
+        <dl class="meta-row">
+          <div><dt>Trigger</dt><dd>Nouveau message entrant (email / fiche QuotaTrip PDF)</dd></div>
+          <div><dt>Sortie</dt><dd>Fiche lead qualifiée (chaud / tiède / incomplet) + email brouillon</dd></div>
+          <div><dt>Prérequis</dt><dd>Projet Claude « Réponses QuotaTrip », règles anti-spam PDF, templates FR/EN</dd></div>
+        </dl>
+        <ul>
+          <li>Qualification : date + nb personnes + contact = chaud ; sinon tiède / incomplet</li>
+          <li>SLA cible à fixer : ex. réponse sous 2 h ouvrées</li>
+          <li>Déjà travaillé en <strong>session 5</strong> — à valider en usage réel</li>
+        </ul>
+        <div class="links">
+          <a class="btn primary" href="auto-01-leads-qualification-reponse-remplissable.html" target="_blank">Fiche remplissable</a>
+          <a class="btn" href="auto-01-leads-qualification-reponse.html" target="_blank">Fiche détaillée</a>
+          <a class="btn" href="automatisations/02-auto-tri-leads-et-brouillons.html" target="_blank">Doc A2 (master plan)</a>
+        </div>
+      </article>
+
+      <article class="auto-detail" id="auto-02">
+        <header>
+          <h3>Auto 02 — Relances acompte / solde paiement</h3>
+          <span class="gain">Gain estimé : 1–3 h / sem. + cash</span>
+        </header>
+        <p class="body">Fiabiliser l’encaissement (acompte 50 %, solde) et supprimer les relances « de tête ». Dépend de <strong>ESUS</strong> + choix Stripe / Crédit Mutuel.</p>
+        <dl class="meta-row">
+          <div><dt>Trigger</dt><dd>J-30, J-15, J-7, J-1 (à valider) si paiement manquant</dd></div>
+          <div><dt>Sortie</dt><dd>Email (ou WhatsApp) de relance + arrêt auto si payé</dd></div>
+          <div><dt>Prérequis</dt><dd>Source de vérité paiement, statuts clairs, templates relance</dd></div>
+        </dl>
+        <ul>
+          <li>Cadences proposées : A) J-30/15/7/1 · B) J-21/10/3 · C) selon type client</li>
+          <li>Escalade vers Taina si impayé après séquence</li>
+        </ul>
+        <div class="links">
+          <a class="btn primary" href="auto-02-relance-paiements-remplissable.html" target="_blank">Fiche remplissable</a>
+          <a class="btn" href="auto-02-relance-paiements.html" target="_blank">Fiche détaillée</a>
+          <a class="btn" href="automatisations/03-auto-relances-paiements.html" target="_blank">Doc A3 (master plan)</a>
+        </div>
+      </article>
+
+      <article class="auto-detail" id="auto-03">
+        <header>
+          <h3>Auto 03 — Choix menu client + consolidation prestataires</h3>
+          <span class="gain">Gain estimé : 2–3 h / sem.</span>
+        </header>
+        <p class="body">Sécuriser la préparation avant excursion : formulaire menu (allergies, effectifs), verrouillage J-1, envoi fiche opérationnelle aux prestataires / guides.</p>
+        <dl class="meta-row">
+          <div><dt>Trigger</dt><dd>J-30 envoi formulaire · relance J-7 · lock J-1 (à valider)</dd></div>
+          <div><dt>Sortie</dt><dd>Menu consolidé + message unique prestataires</dd></div>
+          <div><dt>Prérequis</dt><dd>Questions obligatoires validées, canal d’envoi, fallback si pas de réponse</dd></div>
+        </dl>
+        <div class="links">
+          <a class="btn primary" href="auto-03-choix-menu-consolidation-remplissable.html" target="_blank">Fiche remplissable</a>
+          <a class="btn" href="auto-03-choix-menu-consolidation.html" target="_blank">Fiche détaillée</a>
+        </div>
+      </article>
+
+      <article class="auto-detail" id="auto-04">
+        <header>
+          <h3>Auto 04 — Post-excursion : feedback + synthèse + actions</h3>
+          <span class="gain">Gain estimé : 1–2 h / sem.</span>
+        </header>
+        <p class="body">Transformer chaque excursion en amélioration continue : questionnaire client court + reporting guide, synthèse auto, tâches si note &lt; 8 ou incident.</p>
+        <dl class="meta-row">
+          <div><dt>Trigger</dt><dd>T+3 h client · fin de journée guide · relance J+1 si vide</dd></div>
+          <div><dt>Sortie</dt><dd>Synthèse + tâches assignées (Taina / assistante)</dd></div>
+          <div><dt>Prérequis</dt><dd>2 formulaires validés, rituel revue hebdo 30 min</dd></div>
+        </dl>
+        <div class="links">
+          <a class="btn primary" href="auto-04-post-excursion-feedback-remplissable.html" target="_blank">Fiche remplissable</a>
+          <a class="btn" href="auto-04-post-excursion-feedback.html" target="_blank">Fiche détaillée</a>
+          <a class="btn" href="automatisations/04-auto-transcript-vers-actions.html" target="_blank">Doc A4 transcript→actions</a>
+        </div>
+      </article>
+
+      <article class="auto-detail" id="process-05">
+        <header>
+          <h3>Process 05 — Par type d’excursion + alertes J-30 → J+1 (guides & prestataires)</h3>
+          <span class="gain">Gain estimé : 3–5 h / sem.</span>
+        </header>
+        <p class="body">
+          <strong>Pas qu’une « auto » isolée :</strong> cadre tout le terrain — rappel veille (descriptif excursion), confirmation prestataire,
+          effectifs réels, escalades. Base = <strong>agenda à jour</strong> (escales Ponant, etc.) comme promis en S4.
+          Canal cible : <strong>Telegram</strong> (plus simple à automatiser) ou WhatsApp.
+        </p>
+        <dl class="meta-row">
+          <div><dt>Triggers type</dt><dd>J-30 · J-7 · J-1 18h · J0 20h · J+1 9h (fiche process)</dd></div>
+          <div><dt>Sortie</dt><dd>Registre prévu vs réel · alertes écart participants</dd></div>
+          <div><dt>Prérequis</dt><dd>1 fiche par type d’excursion · liste guides/prestataires · modèles messages</dd></div>
+        </dl>
+        <ul>
+          <li>Aligné master plan <strong>A1 — Rappels guides + reporting</strong></li>
+          <li>Priorité opérationnelle dite dès <strong>session 2</strong> (rappel prestataire veille)</li>
+        </ul>
+        <div class="links">
+          <a class="btn primary" href="process-excursions-types-alertes-remplissable.html" target="_blank">Fiche process remplissable</a>
+          <a class="btn" href="automatisations/01-auto-guides-rappels-et-reporting.html" target="_blank">Doc A1 guides</a>
+          <a class="btn" href="fiche-type-excursion-template-remplissable.html" target="_blank">Template type excursion</a>
+        </div>
+      </article>
+    </section>
+
+    <section id="portail">
+      <h2>Portail client & comptes-rendus</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">Espace client</span>
+          <h3>Portail Guadeloupe Explor</h3>
+          <p>Vue « entreprise » : séances, CR, contrat. À montrer en début de séance si besoin.</p>
+          <div class="links">
+            <a class="btn primary" href="https://espace.csbusiness.fr/app.html" target="_blank" rel="noopener">Ouvrir le portail</a>
+          </div>
+        </div>
+        <div class="card">
+          <span class="tag">Séance 1 · 26/03</span>
+          <h3>Diagnostic & lancement</h3>
+          <p>Onboarding, Claude Pro, cartographie.</p>
+          <div class="links">
+            <a class="btn primary" href="https://espace.csbusiness.fr/clients/taina/cr-session1-taina.html" target="_blank" rel="noopener">CR en ligne</a>
+            <a class="btn" href="sessions/cr-session1-guadeloupe-explor.html" target="_blank">CR local</a>
+          </div>
+        </div>
+        <div class="card">
+          <span class="tag">Séance 2 · 07/04</span>
+          <h3>Cartographie & outils</h3>
+          <p>3 parcours, DNS spam, iCloud, Ezus.</p>
+          <div class="links">
+            <a class="btn primary" href="https://espace.csbusiness.fr/clients/taina/cr-session2-taina.html" target="_blank" rel="noopener">CR en ligne</a>
+            <a class="btn" href="sessions/cr-session2-guadeloupe-explor.html" target="_blank">CR local</a>
+          </div>
+        </div>
+        <div class="card">
+          <span class="tag">Séance 3 · 21/04</span>
+          <h3>Infrastructure & ESUS</h3>
+          <p>Playbook DIP, routines IA, perfectionnisme.</p>
+          <div class="links">
+            <a class="btn primary" href="https://espace.csbusiness.fr/clients/taina/cr-session3-taina.html" target="_blank" rel="noopener">CR en ligne</a>
+            <a class="btn" href="sessions/cr-session3-guadeloupe-explor.html" target="_blank">CR local</a>
+          </div>
+        </div>
+        <div class="card">
+          <span class="tag">Séance 4 · 28/04</span>
+          <h3>Plaud & agenda</h3>
+          <p>Facturation, automatisations guides, agent calendrier.</p>
+          <div class="links">
+            <a class="btn primary" href="https://espace.csbusiness.fr/clients/taina/cr-session4-taina.html" target="_blank" rel="noopener">CR en ligne</a>
+            <a class="btn" href="sessions/cr-session4-guadeloupe-explor.html" target="_blank">CR local</a>
+          </div>
+        </div>
+        <div class="card">
+          <span class="tag">Séance 5 · 05/05</span>
+          <h3>QuotaTrip & marketing</h3>
+          <p>Projet Claude, Drive, assistante, LinkedIn skill.</p>
+          <div class="links">
+            <a class="btn primary" href="https://espace.csbusiness.fr/clients/taina/cr-session5-taina.html" target="_blank" rel="noopener">CR en ligne</a>
+            <a class="btn" href="sessions/cr-session5-guadeloupe-explor.html" target="_blank">CR local</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="outils">
+      <h2>Outils & accès rapides</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">IA</span>
+          <h3>Claude (Projet QuotaTrip)</h3>
+          <p>Brouillons réponses prospects · validation humaine obligatoire.</p>
+          <div class="links"><a class="btn primary" href="https://claude.ai" target="_blank" rel="noopener">Ouvrir Claude</a></div>
+        </div>
+        <div class="card">
+          <span class="tag">Enregistrement</span>
+          <h3>Plaud</h3>
+          <p>Comptes-rendus réunions / terrain · modèle Plaud Note (pas PIN).</p>
+          <div class="links"><a class="btn primary" href="https://www.plaud.ai" target="_blank" rel="noopener">Plaud</a></div>
+        </div>
+        <div class="card">
+          <span class="tag">Agenda</span>
+          <h3>Prise de RDV Catherine</h3>
+          <p>Prochain créneau coaching.</p>
+          <div class="links">
+            <a class="btn" href="https://fantastical.app/consulting-strategique/rdv1h" target="_blank" rel="noopener">RDV 1h</a>
+            <a class="btn" href="https://fantastical.app/consulting-strategique/reunion-1h30" target="_blank" rel="noopener">RDV 1h30</a>
+          </div>
+        </div>
+        <div class="card">
+          <span class="tag">CRM / ops</span>
+          <h3>ESUS</h3>
+          <p>Devis, facturation, logistique — source de vérité à trancher en séance.</p>
+          <div class="links"><a class="btn" href="https://www.ezus.fr" target="_blank" rel="noopener">ESUS / Ezus</a></div>
+        </div>
+        <div class="card">
+          <span class="tag">Fichiers</span>
+          <h3>Google Drive</h3>
+          <p>Calendrier éditorial, docs marketing (connecté à Claude S5).</p>
+          <div class="links"><a class="btn" href="https://drive.google.com" target="_blank" rel="noopener">Drive</a></div>
+        </div>
+        <div class="card">
+          <span class="tag">Prospects</span>
+          <h3>QuotaTrip</h3>
+          <p>Demandes entrantes — lié au projet Claude S5.</p>
+          <div class="links"><a class="btn" href="https://www.quotatrip.com" target="_blank" rel="noopener">QuotaTrip</a></div>
+        </div>
+        <div class="card">
+          <span class="tag">Mail</span>
+          <h3>Apple Mail / Calendrier</h3>
+          <p>Tutos migration iCloud (S2–S3).</p>
+          <div class="links">
+            <a class="btn" href="tuto-apple-mail-taina.html" target="_blank">Tuto Mail</a>
+            <a class="btn" href="tuto-apple-calendrier-taina.html" target="_blank">Tuto Calendrier</a>
+          </div>
+        </div>
+        <div class="card">
+          <span class="tag">Email</span>
+          <h3>Délivrabilité (spam)</h3>
+          <p>DNS corrigé — tester envoi réel.</p>
+          <div class="links">
+            <a class="btn" href="diagnostic-spam-email-instructions.html" target="_blank">Diagnostic spam</a>
+            <a class="btn" href="https://www.mail-tester.com" target="_blank" rel="noopener">Mail-tester</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cadrage">
+      <h2>Cadrage automatisations & parcours</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Schéma de décision</h3>
+          <p>Score /20 · règles 16+ = maintenant, 11–15 = préparer.</p>
+          <div class="links">
+            <a class="btn primary" href="../01-cadrage/schema-decision-automatisation-taina.md" target="_blank">Markdown</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Atelier remplissable (complet)</h3>
+          <p>Choix transverses ESUS, canal, mode V1.</p>
+          <div class="links">
+            <a class="btn primary" href="automatisations-taina-atelier-remplissable.html" target="_blank">Ouvrir l’atelier</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Plan global automatisations</h3>
+          <p>Vue d’ensemble des 4 flux.</p>
+          <div class="links">
+            <a class="btn" href="automatisations-taina-plan-global.html" target="_blank">Plan global</a>
+            <a class="btn" href="automatisations/00-master-plan-automatisations-taina.html" target="_blank">Master plan</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Parcours client complet</h3>
+          <p>Cartographie 3 parcours (DIP, site, B2B).</p>
+          <div class="links">
+            <a class="btn primary" href="parcours-client-complet-taina.html" target="_blank">Parcours</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Process excursions & alertes</h3>
+          <p>Types d’excursion, J-30 → J+1.</p>
+          <div class="links">
+            <a class="btn" href="process-excursions-types-alertes-remplissable.html" target="_blank">Process remplissable</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Feuille de route</h3>
+          <p>Phases 6–9 mois · priorités.</p>
+          <div class="links">
+            <a class="btn" href="feuille-de-route-taina.html" target="_blank">Feuille de route</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Fiches auto détaillées</h3>
+          <p>Une fiche par flux après choix V1.</p>
+          <div class="links">
+            <a class="btn" href="auto-01-leads-qualification-reponse-remplissable.html" target="_blank">Auto 01 Leads</a>
+            <a class="btn" href="auto-02-relance-paiements-remplissable.html" target="_blank">Auto 02 Paiements</a>
+            <a class="btn" href="auto-03-choix-menu-consolidation-remplissable.html" target="_blank">Auto 03 Menus</a>
+            <a class="btn" href="auto-04-post-excursion-feedback-remplissable.html" target="_blank">Auto 04 Post-excursion</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="decision">
+      <h2>Scoring & décision V1</h2>
+      <p class="prose">
+        Après le <a href="#catalogue">catalogue</a>, remplis la grille <strong>avec Taina</strong> (0–5 par critère).
+        Coche ensuite <strong>une seule</strong> V1. Garde la fiche remplissable de l’auto choisie ouverte dans un autre onglet.
+      </p>
+
+      <div class="decision-box">
+        <h3 style="margin:0 0 10px;font-family:'Playfair Display',serif;color:var(--terra)">Choix V1 (une seule)</h3>
+        <div class="auto-pick">
+          <div class="pick-card">
+            <label><input type="radio" name="v1" value="auto01"> Auto 01 — Leads & QuotaTrip</label>
+            <p class="hint">~2–4 h/sem · <a href="#auto-01">voir fiche</a></p>
+          </div>
+          <div class="pick-card">
+            <label><input type="radio" name="v1" value="auto02"> Auto 02 — Relances paiement</label>
+            <p class="hint">~1–3 h/sem · ESUS · <a href="#auto-02">voir fiche</a></p>
+          </div>
+          <div class="pick-card">
+            <label><input type="radio" name="v1" value="auto03"> Auto 03 — Menus & prestataires</label>
+            <p class="hint">~2–3 h/sem · <a href="#auto-03">voir fiche</a></p>
+          </div>
+          <div class="pick-card">
+            <label><input type="radio" name="v1" value="auto04"> Auto 04 — Post-excursion</label>
+            <p class="hint">~1–2 h/sem · <a href="#auto-04">voir fiche</a></p>
+          </div>
+          <div class="pick-card">
+            <label><input type="radio" name="v1" value="process05"> Process 05 — Terrain J-30→J+1</label>
+            <p class="hint">~3–5 h/sem · agenda · <a href="#process-05">voir fiche</a></p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:18px">Grille de score — détail par automatisation</h3>
+        <p style="font-size:0.82rem;color:#5c5652;margin-bottom:8px">Vol. = fréquence · Temps = charge actuelle · Risque = oublis · Impact = CA / cash / qualité</p>
+        <table class="score" id="score-table">
+          <thead>
+            <tr>
+              <th style="min-width:200px">Automatisation</th>
+              <th>Vol.</th>
+              <th>Temps</th>
+              <th>Risque</th>
+              <th>Impact</th>
+              <th>/20</th>
+              <th>Gain est.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-row="auto01">
+              <td><span class="score-name">Auto 01 — Leads & réponse</span><span class="score-sub">Qualification + brouillon (QuotaTrip)</span></td>
+              <td><input type="number" min="0" max="5" data-c="vol"></td>
+              <td><input type="number" min="0" max="5" data-c="temps"></td>
+              <td><input type="number" min="0" max="5" data-c="risque"></td>
+              <td><input type="number" min="0" max="5" data-c="impact"></td>
+              <td class="total-cell" data-total>0</td>
+              <td style="font-size:0.78rem">2–4 h</td>
+            </tr>
+            <tr data-row="auto02">
+              <td><span class="score-name">Auto 02 — Relances paiement</span><span class="score-sub">Acompte 50 %, soldes</span></td>
+              <td><input type="number" min="0" max="5" data-c="vol"></td>
+              <td><input type="number" min="0" max="5" data-c="temps"></td>
+              <td><input type="number" min="0" max="5" data-c="risque"></td>
+              <td><input type="number" min="0" max="5" data-c="impact"></td>
+              <td class="total-cell" data-total>0</td>
+              <td style="font-size:0.78rem">1–3 h</td>
+            </tr>
+            <tr data-row="auto03">
+              <td><span class="score-name">Auto 03 — Menus & consolidation</span><span class="score-sub">Client → fiche prestataires</span></td>
+              <td><input type="number" min="0" max="5" data-c="vol"></td>
+              <td><input type="number" min="0" max="5" data-c="temps"></td>
+              <td><input type="number" min="0" max="5" data-c="risque"></td>
+              <td><input type="number" min="0" max="5" data-c="impact"></td>
+              <td class="total-cell" data-total>0</td>
+              <td style="font-size:0.78rem">2–3 h</td>
+            </tr>
+            <tr data-row="auto04">
+              <td><span class="score-name">Auto 04 — Post-excursion</span><span class="score-sub">Feedback + synthèse + tâches</span></td>
+              <td><input type="number" min="0" max="5" data-c="vol"></td>
+              <td><input type="number" min="0" max="5" data-c="temps"></td>
+              <td><input type="number" min="0" max="5" data-c="risque"></td>
+              <td><input type="number" min="0" max="5" data-c="impact"></td>
+              <td class="total-cell" data-total>0</td>
+              <td style="font-size:0.78rem">1–2 h</td>
+            </tr>
+            <tr data-row="process05">
+              <td><span class="score-name">Process 05 — Terrain & alertes</span><span class="score-sub">Guides, prestataires, effectifs</span></td>
+              <td><input type="number" min="0" max="5" data-c="vol"></td>
+              <td><input type="number" min="0" max="5" data-c="temps"></td>
+              <td><input type="number" min="0" max="5" data-c="risque"></td>
+              <td><input type="number" min="0" max="5" data-c="impact"></td>
+              <td class="total-cell" data-total>0</td>
+              <td style="font-size:0.78rem">3–5 h</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.82rem;color:#5c5652;margin-top:8px"><strong>≥ 16</strong> : V1 maintenant · <strong>11–15</strong> : préparer · <strong>≤ 10</strong> : manuel</p>
+
+        <h3 style="margin-top:18px">Choix transverses (à valider)</h3>
+        <div class="grid" style="margin-top:8px">
+          <div class="form-row">
+            <label>Source de vérité</label>
+            <select id="source-verite">
+              <option value="">— Choisir —</option>
+              <option>ESUS</option>
+              <option>Agenda + table temporaire</option>
+              <option>Mix (à documenter)</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Canal messages auto</label>
+            <select id="canal">
+              <option value="">— Choisir —</option>
+              <option>Email</option>
+              <option>WhatsApp</option>
+              <option>Telegram</option>
+              <option>Mix selon flux</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Mode V1</label>
+            <select id="mode-v1">
+              <option value="">— Choisir —</option>
+              <option>Brouillon + validation humaine (recommandé)</option>
+              <option>Envoi automatique direct</option>
+            </select>
+          </div>
+        </div>
+
+        <h3 style="margin-top:16px">Prérequis avant build (cocher)</h3>
+        <div class="checklist" id="prereq">
+          <label><input type="checkbox" data-pre="agenda"> Agenda professionnel à jour (escales, excursions)</label>
+          <label><input type="checkbox" data-pre="esus"> Règle ESUS / paiement clarifiée (si Auto 02)</label>
+          <label><input type="checkbox" data-pre="modeles"> Modèles de messages validés par Taina</label>
+          <label><input type="checkbox" data-pre="liste"> Liste prestataires / guides à jour</label>
+          <label><input type="checkbox" data-pre="claude"> Projet Claude QuotaTrip à jour (si Auto 01)</label>
+          <label><input type="checkbox" data-pre="plaud"> Plaud testé au moins une fois</label>
+        </div>
+      </div>
+    </section>
+
+    <section id="synthese">
+      <h2>Synthèse de séance</h2>
+      <div class="decision-box">
+        <div class="form-row">
+          <label>Phrase de décision V1 (à remplir ensemble)</label>
+          <textarea id="phrase-v1" placeholder="Ex. : V1 = rappel prestataire J-1 par WhatsApp, brouillon validé par Taina avant envoi, premier test sur excursion Ponant du …"></textarea>
+        </div>
+        <div class="form-row">
+          <label>3 actions Taina</label>
+          <textarea id="actions-taina" placeholder="1. …&#10;2. …&#10;3. …"></textarea>
+        </div>
+        <div class="form-row">
+          <label>2 actions Catherine</label>
+          <textarea id="actions-cath" placeholder="1. …&#10;2. …"></textarea>
+        </div>
+        <div class="form-row">
+          <label>Prochaine séance (S7)</label>
+          <input type="text" id="date-s7" placeholder="Date + heure Guadeloupe">
+        </div>
+        <div class="toolbar">
+          <button type="button" class="primary" onclick="buildSummary()">Générer la synthèse</button>
+          <button type="button" onclick="copySummary()">Copier</button>
+          <button type="button" onclick="saveLocal()">Sauvegarder (navigateur)</button>
+          <button type="button" onclick="loadLocal()">Recharger</button>
+        </div>
+        <div id="decision-output" aria-live="polite">Clique « Générer la synthèse » en fin de séance.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>CS Consulting Stratégique · Cockpit séance 6 · Guadeloupe Explor · Usage Catherine — ne pas partager tel quel si données sensibles saisies</footer>
+
+  <script>
+    var STORAGE_KEY = 'guadeloupe-explor-seance6-cockpit';
+
+    function clampScore(n) {
+      n = parseInt(n, 10);
+      if (isNaN(n)) return 0;
+      return Math.max(0, Math.min(5, n));
+    }
+
+    function recalcScores() {
+      document.querySelectorAll('#score-table tbody tr').forEach(function(row) {
+        var sum = 0;
+        row.querySelectorAll('input[data-c]').forEach(function(inp) {
+          sum += clampScore(inp.value);
+        });
+        var cell = row.querySelector('[data-total]');
+        cell.textContent = sum;
+        cell.style.color = sum >= 16 ? 'var(--ok)' : sum >= 11 ? 'var(--warn)' : 'var(--terra)';
+      });
+    }
+
+    document.querySelectorAll('#score-table input').forEach(function(inp) {
+      inp.addEventListener('input', recalcScores);
+    });
+
+    var labels = {
+      auto01: 'Auto 01 — Leads & QuotaTrip (qualification + brouillon)',
+      auto02: 'Auto 02 — Relances acompte / solde',
+      auto03: 'Auto 03 — Menus & consolidation prestataires',
+      auto04: 'Auto 04 — Post-excursion feedback + synthèse',
+      process05: 'Process 05 — Terrain, alertes J-30→J+1 (guides & prestataires)'
+    };
+
+    function buildSummary() {
+      var v1 = document.querySelector('input[name="v1"]:checked');
+      var v1val = v1 ? v1.value : '(non choisi)';
+      var v1label = labels[v1val] || v1val;
+
+      var scores = [];
+      document.querySelectorAll('#score-table tbody tr').forEach(function(row) {
+        scores.push(row.dataset.row + ' : ' + row.querySelector('[data-total]').textContent + '/20');
+      });
+
+      var prereq = [];
+      document.querySelectorAll('#prereq input:checked').forEach(function(cb) {
+        prereq.push(cb.parentElement.textContent.trim());
+      });
+
+      var text = [
+        '=== Guadeloupe Explor — Synthèse séance 6 ===',
+        'Date : 2026-05-18',
+        '',
+        'DÉCISION V1 : ' + v1label,
+        document.getElementById('phrase-v1').value.trim() || '(phrase à compléter)',
+        '',
+        'Scores : ' + scores.join(' · '),
+        '',
+        'Source de vérité : ' + (document.getElementById('source-verite').value || '—'),
+        'Canal : ' + (document.getElementById('canal').value || '—'),
+        'Mode V1 : ' + (document.getElementById('mode-v1').value || '—'),
+        '',
+        'Prérequis OK :',
+        prereq.length ? prereq.map(function(p) { return '  • ' + p; }).join('\n') : '  (aucun coché)',
+        '',
+        'Actions Taina :',
+        document.getElementById('actions-taina').value.trim() || '—',
+        '',
+        'Actions Catherine :',
+        document.getElementById('actions-cath').value.trim() || '—',
+        '',
+        'S7 : ' + (document.getElementById('date-s7').value.trim() || '—')
+      ].join('\n');
+
+      document.getElementById('decision-output').textContent = text;
+      return text;
+    }
+
+    function copySummary() {
+      var text = buildSummary();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          alert('Synthèse copiée dans le presse-papiers.');
+        });
+      } else {
+        alert('Copie manuelle : sélectionne le bloc synthèse.');
+      }
+    }
+
+    function collectState() {
+      var scores = {};
+      document.querySelectorAll('#score-table tbody tr').forEach(function(row) {
+        scores[row.dataset.row] = {};
+        row.querySelectorAll('input[data-c]').forEach(function(inp) {
+          scores[row.dataset.row][inp.dataset.c] = inp.value;
+        });
+      });
+      var pre = {};
+      document.querySelectorAll('#prereq input').forEach(function(cb) {
+        pre[cb.dataset.pre] = cb.checked;
+      });
+      return {
+        v1: (document.querySelector('input[name="v1"]:checked') || {}).value || '',
+        scores: scores,
+        source: document.getElementById('source-verite').value,
+        canal: document.getElementById('canal').value,
+        mode: document.getElementById('mode-v1').value,
+        phrase: document.getElementById('phrase-v1').value,
+        taina: document.getElementById('actions-taina').value,
+        cath: document.getElementById('actions-cath').value,
+        s7: document.getElementById('date-s7').value,
+        pre: pre
+      };
+    }
+
+    function applyState(s) {
+      if (!s) return;
+      if (s.v1) {
+        var r = document.querySelector('input[name="v1"][value="' + s.v1 + '"]');
+        if (r) r.checked = true;
+      }
+      if (s.scores) {
+        document.querySelectorAll('#score-table tbody tr').forEach(function(row) {
+          var rowData = s.scores[row.dataset.row];
+          if (!rowData) return;
+          row.querySelectorAll('input[data-c]').forEach(function(inp) {
+            if (rowData[inp.dataset.c] != null) inp.value = rowData[inp.dataset.c];
+          });
+        });
+      }
+      document.getElementById('source-verite').value = s.source || '';
+      document.getElementById('canal').value = s.canal || '';
+      document.getElementById('mode-v1').value = s.mode || '';
+      document.getElementById('phrase-v1').value = s.phrase || '';
+      document.getElementById('actions-taina').value = s.taina || '';
+      document.getElementById('actions-cath').value = s.cath || '';
+      document.getElementById('date-s7').value = s.s7 || '';
+      if (s.pre) {
+        document.querySelectorAll('#prereq input').forEach(function(cb) {
+          if (s.pre[cb.dataset.pre] != null) cb.checked = s.pre[cb.dataset.pre];
+        });
+      }
+      recalcScores();
+    }
+
+    function saveLocal() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(collectState()));
+        alert('Sauvegardé dans ce navigateur.');
+      } catch (e) {
+        alert('Sauvegarde impossible : ' + e.message);
+      }
+    }
+
+    function loadLocal() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) { alert('Rien à recharger.'); return; }
+        applyState(JSON.parse(raw));
+        alert('Rechargé.');
+      } catch (e) {
+        alert('Erreur : ' + e.message);
+      }
+    }
+
+    loadLocal();
+  </script>
+</body>
+</html>

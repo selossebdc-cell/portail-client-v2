@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Process excursions par type + alertes auto (remplissable)</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card: #181c24;
+      --text: #e9edf5;
+      --muted: #a8b0bf;
+      --line: #2a3140;
+      --accent: #7cc4ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      padding: 24px;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    h1 { font-size: 1.6rem; margin-bottom: 8px; }
+    h2 { font-size: 1.2rem; margin-bottom: 8px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    h3 { font-size: 1rem; margin: 10px 0 8px; color: var(--accent); }
+    p { color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    label { display: block; color: var(--muted); font-size: 0.92rem; margin-bottom: 6px; }
+    input[type="text"], input[type="date"], textarea, select {
+      width: 100%;
+      background: #11151d;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.95rem;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      border: 1px solid var(--line);
+      background: #131821;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      vertical-align: top;
+      font-size: 0.9rem;
+    }
+    th { color: var(--accent); font-weight: 600; }
+    .checklist label { color: var(--text); margin-bottom: 8px; }
+    .checklist input { margin-right: 8px; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    button {
+      background: #1c2738;
+      color: var(--text);
+      border: 1px solid #32445f;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+    button.primary { background: #133a5c; border-color: #2b5f8e; }
+    .small { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Process par type d'excursion + alertes prestataires/guides</h1>
+      <p>Objectif: cadrer toutes les automatisations hors client (guide, prestataires, confirmations, effectifs).</p>
+      <div class="actions">
+        <button class="primary" onclick="saveForm()">Sauvegarder (local)</button>
+        <button onclick="loadForm()">Recharger</button>
+        <button onclick="copySummary()">Copier résumé process</button>
+      </div>
+      <p class="small">Document remplissable en direct pendant la séance avec Taina.</p>
+    </div>
+
+    <div class="card">
+      <h2>1) Paramètres globaux opérationnels</h2>
+      <div class="grid">
+        <div>
+          <label>Canal principal prestataires</label>
+          <select data-field="canal_prestataires">
+            <option value="">-- Choisir --</option>
+            <option>WhatsApp</option>
+            <option>Telegram</option>
+            <option>Email</option>
+            <option>Mix (par prestataire)</option>
+          </select>
+        </div>
+        <div>
+          <label>Canal principal guides</label>
+          <select data-field="canal_guides">
+            <option value="">-- Choisir --</option>
+            <option>WhatsApp</option>
+            <option>Telegram</option>
+            <option>Email</option>
+          </select>
+        </div>
+        <div>
+          <label>SLA confirmation prestataire</label>
+          <input data-field="sla_confirmation" type="text" placeholder="ex: confirmation sous 2h">
+        </div>
+        <div>
+          <label>Heure d'envoi par défaut des alertes</label>
+          <input data-field="heure_alertes" type="text" placeholder="ex: 09:00 heure Guadeloupe">
+        </div>
+      </div>
+      <label>Règle fallback si pas de réponse</label>
+      <textarea data-field="fallback_regle" placeholder="ex: relance + escalade vers Taina + prestataire de backup"></textarea>
+    </div>
+
+    <div class="card">
+      <h2>2) Matrice d'alertes standard (J-30 -> J+1)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Jalon</th>
+            <th>Destinataire</th>
+            <th>Action automatique</th>
+            <th>Canal</th>
+            <th>Contenu attendu</th>
+            <th>Validation humaine?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>J-30</td>
+            <td><input data-field="j30_dest" type="text" placeholder="prestataire / guide"></td>
+            <td><input data-field="j30_action" type="text" placeholder="pré-confirmation date"></td>
+            <td><input data-field="j30_canal" type="text" placeholder="WhatsApp/Telegram"></td>
+            <td><input data-field="j30_contenu" type="text" placeholder="date, type excursion, nb estimé"></td>
+            <td><input data-field="j30_validation" type="text" placeholder="oui/non"></td>
+          </tr>
+          <tr>
+            <td>J-14</td>
+            <td><input data-field="j14_dest" type="text"></td>
+            <td><input data-field="j14_action" type="text"></td>
+            <td><input data-field="j14_canal" type="text"></td>
+            <td><input data-field="j14_contenu" type="text"></td>
+            <td><input data-field="j14_validation" type="text"></td>
+          </tr>
+          <tr>
+            <td>J-7</td>
+            <td><input data-field="j7_dest" type="text"></td>
+            <td><input data-field="j7_action" type="text"></td>
+            <td><input data-field="j7_canal" type="text"></td>
+            <td><input data-field="j7_contenu" type="text"></td>
+            <td><input data-field="j7_validation" type="text"></td>
+          </tr>
+          <tr>
+            <td>J-2</td>
+            <td><input data-field="j2_dest" type="text"></td>
+            <td><input data-field="j2_action" type="text"></td>
+            <td><input data-field="j2_canal" type="text"></td>
+            <td><input data-field="j2_contenu" type="text"></td>
+            <td><input data-field="j2_validation" type="text"></td>
+          </tr>
+          <tr>
+            <td>J-1</td>
+            <td><input data-field="j1_dest" type="text"></td>
+            <td><input data-field="j1_action" type="text"></td>
+            <td><input data-field="j1_canal" type="text"></td>
+            <td><input data-field="j1_contenu" type="text"></td>
+            <td><input data-field="j1_validation" type="text"></td>
+          </tr>
+          <tr>
+            <td>Jour J (matin)</td>
+            <td><input data-field="jj_dest" type="text"></td>
+            <td><input data-field="jj_action" type="text"></td>
+            <td><input data-field="jj_canal" type="text"></td>
+            <td><input data-field="jj_contenu" type="text"></td>
+            <td><input data-field="jj_validation" type="text"></td>
+          </tr>
+          <tr>
+            <td>J+1</td>
+            <td><input data-field="jp1_dest" type="text"></td>
+            <td><input data-field="jp1_action" type="text"></td>
+            <td><input data-field="jp1_canal" type="text"></td>
+            <td><input data-field="jp1_contenu" type="text"></td>
+            <td><input data-field="jp1_validation" type="text"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>3) Messages automatiques types (hors client)</h2>
+      <div class="grid">
+        <div>
+          <label>Template "pré-confirmation prestataire"</label>
+          <textarea data-field="tpl_preconfirm" placeholder="Bonjour, confirmation de disponibilité pour [date] ..."></textarea>
+        </div>
+        <div>
+          <label>Template "confirmation finale J-2/J-1"</label>
+          <textarea data-field="tpl_confirm_finale" placeholder="Rappel excursion [date], nb personnes [X], rendez-vous [lieu/heure] ..."></textarea>
+        </div>
+        <div>
+          <label>Template "brief guide Jour J"</label>
+          <textarea data-field="tpl_brief_guide" placeholder="Checklist du jour, points sensibles, contact urgence ..."></textarea>
+        </div>
+        <div>
+          <label>Template "retour effectif réel fin journée"</label>
+          <textarea data-field="tpl_effectif_reel" placeholder="Merci d'envoyer le nombre réel de personnes + incidents + points d'amélioration."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>4) Process par type d'excursion (résumé)</h2>
+      <div class="grid">
+        <div>
+          <label>Type 1 (ex: Meurtre au Paradis)</label>
+          <textarea data-field="type1_process" placeholder="Prestataires impliqués, jalons spécifiques, alerte particulière"></textarea>
+        </div>
+        <div>
+          <label>Type 2 (ex: B2C site)</label>
+          <textarea data-field="type2_process" placeholder="Prestataires impliqués, jalons spécifiques, alerte particulière"></textarea>
+        </div>
+        <div>
+          <label>Type 3 (ex: Ponant/UCPA)</label>
+          <textarea data-field="type3_process" placeholder="Prestataires impliqués, jalons spécifiques, alerte particulière"></textarea>
+        </div>
+      </div>
+      <label>Exceptions connues (jours fériés, prestataire fragile, etc.)</label>
+      <textarea data-field="exceptions" placeholder="Liste des exceptions + comment l'automatisation doit réagir"></textarea>
+    </div>
+
+    <div class="card">
+      <h2>5) Configuration technique à valider</h2>
+      <div class="checklist">
+        <label><input data-field="cfg_1" type="checkbox">Liste à jour des prestataires + canal préféré + numéro/contact.</label>
+        <label><input data-field="cfg_2" type="checkbox">Liste à jour des guides + canal préféré + contact secours.</label>
+        <label><input data-field="cfg_3" type="checkbox">Mécanisme accusé de réception (OK reçu / non reçu).</label>
+        <label><input data-field="cfg_4" type="checkbox">Escalade automatique vers Taina si non-réponse au SLA.</label>
+        <label><input data-field="cfg_5" type="checkbox">Log de tous les envois + statut + horodatage.</label>
+      </div>
+      <label>Décision finale de config (WhatsApp, Telegram, ou mix)</label>
+      <input data-field="decision_config_finale" type="text" placeholder="Décision validée et périmètre de déploiement">
+    </div>
+
+    <div class="card">
+      <h2>6) Plan de déploiement</h2>
+      <div class="grid">
+        <div>
+          <label>Pilote initial (quel type d'excursion?)</label>
+          <input data-field="pilote_type" type="text">
+        </div>
+        <div>
+          <label>Date début pilote</label>
+          <input data-field="pilote_date" type="date">
+        </div>
+        <div>
+          <label>Responsable pilotage</label>
+          <input data-field="pilote_owner" type="text" placeholder="Taina / Catherine / autre">
+        </div>
+      </div>
+      <label>Critères de succès du pilote</label>
+      <textarea data-field="pilot_kpi" placeholder="ex: 95% confirmations reçues à J-2, 0 oubli effectif réel"></textarea>
+    </div>
+  </div>
+
+  <script>
+    const KEY = "process_excursions_alertes_taina_v1";
+    function fields() { return Array.from(document.querySelectorAll("[data-field]")); }
+    function getData() {
+      const data = {};
+      fields().forEach(el => { data[el.dataset.field] = el.type === "checkbox" ? el.checked : el.value; });
+      return data;
+    }
+    function setData(data) {
+      fields().forEach(el => {
+        if (!(el.dataset.field in data)) return;
+        if (el.type === "checkbox") el.checked = !!data[el.dataset.field];
+        else el.value = data[el.dataset.field] || "";
+      });
+    }
+    function saveForm() {
+      localStorage.setItem(KEY, JSON.stringify(getData()));
+      alert("Sauvegarde locale effectuee.");
+    }
+    function loadForm() {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      setData(JSON.parse(raw));
+    }
+    function copySummary() {
+      const d = getData();
+      const txt = [
+        "Process excursions + alertes automatiques (resume)",
+        "",
+        "Canal prestataires: " + (d.canal_prestataires || ""),
+        "Canal guides: " + (d.canal_guides || ""),
+        "SLA: " + (d.sla_confirmation || ""),
+        "Heure alertes: " + (d.heure_alertes || ""),
+        "Decision config finale: " + (d.decision_config_finale || ""),
+        "",
+        "Type 1:",
+        d.type1_process || "",
+        "Type 2:",
+        d.type2_process || "",
+        "Type 3:",
+        d.type3_process || "",
+        "",
+        "Exceptions:",
+        d.exceptions || "",
+        "",
+        "Pilote:",
+        "- Type: " + (d.pilote_type || ""),
+        "- Date: " + (d.pilote_date || ""),
+        "- Owner: " + (d.pilote_owner || ""),
+        "- KPI: " + (d.pilot_kpi || "")
+      ].join("\n");
+      navigator.clipboard.writeText(txt).then(() => alert("Resume copie."));
+    }
+    window.addEventListener("load", loadForm);
+  </script>
+</body>
+</html>

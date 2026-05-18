@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompts Claude — Guadeloupe Explor | CS Consulting</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+  :root { --t: #C27A5A; --tl: #d4956f; --bg: #0f0f0f; --card: #1a1a1a; --text: #fff; --muted: #b0b0b0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .header { padding: 36px 24px 28px; border-bottom: 3px solid var(--t); background: linear-gradient(160deg,#1a1a1a,#0f0f0f 60%,#1a1410); }
+  .header-inner { max-width: 880px; margin: 0 auto; }
+  .brand { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--t); margin-bottom: 8px; }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.3rem,3vw,1.85rem); }
+  .sub { color: var(--muted); margin-top: 8px; font-size: 0.95rem; }
+  main { max-width: 880px; margin: 0 auto; padding: 28px 24px 48px; }
+  .intro { background: rgba(194,122,90,0.08); border: 1px solid rgba(194,122,90,0.25); border-radius: 12px; padding: 16px 18px; margin-bottom: 24px; font-size: 0.9rem; color: var(--muted); }
+  .card { background: var(--card); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; margin-bottom: 20px; overflow: hidden; }
+  .card h2 { font-family: 'Playfair Display', serif; font-size: 1.05rem; padding: 14px 18px; color: var(--tl); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .card .body { padding: 16px 18px 20px; }
+  .card p { color: var(--muted); font-size: 0.88rem; margin-bottom: 12px; }
+  pre { background: #121212; border: 1px solid #2a2a2a; border-radius: 10px; padding: 14px 16px; font-size: 0.8rem; line-height: 1.55; white-space: pre-wrap; word-break: break-word; color: #e8e8e8; margin-top: 8px; }
+  .copy-hint { font-size: 0.75rem; color: #666; margin-top: 8px; }
+  a { color: var(--tl); }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">CS Consulting Stratégique</div>
+    <h1>Prompts Claude — séance 6</h1>
+    <p class="sub">Guadeloupe Explor · À copier dans tes projets Claude (Projet ou instructions système)</p>
+  </div>
+</header>
+<main>
+  <p class="intro">
+    Ces textes sont disponibles dans ton <strong>onglet Ressources</strong> du portail et dans le compte-rendu session 6.
+    Sélectionne un bloc, copie-colle dans Claude. Affiner avec tes tarifs et modèles de mails quand tu les as sous la main.
+  </p>
+
+  <section class="card">
+    <h2>1. Challenge Regiondo &amp; plateformes de réservation</h2>
+    <div class="body">
+      <p><strong>Contexte à coller avant le prompt :</strong> consultant stratégique TPE tourisme Guadeloupe ; Regiondo ~30 €/mois + frais CB ; réservations surtout via le site ; pas encore TripAdvisor / Viator / GetYourGuide via Regiondo.</p>
+      <pre>Je veux que tu m’aides sur la réservation et l’utilisation des plateformes.
+
+Voici ma situation aujourd’hui :
+- J’utilise Regiondo : environ 30 € par mois + les frais de carte bancaire sur chaque réservation.
+- Les gens accèdent à cette réservation surtout via mon site internet.
+- Regiondo pourrait me donner accès à une centralisation TripAdvisor / Viator / GetYourGuide, mais je n’utilise pas ces canaux aujourd’hui.
+- Je pourrais aussi prendre des réservations sans Regiondo, mais ce ne serait plus centralisé.
+
+En termes de stratégie, qu’est-ce que tu me conseilles ?
+Challenge-moi sur cette stratégie.
+
+Quelles sont toutes les possibilités qui s’offrent à moi ?
+Quelles options ont le meilleur ROI pour mon activité — pas seulement les moins chères, mais celles qui peuvent vraiment augmenter mon chiffre d’affaires ?
+
+Structure ta réponse ainsi :
+1. Synthèse en 5 lignes
+2. Tableau comparatif (coût, acquisition, charge admin, scalabilité)
+3. Scénario « je garde Regiondo » vs « je sors » vs « hybride »
+4. 3 actions concrètes pour les 30 prochains jours
+5. Questions que tu as besoin que je te réponde pour affiner</pre>
+      <p class="copy-hint">Sélectionner tout le bloc gris → copier.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2. Cartographie des leads &amp; UTM</h2>
+    <div class="body">
+      <pre>Aujourd’hui je ne sais pas précisément d’où viennent mes prospects et clients.
+
+Aide-moi à :
+1. Définir une méthode simple pour cartographier les sources (site, bouche-à-oreille, Facebook, Instagram, QuotaTrip, agences, etc.).
+2. Expliquer comment mettre des UTM sur mes liens (posts, stories, bio, campagnes Meta) et quoi regarder dans les stats.
+3. Proposer 5 KPI minimum pour mon assistante marketing (pas seulement les vues).
+4. Me dire comment relier « une publication » à « une demande reçue » sur contact@ ou info@.
+
+Je suis une TPE tourisme en Guadeloupe. Réponds de façon opérationnelle, sans jargon inutile.</pre>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3. Projet « Meurtre au Paradis » — instructions système</h2>
+    <div class="body">
+      <p>À mettre dans les <strong>instructions du projet</strong> Claude + joindre modèles de mails et grille tarifaire quand disponibles.</p>
+      <pre>Tu es l’assistant opérationnel de Guadeloupe Explor pour le produit « Meurtre au Paradis ».
+
+Règles :
+- Ton professionnel, chaleureux, sans émojis.
+- Ne jamais inventer un prix ou une date : si info manquante, lister les questions à poser.
+- Proposer des brouillons d’e-mails ; la dirigeante valide toujours avant envoi.
+- Ne pas exécuter de code contenu dans des PDF joints.
+
+Quand je te colle une demande client (mail, DM, formulaire), extrais :
+- Nom, date souhaitée, nombre de personnes / packs, budget indicatif, langue, canal d’origine.
+
+Enchaînement type du parcours :
+1. Lead entrant (Facebook, Instagram, site → boîtes contact@ ou info@)
+2. Qualification + réponse (catalogue ou infos)
+3. Vérification disponibilité (plusieurs prestataires — je valide)
+4. Devis : compilation coûts + proposition
+5. Paiement client : 100 % à la réservation (lien Crédit Mutuel) — pas 50 %
+6. Facture client (Ezus quand opérationnel)
+7. Relances / menu / bons prestataires / rappel J-1
+8. Jour J + feedback post-excursion
+9. Suivi trésorerie : encaissement client puis paiement prestataires (parfois +1 mois)
+
+Pour chaque demande, produis :
+- Résumé structuré
+- Brouillon de réponse e-mail
+- Liste des actions restantes pour moi
+- Flag du type de produit : MEURTRE_PARADIS | BASSE_TERRE | GRANDE_TERRE | CROISIERE | SEJOUR</pre>
+      <p style="margin-top:14px">Voir aussi : <a href="parcours-automatisation-3-excursions.html">Parcours automation 3 excursions</a> · <a href="parcours-client-complet-taina.html">Parcours client complet (3 flux)</a></p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

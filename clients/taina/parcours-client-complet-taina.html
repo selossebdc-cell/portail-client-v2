@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcours Client Complet — Guadeloupe Explor | Catherine Selosse</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #C27A5A;
+            --primary-light: #d4956f;
+            --bg: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --text: #ffffff;
+            --text-light: #b0b0b0;
+            --text-dim: #666666;
+            --success: #4ade80;
+            --warning: #fb923c;
+            --danger: #f87171;
+            --info: #60a5fa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            background: linear-gradient(160deg, #1a1a1a 0%, #0f0f0f 50%, #1a1410 100%);
+            padding: 50px 40px 40px;
+            border-bottom: 3px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -100px; right: -60px;
+            width: 300px; height: 300px;
+            background: var(--primary);
+            opacity: 0.05;
+            border-radius: 50%;
+        }
+        .header .brand {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .header .subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            position: relative;
+            z-index: 1;
+        }
+        .header .meta {
+            margin-top: 16px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            position: relative;
+            z-index: 1;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        /* SECTIONS */
+        .section {
+            margin-bottom: 48px;
+        }
+        .section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 32px 0 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(194,122,90,0.3);
+        }
+        .section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 24px 0 12px;
+            color: var(--primary-light);
+        }
+
+        /* HIGHLIGHT BOX */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(194,122,90,0.12) 0%, rgba(194,122,90,0.04) 100%);
+            border: 1px solid rgba(194,122,90,0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .highlight-box p {
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        table th {
+            background: rgba(194,122,90,0.15);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-light);
+            border-bottom: 1px solid rgba(194,122,90,0.2);
+        }
+        table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+        }
+        table td:first-child {
+            font-weight: 500;
+            color: var(--text);
+        }
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .score-bad { color: var(--danger); font-weight: 600; }
+        .score-warn { color: var(--warning); font-weight: 600; }
+        .score-good { color: var(--success); font-weight: 600; }
+
+        /* FLUX STEPS */
+        .flux-step {
+            background: var(--bg-card);
+            border-left: 3px solid var(--primary);
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 0 8px 8px 0;
+        }
+        .flux-step .step-num {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        .flux-step .step-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .flux-step .step-detail {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+        .flux-step .step-ideal {
+            font-size: 0.85rem;
+            color: var(--success);
+            font-style: italic;
+        }
+
+        /* ARCHITECTURE DIAGRAM */
+        .diagram {
+            background: var(--bg-card);
+            border: 1px solid rgba(194,122,90,0.2);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 24px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* PRIORITY GRID */
+        .priority-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .priority-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(194,122,90,0.2);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .priority-card .priority-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .priority-card .p1 { background: rgba(248,113,113,0.2); color: var(--danger); }
+        .priority-card .p2 { background: rgba(251,147,60,0.2); color: var(--warning); }
+        .priority-card .p3 { background: rgba(74,222,128,0.2); color: var(--success); }
+        .priority-card .title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .priority-card .desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* KPI GRID */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin: 24px 0;
+        }
+        .kpi-item {
+            background: var(--bg-card);
+            border: 1px solid rgba(194,122,90,0.2);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .kpi-item .label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .kpi-item .value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 30px 40px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-top: 60px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .main { padding: 24px; }
+            .header { padding: 30px 24px; }
+            table { font-size: 0.8rem; }
+            table th, table td { padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="brand">CS — Consulting Stratégique</div>
+    <h1>Parcours Client Complet</h1>
+    <div class="subtitle">Guadeloupe Explor — Taïna THARSIS</div>
+    <div class="meta">
+        <span>Document : Proposition</span>
+        <span>Date : 21 avril 2026</span>
+        <span>Status : À discuter</span>
+    </div>
+</div>
+
+<div class="main">
+
+    <!-- SYNTHÈSE -->
+    <div class="section">
+        <h2>📊 Synthèse exécutive</h2>
+        <div class="highlight-box">
+            <p><strong>Taïna gère 3 parcours client parallèles :</strong></p>
+            <p style="margin-top: 12px; margin-bottom: 0;">
+                🏖️ <strong>BtoC DIP</strong> (Contact@, réseaux sociaux) — Flux court, peu structuré, délai 4-5j<br>
+                🌐 <strong>BtoC Info</strong> (Info@, site web) — Flux plus long (appels), moins de volume<br>
+                🚢 <strong>B2B Ponant/UCPA</strong> (ttharsis@) — Flux structuré, pré-réservation 15j avant
+            </p>
+        </div>
+        <div class="highlight-box">
+            <p><strong>🔴 Problème central</strong> : 0% automatisation, 3 boîtes mails non centralisées, facturation manuelle, 50 prestataires en WhatsApp, pas de cloud.</p>
+            <p style="margin-top: 12px; margin-bottom: 0;"><strong>✅ Solution</strong> : Centraliser via <strong>Ezus</strong> (hub client + facturation) + <strong>Claude</strong> automatisé (réponses + qualification) + <strong>intégration WhatsApp</strong> pour prestataires.</p>
+        </div>
+    </div>
+
+    <!-- PARCOURS 1 -->
+    <div class="section">
+        <h2>🔄 Parcours 1 : BtoC DIP (Meurtre au Paradis)</h2>
+        <p style="margin-bottom: 24px; color: var(--text-light);">14 étapes du lead au feedback post-excursion. Chaque étape peut être accélérée.</p>
+
+        <h3>Détail des 14 étapes</h3>
+        <div class="flux-step">
+            <div class="step-num">1. LEAD ENTRANT</div>
+            <div class="step-title">Via Facebook, Instagram, WhatsApp, SMS, email</div>
+            <div class="step-detail">Aujourd'hui : Taïna lit manuellement chaque canal</div>
+            <div class="step-ideal">→ Idéal : 1 inbox centralisée (email + chat)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">2. QUALIFICATION</div>
+            <div class="step-title">Extraire : nom, date, nbre pax, budget, type tour</div>
+            <div class="step-detail">Aujourd'hui : Taïna détermine le type à la main</div>
+            <div class="step-ideal">→ Idéal : Claude automatisé extrait les infos (gain 3-5 min)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">3. RÉPONSE TYPE</div>
+            <div class="step-title">Envoi catalogue ou infos</div>
+            <div class="step-detail">Aujourd'hui : Copier-coller depuis fichier Excel</div>
+            <div class="step-ideal">→ Idéal : Claude génère brouillon en 30s (après 15j → envoi auto)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">4. VÉRIFICATION DISPONIBILITÉ</div>
+            <div class="step-title">Appels/WhatsApp aux 5 prestataires</div>
+            <div class="step-detail">Aujourd'hui : 45 min par excursion</div>
+            <div class="step-ideal">→ Idéal : Chatbot WhatsApp → réponses en 2h (gain 40 min)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">5. DEVIS / CONFIRMATION PRIX</div>
+            <div class="step-title">Compiler coûts + générer devis</div>
+            <div class="step-detail">Aujourd'hui : Taïna compile manuellement</div>
+            <div class="step-ideal">→ Idéal : Formule tarifaire dans Ezus → devis auto (gain 5-10 min)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">6. PAIEMENT</div>
+            <div class="step-title">50% ou 100% via Crédit Mutuel</div>
+            <div class="step-detail">Aujourd'hui : Lien bancaire + copier confirmation dans Excel</div>
+            <div class="step-ideal">→ Idéal : Webhook CM → Ezus OU export CSV (gain 2-3 min)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">7. FACTURE INDIVIDUELLE</div>
+            <div class="step-title">Générer facture client</div>
+            <div class="step-detail">Aujourd'hui : 0 facture (perte comptable)</div>
+            <div class="step-ideal">→ Idéal : Ezus auto-génère (gain 10 min + traçabilité)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">8. RELANCE 50% RESTANT</div>
+            <div class="step-title">Email 1 mois avant l'excursion</div>
+            <div class="step-detail">Aujourd'hui : Taïna oublie souvent</div>
+            <div class="step-ideal">→ Idéal : Automation Ezus (gain 5 min + 100% des relances)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">9. CHOIX DE MENU</div>
+            <div class="step-title">Formulaire + confirmation prestataires</div>
+            <div class="step-detail">Aujourd'hui : Mail manuel, compilation manuelle</div>
+            <div class="step-ideal">→ Idéal : Formulaire Ezus + Claude extrait (gain 5-10 min)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">10. BON DE COMMANDE PRESTATAIRES</div>
+            <div class="step-title">Créer + distribuer aux 5 prestataires</div>
+            <div class="step-detail">Aujourd'hui : 20-30 min par excursion (Word/Excel)</div>
+            <div class="step-ideal">→ Idéal : Ezus auto-génère → WhatsApp à chaque prestataire (gain 20 min)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">11. RAPPEL VEILLE (J-1)</div>
+            <div class="step-title">Email + SMS à tous les prestataires + client</div>
+            <div class="step-detail">Aujourd'hui : Pas systématique</div>
+            <div class="step-ideal">→ Idéal : Automation Ezus/WhatsApp (gain 15 min)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">12. JOUR J (COORDINATION)</div>
+            <div class="step-title">Gérer les impromptus</div>
+            <div class="step-detail">Aujourd'hui : Taïna gère tout (guide absent, port bloqué, etc.) = 45 min</div>
+            <div class="step-ideal">→ Idéal : Chatbot WhatsApp pour questions standard (gain 30 min)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">13. POST-EXCURSION (FEEDBACK)</div>
+            <div class="step-title">Formulaire + photos + envoi</div>
+            <div class="step-detail">Aujourd'hui : Assistante fait parfois (non systématique)</div>
+            <div class="step-ideal">→ Idéal : Formulaire Ezus + Claude recap auto (gain 5-10 min)</div>
+        </div>
+
+        <div class="flux-step">
+            <div class="step-num">14. FIDÉLISATION</div>
+            <div class="step-title">Email 6 mois après + nouvelles offres</div>
+            <div class="step-detail">Aujourd'hui : 0 (sauf si client re-contacte)</div>
+            <div class="step-ideal">→ Idéal : Automation Ezus + newsletter (gain récurrent)</div>
+        </div>
+
+        <h3 style="margin-top: 32px;">📈 Résumé temps gagné par client</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Étape</th>
+                    <th>Temps actuel</th>
+                    <th>Temps idéal</th>
+                    <th>Gain</th>
+                    <th>Automatisé?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Lead + Qualification</td>
+                    <td>10 min</td>
+                    <td>1 min</td>
+                    <td><span class="score-good">9 min</span></td>
+                    <td>✅ Claude</td>
+                </tr>
+                <tr>
+                    <td>Réponse type</td>
+                    <td>15 min</td>
+                    <td>1 min</td>
+                    <td><span class="score-good">14 min</span></td>
+                    <td>✅ Claude</td>
+                </tr>
+                <tr>
+                    <td>Vérif disponibilité</td>
+                    <td>45 min</td>
+                    <td>5 min</td>
+                    <td><span class="score-good">40 min</span></td>
+                    <td>✅ Bot WA</td>
+                </tr>
+                <tr>
+                    <td>Devis/prix</td>
+                    <td>10 min</td>
+                    <td>1 min</td>
+                    <td><span class="score-good">9 min</span></td>
+                    <td>✅ Ezus</td>
+                </tr>
+                <tr>
+                    <td>Paiement</td>
+                    <td>5 min</td>
+                    <td>2 min</td>
+                    <td><span class="score-good">3 min</span></td>
+                    <td>⚠️ Semi</td>
+                </tr>
+                <tr>
+                    <td>Facture</td>
+                    <td>0 min (non fait)</td>
+                    <td>2 min</td>
+                    <td><span class="score-good">+10 min</span></td>
+                    <td>✅ Ezus</td>
+                </tr>
+                <tr>
+                    <td>Relance 50%</td>
+                    <td>10 min (oubliée)</td>
+                    <td>1 min</td>
+                    <td><span class="score-good">9 min</span></td>
+                    <td>✅ Ezus</td>
+                </tr>
+                <tr>
+                    <td>Menu + relance</td>
+                    <td>10 min</td>
+                    <td>2 min</td>
+                    <td><span class="score-good">8 min</span></td>
+                    <td>✅ Claude</td>
+                </tr>
+                <tr>
+                    <td>Bon commande</td>
+                    <td>30 min</td>
+                    <td>2 min</td>
+                    <td><span class="score-good">28 min</span></td>
+                    <td>✅ Ezus</td>
+                </tr>
+                <tr>
+                    <td>Rappel veille</td>
+                    <td>15 min</td>
+                    <td>1 min</td>
+                    <td><span class="score-good">14 min</span></td>
+                    <td>✅ Automation</td>
+                </tr>
+                <tr>
+                    <td>Jour J</td>
+                    <td>45 min</td>
+                    <td>15 min</td>
+                    <td><span class="score-good">30 min</span></td>
+                    <td>⚠️ Semi</td>
+                </tr>
+                <tr>
+                    <td>Post + feedback</td>
+                    <td>10 min</td>
+                    <td>2 min</td>
+                    <td><span class="score-good">8 min</span></td>
+                    <td>✅ Claude</td>
+                </tr>
+                <tr style="font-weight: 700; background: rgba(194,122,90,0.1);">
+                    <td>TOTAL PAR CLIENT</td>
+                    <td>200 min</td>
+                    <td>35 min</td>
+                    <td><span class="score-good">165 min</span></td>
+                    <td>70%+ auto</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="highlight-box">
+            <p><strong>💰 Impact en saison</strong> : 15-20 clients/mois = 50-66h/mois actuellement → 8-10h/mois idéal = <strong>gain 40-56h/mois</strong></p>
+        </div>
+    </div>
+
+    <!-- ARCHITECTURE -->
+    <div class="section">
+        <h2>🌐 Architecture globale (Ezus comme hub)</h2>
+        <div class="diagram">
+            ┌─────────────────────────────────────────────────┐
+│   CLIENTS (Portail Ezus)                         │
+│   BtoC → Formulaire web                          │
+│   B2B → Portail partenaire                       │
+└────────────────┬────────────────────────────────┘
+                 │
+        ┌────────▼────────┐
+        │                 │
+        │    EZUS HUB     │
+        │  (Clients + $)  │
+        │                 │
+        │ • Clients DB    │
+        │ • Devis/Factures│
+        │ • Paiements     │
+        │ • Bons commande │
+        │ • KPIs/Dashboard│
+        │                 │
+        └────────┬────────┘
+                 │
+     ┌───────────┼───────────┐
+     │           │           │
+     ▼           ▼           ▼
+ ┌─────────┐ ┌────────┐ ┌──────────┐
+ │ CLAUDE  │ │WHATSAPP│ │   MAIL   │
+ │(Auto)   │ │(Bots)  │ │ (Apple)  │
+ │         │ │        │ │          │
+ │• Qual   │ │• Guides│ │• contact@│
+ │• Réponse│ │• Resto │ │• info@   │
+ │• Menu   │ │• Bus   │ │• ttharsis│
+ │• Recap  │ │• Fort  │ │          │
+ │         │ │• Snack │ │          │
+ └────┬────┘ └───┬────┘ └────┬─────┘
+      │          │           │
+      └──────────┴───────────┘
+           │
+           ▼
+     ┌─────────────┐
+     │ PRESTATAIRES│ (WhatsApp + Mail)
+     │ Guides      │
+     │ Bus         │ │ Resto       │
+     │ Fort        │
+     │ Snack       │
+     └─────────────┘
+        </div>
+    </div>
+
+    <!-- BLOCAGES -->
+    <div class="section">
+        <h2>✅ Points de friction à résoudre</h2>
+        <div class="priority-grid">
+            <div class="priority-card">
+                <div class="priority-badge p1">🔴 P1</div>
+                <div class="title">3 boîtes mail non centralisées</div>
+                <div class="desc">Perte clients (4-5j délai) → Centraliser dans Ezus ou 1 inbox unique</div>
+            </div>
+            <div class="priority-card">
+                <div class="priority-badge p1">🔴 P1</div>
+                <div class="title">Pas de facturation</div>
+                <div class="desc">Perte de suivi comptable → Ezus individuel auto</div>
+            </div>
+            <div class="priority-card">
+                <div class="priority-badge p1">🔴 P1</div>
+                <div class="title">Relances 50% oubliées</div>
+                <div class="desc">Perte trésorerie → Auto Ezus</div>
+            </div>
+            <div class="priority-card">
+                <div class="priority-badge p1">🔴 P1</div>
+                <div class="title">Paiement → Ezus</div>
+                <div class="desc">Silo d'info (Excel + CM) → Webhook ou export CSV</div>
+            </div>
+            <div class="priority-card">
+                <div class="priority-badge p2">🟠 P2</div>
+                <div class="title">Bon commande manuel</div>
+                <div class="desc">30 min/excursion perdu → Ezus auto + WhatsApp</div>
+            </div>
+            <div class="priority-card">
+                <div class="priority-badge p2">🟠 P2</div>
+                <div class="title">Feedback clients</div>
+                <div class="desc">Perte des données → Formulaire Ezus + archive Claude</div>
+            </div>
+            <div class="priority-card">
+                <div class="priority-badge p3">🟡 P3</div>
+                <div class="title">Rappel veille</div>
+                <div class="desc">Confusions jour J → WhatsApp bot + email</div>
+            </div>
+            <div class="priority-card">
+                <div class="priority-badge p3">🟡 P3</div>
+                <div class="title">KPIs pas suivis</div>
+                <div class="desc">Taïna piétine → Tableau Ezus + export Claude</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUESTIONS POUR TAINA -->
+    <div class="section">
+        <h2>📞 Points à discuter avec Taïna</h2>
+        <ol style="padding-left: 24px; color: var(--text-light);">
+            <li style="margin-bottom: 12px;"><strong>Paiements Crédit Mutuel :</strong> Contacts à CM pour webhook de paiement reçu ?</li>
+            <li style="margin-bottom: 12px;"><strong>Prestataires WhatsApp :</strong> Tous actifs ? Certains réticents ?</li>
+            <li style="margin-bottom: 12px;"><strong>Ezus Plan Pro :</strong> Accès aux APIs confirmé ? Besoin de contacter support ?</li>
+            <li style="margin-bottom: 12px;"><strong>Délégation :</strong> L'alternante peut valider les brouillons Claude ?</li>
+            <li style="margin-bottom: 12px;"><strong>Canva vouchers :</strong> Peuvent être générés depuis Ezus ou lien externe ?</li>
+            <li style="margin-bottom: 12px;"><strong>Données historiques :</strong> Comment importer 500+ clients dans Ezus ? (Excel → CSV)</li>
+        </ol>
+    </div>
+
+    <!-- GAINS ESTIMÉS -->
+    <div class="section">
+        <h2>📈 Gains estimés (6 mois)</h2>
+        <div class="kpi-grid">
+            <div class="kpi-item">
+                <div class="label">Heures/semaine</div>
+                <div class="label" style="color: var(--text-light);">Avant : 80h → Après : 50h</div>
+                <div class="value" style="color: var(--success);">−30h/sem</div>
+            </div>
+            <div class="kpi-item">
+                <div class="label">Posture dirigeant</div>
+                <div class="label" style="color: var(--text-light);">Avant : 10% → Après : 50%</div>
+                <div class="value" style="color: var(--success);">+40%</div>
+            </div>
+            <div class="kpi-item">
+                <div class="label">Temps opérationnel</div>
+                <div class="label" style="color: var(--text-light);">Avant : 90% → Après : 25%</div>
+                <div class="value" style="color: var(--success);">−65%</div>
+            </div>
+            <div class="kpi-item">
+                <div class="label">Délai réponse</div>
+                <div class="label" style="color: var(--text-light);">Avant : 4-5j → Après : <4h</div>
+                <div class="value" style="color: var(--success);">−90%</div>
+            </div>
+            <div class="kpi-item">
+                <div class="label">Trésorerie (+relances)</div>
+                <div class="label" style="color: var(--text-light);">Gain estimé</div>
+                <div class="value" style="color: var(--success);">+15-20K€</div>
+            </div>
+            <div class="kpi-item">
+                <div class="label">Clients supplémentaires</div>
+                <div class="label" style="color: var(--text-light);">Récupération + reco</div>
+                <div class="value" style="color: var(--success);">+10-15%</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>Catherine Selosse · <a href="https://csbusiness.fr" style="color: var(--primary);">CS — Consulting Stratégique</a></p>
+    <p style="margin-top: 4px;">Document confidentiel — Proposition 21 avril 2026</p>
+</div>
+
+</body>
+</html>

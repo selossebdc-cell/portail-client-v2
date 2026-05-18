@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A2 - Tri leads et brouillons</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif; margin: 0; background: #f8fafc; color: #0f172a; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 24px 18px 46px; }
+    h1 { margin: 0 0 8px; } h2 { margin-top: 24px; font-size: 1.2rem; border-bottom: 1px solid #dbe2ea; padding-bottom: 6px; }
+    .card { background: #fff; border: 1px solid #dbe2ea; border-radius: 10px; padding: 14px; margin-top: 10px; }
+    ul { margin: 8px 0 0 18px; line-height: 1.5; color: #334155; }
+    .meta { color: #64748b; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>A2 - Tri leads entrants + brouillon de reponse</h1>
+    <p class="meta">But: reduire les oublis et accelerer les delais de reponse sans perdre la personnalisation.</p>
+
+    <h2>Fonctionnement cible</h2>
+    <div class="card">
+      <ul>
+        <li>Chaque lead entrant est detecte et classe (DIP, sejour, B2B, SAV, spam).</li>
+        <li>Le systeme produit un brouillon de reponse adapte au type de demande.</li>
+        <li>Taïna valide/enrichit puis envoie en 1 clic (V1).</li>
+      </ul>
+    </div>
+
+    <h2>Triggers</h2>
+    <div class="card">
+      <ul>
+        <li><strong>T1:</strong> nouvel email sur contact@ ou info@.</li>
+        <li><strong>T2:</strong> nouveau message WhatsApp/Telegram (si connecte).</li>
+        <li><strong>T3:</strong> relance automatique si aucune action sous 4h ouvrables.</li>
+      </ul>
+    </div>
+
+    <h2>Donnees necessaires</h2>
+    <div class="card">
+      <ul>
+        <li>Taxonomie des demandes (types + priorites + SLA).</li>
+        <li>Bibliotheque de reponses types (FR/EN) + variables dynamiques.</li>
+        <li>Regles de routage: qui traite quoi (Taïna/assistante).</li>
+      </ul>
+    </div>
+
+    <h2>Sorties attendues</h2>
+    <div class="card">
+      <ul>
+        <li>Lead cree/maj dans systeme central (ESUS ou CRM choisi).</li>
+        <li>Brouillon trace avec score de confiance du classement.</li>
+        <li>Dashboard des delais de reponse et leads sans suivi.</li>
+      </ul>
+    </div>
+
+    <h2>Regles V1</h2>
+    <div class="card">
+      <ul>
+        <li>Zero envoi automatique sans validation humaine.</li>
+        <li>Controle anti-hallucination: uniquement infos presentes dans le message.</li>
+        <li>Escalade manuelle pour cas ambigus ou client VIP/B2B.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

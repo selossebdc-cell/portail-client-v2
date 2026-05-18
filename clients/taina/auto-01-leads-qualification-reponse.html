@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto 01 — Leads qualification reponse</title>
+  <style>
+    :root {
+      --bg: #0f1115; --card: #181c24; --text: #e9edf5; --muted: #a8b0bf;
+      --line: #2a3140; --accent: #7cc4ff; --ok: #7be495; --warn: #ffd166;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.55; }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 28px 20px 56px; }
+    .hero, .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+    .hero { border-left: 5px solid var(--accent); margin-bottom: 14px; }
+    h1 { font-size: 1.55rem; margin-bottom: 6px; }
+    .meta { color: var(--muted); font-size: 0.92rem; }
+    h2 { margin: 18px 0 8px; font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    h3 { font-size: 1rem; color: var(--accent); margin-bottom: 6px; }
+    ul { margin-left: 18px; }
+    li { margin: 6px 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 10px; }
+    .pill { display: inline-block; font-size: 0.78rem; padding: 2px 8px; border-radius: 999px; border: 1px solid transparent; margin-bottom: 8px; }
+    .pill-ok { color: var(--ok); border-color: rgba(123, 228, 149, 0.45); }
+    .pill-warn { color: var(--warn); border-color: rgba(255, 209, 102, 0.45); }
+    .footer { margin-top: 18px; color: var(--muted); font-size: 0.88rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Auto 01 — Lead entrant -> qualification -> brouillon réponse</h1>
+      <p class="meta">Objectif : répondre vite, homogène, sans perdre de demandes.</p>
+    </div>
+
+    <h2>1) Trigger(s)</h2>
+    <div class="card">
+      <ul>
+        <li>Nouveau message reçu sur `contact@` ou `info@` (canal email V1).</li>
+        <li>V2 optionnelle : intégration WhatsApp / formulaire web.</li>
+        <li>Déclenchement en quasi temps réel (ou batch toutes les 5 min).</li>
+      </ul>
+    </div>
+
+    <h2>2) Données minimales requises</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="pill pill-ok">Client</span>
+        <ul>
+          <li>Nom / prénom</li>
+          <li>Email / téléphone</li>
+          <li>Langue préférée</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-ok">Demande</span>
+        <ul>
+          <li>Date souhaitée</li>
+          <li>Nb participants</li>
+          <li>Type (DIP, séjour, B2B)</li>
+          <li>Budget (si présent)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-warn">Technique</span>
+        <ul>
+          <li>Message source brut</li>
+          <li>Canal d'origine</li>
+          <li>Horodatage réception</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>3) Logique de traitement</h2>
+    <div class="card">
+      <ul>
+        <li>Extraire les champs clés du message.</li>
+        <li>Classifier le lead (chaud / tiède / incomplet).</li>
+        <li>Générer un brouillon de réponse avec prochaine étape claire.</li>
+        <li>Créer ou mettre à jour une fiche lead unique (ESUS si validé).</li>
+      </ul>
+    </div>
+
+    <h2>4) Exceptions à prévoir</h2>
+    <div class="card">
+      <ul>
+        <li>Demande incomplète -> répondre avec questions de qualification.</li>
+        <li>Date impossible -> proposer 2 alternatives.</li>
+        <li>Doublon lead -> fusionner au lieu de recréer.</li>
+        <li>Message hors périmètre -> tag "à traiter manuellement".</li>
+      </ul>
+    </div>
+
+    <h2>5) Validation V1</h2>
+    <div class="card">
+      <ul>
+        <li>Mode recommandé : brouillon validé par Taïna avant envoi.</li>
+        <li>SLA cible : réponse sous 2h en heures ouvrées.</li>
+        <li>KPI : délai lead->première réponse, taux conversion en devis.</li>
+      </ul>
+    </div>
+
+    <h2>6) Checklist installation avec Taïna</h2>
+    <div class="card">
+      <ul>
+        <li>[ ] Valider les templates FR/EN et ton de marque.</li>
+        <li>[ ] Définir règles de qualification (chaud/tiède/froid).</li>
+        <li>[ ] Définir heures ouvrées et gestion hors horaires.</li>
+        <li>[ ] Choisir destination de stockage (ESUS / autre).</li>
+        <li>[ ] Lancer pilote 7 jours avec revue quotidienne.</li>
+      </ul>
+    </div>
+
+    <p class="footer">Décision go/no-go : passer en envoi auto seulement après 10 jours sans correction majeure.</p>
+  </div>
+</body>
+</html>

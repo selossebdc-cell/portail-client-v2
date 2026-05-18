@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Plan Automatisations - Taïna</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif; margin: 0; background: #f4f6fb; color: #111827; }
+    .wrap { max-width: 1020px; margin: 0 auto; padding: 28px 20px 56px; }
+    h1 { font-size: 1.9rem; margin-bottom: 6px; }
+    h2 { margin-top: 28px; font-size: 1.25rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; }
+    p { line-height: 1.55; color: #374151; }
+    .meta { color: #6b7280; font-size: 0.95rem; margin-bottom: 18px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; margin: 12px 0; }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .pill { display: inline-block; font-size: 0.8rem; padding: 2px 8px; border-radius: 999px; border: 1px solid #d1d5db; margin-bottom: 8px; }
+    ul { margin: 8px 0 0 18px; line-height: 1.5; color: #374151; }
+    .ok { color: #065f46; }
+    .warn { color: #92400e; }
+    .danger { color: #991b1b; }
+    a { color: #1d4ed8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .footer { margin-top: 26px; color: #6b7280; font-size: 0.88rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Plan d'installation des automatisations - Guadeloupe Explor</h1>
+    <p class="meta">Client: Taïna Tharsis · Version: V1 de cadrage avant développement</p>
+
+    <div class="card">
+      <span class="pill">Objectif global</span>
+      <p>Installer des automatisations fiables et progressives pour réduire la charge mentale de Taïna, sécuriser l'exécution opérationnelle et améliorer la qualité du suivi client/prestataire.</p>
+    </div>
+
+    <h2>Automatisations retenues (phase 1)</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="pill">A1</span>
+        <h3>Rappels guides + compte-rendu fin de journée</h3>
+        <ul>
+          <li>Canal cible: Telegram (ou WhatsApp en fallback).</li>
+          <li>Trigger: J-1 et J0 après excursion.</li>
+          <li>Document détaillé: <a href="./01-auto-guides-rappels-et-reporting.html">ouvrir</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">A2</span>
+        <h3>Tri leads entrants + brouillon de réponse</h3>
+        <ul>
+          <li>Canaux: contact@, info@, potentiellement WhatsApp.</li>
+          <li>Trigger: nouveau message entrant.</li>
+          <li>Document détaillé: <a href="./02-auto-tri-leads-et-brouillons.html">ouvrir</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">A3</span>
+        <h3>Suivi acomptes / soldes et relances</h3>
+        <ul>
+          <li>Source: ESUS + paiements (Stripe/Crédit Mutuel).</li>
+          <li>Trigger: échéance J-30/J-7/J-1 + paiement manquant.</li>
+          <li>Document détaillé: <a href="./03-auto-relances-paiements.html">ouvrir</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">A4</span>
+        <h3>Transcript reunion -> CR -> taches</h3>
+        <ul>
+          <li>Source: PLAUD/Fathom/Fireflies + template CR.</li>
+          <li>Trigger: nouveau transcript disponible.</li>
+          <li>Document détaillé: <a href="./04-auto-transcript-vers-actions.html">ouvrir</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Prerequis transverses a valider avec Taïna</h2>
+    <div class="card">
+      <ul>
+        <li><strong>Comptes/outils:</strong> acces ESUS, boites email, agenda, canal messagerie guides.</li>
+        <li><strong>Donnees:</strong> nomenclature unique des excursions, clients, prestataires, statuts paiement.</li>
+        <li><strong>Regles:</strong> qui valide quoi avant envoi automatique (phase brouillon vs auto).</li>
+        <li><strong>Conformite:</strong> information des equipes sur enregistrement audio et traitement des donnees.</li>
+      </ul>
+    </div>
+
+    <h2>Strategie de deploiement propre</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="pill">Semaine 1</span>
+        <ul>
+          <li>Validation triggers + donnees minimales.</li>
+          <li>Mise en place mode manuel assiste.</li>
+          <li>Test sur 2 cas reels par automatisation.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">Semaine 2</span>
+        <ul>
+          <li>Passage en mode semi-auto (validation humaine obligatoire).</li>
+          <li>Corrections des faux positifs/faux negatifs.</li>
+          <li>Documentation d'usage pour Taïna + equipe.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">Semaine 3+</span>
+        <ul>
+          <li>Automatisation complete sur perimetre stable.</li>
+          <li>Monitoring des incidents et fallback manuel.</li>
+          <li>Revue KPI: temps gagne, oublis, delai reponse, impayes.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Etat actuel (a confirmer en seance)</h2>
+    <div class="card">
+      <ul>
+        <li class="ok"><strong>OK:</strong> dashboard espace client remis propre.</li>
+        <li class="ok"><strong>OK:</strong> tuto PLAUD disponible.</li>
+        <li class="warn"><strong>A clarifier:</strong> arbitrage final ESUS vs Credit Mutuel pour sync paiements.</li>
+        <li class="warn"><strong>A figer:</strong> canal officiel guides (Telegram ou WhatsApp).</li>
+        <li class="danger"><strong>Risque:</strong> declencher trop tot en full auto sans phase brouillon.</li>
+      </ul>
+    </div>
+
+    <p class="footer">Document de cadrage - base de travail pour installation propre avec Taïna.</p>
+  </div>
+</body>
+</html>

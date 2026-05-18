@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto 01 Leads — fiche remplissable</title>
+  <style>
+    :root { --bg:#0f1115; --card:#181c24; --text:#e9edf5; --muted:#a8b0bf; --line:#2a3140; --accent:#7cc4ff; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif; background:var(--bg); color:var(--text); padding:24px; }
+    .wrap { max-width:950px; margin:0 auto; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px; }
+    h1 { font-size:1.45rem; margin-bottom:6px; } h2 { font-size:1.08rem; margin-bottom:6px; color:var(--accent); }
+    p,label { color:var(--muted); font-size:0.93rem; } ul { margin-left:18px; }
+    li { margin:6px 0; } .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+    input[type=text], textarea, select { width:100%; background:#11151d; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:9px; margin-top:5px; }
+    textarea { min-height:82px; } .check label { display:block; color:var(--text); margin:6px 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Auto 01 — Lead entrant -> qualification -> réponse</h1>
+      <p>But: réduire les délais de réponse et éviter les leads perdus.</p>
+    </div>
+    <div class="card">
+      <h2>Choix de trigger (propositions)</h2>
+      <div class="check">
+        <label><input type="checkbox"> Option A: déclenchement instantané à chaque nouvel email.</label>
+        <label><input type="checkbox"> Option B: batch toutes les 5 minutes (plus stable).</label>
+        <label><input type="checkbox"> Option C: uniquement heures ouvrées + file d'attente hors horaires.</label>
+      </div>
+      <label>Choix final trigger</label>
+      <input type="text" placeholder="Décision retenue + justification">
+    </div>
+    <div class="card">
+      <h2>Qualification (propositions)</h2>
+      <ul>
+        <li>Règle 1: Lead chaud si date + nb personnes + contact fournis.</li>
+        <li>Règle 2: Lead tiède si infos partielles.</li>
+        <li>Règle 3: Lead incomplet si demande vague / pas de date.</li>
+      </ul>
+      <label>Règles validées</label>
+      <textarea placeholder="Ajustements des seuils et tags métier"></textarea>
+    </div>
+    <div class="card">
+      <h2>Réponse automatique (propositions)</h2>
+      <div class="grid">
+        <div>
+          <label>Mode V1</label>
+          <select>
+            <option>-- Choisir --</option>
+            <option>Brouillon validé par Taina</option>
+            <option>Envoi automatique direct</option>
+          </select>
+        </div>
+        <div>
+          <label>SLA cible</label>
+          <input type="text" placeholder="ex: réponse sous 2h">
+        </div>
+      </div>
+      <label>Template de message validé</label>
+      <textarea placeholder="Version finale du message de réponse"></textarea>
+    </div>
+    <div class="card">
+      <h2>Checklist installation</h2>
+      <div class="check">
+        <label><input type="checkbox"> Validation templates FR/EN.</label>
+        <label><input type="checkbox"> Mapping champs obligatoires en base.</label>
+        <label><input type="checkbox"> Test sur 10 leads historiques.</label>
+        <label><input type="checkbox"> Revue qualité après 7 jours.</label>
+      </div>
+      <label>Actions / dates / responsable</label>
+      <textarea placeholder="- Action / date / owner"></textarea>
+    </div>
+  </div>
+</body>
+</html>

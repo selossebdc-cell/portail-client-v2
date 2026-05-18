@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan global automatisations — Taina</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card: #181c24;
+      --text: #e9edf5;
+      --muted: #a8b0bf;
+      --line: #2a3140;
+      --accent: #7cc4ff;
+      --ok: #7be495;
+      --warn: #ffd166;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 56px; }
+    .hero {
+      background: linear-gradient(145deg, #151a22 0%, #11151d 100%);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--accent);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+    h1 { font-size: 1.65rem; margin-bottom: 6px; }
+    .meta { color: var(--muted); font-size: 0.92rem; }
+    .note {
+      margin: 14px 0 18px;
+      background: rgba(124, 196, 255, 0.08);
+      border: 1px solid rgba(124, 196, 255, 0.35);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--muted);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 0.78rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      margin-bottom: 8px;
+    }
+    .pill-ok { color: var(--ok); border-color: rgba(123, 228, 149, 0.45); }
+    .pill-warn { color: var(--warn); border-color: rgba(255, 209, 102, 0.45); }
+    h2 {
+      margin: 24px 0 10px;
+      font-size: 1.2rem;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+    }
+    h3 { font-size: 1rem; margin-bottom: 8px; color: var(--accent); }
+    ul { margin-left: 18px; }
+    li { margin: 6px 0; }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(124, 196, 255, 0.5);
+    }
+    a:hover { border-bottom-style: solid; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { color: var(--accent); font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    .footer {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Plan global des automatisations — Guadeloupe Explor</h1>
+      <p class="meta">Client : Taina Tharsis · Version : cadrage pré-dev · Date : mai 2026</p>
+    </div>
+
+    <p class="note">
+      Objectif : cadrer chaque automatisation avant de coder pour installer proprement les outils avec Taina,
+      verrouiller les triggers et éviter les retours arrière.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <span class="pill pill-ok">Approche retenue</span>
+        <h3>D'abord process, ensuite code</h3>
+        <ul>
+          <li>1 HTML par automatisation.</li>
+          <li>Trigger + données + règles + exceptions.</li>
+          <li>Checklist installation en séance.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-warn">Source de vérité</span>
+        <h3>ESUS à confirmer</h3>
+        <ul>
+          <li>Choix final : Stripe, Crédit Mutuel ou mix.</li>
+          <li>Règle unique de statut de paiement.</li>
+          <li>Pas de doublons entre outils.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-ok">Principe sécurité</span>
+        <h3>Cloisonnement client strict</h3>
+        <ul>
+          <li>Zéro visibilité inter-clients.</li>
+          <li>Logs sur actions automatiques.</li>
+          <li>Validation humaine en V1 si nécessaire.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Automatisations à cadrer et déployer</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Automatisation</th>
+          <th>Valeur immédiate</th>
+          <th>Document de cadrage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Lead entrant -> qualification -> brouillon de réponse</td>
+          <td>Réduction du délai de réponse et moins de leads perdus.</td>
+          <td><a href="./auto-01-leads-qualification-reponse.html">Ouvrir auto 01</a> · <a href="./auto-01-leads-qualification-reponse-remplissable.html">Version remplissable</a></td>
+        </tr>
+        <tr>
+          <td>Relance acompte / solde paiement</td>
+          <td>Fiabilisation du cash et baisse des oublis.</td>
+          <td><a href="./auto-02-relance-paiements.html">Ouvrir auto 02</a> · <a href="./auto-02-relance-paiements-remplissable.html">Version remplissable</a></td>
+        </tr>
+        <tr>
+          <td>Menu client + consolidation prestataires</td>
+          <td>Moins de friction opérationnelle avant excursion.</td>
+          <td><a href="./auto-03-choix-menu-consolidation.html">Ouvrir auto 03</a> · <a href="./auto-03-choix-menu-consolidation-remplissable.html">Version remplissable</a></td>
+        </tr>
+        <tr>
+          <td>Post-excursion : feedback + synthèse + actions</td>
+          <td>Qualité de service et amélioration continue.</td>
+          <td><a href="./auto-04-post-excursion-feedback.html">Ouvrir auto 04</a> · <a href="./auto-04-post-excursion-feedback-remplissable.html">Version remplissable</a></td>
+        </tr>
+        <tr>
+          <td>Process opérationnels par type d'excursion (hors client) + alertes J-30 -> J+1</td>
+          <td>Fiabilisation guides/prestataires, confirmations auto, effectifs réels et escalades.</td>
+          <td><a href="./process-excursions-types-alertes-remplissable.html">Fiche process + alertes (remplissable)</a> · <a href="./fiche-type-excursion-template-remplissable.html">Template 1 fiche/type d'excursion</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Atelier de décision (remplissable)</h2>
+    <div class="card">
+      <ul>
+        <li><a href="./automatisations-taina-atelier-remplissable.html">Ouvrir l'atelier global remplissable</a> (choix, scoring, décisions finales, plan d'action).</li>
+        <li>Utiliser cet atelier pour figer les choix avant de passer au développement.</li>
+      </ul>
+    </div>
+
+    <h2>Décisions à verrouiller avec Taina (avant dev)</h2>
+    <div class="card">
+      <ul>
+        <li>[ ] Source de vérité des clients = ESUS (oui/non).</li>
+        <li>[ ] Paiement cible = Stripe, Crédit Mutuel, ou mix.</li>
+        <li>[ ] SLA prestataires (ex: réponse sous 2h).</li>
+        <li>[ ] Règles de relance paiement (J-30, J-15, J-7, J-1).</li>
+        <li>[ ] Validation des templates de messages (ton, langue, signature).</li>
+        <li>[ ] Niveau d'automatisation V1 : brouillon validé humain ou envoi auto.</li>
+      </ul>
+    </div>
+
+    <p class="footer">
+      Conseil d'exécution : valider les fiches en séance (incluant process prestataires/guides), puis coder par sprint court (1 automatisation à la fois).
+    </p>
+  </div>
+</body>
+</html>

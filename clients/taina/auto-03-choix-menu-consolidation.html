@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto 03 — Choix menu consolidation</title>
+  <style>
+    :root { --bg:#0f1115; --card:#181c24; --text:#e9edf5; --muted:#a8b0bf; --line:#2a3140; --accent:#7cc4ff; --ok:#7be495; --warn:#ffd166; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+    .wrap { max-width:1000px; margin:0 auto; padding:28px 20px 56px; }
+    .hero,.card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; }
+    .hero { border-left:5px solid var(--accent); margin-bottom:14px; }
+    h1 { font-size:1.55rem; margin-bottom:6px; }
+    .meta { color:var(--muted); font-size:0.92rem; }
+    h2 { margin:18px 0 8px; font-size:1.15rem; border-bottom:1px solid var(--line); padding-bottom:6px; }
+    ul { margin-left:18px; }
+    li { margin:6px 0; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:10px; }
+    .pill { display:inline-block; font-size:0.78rem; padding:2px 8px; border-radius:999px; border:1px solid transparent; margin-bottom:8px; }
+    .pill-ok { color:var(--ok); border-color:rgba(123,228,149,0.45); }
+    .pill-warn { color:var(--warn); border-color:rgba(255,209,102,0.45); }
+    .footer { margin-top:18px; color:var(--muted); font-size:0.88rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Auto 03 — Choix menu + consolidation prestataires</h1>
+      <p class="meta">Objectif : sécuriser la préparation excursion et éviter les erreurs de dernière minute.</p>
+    </div>
+
+    <h2>1) Trigger(s)</h2>
+    <div class="card">
+      <ul>
+        <li>Planifié à J-30 : envoi formulaire menu au client.</li>
+        <li>Planifié à J-7 : relance si formulaire non rempli.</li>
+        <li>Planifié à J-2 : consolidation finale et envoi aux prestataires.</li>
+      </ul>
+    </div>
+
+    <h2>2) Données nécessaires</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="pill pill-ok">Client</span>
+        <ul>
+          <li>Nom de réservation</li>
+          <li>Nb participants confirmé</li>
+          <li>Contraintes alimentaires</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-ok">Excursion</span>
+        <ul>
+          <li>Date / heure / point de rendez-vous</li>
+          <li>Guide affecté</li>
+          <li>Prestataires concernés</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-warn">Formulaire</span>
+        <ul>
+          <li>Statut réponse (oui/non)</li>
+          <li>Date réponse client</li>
+          <li>Version de consolidation envoyée</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>3) Logique de traitement</h2>
+    <div class="card">
+      <ul>
+        <li>Envoyer un formulaire standardisé au client.</li>
+        <li>Compiler automatiquement les choix reçus.</li>
+        <li>Générer une fiche opérationnelle unique (guide + restaurant + logistique).</li>
+        <li>Notifier les prestataires avec les infos utiles uniquement.</li>
+      </ul>
+    </div>
+
+    <h2>4) Points de vigilance</h2>
+    <div class="card">
+      <ul>
+        <li>Verrouiller la version "finale" 24h avant l'excursion.</li>
+        <li>Tracer chaque modification post-validation.</li>
+        <li>Gérer les cas "no response" avec fallback par défaut validé.</li>
+        <li>Empêcher les doubles envois à un même prestataire.</li>
+      </ul>
+    </div>
+
+    <h2>5) Décisions à figer avec Taïna</h2>
+    <div class="card">
+      <ul>
+        <li>[ ] Format exact du formulaire (questions obligatoires).</li>
+        <li>[ ] Date limite de réponse client avant fallback.</li>
+        <li>[ ] Liste des destinataires prestataires par type d'excursion.</li>
+        <li>[ ] Canal principal de diffusion (email / WhatsApp / Telegram).</li>
+      </ul>
+    </div>
+
+    <h2>6) Checklist installation</h2>
+    <div class="card">
+      <ul>
+        <li>[ ] Valider le template de formulaire avec 2 cas réels.</li>
+        <li>[ ] Tester consolidation auto sur un dossier historique.</li>
+        <li>[ ] Valider le rendu de la fiche opérationnelle avec un guide.</li>
+        <li>[ ] Passer en production sur 1 seul type d'excursion en pilote.</li>
+      </ul>
+    </div>
+
+    <p class="footer">KPI : taux formulaire complété avant J-7, erreurs logistiques évitées, temps de préparation gagné.</p>
+  </div>
+</body>
+</html>

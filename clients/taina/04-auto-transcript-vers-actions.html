@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A4 - Transcript vers actions</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif; margin: 0; background: #f8fafc; color: #0f172a; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 24px 18px 46px; }
+    h1 { margin: 0 0 8px; } h2 { margin-top: 24px; font-size: 1.2rem; border-bottom: 1px solid #dbe2ea; padding-bottom: 6px; }
+    .card { background: #fff; border: 1px solid #dbe2ea; border-radius: 10px; padding: 14px; margin-top: 10px; }
+    ul { margin: 8px 0 0 18px; line-height: 1.5; color: #334155; }
+    .meta { color: #64748b; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>A4 - Pipeline transcript -> compte-rendu -> taches</h1>
+    <p class="meta">But: standardiser les comptes-rendus et ne plus perdre d'actions entre les rendez-vous.</p>
+
+    <h2>Fonctionnement cible</h2>
+    <div class="card">
+      <ul>
+        <li>Recuperer transcript (PLAUD/Fathom/Fireflies) apres reunion.</li>
+        <li>Generer CR structure (decisions, actions Taïna, actions Catherine, blocages).</li>
+        <li>Extraire automatiquement les taches et les pousser dans le dashboard client.</li>
+      </ul>
+    </div>
+
+    <h2>Triggers</h2>
+    <div class="card">
+      <ul>
+        <li><strong>T1:</strong> nouveau transcript depose dans le dossier cible.</li>
+        <li><strong>T2:</strong> CR valide par Catherine.</li>
+        <li><strong>T3:</strong> publication du CR + creation/maj des taches.</li>
+      </ul>
+    </div>
+
+    <h2>Donnees necessaires</h2>
+    <div class="card">
+      <ul>
+        <li>Template CR officiel par client (sections et niveau de detail).</li>
+        <li>Dictionnaire de tags: urgence, owner, deadline, blocage.</li>
+        <li>Mapping des statuts taches dashboard (todo, en cours, bloque, fait).</li>
+      </ul>
+    </div>
+
+    <h2>Sorties attendues</h2>
+    <div class="card">
+      <ul>
+        <li>CR au format Markdown/HTML pret a partager.</li>
+        <li>Liste d'actions dedupliquee avec owner/date.</li>
+        <li>Historique des decisions accessible depuis l'espace client.</li>
+      </ul>
+    </div>
+
+    <h2>Regles V1</h2>
+    <div class="card">
+      <ul>
+        <li>Validation humaine obligatoire avant publication client.</li>
+        <li>Aucune creation de tache sans owner explicite.</li>
+        <li>Si deadline absente: statut "a clarifier" plutot que date inventee.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

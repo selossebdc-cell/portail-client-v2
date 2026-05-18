@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto 02 — Relance paiements</title>
+  <style>
+    :root { --bg:#0f1115; --card:#181c24; --text:#e9edf5; --muted:#a8b0bf; --line:#2a3140; --accent:#7cc4ff; --warn:#ffd166; --ok:#7be495; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+    .wrap { max-width:1000px; margin:0 auto; padding:28px 20px 56px; }
+    .hero,.card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; }
+    .hero { border-left:5px solid var(--accent); margin-bottom:14px; }
+    h1 { font-size:1.55rem; margin-bottom:6px; }
+    .meta { color:var(--muted); font-size:0.92rem; }
+    h2 { margin:18px 0 8px; font-size:1.15rem; border-bottom:1px solid var(--line); padding-bottom:6px; }
+    ul { margin-left:18px; }
+    li { margin:6px 0; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:10px; }
+    .pill { display:inline-block; font-size:0.78rem; padding:2px 8px; border-radius:999px; border:1px solid transparent; margin-bottom:8px; }
+    .pill-warn { color:var(--warn); border-color:rgba(255,209,102,0.45); }
+    .pill-ok { color:var(--ok); border-color:rgba(123,228,149,0.45); }
+    .footer { margin-top:18px; color:var(--muted); font-size:0.88rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Auto 02 — Relances acompte / solde</h1>
+      <p class="meta">Objectif : fiabiliser les encaissements et supprimer les oublis manuels.</p>
+    </div>
+
+    <h2>1) Trigger(s)</h2>
+    <div class="card">
+      <ul>
+        <li>Planifié quotidiennement (cron 08:00 heure locale).</li>
+        <li>Déclenchement event-based possible quand statut réservation change.</li>
+        <li>Conditions de relance basées sur échéance + statut paiement.</li>
+      </ul>
+    </div>
+
+    <h2>2) Données nécessaires</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="pill pill-ok">Réservation</span>
+        <ul>
+          <li>ID réservation</li>
+          <li>Date excursion</li>
+          <li>Montant total / acompte attendu</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-ok">Paiement</span>
+        <ul>
+          <li>Statut (non payé / partiel / payé)</li>
+          <li>Date dernier paiement</li>
+          <li>Canal paiement (CM, Stripe, autre)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-warn">Contact</span>
+        <ul>
+          <li>Email / téléphone valide</li>
+          <li>Langue message</li>
+          <li>Historique relances envoyées</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>3) Règles V1 proposées</h2>
+    <div class="card">
+      <ul>
+        <li>Relance acompte à J-30, J-15, J-7, J-1 si statut impayé ou partiel.</li>
+        <li>Arrêt automatique des relances dès confirmation de paiement.</li>
+        <li>Escalade manuelle vers Taïna à J-3 si toujours non payé.</li>
+        <li>Log systématique de chaque relance envoyée.</li>
+      </ul>
+    </div>
+
+    <h2>4) Exceptions / sécurité</h2>
+    <div class="card">
+      <ul>
+        <li>Ne pas relancer les dossiers litige / annulation.</li>
+        <li>Ne pas envoyer plus d'un message / 24h.</li>
+        <li>Bloquer envoi si coordonnées invalides.</li>
+        <li>Si source paiement incertaine, route vers file "validation humaine".</li>
+      </ul>
+    </div>
+
+    <h2>5) Décisions à figer avec Taïna</h2>
+    <div class="card">
+      <ul>
+        <li>[ ] Source officielle de statut paiement (ESUS, banque, mix).</li>
+        <li>[ ] Canal principal de relance (email, WhatsApp, SMS).</li>
+        <li>[ ] Message exact de chaque palier de relance.</li>
+        <li>[ ] Règle commerciale finale : annulation ou maintien sans paiement.</li>
+      </ul>
+    </div>
+
+    <h2>6) Checklist installation</h2>
+    <div class="card">
+      <ul>
+        <li>[ ] Vérifier la qualité des données réservations en base.</li>
+        <li>[ ] Tester 5 dossiers historiques en simulation.</li>
+        <li>[ ] Activer en mode "dry run" pendant 7 jours.</li>
+        <li>[ ] Basculer en production après validation des messages.</li>
+      </ul>
+    </div>
+
+    <p class="footer">KPI : taux acompte encaissé avant J-7, nb relances manuelles évitées, délai moyen de règlement.</p>
+  </div>
+</body>
+</html>

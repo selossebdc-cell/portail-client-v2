@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A1 - Rappels guides et reporting</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif; margin: 0; background: #f8fafc; color: #0f172a; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 24px 18px 46px; }
+    h1 { margin: 0 0 8px; } h2 { margin-top: 24px; font-size: 1.2rem; border-bottom: 1px solid #dbe2ea; padding-bottom: 6px; }
+    .card { background: #fff; border: 1px solid #dbe2ea; border-radius: 10px; padding: 14px; margin-top: 10px; }
+    ul { margin: 8px 0 0 18px; line-height: 1.5; color: #334155; }
+    .meta { color: #64748b; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>A1 - Rappels guides + reporting fin de journee</h1>
+    <p class="meta">But: fiabiliser execution excursion et eviter ecarts de facturation.</p>
+
+    <h2>Fonctionnement cible</h2>
+    <div class="card">
+      <ul>
+        <li>Message automatique au guide la veille avec recap excursion.</li>
+        <li>Message automatique fin de journee avec mini-formulaire de reporting.</li>
+        <li>Remontee des donnees dans un registre unique pour verification Taïna.</li>
+      </ul>
+    </div>
+
+    <h2>Triggers</h2>
+    <div class="card">
+      <ul>
+        <li><strong>T1 (J-1 18h):</strong> excursion confirmee pour le lendemain.</li>
+        <li><strong>T2 (J0 20h):</strong> excursion terminee et reporting non recu.</li>
+        <li><strong>T3 (J+1 9h):</strong> relance automatique si toujours pas de retour.</li>
+      </ul>
+    </div>
+
+    <h2>Donnees necessaires</h2>
+    <div class="card">
+      <ul>
+        <li>ID excursion, date, guide assigne, point de RDV, nb clients prevu.</li>
+        <li>Template message standard (veille + post-excursion).</li>
+        <li>Structure du reporting: nb reel, incidents, points amelioration.</li>
+      </ul>
+    </div>
+
+    <h2>Sorties attendues</h2>
+    <div class="card">
+      <ul>
+        <li>Ligne de suivi par excursion (prevu vs reel).</li>
+        <li>Alerte ecart si difference du nombre de participants.</li>
+        <li>Historique qualite guide exploitable en pilotage.</li>
+      </ul>
+    </div>
+
+    <h2>Regles V1 (propre et securise)</h2>
+    <div class="card">
+      <ul>
+        <li>Phase 1 en semi-auto: Taïna valide les messages avant envoi.</li>
+        <li>Une seule source de verite planning (agenda ou ESUS, a figer).</li>
+        <li>Fallback manuel si message non delivre ou guide hors-app.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

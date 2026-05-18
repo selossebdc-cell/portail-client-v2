@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parcours client — 3 excursions · Guadeloupe Explor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --lin:#F3EADA; --terre:#433F3C; --terra:#D17C61; --line:rgba(67,63,60,.12); --ok:#2d6a4f; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Source Sans 3',system-ui,sans-serif; background:var(--lin); color:var(--terre); line-height:1.55; font-size:15px; }
+    .wrap { max-width:1100px; margin:0 auto; padding:24px 16px 48px; }
+    h1 { font-family:'Playfair Display',serif; color:var(--terra); font-size:1.5rem; margin-bottom:6px; }
+    .lead { max-width:48rem; margin-bottom:20px; color:#5c5652; }
+    .flags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+    .flag { font-size:.78rem; font-weight:600; padding:4px 10px; border-radius:999px; border:1px solid var(--line); background:#fff; }
+    .flag.mp { border-color:var(--terra); color:var(--terra); }
+    .flag.bt { border-color:#5b7c99; color:#5b7c99; }
+    .flag.gt { border-color:#6b8f71; color:#6b8f71; }
+    table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; font-size:.86rem; }
+    th, td { border:1px solid var(--line); padding:10px 12px; vertical-align:top; }
+    th { background:var(--lin); text-align:left; font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; }
+    .phase { font-weight:600; color:var(--terra); white-space:nowrap; }
+    .auto { color:var(--ok); font-weight:600; font-size:.8rem; }
+    .manual { color:#9a3412; font-size:.8rem; }
+    .note { margin-top:20px; padding:14px; background:#fff; border-radius:10px; border:1px solid var(--line); font-size:.9rem; }
+    .mermaid-box { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; margin:20px 0; overflow-x:auto; }
+    pre { font-size:.8rem; line-height:1.45; color:#5c5652; white-space:pre-wrap; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>De l’e-mail entrant au paiement prestataires</h1>
+    <p class="lead">Même « tuyau » pour les 3 priorités automation : <strong>Meurtre au Paradis</strong>, <strong>Basse-Terre</strong> (Nord + Sud / Murder Case), <strong>Grande-Terre</strong>. Seul le <em>flag produit</em> et les prestataires changent — le reste est commun.</p>
+
+    <div class="flags">
+      <span class="flag mp">MEURTRE_PARADIS — contact@ (surtout)</span>
+      <span class="flag bt">BASSE_TERRE — croisière / Murder Case</span>
+      <span class="flag gt">GRANDE_TERRE — excursion découverte</span>
+    </div>
+
+    <div class="mermaid-box">
+      <pre>
+[CANAUX] Facebook / Instagram / site / QuotaTrip / agence
+    ↓
+[ENTRÉE] Boîtes contact@ + info@  (tetarsis@ → renvoyer vers contact/info)
+    ↓
+[TRI] Détection langue + flag produit (objet, mots-clés, formulaire)
+    ↓
+[QUALIF] Claude extrait : nom, date, pax, budget, pack
+    ↓
+[RÉPONSE] Brouillon mail (catalogue / infos) — validation Taina
+    ↓
+[DISPO] WhatsApp prestataires (5 ou moins selon produit) — validation Taina
+    ↓
+[DEVIS] Compilation coûts → devis client — validation Taina
+    ↓
+[PAIEMENT CLIENT] 100 % — lien Crédit Mutuel → confirmation
+    ↓
+[FACTURE CLIENT] Ezus (cible) — aujourd’hui manuel
+    ↓
+[PRÉ-EXCURSION] Menu, bons prestataires, rappel J-1 (e-mail / WhatsApp)
+    ↓
+[JOUR J] Coordination terrain
+    ↓
+[POST] Feedback client + photos
+    ↓
+[SORTIE « GOMBE »] Dossier clos côté client — relance fidélisation optionnelle
+    ↓
+[TRÉSO INTERNE] Encaissement reçu → paiement guides / transporteurs (souvent +2 à 6 semaines, parfois +1 mois)
+      </pre>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Ce qui se passe</th>
+          <th>Données à capturer</th>
+          <th>Meurtre au Paradis</th>
+          <th>Basse-Terre</th>
+          <th>Grande-Terre</th>
+          <th>Auto cible</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="phase">1. Entrée</td>
+          <td>Mail / DM / formulaire</td>
+          <td>Canal, UTM, langue FR/EN</td>
+          <td>contact@ majoritaire</td>
+          <td>info@ + site</td>
+          <td>info@ + site</td>
+          <td><span class="auto">Centraliser contact+info</span></td>
+        </tr>
+        <tr>
+          <td class="phase">2. Qualification</td>
+          <td>Extraire besoin</td>
+          <td>Date, pax, pack, budget</td>
+          <td>Death in Paradise / Murder Case</td>
+          <td>Nord vs Sud BT</td>
+          <td>Type découverte GT</td>
+          <td><span class="auto">Claude + flag</span></td>
+        </tr>
+        <tr>
+          <td class="phase">3. Réponse</td>
+          <td>Catalogue / infos</td>
+          <td>Modèle mail par produit</td>
+          <td>Modèles DIP</td>
+          <td>Modèles croisière</td>
+          <td>Modèles GT</td>
+          <td><span class="auto">Brouillon Claude</span></td>
+        </tr>
+        <tr>
+          <td class="phase">4. Disponibilité</td>
+          <td>Prestataires</td>
+          <td>Qui, tarif, OK/NOK</td>
+          <td>~5 prestataires</td>
+          <td>Liste croisière</td>
+          <td>Liste GT</td>
+          <td><span class="manual">WhatsApp (semi-auto)</span></td>
+        </tr>
+        <tr>
+          <td class="phase">5. Devis</td>
+          <td>Proposition prix</td>
+          <td>Grille + marge</td>
+          <td>Pack MAP</td>
+          <td>Journée croisière</td>
+          <td>Excursion classique</td>
+          <td><span class="auto">Calcul + PDF</span></td>
+        </tr>
+        <tr>
+          <td class="phase">6. Paiement client</td>
+          <td>Encaissement</td>
+          <td>Montant, date, réf.</td>
+          <td>100 % (règle 2026)</td>
+          <td>Idem</td>
+          <td>Idem ; séjours → RDV souvent</td>
+          <td><span class="manual">Lien CM + alerte</span></td>
+        </tr>
+        <tr>
+          <td class="phase">7. Facture client</td>
+          <td>Compta</td>
+          <td>Facture Ezus</td>
+          <td>Individuel</td>
+          <td>Individuel</td>
+          <td>Individuel / groupe</td>
+          <td><span class="auto">Ezus</span></td>
+        </tr>
+        <tr>
+          <td class="phase">8. Pré-excursion</td>
+          <td>Menu, bons, J-1</td>
+          <td>Allergies, n° final pax</td>
+          <td>Menu MAP</td>
+          <td>Spécifique BT</td>
+          <td>Standard GT</td>
+          <td><span class="auto">Rappels auto</span></td>
+        </tr>
+        <tr>
+          <td class="phase">9. Jour J</td>
+          <td>Terrain</td>
+          <td>Incidents</td>
+          <td>Taina + guide</td>
+          <td>Idem</td>
+          <td>Idem</td>
+          <td><span class="manual">Humain</span></td>
+        </tr>
+        <tr>
+          <td class="phase">10. Post-excursion</td>
+          <td>Feedback, avis</td>
+          <td>Note, témoignage</td>
+          <td>Formulaire</td>
+          <td>Idem</td>
+          <td>Idem</td>
+          <td><span class="auto">Mail J+1</span></td>
+        </tr>
+        <tr>
+          <td class="phase">11. Clôture dossier</td>
+          <td>Archivage CRM</td>
+          <td>Statut « terminé »</td>
+          <td>Oui</td>
+          <td>Oui</td>
+          <td>Oui</td>
+          <td><span class="auto">Tag + archive</span></td>
+        </tr>
+        <tr>
+          <td class="phase">12. Paiement prestataires</td>
+          <td>Sortie trésorerie</td>
+          <td>Factures guides, bus…</td>
+          <td>Souvent après encaissement client, délai variable</td>
+          <td>Idem</td>
+          <td>Idem</td>
+          <td><span class="manual">Suivi + alertes</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Prochaine étape technique (Catherine + Michael) :</strong> flux n8n ou script sur <code>contact@</code> + <code>info@</code> → qualification Claude → brouillon dans Notion ou mail brouillon → validation Taina → mise à jour statut dossier. Priorité V1 : <strong>Meurtre au Paradis</strong>, puis dupliquer le flag pour Basse-Terre et Grande-Terre.
+    </div>
+  </div>
+</body>
+</html>

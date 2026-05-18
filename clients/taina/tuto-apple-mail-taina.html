@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuto Apple Mail — Configuration 3 boîtes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        header {
+            background: linear-gradient(135deg, #C27A5A 0%, #a85840 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+            border-left: 4px solid #C27A5A;
+            padding-left: 20px;
+        }
+        .section h2 {
+            color: #C27A5A;
+            font-size: 22px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step {
+            background: #f8f8f8;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #ddd;
+        }
+        .step.active {
+            border-left-color: #C27A5A;
+            background: #fdf7f5;
+        }
+        .step h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .step ol, .step ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        .step li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #0084ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #0056b3;
+            font-size: 14px;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #856404;
+            font-size: 14px;
+        }
+        .code {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+        .emoji { font-size: 20px; }
+        .footer {
+            background: #f8f8f8;
+            padding: 20px 30px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+        }
+        .checkbox { margin-right: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📧 Configuration Apple Mail</h1>
+        <p>Guide complet pour configurer tes 3 boîtes mail + archivage</p>
+    </header>
+
+    <div class="content">
+        <!-- AVANT DE COMMENCER -->
+        <div class="section">
+            <h2><span class="emoji">✅</span> Avant de commencer</h2>
+            <div class="warning-box">
+                <strong>Important :</strong> Cette opération ne supprime rien. On va juste ajouter tes 3 boîtes mail dans Apple Mail en gardant Roundcube fonctionnel (tu peux revenir en arrière si besoin).
+            </div>
+            <div class="step">
+                <h3>Ce qu'on va configurer</h3>
+                <ul>
+                    <li><strong>contact@guadeloupe-explor.com</strong> — Leads Meurtre au Paradis (BtoC)</li>
+                    <li><strong>info@guadeloupe-explor.com</strong> — Leads site web + B2B agences</li>
+                    <li><strong>ttharsis@guadeloupe-explor.com</strong> — B2B Ponant/UCPA + correspondance pro</li>
+                </ul>
+            </div>
+            <div class="info-box">
+                <strong>⏱️ Durée synchro :</strong> La première synchro peut prendre 5-10 min (selon le volume). Ensuite, ça se fait en temps réel.
+            </div>
+        </div>
+
+        <!-- ÉTAPE 1 -->
+        <div class="section">
+            <h2><span class="emoji">1️⃣</span> Ouvrir Apple Mail</h2>
+            <div class="step active">
+                <h3>Lancer Apple Mail</h3>
+                <ol>
+                    <li>Clique sur le <strong>Finder</strong> (coin bas-gauche du dock)</li>
+                    <li>Cherche <strong>"Mail"</strong> ou <strong>"Courrier"</strong> dans Applications</li>
+                    <li>Double-clique pour ouvrir</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 2 -->
+        <div class="section">
+            <h2><span class="emoji">2️⃣</span> Ajouter la 1ère boîte mail (contact@)</h2>
+            <div class="step active">
+                <h3>Configuration contact@guadeloupe-explor.com</h3>
+                <ol>
+                    <li>En haut à gauche, clique sur <strong>Mail</strong> → <strong>Préférences</strong> (ou <strong>Mail</strong> → <strong>Settings</strong> si tu es en anglais)</li>
+                    <li>Clique sur l'onglet <strong>Comptes</strong> (Accounts)</li>
+                    <li>En bas à gauche, clique sur le <strong>+</strong> pour ajouter un compte</li>
+                    <li>Sélectionne <strong>Autre compte Mail</strong> (Other Mail Account)</li>
+                    <li>Remplis :</li>
+                </ol>
+            </div>
+            <div class="step">
+                <h3>Infos à remplir</h3>
+                <div class="code">
+Nom complet : Taina THARSIS<br>
+Adresse email : contact@guadeloupe-explor.com<br>
+Mot de passe : [ton mot de passe Roundcube/hosting]
+                </div>
+                <div class="info-box">
+                    💡 Si tu ne te souviens pas du mot de passe, contacte renaux@flbserver.com (ton hébergeur)
+                </div>
+            </div>
+            <div class="step">
+                <h3>Continuer la configuration</h3>
+                <ol>
+                    <li>Clique <strong>Suivant</strong> (Next)</li>
+                    <li>Apple va tester la connexion (⏳ attends 10-20 sec)</li>
+                    <li>Si ça demande <strong>IMAP</strong> vs <strong>POP</strong> → sélectionne <strong>IMAP</strong></li>
+                    <li>Serveur entrant (IMAP) : <strong>guadeloupe-explor.com</strong></li>
+                    <li>Port IMAP : <strong>993</strong> ou <strong>143</strong> (essaye 993 d'abord)</li>
+                    <li>Serveur sortant (SMTP) : <strong>guadeloupe-explor.com</strong></li>
+                    <li>Port SMTP : <strong>587</strong></li>
+                    <li>Clique <strong>Ajouter un compte</strong> (Add Account)</li>
+                </ol>
+            </div>
+            <div class="info-box">
+                ✅ Premier compte ajouté ! Apple Mail va commencer à télécharger tes emails (peut prendre quelques minutes).
+            </div>
+        </div>
+
+        <!-- ÉTAPE 3 -->
+        <div class="section">
+            <h2><span class="emoji">3️⃣</span> Ajouter la 2e boîte mail (info@)</h2>
+            <div class="step active">
+                <h3>Même processus pour info@guadeloupe-explor.com</h3>
+                <ol>
+                    <li>Refais exactement les mêmes étapes (Mail → Préférences → Comptes → +)</li>
+                    <li>Cette fois, remplis :</li>
+                </ol>
+            </div>
+            <div class="step">
+                <h3>Infos pour la 2e boîte</h3>
+                <div class="code">
+Nom complet : Taina THARSIS<br>
+Adresse email : info@guadeloupe-explor.com<br>
+Mot de passe : [ton mot de passe]
+                </div>
+            </li>
+            </div>
+            <div class="warning-box">
+                Même mot de passe que contact@ (c'est le même hosting).
+            </div>
+        </div>
+
+        <!-- ÉTAPE 4 -->
+        <div class="section">
+            <h2><span class="emoji">4️⃣</span> Ajouter la 3e boîte mail (ttharsis@)</h2>
+            <div class="step">
+                <h3>Même processus pour ttharsis@guadeloupe-explor.com</h3>
+                <div class="code">
+Nom complet : Taina THARSIS<br>
+Adresse email : ttharsis@guadeloupe-explor.com<br>
+Mot de passe : [ton mot de passe]
+                </div>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 5 -->
+        <div class="section">
+            <h2><span class="emoji">5️⃣</span> Organiser les boîtes dans Apple Mail</h2>
+            <div class="step active">
+                <h3>Créer des dossiers pour chaque boîte</h3>
+                <ol>
+                    <li>Dans la barre latérale gauche, tu vois maintenant 3 comptes (contact@, info@, ttharsis@)</li>
+                    <li>Développe chacun (clique sur la flèche pour voir les sous-dossiers)</li>
+                    <li>Pour chaque boîte, crée des dossiers :</li>
+                </ol>
+            </div>
+            <div class="step">
+                <h3>Structure suggérée (par boîte)</h3>
+                <ul>
+                    <li><strong>📧 Boîte de réception</strong> (Inbox)</li>
+                    <li><strong>📁 En attente de paiement</strong> (emails avec lien de paiement non confirmé)</li>
+                    <li><strong>📁 À confirmer</strong> (prestataires à vérifier)</li>
+                    <li><strong>📁 Archivé</strong> (vieux emails, mais gardés pour référence)</li>
+                </ul>
+            </div>
+            <div class="info-box">
+                💡 Pour créer un dossier : clique droit sur le compte → "Nouveau dossier" (New Folder)
+            </div>
+        </div>
+
+        <!-- ÉTAPE 6 -->
+        <div class="section">
+            <h2><span class="emoji">6️⃣</span> Archivage Roundcube → Apple Mail</h2>
+            <div class="step active">
+                <h3>Récupérer tes vieux emails de Roundcube</h3>
+                <ol>
+                    <li>Va dans Roundcube (ton interface mail actuelle)</li>
+                    <li>Sélectionne les emails anciens que tu veux garder (ou utilise "Tous les emails")</li>
+                    <li>Clique droit → <strong>Exporter</strong> ou cherche un option "Télécharger"</li>
+                    <li>Un fichier <strong>.zip</strong> ou <strong>.mbox</strong> va se télécharger</li>
+                </ol>
+            </div>
+            <div class="step">
+                <h3>Importer dans Apple Mail</h3>
+                <ol>
+                    <li>Dans Apple Mail, clique sur <strong>Fichier</strong> → <strong>Importer les boîtes aux lettres</strong> (Import Mailboxes)</li>
+                    <li>Sélectionne le fichier téléchargé depuis Roundcube</li>
+                    <li>Apple Mail va créer un dossier "Importer" avec tes vieux emails</li>
+                    <li>Tu peux ensuite les organiser dans les dossiers ci-dessus</li>
+                </ol>
+            </div>
+            <div class="warning-box">
+                ⚠️ Si tu ne trouves pas l'option "Importer", envoie un message à renaux@flbserver.com pour qu'il t'explique comment exporter depuis Roundcube.
+            </div>
+        </div>
+
+        <!-- ÉTAPE 7 -->
+        <div class="section">
+            <h2><span class="emoji">7️⃣</span> Vérifier la synchro</h2>
+            <div class="step active">
+                <h3>Contrôler que tout fonctionne</h3>
+                <ol>
+                    <li>Va dans chaque boîte de réception (contact@, info@, ttharsis@)</li>
+                    <li>Clique sur la 1ère boîte → tu dois voir tes emails</li>
+                    <li>Vérifie que les dates, les expéditeurs sont corrects</li>
+                    <li>Envoie-toi un test email → il doit arriver dans Apple Mail en <strong>quelques secondes</strong></li>
+                </ol>
+            </div>
+            <div class="info-box">
+                ✅ Si tu vois tes emails dans Apple Mail, c'est que c'est bon !
+            </div>
+        </div>
+
+        <!-- ÉTAPE 8 -->
+        <div class="section">
+            <h2><span class="emoji">8️⃣</span> Paramètres avancés (optionnel)</h2>
+            <div class="step">
+                <h3>Personaliser Apple Mail</h3>
+                <ul>
+                    <li><strong>Signature email</strong> : Mail → Préférences → Signatures. Ajoute ta signature pro pour chaque boîte</li>
+                    <li><strong>Archiver au lieu de supprimer</strong> : Mail → Préférences → Compte, coche "Archive" au lieu de "Trash"</li>
+                    <li><strong>VIP</strong> : Ajoute tes clients importants (Ponant, UCPA, etc.) en VIP pour les voir en priorité</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FINAL -->
+        <div class="section" style="background: #fdf7f5; border-left: 4px solid #C27A5A;">
+            <h2><span class="emoji">🎉</span> C'est fini !</h2>
+            <div class="step">
+                <h3>Prochaines étapes</h3>
+                <p>Maintenant que tes 3 boîtes mail sont dans Apple Mail :</p>
+                <ul>
+                    <li>✅ Tu reçois les emails des 3 boîtes au même endroit</li>
+                    <li>✅ Tu peux organiser avec des dossiers</li>
+                    <li>✅ Apple Mail synchro automatiquement (en temps réel)</li>
+                    <li>➡️ <strong>Prochaine étape</strong> : configurer Apple Calendrier pour tes excursions</li>
+                </ul>
+            </div>
+            <div class="info-box" style="background: #e8f8f0; border-left-color: #00b386; color: #00613b;">
+                📞 Des questions ? Envoie-moi un message. On peut faire un appel si ça bloque.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Tuto créé pour Taina THARSIS | Guadeloupe Explor | Avril 2026<br>
+        Version Apple Mail pour Mac
+    </div>
+</div>
+
+</body>
+</html>

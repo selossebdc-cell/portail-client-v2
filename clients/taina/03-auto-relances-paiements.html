@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A3 - Relances paiements</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif; margin: 0; background: #f8fafc; color: #0f172a; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 24px 18px 46px; }
+    h1 { margin: 0 0 8px; } h2 { margin-top: 24px; font-size: 1.2rem; border-bottom: 1px solid #dbe2ea; padding-bottom: 6px; }
+    .card { background: #fff; border: 1px solid #dbe2ea; border-radius: 10px; padding: 14px; margin-top: 10px; }
+    ul { margin: 8px 0 0 18px; line-height: 1.5; color: #334155; }
+    .meta { color: #64748b; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>A3 - Relances automatiques acomptes / soldes</h1>
+    <p class="meta">But: reduire les oublis de relance et securiser la tresorerie avant excursion.</p>
+
+    <h2>Fonctionnement cible</h2>
+    <div class="card">
+      <ul>
+        <li>Le systeme detecte les echeances de paiement par dossier client.</li>
+        <li>Envoi de relances programmees avec ton et message adaptes.</li>
+        <li>Arret automatique des relances des que paiement confirme.</li>
+      </ul>
+    </div>
+
+    <h2>Triggers</h2>
+    <div class="card">
+      <ul>
+        <li><strong>T1 (J-30):</strong> acompte ou solde bientot du.</li>
+        <li><strong>T2 (J-7):</strong> paiement encore manquant.</li>
+        <li><strong>T3 (J-1):</strong> dernier rappel avant prestation.</li>
+        <li><strong>T4:</strong> reception paiement -> cloture relances.</li>
+      </ul>
+    </div>
+
+    <h2>Donnees necessaires</h2>
+    <div class="card">
+      <ul>
+        <li>Montant attendu, statut (paye/partiel/non paye), date limite.</li>
+        <li>Identifiant dossier client et canal prefere de contact.</li>
+        <li>Mode de verification paiement (Stripe direct, CM manuel ou synchronise).</li>
+      </ul>
+    </div>
+
+    <h2>Sorties attendues</h2>
+    <div class="card">
+      <ul>
+        <li>Journal complet des relances envoyees.</li>
+        <li>Alerte prioritaire sur dossiers a risque (J-1 non paye).</li>
+        <li>Vue de pilotage tresorerie pre-excursion.</li>
+      </ul>
+    </div>
+
+    <h2>Regles V1</h2>
+    <div class="card">
+      <ul>
+        <li>Un seul message par fenetre de relance pour eviter le spam.</li>
+        <li>Validation manuelle obligatoire si statut paiement ambigu.</li>
+        <li>Scenario de secours: relance personnalisee par Taïna.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

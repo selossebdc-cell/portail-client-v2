@@ -118,7 +118,13 @@ async function loadTutos(clientId) {
 
   if (error) { console.error('Erreur chargement tutos:', error); return; }
   var showFsy = await shouldShowFsyResources(clientId);
-  renderTutos(data, showFsy ? buildFsyResourcesHtml() : '');
+  var showGuadeloupe = !showFsy && typeof shouldShowGuadeloupeResources === 'function'
+    ? await shouldShowGuadeloupeResources(clientId)
+    : false;
+  var staticHtml = '';
+  if (showFsy) staticHtml = buildFsyResourcesHtml();
+  else if (showGuadeloupe && typeof buildGuadeloupeResourcesHtml === 'function') staticHtml = buildGuadeloupeResourcesHtml();
+  renderTutos(data, staticHtml);
 }
 
 function renderTutos(tutos, fsyIntroHtml) {

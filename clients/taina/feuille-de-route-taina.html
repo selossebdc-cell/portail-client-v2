@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feuille de Route Stratégique — Guadeloupe Explor | CS Consulting Stratégique</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --terracotta: #C27A5A;
+    --terracotta-light: #d4956f;
+    --bg: #0f0f0f;
+    --bg-card: #1a1a1a;
+    --white: #FFFFFF;
+    --grey-light: #b0b0b0;
+    --grey-dim: #666666;
+    --green: #4ade80;
+    --red: #f87171;
+    --orange: #fb923c;
+    --blue: #60a5fa;
+    --purple: #a78bfa;
+    --yellow: #fbbf24;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    background: linear-gradient(160deg, #1a1a1a 0%, #0f0f0f 50%, #1a1410 100%);
+    padding: 50px 24px 40px;
+    border-bottom: 3px solid var(--terracotta);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -60px;
+    width: 300px; height: 300px;
+    background: var(--terracotta);
+    opacity: 0.05;
+    border-radius: 50%;
+  }
+  .header .brand {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 1rem;
+    color: var(--grey-light);
+  }
+  .header .dates {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+  }
+  .header .dates span {
+    color: var(--grey-light);
+  }
+  .header .dates strong {
+    color: var(--terracotta-light);
+  }
+
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+
+  /* OBJECTIF HERO */
+  .objectif-hero {
+    background: linear-gradient(135deg, rgba(194,122,90,0.12) 0%, rgba(194,122,90,0.04) 100%);
+    border: 1px solid rgba(194,122,90,0.3);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .objectif-hero h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--terracotta-light);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .objectif-hero blockquote {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font-style: italic;
+    color: var(--white);
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 40px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(194,122,90,0.3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* DIAGNOSTIC TABLE */
+  .diagnostic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+  }
+  .diagnostic-table th {
+    text-align: left;
+    padding: 12px 16px;
+    background: rgba(194,122,90,0.1);
+    color: var(--terracotta-light);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border-bottom: 1px solid rgba(194,122,90,0.2);
+  }
+  .diagnostic-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.9rem;
+    color: var(--grey-light);
+  }
+  .diagnostic-table td:first-child {
+    color: var(--white);
+    font-weight: 500;
+  }
+  .diagnostic-table .score-bad { color: var(--red); font-weight: 700; }
+  .diagnostic-table .score-mid { color: var(--orange); font-weight: 700; }
+  .diagnostic-table .score-good { color: var(--green); font-weight: 700; }
+
+  /* GAUGE */
+  .gauge-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .gauge-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .gauge-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s;
+  }
+
+  /* BLOCAGES */
+  .blocage-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .blocage-item:last-child { border-bottom: none; }
+  .blocage-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(248,113,113,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .blocage-text {
+    color: var(--grey-light);
+    font-size: 0.9rem;
+  }
+  .blocage-text strong { color: var(--white); }
+
+  /* PHASE CARD */
+  .phase-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .phase-header {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .phase-num {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .phase-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  .phase-header .phase-timing {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--grey-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .phase-body {
+    padding: 20px 24px;
+  }
+  .phase-body p {
+    color: var(--grey-light);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+  .phase-action {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+    color: var(--grey-light);
+  }
+  .phase-action:last-child { border-bottom: none; }
+  .phase-action .action-num {
+    color: var(--terracotta);
+    font-weight: 700;
+    min-width: 24px;
+  }
+  .phase-action strong { color: var(--white); }
+  .phase-action em { color: var(--terracotta-light); font-style: normal; font-size: 0.8rem; }
+
+  .phase-criterion {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(74,222,128,0.06);
+    border-left: 3px solid var(--green);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.82rem;
+    color: var(--green);
+  }
+
+  /* KPI */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .kpi-item {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .kpi-item .kpi-label {
+    font-size: 0.75rem;
+    color: var(--grey-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .kpi-item .kpi-current {
+    font-size: 0.85rem;
+    color: var(--grey-light);
+  }
+  .kpi-item .kpi-target {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--terracotta-light);
+    margin-top: 4px;
+  }
+
+  /* ENGAGEMENT */
+  .engagement-box {
+    background: linear-gradient(135deg, rgba(194,122,90,0.12) 0%, rgba(194,122,90,0.04) 100%);
+    border: 1px solid rgba(194,122,90,0.3);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 32px;
+    text-align: center;
+  }
+  .engagement-box h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--terracotta-light);
+    margin-bottom: 12px;
+  }
+  .engagement-box blockquote {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font-style: italic;
+    color: var(--white);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  .engagement-box .signature {
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: var(--grey-dim);
+  }
+
+  blockquote {
+    border-left: 3px solid var(--terracotta);
+    padding: 12px 16px;
+    margin: 12px 0;
+    background: rgba(194,122,90,0.06);
+    border-radius: 0 10px 10px 0;
+    color: var(--terracotta-light);
+    font-style: italic;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 30px 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    color: var(--grey-dim);
+    font-size: 0.8rem;
+  }
+  .footer a { color: var(--terracotta); text-decoration: none; }
+
+  @media print {
+    body { background: #fff; color: #222; }
+    .main { max-width: 100%; }
+    .phase-card, .diagnostic-table, .objectif-hero, .engagement-box { page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .header { padding: 30px 16px; }
+    .main { padding: 20px 16px; }
+    .kpi-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">CS — Consulting Stratégique</div>
+  <h1>Feuille de Route Stratégique</h1>
+  <div class="subtitle">Taïna THARSIS — Guadeloupe Explor</div>
+  <div class="dates">
+    <span>Début : <strong>Mars 2026</strong></span>
+    <span>Fin : <strong>Septembre 2026</strong></span>
+    <span>Programme : <strong>Accélération 6 mois</strong></span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- OBJECTIF -->
+  <div class="objectif-hero">
+    <h3>🎯 Ton objectif 6 mois</h3>
+    <blockquote>
+      "Je veux avoir structuré mon entreprise, avoir des process clairs et transmissibles, pouvoir répondre à mes clients le plus rapidement possible, faire le suivi et valider les projets/excursions. Avec tout ça : augmenter mon CA et atteindre le million à mon prochain exercice juin 2027."
+    </blockquote>
+  </div>
+
+  <!-- DIAGNOSTIC -->
+  <h2 class="section-title">📊 Diagnostic de départ</h2>
+
+  <table class="diagnostic-table">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>État actuel</th>
+        <th>Objectif 6 mois</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Temps stratégie</td>
+        <td><span class="score-bad">20%</span> → 16h/sem sur 80h</td>
+        <td><span class="score-good">50%</span> sur 50h/sem</td>
+      </tr>
+      <tr>
+        <td>Posture dirigeant</td>
+        <td><span class="score-bad">10%</span> dirigeant / 90% opérationnel</td>
+        <td><span class="score-good">50%</span> dirigeant</td>
+      </tr>
+      <tr>
+        <td>Stratégie structurée</td>
+        <td><span class="score-bad">2 / 10</span></td>
+        <td><span class="score-good">7 / 10</span></td>
+      </tr>
+      <tr>
+        <td>Documentation process</td>
+        <td><span class="score-bad">1 / 5</span></td>
+        <td><span class="score-good">4 / 5</span></td>
+      </tr>
+      <tr>
+        <td>Autonomie équipe</td>
+        <td><span class="score-bad">1 / 5</span></td>
+        <td><span class="score-mid">3 / 5</span></td>
+      </tr>
+      <tr>
+        <td>Automatisation</td>
+        <td><span class="score-bad">0%</span></td>
+        <td><span class="score-good">60%</span></td>
+      </tr>
+      <tr>
+        <td>Intégration outils</td>
+        <td><span class="score-bad">1 / 5</span></td>
+        <td><span class="score-good">4 / 5</span></td>
+      </tr>
+      <tr>
+        <td>Fiabilité données</td>
+        <td><span class="score-mid">3 / 5</span></td>
+        <td><span class="score-good">5 / 5</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- BLOCAGES -->
+  <h2 class="section-title">🔒 Blocages identifiés</h2>
+
+  <div class="blocage-item">
+    <div class="blocage-icon">1</div>
+    <div class="blocage-text"><strong>Tout dans la tête depuis 10 ans</strong> — 0% de process documentés, impossible de transmettre, l'entreprise s'arrête si Taïna s'absente 2 semaines</div>
+  </div>
+  <div class="blocage-item">
+    <div class="blocage-icon">2</div>
+    <div class="blocage-text"><strong>Noyée dans l'opérationnel</strong> — 80h/semaine, 90% opérationnel, quasi burn-out l'an dernier. Refuse des missions faute de temps</div>
+  </div>
+  <div class="blocage-item">
+    <div class="blocage-icon">3</div>
+    <div class="blocage-text"><strong>Perte de prospects par absence de suivi</strong> — demandes multicanal (WhatsApp, SMS, email, Insta, Facebook) non centralisées → oublis + temps de réponse trop long</div>
+  </div>
+  <div class="blocage-item">
+    <div class="blocage-icon">4</div>
+    <div class="blocage-text"><strong>Facturation 100% manuelle</strong> — factures sur Excel, pas de suivi automatisé, relances manuelles clients + vérification fournisseurs</div>
+  </div>
+  <div class="blocage-item">
+    <div class="blocage-icon">5</div>
+    <div class="blocage-text"><strong>Perfectionnisme bloquant</strong> — "la peur que ce ne soit pas bien fait" freine la délégation et la documentation</div>
+  </div>
+
+  <!-- ROADMAP -->
+  <h2 class="section-title">🗺️ Roadmap 6 mois</h2>
+
+  <!-- PHASE 0 -->
+  <div class="phase-card">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--terracotta)">0</div>
+      <div>
+        <h3>Fondations & Quick Wins</h3>
+      </div>
+      <div class="phase-timing">Semaines 1-2</div>
+    </div>
+    <div class="phase-body">
+      <p>Poser les bases numériques, créer les premières victoires rapides, installer la confiance dans les outils.</p>
+
+      <div class="phase-action"><span class="action-num">1.</span><div><strong>Configurer Claude Pro</strong> comme assistant IA personnel — remplace ChatGPT, personnaliser avec CS Digital Setup <em>· 1h30</em></div></div>
+      <div class="phase-action"><span class="action-num">2.</span><div><strong>Mettre en place un agenda partagé en ligne</strong> — synchronisé équipe, remplace l'agenda papier <em>· 1h</em></div></div>
+      <div class="phase-action"><span class="action-num">3.</span><div><strong>Nettoyer les outils</strong> : résilier Sage, réduire Zeendoc, identifier les doublons <em>· 30 min</em></div></div>
+      <div class="phase-action"><span class="action-num">4.</span><div><strong>Fixer le problème emails pro en spam</strong> — vérifier DNS/SPF/DKIM <em>· Catherine</em></div></div>
+
+      <div class="phase-criterion">✅ Critère de passage : Claude est configuré, outils nettoyés, emails fonctionnels</div>
+    </div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="phase-card">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--blue)">1</div>
+      <div>
+        <h3>Clarté & Cartographie</h3>
+      </div>
+      <div class="phase-timing">Mois 1-2</div>
+    </div>
+    <div class="phase-body">
+      <p>Comprendre et cartographier l'existant : parcours client, flux, process. Sortir ce qui est dans la tête de Taïna pour le rendre transmissible.</p>
+
+      <div class="phase-action"><span class="action-num">1.</span><div><strong>Cartographier le parcours client complet</strong> — BtoC DIP, BtoB Ponant/UCPA, séjours à la carte <em>· Catherine</em></div></div>
+      <div class="phase-action"><span class="action-num">2.</span><div><strong>Documenter les 5 process critiques</strong> : gestion excursion, facturation client, paiement fournisseur, onboarding prestataire, réponse demande prospect <em>· 2h+</em></div></div>
+      <div class="phase-action"><span class="action-num">3.</span><div><strong>Audit stack technique</strong> : choisir entre Ezus, Excel et les alternatives. Décider la stack définitive <em>· 1h</em></div></div>
+      <div class="phase-action"><span class="action-num">4.</span><div><strong>Définir les KPIs de pilotage</strong> : CA/mois, taux réponse prospect, délai moyen facturation, nbre excursions/sem <em>· 30 min</em></div></div>
+      <div class="phase-action"><span class="action-num">5.</span><div><strong>S'enregistrer pendant 3 excursions</strong> pour capturer la base de connaissances Guadeloupe <em>· en situation</em></div></div>
+
+      <div class="phase-criterion">✅ Critère de passage : Tous les flux sont cartographiés, les 5 process critiques sont documentés, stack choisie</div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase-card">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--orange)">2</div>
+      <div>
+        <h3>Systématiser & Automatiser</h3>
+      </div>
+      <div class="phase-timing">Mois 3-4</div>
+    </div>
+    <div class="phase-body">
+      <p>Mettre en place les outils choisis, créer les premières automatisations, commencer à déléguer avec des process clairs.</p>
+
+      <div class="phase-action"><span class="action-num">1.</span><div><strong>Automatiser les tâches répétitives identifiées</strong> — facturation, suivi, relances (outils à choisir ensemble)</div></div>
+      <div class="phase-action"><span class="action-num">2.</span><div><strong>Centraliser les demandes prospects</strong> — un seul point d'entrée au lieu du multicanal actuel</div></div>
+      <div class="phase-action"><span class="action-num">3.</span><div><strong>Simplifier la coordination prestataires</strong> — confirmations, alertes, suivi (solution à définir)</div></div>
+      <div class="phase-action"><span class="action-num">4.</span><div><strong>Former l'équipe</strong> sur les nouveaux outils</div></div>
+
+      <div class="phase-criterion">✅ Critère de passage : Les process prioritaires tournent, l'équipe est formée</div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase-card">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--green)">3</div>
+      <div>
+        <h3>Consolider & Déléguer</h3>
+      </div>
+      <div class="phase-timing">Mois 5-6</div>
+    </div>
+    <div class="phase-body">
+      <p>Passer de l'opérationnel à la posture dirigeante. Déléguer avec confiance, piloter par les chiffres, préparer la croissance.</p>
+
+      <div class="phase-action"><span class="action-num">1.</span><div><strong>Déléguer les opérations courantes</strong> avec les process documentés</div></div>
+      <div class="phase-action"><span class="action-num">2.</span><div><strong>Onboarding assistante de direction</strong> — transmission et montée en compétence</div></div>
+      <div class="phase-action"><span class="action-num">3.</span><div><strong>Piloter par les chiffres</strong> — tableau de bord en place, KPIs suivis</div></div>
+      <div class="phase-action"><span class="action-num">4.</span><div><strong>Préparer la croissance</strong> — stratégie BtoB proactive, vision long terme</div></div>
+
+      <div class="phase-criterion">✅ Critère de passage : Taïna passe en mode dirigeant, l'équipe tourne sur les opérations courantes</div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <h2 class="section-title">📈 Indicateurs de succès</h2>
+
+  <div class="kpi-grid">
+    <div class="kpi-item">
+      <div class="kpi-label">Heures / semaine</div>
+      <div class="kpi-current">Aujourd'hui : 80h</div>
+      <div class="kpi-target">→ 50h</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">Posture dirigeant</div>
+      <div class="kpi-current">Aujourd'hui : 10%</div>
+      <div class="kpi-target">→ 50%</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">Process documentés</div>
+      <div class="kpi-current">Aujourd'hui : 0</div>
+      <div class="kpi-target">→ 10+ SOP</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">Automatisation</div>
+      <div class="kpi-current">Aujourd'hui : 0%</div>
+      <div class="kpi-target">→ 60%</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">Délai réponse prospect</div>
+      <div class="kpi-current">Aujourd'hui : 24-72h+</div>
+      <div class="kpi-target">→ &lt; 4h</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">CA annuel</div>
+      <div class="kpi-current">Aujourd'hui : 300K€</div>
+      <div class="kpi-target">→ 1M€ (juin 2027)</div>
+    </div>
+  </div>
+
+  <!-- PRIORITÉS TAINA (classement questionnaire) -->
+  <h2 class="section-title">🏆 Tes priorités (dans ton ordre)</h2>
+  <div style="margin-bottom:24px">
+    <div class="phase-action"><span class="action-num" style="font-size:1.1rem">1.</span><div><strong>Structurer et documenter mes process</strong></div></div>
+    <div class="phase-action"><span class="action-num" style="font-size:1.1rem">2.</span><div><strong>Mettre en place des outils digitaux efficaces</strong></div></div>
+    <div class="phase-action"><span class="action-num" style="font-size:1.1rem">3.</span><div><strong>Mieux déléguer / faire monter mon équipe</strong></div></div>
+    <div class="phase-action"><span class="action-num" style="font-size:1.1rem">4.</span><div>Gagner du temps au quotidien</div></div>
+    <div class="phase-action"><span class="action-num" style="font-size:1.1rem">5.</span><div>Prendre de la hauteur (posture dirigeant)</div></div>
+    <div class="phase-action"><span class="action-num" style="font-size:1.1rem">6.</span><div>Améliorer l'expérience de mes clients</div></div>
+    <div class="phase-action"><span class="action-num" style="font-size:1.1rem">7.</span><div>Augmenter mon chiffre d'affaires</div></div>
+  </div>
+
+  <blockquote>
+    "Le CA viendra naturellement quand tout sera structuré. D'abord les fondations, ensuite la croissance."
+  </blockquote>
+
+  <!-- ENGAGEMENT -->
+  <div class="engagement-box">
+    <h3>💪 Ton engagement</h3>
+    <blockquote>
+      "Je veux avoir structuré mon entreprise, avoir des process clairs et transmissibles, pouvoir répondre à mes clients le plus rapidement possible, faire le suivi et valider les projets/excursions choisis qu'ils passent à l'action. Avec tout ça : augmenter mon CA et atteindre le million à mon prochain exercice juin 2027."
+    </blockquote>
+    <div class="signature">
+      Prête au changement : <strong style="color:var(--green)">10 / 10</strong><br>
+      Disponibilité : <strong style="color:var(--terracotta-light)">Plus de 4h / semaine</strong>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Catherine Selosse · <a href="https://csbusiness.fr">CS — Consulting Stratégique</a></p>
+  <p style="margin-top:4px">Document confidentiel — Établi le 26 mars 2026 à partir du questionnaire d'onboarding</p>
+</div>
+
+</body>
+</html>

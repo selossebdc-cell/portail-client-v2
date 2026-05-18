@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problème Spam — Instructions pour le Webmaster</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+            border-left: 4px solid #ff6b6b;
+            padding-left: 20px;
+        }
+        .section h2 {
+            color: #ff6b6b;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .issue {
+            background: #ffe8e8;
+            border-left: 4px solid #ff6b6b;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .fix {
+            background: #e8f8e8;
+            border-left: 4px solid #00b386;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .code {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            font-size: 14px;
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+        .dns-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+        }
+        .dns-table th, .dns-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+        .dns-table th {
+            background: #f8f8f8;
+            font-weight: bold;
+        }
+        .dns-table tr:hover {
+            background: #fafafa;
+        }
+        .step {
+            background: #f8f8f8;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 3px solid #ddd;
+        }
+        .step ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        .step li {
+            margin-bottom: 10px;
+        }
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #856404;
+        }
+        .footer {
+            background: #f8f8f8;
+            padding: 20px 30px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+        }
+        .emoji { font-size: 20px; margin-right: 8px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🚨 Problème de Délivrabilité Email</h1>
+        <p>Tes emails @guadeloupe-explor.com tombent en spam — Voici le diagnostic et la solution</p>
+    </header>
+
+    <div class="content">
+        <!-- LE PROBLÈME -->
+        <div class="section">
+            <h2><span class="emoji">❌</span> Le problème identifié</h2>
+            <div class="issue">
+                <h3>Tes emails @guadeloupe-explor.com reçus en spam</h3>
+                <p><strong>Cause :</strong> Double politique DMARC contradictoire sur ta zone DNS</p>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>Une DMARC avec <strong>p=reject</strong> (rejette tous les emails qui échouent DKIM/SPF)</li>
+                    <li>Une autre DMARC parasitée sur la zone racine (par erreur)</li>
+                    <li>SPF trop souple → les serveurs ne savent pas si c'est vraiment toi</li>
+                </ul>
+            </div>
+            <div class="alert">
+                <strong>Impact :</strong> Tes clients ne reçoivent PAS tes emails ou les reçoivent en spam. Ça bloque les confirmations de réservation, les relances de paiement, les réponses aux leads.
+            </div>
+        </div>
+
+        <!-- CONFIGURATION ACTUELLE -->
+        <div class="section">
+            <h2><span class="emoji">🔍</span> Configuration DNS actuelle</h2>
+            <div class="step">
+                <h3>État actuel de ta zone guadeloupe-explor.com :</h3>
+                <table class="dns-table">
+                    <tr>
+                        <th>Enregistrement</th>
+                        <th>Valeur actuelle</th>
+                        <th>Problème</th>
+                    </tr>
+                    <tr>
+                        <td><strong>DMARC (racine)</strong></td>
+                        <td style="color: #ff6b6b;"><code>v=DMARC1; p=reject; ...</code></td>
+                        <td>❌ Trop stricte, rejette tes propres emails</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SPF</strong></td>
+                        <td><code>v=spf1 ... ~all</code></td>
+                        <td>⚠️ <code>~all</code> (soft fail) au lieu de <code>-all</code> (fail)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DKIM</strong></td>
+                        <td>Présent (sélecteur: default)</td>
+                        <td>✅ OK, mais pas utilisé à cause de DMARC stricte</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="alert">
+                Hebergeur DNS : <strong>IONOS / ui-dns</strong><br>
+                Serveur mail : <strong>195.154.108.27</strong>
+            </div>
+        </div>
+
+        <!-- LA SOLUTION -->
+        <div class="section">
+            <h2><span class="emoji">✅</span> Solution : 3 modifications DNS</h2>
+            <div class="step">
+                <h3>À faire (à passer au webmaster) :</h3>
+                <ol>
+                    <li><strong>Supprimer</strong> la DMARC sur la zone racine (s'il y en a)</li>
+                    <li><strong>Modifier</strong> DMARC : passer de <code>p=reject</code> à <code>p=quarantine</code></li>
+                    <li><strong>Modifier</strong> SPF : passer de <code>~all</code> à <code>-all</code></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- INSTRUCTIONS POUR WEBMASTER -->
+        <div class="section">
+            <h2><span class="emoji">📋</span> À envoyer à renaux@flbserver.com</h2>
+            <div class="step">
+                <h3>Email / Message à envoyer :</h3>
+                <div class="code">
+Bonjour,
+
+Nous avons un problème de délivrabilité email sur guadeloupe-explor.com.
+Nos emails tombent en spam chez nos clients.
+
+Diagnostic : DMARC trop stricte + SPF souple.
+
+Pouvez-vous faire les modifications suivantes sur la zone DNS de guadeloupe-explor.com ?
+
+1. SUPPRIMER l'enregistrement DMARC sur la zone racine s'il existe
+2. MODIFIER l'enregistrement DMARC : remplacer p=reject par p=quarantine
+3. MODIFIER le SPF : remplacer ~all par -all
+
+Enregistrements cibles :
+_dmarc.guadeloupe-explor.com → v=DMARC1; p=quarantine; rua=mailto:abuse@guadeloupe-explor.com; ruf=mailto:abuse@guadeloupe-explor.com; fo=1
+@ (SPF) → contient -all au lieu de ~all
+
+Serveur mail sortant : 195.154.108.27
+Sélecteur DKIM : default
+
+Peux-tu confirmer une fois que les modifications sont faites ?
+
+Merci !
+                </div>
+            </div>
+        </div>
+
+        <!-- INSTRUCTIONS DÉTAILLÉES POUR WEBMASTER -->
+        <div class="section">
+            <h2><span class="emoji">🔧</span> Instructions détaillées (si webmaster demande)</h2>
+            <div class="step">
+                <h3>DMARC : Modifier ou Créer</h3>
+                <p><strong>Enregistrement :</strong> <code>_dmarc.guadeloupe-explor.com</code></p>
+                <p><strong>Valeur :</strong></p>
+                <div class="code">
+v=DMARC1; p=quarantine; rua=mailto:abuse@guadeloupe-explor.com;
+ruf=mailto:abuse@guadeloupe-explor.com; fo=1
+                </div>
+                <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                    Explication : <br>
+                    • <code>p=quarantine</code> = les emails qui échouent vont en spam (au lieu de être rejetés)<br>
+                    • <code>rua=mailto:</code> = envoie un rapport DMARC hebdo à cette adresse<br>
+                    • <code>fo=1</code> = genère un rapport même si 0 emails échouent
+                </p>
+            </div>
+            <div class="step">
+                <h3>SPF : Modifier</h3>
+                <p><strong>Enregistrement :</strong> <code>@</code> (zone racine) ou <code>guadeloupe-explor.com</code></p>
+                <p><strong>Valeur actuelle :</strong> (exemple)</p>
+                <div class="code">
+v=spf1 include:XXXXXX.flbserver.com ~all
+                </div>
+                <p><strong>Valeur à mettre :</strong></p>
+                <div class="code">
+v=spf1 include:XXXXXX.flbserver.com -all
+                </div>
+                <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                    Changement : <code>~all</code> → <code>-all</code><br>
+                    • <code>~all</code> (soft fail) = "probablement pas un email autorisé"<br>
+                    • <code>-all</code> (fail) = "c'est 100% un email autorisé ou pas"
+                </p>
+            </div>
+            <div class="step">
+                <h3>DKIM : Vérifier (pas de modification)</h3>
+                <p><strong>Enregistrement :</strong> <code>default._domainkey.guadeloupe-explor.com</code></p>
+                <p>Doit contenir une clé DKIM (commence par <code>v=DKIM1; k=rsa;</code>)</p>
+                <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                    ✅ Si DKIM existe et n'a pas été modifié, c'est bon. Rien à faire.
+                </p>
+            </div>
+        </div>
+
+        <!-- VÉRIFICATION -->
+        <div class="section">
+            <h2><span class="emoji">✔️</span> Après modification : Vérification</h2>
+            <div class="step">
+                <h3>Comment savoir que c'est réglé ?</h3>
+                <ol>
+                    <li><strong>Attendre 30-60 min</strong> (propagation DNS)</li>
+                    <li><strong>Envoyer un test email</strong> à un contact (Gmail, Yahoo, Outlook, etc.)</li>
+                    <li><strong>Vérifier que l'email arrive en boîte de réception</strong> (pas spam)</li>
+                    <li>Si c'est en spam : préviens-moi, on creuse plus</li>
+                </ol>
+            </div>
+            <div class="fix">
+                <strong>✅ Signe que c'est réglé :</strong><br>
+                Les emails de contact@, info@, et ttharsis@ arrivent directement en boîte de réception chez tes clients. Plus de spam !
+            </div>
+        </div>
+
+        <!-- RÉSUMÉ POUR TAINA -->
+        <div class="section" style="background: #fdf7f5; border-left: 4px solid #ff6b6b;">
+            <h2><span class="emoji">📝</span> Résumé pour Taina</h2>
+            <div class="step">
+                <h3>Ce que tu dois faire</h3>
+                <ol>
+                    <li>Copie-colle l'email ci-dessus (section "À envoyer à renaux@flbserver.com")</li>
+                    <li>Envoie-le à <strong>renaux@flbserver.com</strong> (ton webmaster/hébergeur DNS)</li>
+                    <li>Attends sa confirmation que c'est fait</li>
+                    <li>Attends 30-60 min (propagation DNS)</li>
+                    <li>Envoie un test email à un contact externe</li>
+                    <li>Vérifie qu'il arrive en boîte de réception</li>
+                    <li>C'est bon ! 🎉</li>
+                </ol>
+            </div>
+            <div class="alert">
+                Si renaux n'est pas disponible ou tu ne reçois pas sa confirmation sous 24h, envoie-moi un message. Je contacterai directement IONOS si besoin.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Diagnostic créé pour Taina THARSIS | Guadeloupe Explor | Avril 2026<br>
+        Problème email identifié lors de la session 2
+    </div>
+</div>
+
+</body>
+</html>

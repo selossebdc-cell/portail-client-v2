@@ -61,6 +61,30 @@ async function loadClientDashboard(profile) {
     html += '</div>';
   }
 
+  // ─── Guadeloupe Explor : ressources statiques ───
+  if (typeof isGuadeloupePortalClient === 'function' && isGuadeloupePortalClient(profile) &&
+      typeof getGuadeloupeQuickLinksForDashboard === 'function') {
+    var gx = getGuadeloupeQuickLinksForDashboard();
+    html += '<div style="margin-bottom:24px;padding:18px 20px;background:rgba(194,122,90,0.06);border:1px solid rgba(194,122,90,0.25);border-radius:14px">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px">';
+    html += '<div><h3 style="font-family:Playfair Display,serif;font-size:1.05rem;margin:0 0 4px;color:#d4956f">Ressources &amp; parcours</h3>';
+    html += '<p style="margin:0;font-size:0.8rem;color:#888">Parcours clients, automatisations, prompts Claude — onglet <strong style="color:#b0b0b0">Ressources</strong> pour tout voir.</p></div>';
+    html += '<span style="font-size:0.8rem;color:#d4956f;cursor:pointer" onclick="switchToTab(\'tab-tutos\')">Tout voir →</span>';
+    html += '</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px">';
+    gx.forEach(function(g) {
+      var u = safeUrl(g.url);
+      if (!u) return;
+      html += '<a href="' + u + '" target="_blank" rel="noopener noreferrer" style="display:block;padding:12px 14px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;text-decoration:none;color:inherit;transition:border-color 0.2s" onmouseover="this.style.borderColor=\'#C27A5A\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">' +
+        '<div style="font-size:1rem;margin-bottom:4px">' + g.icon + '</div>' +
+        '<div style="font-size:0.85rem;font-weight:600;color:#e6e6e6">' + safeText(g.title) + '</div>' +
+        '<div style="font-size:0.72rem;color:#888;margin-top:4px;line-height:1.35">' + safeText(g.desc) + '</div>' +
+        '<div style="font-size:0.72rem;color:#d4956f;margin-top:8px">Ouvrir →</div>' +
+      '</a>';
+    });
+    html += '</div></div>';
+  }
+
   // ─── FSY : guides opérationnels + documents (Lori / équipe) ───
   if (typeof isFsyPortalClient === 'function' && isFsyPortalClient(profile) &&
       typeof getFsyOperationalGuideLinks === 'function') {

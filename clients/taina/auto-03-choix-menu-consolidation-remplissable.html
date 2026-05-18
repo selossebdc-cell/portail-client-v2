@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto 03 Menus — fiche remplissable</title>
+  <style>
+    :root { --bg:#0f1115; --card:#181c24; --text:#e9edf5; --muted:#a8b0bf; --line:#2a3140; --accent:#7cc4ff; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif; background:var(--bg); color:var(--text); padding:24px; }
+    .wrap { max-width:950px; margin:0 auto; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px; }
+    h1 { font-size:1.45rem; margin-bottom:6px; } h2 { font-size:1.08rem; margin-bottom:6px; color:var(--accent); }
+    p,label { color:var(--muted); font-size:0.93rem; } ul { margin-left:18px; } li { margin:6px 0; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+    input[type=text], textarea, select { width:100%; background:#11151d; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:9px; margin-top:5px; }
+    textarea { min-height:82px; } .check label { display:block; color:var(--text); margin:6px 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Auto 03 — Choix menu + consolidation prestataires</h1>
+      <p>But: sécuriser préparation excursion et réduire erreurs logistiques.</p>
+    </div>
+    <div class="card">
+      <h2>Trigger planning (propositions)</h2>
+      <div class="check">
+        <label><input type="checkbox"> Option A: envoi formulaire à J-30, relance J-7, lock J-1.</label>
+        <label><input type="checkbox"> Option B: envoi à J-21, relance J-10, lock J-2.</label>
+      </div>
+      <label>Planning final</label>
+      <input type="text" placeholder="Séquence validée">
+    </div>
+    <div class="card">
+      <h2>Formulaire menu (propositions)</h2>
+      <label>Questions obligatoires</label>
+      <textarea placeholder="- Choix menu&#10;- Allergies/intolérances&#10;- Nb participants final"></textarea>
+      <label>Fallback si non réponse</label>
+      <textarea placeholder="Ex: menu standard + confirmation manuelle"></textarea>
+    </div>
+    <div class="card">
+      <h2>Consolidation et envoi prestataires</h2>
+      <div class="grid">
+        <div>
+          <label>Canal d'envoi</label>
+          <select>
+            <option>Email</option>
+            <option>WhatsApp</option>
+            <option>Telegram</option>
+          </select>
+        </div>
+        <div>
+          <label>Version finale verrouillée</label>
+          <input type="text" placeholder="ex: J-1 18:00">
+        </div>
+      </div>
+      <label>Template fiche opérationnelle</label>
+      <textarea placeholder="Contenu final envoyé guide + prestataires"></textarea>
+    </div>
+    <div class="card">
+      <h2>Checklist installation</h2>
+      <div class="check">
+        <label><input type="checkbox"> Valider formulaire avec Taina.</label>
+        <label><input type="checkbox"> Tester consolidation sur 3 cas réels.</label>
+        <label><input type="checkbox"> Valider lisibilité de la fiche avec un guide.</label>
+        <label><input type="checkbox"> Définir owner correction si erreur détectée.</label>
+      </div>
+      <label>Décision finale + prochaines étapes</label>
+      <textarea placeholder="- Décision / Action / Date"></textarea>
+    </div>
+  </div>
+</body>
+</html>

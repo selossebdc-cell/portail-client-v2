@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atelier automatisations — Taina (remplissable)</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card: #181c24;
+      --text: #e9edf5;
+      --muted: #a8b0bf;
+      --line: #2a3140;
+      --accent: #7cc4ff;
+      --ok: #7be495;
+      --warn: #ffd166;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      padding: 24px;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    h1 { font-size: 1.6rem; margin-bottom: 6px; }
+    h2 { font-size: 1.2rem; margin-bottom: 8px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    h3 { font-size: 1rem; margin: 12px 0 8px; color: var(--accent); }
+    p { color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    label { display: block; font-size: 0.92rem; margin-bottom: 6px; color: var(--muted); }
+    input[type="text"], input[type="date"], textarea, select {
+      width: 100%;
+      background: #11151d;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.95rem;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    .checklist label { color: var(--text); margin-bottom: 8px; }
+    .checklist input { margin-right: 8px; }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    button {
+      background: #1c2738;
+      color: var(--text);
+      border: 1px solid #32445f;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+    button.primary {
+      background: #133a5c;
+      border-color: #2b5f8e;
+    }
+    .small { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+    .pill {
+      display: inline-block;
+      font-size: 0.78rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-bottom: 8px;
+      color: var(--warn);
+    }
+    ul { margin-left: 18px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Atelier décisionnel — Automatisations Taina</h1>
+      <p>Document remplissable en séance. Tous les champs sont éditables et sauvegardables dans le navigateur.</p>
+      <div class="actions">
+        <button class="primary" onclick="saveForm()">Sauvegarder (local)</button>
+        <button onclick="loadForm()">Recharger</button>
+        <button onclick="resetForm()">Vider le formulaire</button>
+        <button onclick="copySummary()">Copier le résumé des décisions</button>
+      </div>
+      <p class="small">Astuce: après la séance, colle le résumé dans le CR client.</p>
+    </div>
+
+    <div class="card">
+      <h2>1) Cadre de séance</h2>
+      <div class="grid">
+        <div>
+          <label>Date de séance</label>
+          <input data-field="date_seance" type="date">
+        </div>
+        <div>
+          <label>Version dashboard constatée</label>
+          <input data-field="dashboard_version" type="text" placeholder="ex: stable / corrigée">
+        </div>
+        <div>
+          <label>Objectif principal de la séance</label>
+          <input data-field="objectif" type="text" placeholder="ex: figer les choix V1">
+        </div>
+      </div>
+      <h3>État perçu en ouverture</h3>
+      <textarea data-field="etat_ouverture" placeholder="Ce qui est OK / ce qui reste flou / urgence du moment"></textarea>
+    </div>
+
+    <div class="card">
+      <h2>2) Choix transverses obligatoires</h2>
+      <div class="grid">
+        <div>
+          <label>Source de vérité clients/réservations</label>
+          <select data-field="source_verite">
+            <option value="">-- Choisir --</option>
+            <option>ESUS</option>
+            <option>Airtable</option>
+            <option>Google Sheet temporaire</option>
+            <option>Mix ESUS + autre (à cadrer)</option>
+          </select>
+        </div>
+        <div>
+          <label>Source de vérité paiements</label>
+          <select data-field="source_paiements">
+            <option value="">-- Choisir --</option>
+            <option>Crédit Mutuel (manuel validé)</option>
+            <option>Stripe (auto)</option>
+            <option>Mix CM + Stripe</option>
+          </select>
+        </div>
+        <div>
+          <label>Canal principal de messages automatiques</label>
+          <select data-field="canal_principal">
+            <option value="">-- Choisir --</option>
+            <option>Email</option>
+            <option>WhatsApp</option>
+            <option>Telegram</option>
+            <option>Mix selon flux</option>
+          </select>
+        </div>
+      </div>
+      <h3>Mode V1</h3>
+      <div class="checklist">
+        <label><input data-field="mode_v1_brouillon" type="checkbox">Brouillon + validation humaine (recommandé)</label>
+        <label><input data-field="mode_v1_auto" type="checkbox">Envoi automatique direct</label>
+      </div>
+      <textarea data-field="justification_mode_v1" placeholder="Pourquoi ce choix V1 ?"></textarea>
+    </div>
+
+    <div class="card">
+      <h2>3) Priorisation des automatisations</h2>
+      <span class="pill">Score recommandé : Volume + Temps + Risque + Impact (sur 20)</span>
+      <div class="grid">
+        <div>
+          <label>Auto 01 Leads — score /20</label>
+          <input data-field="score_auto01" type="text" placeholder="ex: 18">
+          <label>Décision</label>
+          <select data-field="decision_auto01">
+            <option value="">-- Choisir --</option>
+            <option>Automatiser maintenant</option>
+            <option>Préparer puis automatiser</option>
+            <option>Laisser manuel provisoirement</option>
+          </select>
+        </div>
+        <div>
+          <label>Auto 02 Paiements — score /20</label>
+          <input data-field="score_auto02" type="text" placeholder="ex: 17">
+          <label>Décision</label>
+          <select data-field="decision_auto02">
+            <option value="">-- Choisir --</option>
+            <option>Automatiser maintenant</option>
+            <option>Préparer puis automatiser</option>
+            <option>Laisser manuel provisoirement</option>
+          </select>
+        </div>
+        <div>
+          <label>Auto 03 Menus — score /20</label>
+          <input data-field="score_auto03" type="text" placeholder="ex: 14">
+          <label>Décision</label>
+          <select data-field="decision_auto03">
+            <option value="">-- Choisir --</option>
+            <option>Automatiser maintenant</option>
+            <option>Préparer puis automatiser</option>
+            <option>Laisser manuel provisoirement</option>
+          </select>
+        </div>
+        <div>
+          <label>Auto 04 Post-excursion — score /20</label>
+          <input data-field="score_auto04" type="text" placeholder="ex: 13">
+          <label>Décision</label>
+          <select data-field="decision_auto04">
+            <option value="">-- Choisir --</option>
+            <option>Automatiser maintenant</option>
+            <option>Préparer puis automatiser</option>
+            <option>Laisser manuel provisoirement</option>
+          </select>
+        </div>
+      </div>
+      <h3>Ordre de déploiement validé</h3>
+      <input data-field="ordre_deploiement" type="text" placeholder="ex: Auto 01 -> Auto 02 -> Auto 03 -> Auto 04">
+    </div>
+
+    <div class="card">
+      <h2>4) Check sécurité et qualité</h2>
+      <div class="checklist">
+        <label><input data-field="check_cloisonnement" type="checkbox">Cloisonnement client validé (zéro fuite inter-clients)</label>
+        <label><input data-field="check_logs" type="checkbox">Journalisation activée (qui, quoi, quand)</label>
+        <label><input data-field="check_fallback" type="checkbox">Fallback manuel défini si l'automatisation échoue</label>
+        <label><input data-field="check_templates" type="checkbox">Templates de messages validés par Taina</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>5) Plan d'action séance</h2>
+      <div class="grid">
+        <div>
+          <label>Top 3 actions Taina (d'ici prochaine séance)</label>
+          <textarea data-field="actions_taina" placeholder="- Action 1&#10;- Action 2&#10;- Action 3"></textarea>
+        </div>
+        <div>
+          <label>Top 3 actions Catherine</label>
+          <textarea data-field="actions_catherine" placeholder="- Action 1&#10;- Action 2&#10;- Action 3"></textarea>
+        </div>
+      </div>
+      <div class="grid">
+        <div>
+          <label>Date prochaine revue</label>
+          <input data-field="prochaine_revue" type="date">
+        </div>
+        <div>
+          <label>Risque principal à lever avant revue</label>
+          <input data-field="risque_principal" type="text" placeholder="ex: source paiement non fiable">
+        </div>
+      </div>
+      <label>Notes libres</label>
+      <textarea data-field="notes_libres" placeholder="Décisions, objections, arbitrages, détails utiles"></textarea>
+    </div>
+  </div>
+
+  <script>
+    const KEY = "atelier_automatisations_taina_v1";
+    function fields() {
+      return Array.from(document.querySelectorAll("[data-field]"));
+    }
+    function getData() {
+      const data = {};
+      fields().forEach(el => {
+        data[el.dataset.field] = el.type === "checkbox" ? el.checked : el.value;
+      });
+      return data;
+    }
+    function setData(data) {
+      fields().forEach(el => {
+        if (!(el.dataset.field in data)) return;
+        if (el.type === "checkbox") el.checked = !!data[el.dataset.field];
+        else el.value = data[el.dataset.field] || "";
+      });
+    }
+    function saveForm() {
+      localStorage.setItem(KEY, JSON.stringify(getData()));
+      alert("Formulaire sauvegardé localement.");
+    }
+    function loadForm() {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return alert("Aucune sauvegarde trouvée.");
+      setData(JSON.parse(raw));
+      alert("Formulaire rechargé.");
+    }
+    function resetForm() {
+      if (!confirm("Vider tous les champs ?")) return;
+      fields().forEach(el => {
+        if (el.type === "checkbox") el.checked = false;
+        else el.value = "";
+      });
+    }
+    function copySummary() {
+      const d = getData();
+      const txt = [
+        "Compte-rendu atelier automatisations — Taina",
+        "",
+        "Choix transverses:",
+        "- Source vérité: " + (d.source_verite || ""),
+        "- Source paiements: " + (d.source_paiements || ""),
+        "- Canal principal: " + (d.canal_principal || ""),
+        "- Mode V1: " + ((d.mode_v1_brouillon ? "Brouillon valide" : "") + (d.mode_v1_auto ? " / Auto" : "")),
+        "",
+        "Priorisation:",
+        "- Auto01 Leads: " + (d.score_auto01 || "") + "/20 -> " + (d.decision_auto01 || ""),
+        "- Auto02 Paiements: " + (d.score_auto02 || "") + "/20 -> " + (d.decision_auto02 || ""),
+        "- Auto03 Menus: " + (d.score_auto03 || "") + "/20 -> " + (d.decision_auto03 || ""),
+        "- Auto04 Post-excursion: " + (d.score_auto04 || "") + "/20 -> " + (d.decision_auto04 || ""),
+        "- Ordre de deploiement: " + (d.ordre_deploiement || ""),
+        "",
+        "Actions Taina:",
+        d.actions_taina || "",
+        "",
+        "Actions Catherine:",
+        d.actions_catherine || "",
+        "",
+        "Prochaine revue: " + (d.prochaine_revue || ""),
+        "Risque principal: " + (d.risque_principal || ""),
+        "Notes: " + (d.notes_libres || "")
+      ].join("\n");
+      navigator.clipboard.writeText(txt).then(() => alert("Resume copie dans le presse-papiers."));
+    }
+    window.addEventListener("load", loadForm);
+  </script>
+</body>
+</html>
