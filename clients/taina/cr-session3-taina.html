@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CR Session 3 - Taina</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            background: #fafafa;
+        }
+        .header {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border-left: 4px solid #667eea;
+        }
+        h1 { font-size: 26px; margin: 0 0 8px 0; }
+        .meta { color: #666; font-size: 13px; margin: 8px 0; }
+        h2 { font-size: 18px; margin-top: 28px; margin-bottom: 14px; color: #333; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; }
+        h3 { font-size: 15px; margin-top: 16px; margin-bottom: 10px; color: #555; }
+        section { background: white; padding: 20px; margin-bottom: 16px; border-radius: 6px; }
+        ul { margin-left: 20px; margin-bottom: 12px; }
+        li { margin-bottom: 6px; }
+        .bug { background: #fee2e2; border-left: 4px solid #dc2626; padding: 14px; margin: 12px 0; border-radius: 4px; }
+        .bug strong { color: #991b1b; }
+        .action { background: #ecfdf5; border-left: 4px solid #10b981; padding: 14px; margin: 12px 0; border-radius: 4px; }
+        .action strong { color: #065f46; }
+        .quote { background: #f3f4f6; border-left: 4px solid #667eea; padding: 14px; margin: 12px 0; font-style: italic; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        th, td { border: 1px solid #e5e7eb; padding: 10px; text-align: left; }
+        th { background: #f3f4f6; font-weight: 600; }
+        .mantra { background: #ede9fe; border: 2px solid #8b5cf6; padding: 16px; margin: 16px 0; border-radius: 6px; text-align: center; font-weight: 500; }
+        .priority { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 14px; margin: 12px 0; border-radius: 4px; }
+        .priority strong { color: #d97706; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 SESSION 3 — Infrastructure digitale, coaching perfectionnisme & setup Playbook</h1>
+    <div class="meta">
+        <strong>Client :</strong> Taina THARSIS (Guadeloupe Explor)<br>
+        <strong>Date :</strong> 21 avril 2026 | <strong>Durée :</strong> ~2h30<br>
+        <strong>Prochain RDV :</strong> 28 avril 2026, 14h (France) / 8h (Guadeloupe)
+    </div>
+</div>
+
+<section>
+    <h2>✅ CÉLÉBRATIONS</h2>
+    <ul>
+        <li><strong>Configuration iCloud réussie :</strong> Bureau + Documents synchronisés, import mail complété</li>
+        <li><strong>Calendrier Apple structuré :</strong> multiples calendriers (CPA, Ponant, Structure & Finance, Alternance, personnel)</li>
+        <li><strong>Prise de conscience en action :</strong> Taina a commencé le nettoyage d'archives (suppression 2015-2016 mails, réflexion sur durée de conservation)</li>
+        <li><strong>Coaching perfectionnisme engagé :</strong> identification du pattern + travail en cours avec coach Julien (gratitude, fierté)</li>
+        <li><strong>Playbook partagé :</strong> 3 parcours clients visibles + 50 prestataires identifiés (vs "2 employés" annoncé en S1)</li>
+        <li><strong>Skill "Stratégie" en création :</strong> basée sur doc HTML généré par Claude (séminaire Business Max)</li>
+        <li><strong>Modèles Claude intégrés :</strong> Taina comprend la stratégie Haiku (data) → Opus 4.7 (analyse) = coût-efficace</li>
+    </ul>
+</section>
+
+<section>
+    <h2>🔄 BLOCAGES / BUGS IDENTIFIÉS</h2>
+
+    <div class="bug">
+        <strong>🐛 BUG CRITIQUE — Permissions Playbook</strong>
+        <ul style="margin-top: 8px; margin-bottom: 0;">
+            <li><strong>Problème :</strong> Taina voit les tâches d'autres clients (Aurélia, Laurie, Véa) dans "Mes tâches"</li>
+            <li><strong>Impact :</strong> problème de confidentialité/cloisonnement client grave</li>
+            <li><strong>Cause probable :</strong> erreur de configuration droits lors création Playbook</li>
+            <li><strong>Action requise :</strong> nettoyer permissions + vérifier l'isolation par client</li>
+        </ul>
+    </div>
+
+    <div class="bug">
+        <strong>⚠️ Tutos cassés</strong><br>
+        Les liens ressources ne fonctionnent pas depuis la resécurisation. À corriger via Michael (développeur).
+    </div>
+
+    <div class="bug">
+        <strong>⚠️ ESUS + Paiement à vérifier</strong>
+        <ul style="margin-top: 8px; margin-bottom: 0;">
+            <li>ESUS ne permet que Stripe ou peut-on connecter lien Crédit Mutuel actuel ?</li>
+            <li>Comment ESUS sait qu'un paiement via lien bancaire est reçu ?</li>
+            <li>À investiguer avec Michael</li>
+        </ul>
+    </div>
+
+    <div class="bug">
+        <strong>⚠️ Enregistrement appels téléphoniques</strong><br>
+        Solution native iOS à chercher ou utiliser Otter.ai. Nécessaire pour feed Claude (transcription auto).
+    </div>
+</section>
+
+<section>
+    <h2>🛠️ DÉCISIONS PRISES</h2>
+
+    <h3>1️⃣ Infrastructure Apple validée</h3>
+    <ul>
+        <li>✅ iCloud (premier niveau ~200 Go, 2,99€/mois)</li>
+        <li>✅ Apple Mail (futur : intégrer 3 boîtes contact@ / info@ / ttharsis@)</li>
+        <li>✅ Apple Calendrier (pour vision d'ensemble opérationnelle)</li>
+    </ul>
+
+    <h3>2️⃣ Perfectionnisme — prise de conscience & défis</h3>
+    <div class="quote">
+        "Tu t'infliges d'être parfaite, mais tu t'obliges aussi à te remettre en question. Parce que pour toi, c'est ça l'évolution. Mais la remise en question, ça veut dire que tu as mal fait. Tu vois le système dans lequel tu t'es mise ?"
+    </div>
+    <ul>
+        <li><strong>Pattern identifié :</strong> besoin de tout garder (10 ans historique) + devis "parfait" = paralysie agence</li>
+        <li><strong>Reframing clé :</strong> "Il y a une marge de progression" ≠ "J'ai échoué"</li>
+        <li><strong>Mantra :</strong> "Mieux vaut une action imparfaite qu'une parfaite inaction"</li>
+        <li><strong>Prochain défi :</strong> identifier limites acceptables par domaine (mails : combien d'années ? Contrats : légal ? Historique client : 2 ans ?)</li>
+        <li><strong>Travail en parallèle :</strong> coach Julien pour gratitude + fierté (2 mois en cours)</li>
+    </ul>
+
+    <div class="mantra">
+        ✨ "Mieux vaut une action imparfaite<br>qu'une parfaite inaction" ✨
+    </div>
+
+    <h3>3️⃣ Playbook B2C DIP — automatisations prioritaires</h3>
+    <p>Le parcours BtoC "Meurtre au Paradis" peut être <strong>massivement automatisé</strong> :</p>
+    <table>
+        <tr>
+            <th>Étape</th>
+            <th>État Actuel</th>
+            <th>Automatisation</th>
+        </tr>
+        <tr>
+            <td>Lead entrant</td>
+            <td>Multiple canaux (mail, WhatsApp, Instagram)</td>
+            <td>Inbox centralisée (email + chat)</td>
+        </tr>
+        <tr>
+            <td>Qualification</td>
+            <td>Manuel</td>
+            <td>Auto-extraction (nom, date, budget, type) + réponse type</td>
+        </tr>
+        <tr>
+            <td>Dispo prestataires</td>
+            <td>45 min/excursion (appels + WhatsApp)</td>
+            <td>Chatbot WhatsApp (réponse 2h)</td>
+        </tr>
+        <tr>
+            <td>Devis</td>
+            <td>Manuel (Excel + mail)</td>
+            <td>ESUS génère automatique</td>
+        </tr>
+        <tr>
+            <td>Paiement</td>
+            <td>Lien Crédit Mutuel (client choisit montant)</td>
+            <td>À optimiser avec ESUS/Stripe</td>
+        </tr>
+        <tr>
+            <td>Choix menu</td>
+            <td>Mail 1 mois avant (manuel)</td>
+            <td>Formulaire + compilation auto</td>
+        </tr>
+        <tr>
+            <td>Relance 50%</td>
+            <td>Quand Taina n'oublie pas</td>
+            <td>Auto ESUS (1 mois avant excursion)</td>
+        </tr>
+        <tr>
+            <td>Bon commande prestataires</td>
+            <td>Manuel</td>
+            <td>Auto depuis ESUS</td>
+        </tr>
+        <tr>
+            <td>Veille avant</td>
+            <td>Email + SMS</td>
+            <td>Auto si data dans ESUS</td>
+        </tr>
+        <tr>
+            <td>Post-excursion</td>
+            <td>Formulaire alternante</td>
+            <td>Formulaire feedback + Claude recap</td>
+        </tr>
+        <tr>
+            <td>Fidélisation</td>
+            <td>Aucune</td>
+            <td>Email 6 mois après (offres adaptées)</td>
+        </tr>
+    </table>
+
+    <h3>4️⃣ ESUS = CRM central</h3>
+    <ul>
+        <li>Base données clients + colonne "Menu choisi"</li>
+        <li>Tout centralisé (pas de base parallèle)</li>
+        <li>Relances auto programmées</li>
+        <li>À clarifier : connexion avec lien paiement Crédit Mutuel vs Stripe</li>
+    </ul>
+
+    <h3>5️⃣ Claude — stratégie modèles</h3>
+    <ul>
+        <li><strong>Haiku :</strong> lire documents/data (pas cher tokens)</li>
+        <li><strong>Opus 4.7 :</strong> analyser/synthétiser (le plus performant, tout récent)</li>
+        <li><strong>Pattern :</strong> Haiku lit les 96 pages séminaire → Opus 4.7 génère doc HTML stratégie</li>
+        <li><strong>Résultat :</strong> "Équipe 3 internes + 50 prestataires" (vs "2 employés" S1) → mise à jour mémoire Claude</li>
+    </ul>
+
+    <h3>6️⃣ Skill "Stratégie" en création</h3>
+    <ul>
+        <li>Basée sur doc HTML du séminaire Business Max</li>
+        <li>Claude recadre conversations dans stratégie globale</li>
+        <li>V1 à tester en usage réel avant finalisation</li>
+    </ul>
+</section>
+
+<section>
+    <h2>📋 ACTIONS TAINA (Semaine du 21 — 28 avril)</h2>
+
+    <h3>Priorité 1 — Nettoyage & structuration données</h3>
+    <div class="action">
+        <ul style="margin: 0;">
+            <li>[ ] Continuer nettoyage mails (historique : jusqu'où ?)</li>
+            <li>[ ] Identifier règles de conservation par domaine (mails : 3 ans ? Contrats : légal ? Historique client : 2 ans ?)</li>
+            <li>[ ] Migrer dossier Guadeloupe Explore vers Cloud (actuellement local)</li>
+            <li>[ ] Valider doc "Stratégie/Valeurs" + demander à Claude d'intégrer dans mémoire</li>
+        </ul>
+    </div>
+
+    <h3>Priorité 2 — Finaliser Skill Stratégie</h3>
+    <div class="action">
+        <ul style="margin: 0;">
+            <li>[ ] Relire doc HTML généré + challenger Claude si corrections nécessaires</li>
+            <li>[ ] Créer Skill "Stratégie" via Skill Creator (utiliser doc HTML comme source)</li>
+            <li>[ ] Tester V1 en conversation réelle</li>
+        </ul>
+    </div>
+
+    <h3>Priorité 3 — Préparer ESUS</h3>
+    <div class="action">
+        <ul style="margin: 0;">
+            <li>[ ] Chercher solution enregistrement appels (native iOS ou Otter.ai)</li>
+            <li>[ ] Clarifier ESUS + paiement (Stripe vs Crédit Mutuel)</li>
+        </ul>
+    </div>
+
+    <h3>À Attendre</h3>
+    <div class="action">
+        <ul style="margin: 0;">
+            <li>[ ] Correction bug permissions Playbook (Michael / Catherine)</li>
+            <li>[ ] Revérifier liens tutos (Michael)</li>
+        </ul>
+    </div>
+</section>
+
+<section>
+    <h2>🎤 ACTIONS CATHERINE</h2>
+    <div class="priority">
+        <ul style="margin: 0;">
+            <li><strong>URGENT :</strong> Corriger bug permissions Playbook (cloisonnement clients)</li>
+            <li><strong>URGENT :</strong> Revérifier liens tutos (resécurisation a cassé les chemins)</li>
+            <li>Investiguer ESUS + paiement (Stripe vs Crédit Mutuel, sync paiements)</li>
+            <li>Envoyer invite RDV #4 (28 avril 14h)</li>
+        </ul>
+    </div>
+</section>
+
+<section>
+    <h2>💭 MINDSET & INSIGHTS</h2>
+
+    <h3>Le Pattern du Perfectionnisme</h3>
+    <p><strong>Origines :</strong> Attachement sentimental transmis générationnellement (parents, grands-parents) → Taina en prend conscience et commence à "jeter/donner" plutôt que tout conserver.</p>
+    <p><strong>Parallèle pro :</strong> Même pattern : attendre perfection avant d'envoyer un devis = bloquant pour l'agence. Elle le sait : "Ça me ralentit et ça réduit des choses."</p>
+
+    <h3>Contexte Personnel</h3>
+    <ul>
+        <li>Coach Julien travaille en parallèle (gratitude, fierté, perception)</li>
+        <li>Mac ancien (Monterey) → pas Sonoma/Cowork</li>
+        <li>iPhone peut nécessiter OS update pour app Claude</li>
+        <li>Travaille souvent à la dernière minute (mode de fonctionnement accepté)</li>
+    </ul>
+</section>
+
+<section>
+    <h2>🐛 BUGS À CORRIGER</h2>
+    <table>
+        <tr>
+            <th>Bug</th>
+            <th>Severity</th>
+            <th>Owner</th>
+            <th>ETA</th>
+        </tr>
+        <tr>
+            <td>Permissions Playbook (voit autres clients)</td>
+            <td>🔴 CRITICAL</td>
+            <td>Michael</td>
+            <td>ASAP</td>
+        </tr>
+        <tr>
+            <td>Tutos cassés</td>
+            <td>🟡 HIGH</td>
+            <td>Michael</td>
+            <td>ASAP</td>
+        </tr>
+        <tr>
+            <td>ESUS + paiement (Stripe vs CM)</td>
+            <td>🟡 HIGH</td>
+            <td>Catherine + Taina</td>
+            <td>28/04</td>
+        </tr>
+        <tr>
+            <td>Enregistrement appels</td>
+            <td>🟢 MEDIUM</td>
+            <td>Taina</td>
+            <td>28/04</td>
+        </tr>
+    </table>
+</section>
+
+<section>
+    <h2>📊 PROCHAINE SESSION</h2>
+    <p><strong>Date :</strong> Mardi 28 avril 2026, 14h (France) / 8h (Guadeloupe)<br>
+    <strong>Focus :</strong> Validation Skill Stratégie + résolution bugs ESUS + premiers tests automatisations</p>
+</section>
+
+<section>
+    <h2>✨ RESSOURCES CRÉÉES CETTE SÉANCE</h2>
+    <ul>
+        <li><code>Perfectionnisme-Phrases-Cles.html</code> — extraction toutes phrases clés du coaching (à afficher/relire)</li>
+        <li><code>cr-session3-taina.md</code> — synthèse complète session (Markdown)</li>
+        <li><code>cr-session3-taina.html</code> — synthèse complète session (HTML)</li>
+    </ul>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CR Session 1 — Guadeloupe Explor | CS Consulting Stratégique</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --terracotta: #C27A5A;
+    --terracotta-light: #d4956f;
+    --terracotta-dark: #a8654a;
+    --bg: #0f0f0f;
+    --bg-card: #1a1a1a;
+    --bg-card-hover: #222222;
+    --white: #FFFFFF;
+    --grey-light: #b0b0b0;
+    --grey-dim: #666666;
+    --green: #4ade80;
+    --red: #f87171;
+    --orange: #fb923c;
+    --blue: #60a5fa;
+    --purple: #a78bfa;
+    --yellow: #fbbf24;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    background: linear-gradient(160deg, #1a1a1a 0%, #0f0f0f 50%, #1a1410 100%);
+    padding: 40px 24px 32px;
+    border-bottom: 3px solid var(--terracotta);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -40px;
+    width: 250px; height: 250px;
+    background: var(--terracotta);
+    opacity: 0.06;
+    border-radius: 50%;
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .header .brand {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .header .subtitle {
+    font-size: 0.95rem;
+    color: var(--grey-light);
+    margin-top: 6px;
+  }
+  .header-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .stat-box {
+    text-align: center;
+    padding: 12px 16px;
+    background: rgba(194,122,90,0.08);
+    border: 1px solid rgba(194,122,90,0.2);
+    border-radius: 12px;
+    min-width: 80px;
+  }
+  .stat-box .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--terracotta-light);
+  }
+  .stat-box .stat-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--grey-light);
+    margin-top: 2px;
+  }
+
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(194,122,90,0.2); }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+  }
+  .card-header:hover { background: var(--bg-card-hover); }
+  .card-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-header .chevron {
+    width: 20px; height: 20px;
+    color: var(--grey-dim);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .card.open .chevron { transform: rotate(180deg); }
+  .card-body { display: none; padding: 0 24px 24px; }
+  .card.open .card-body { display: block; }
+
+  .section-icon {
+    display: inline-flex;
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .icon-green { background: rgba(74,222,128,0.12); }
+  .icon-red { background: rgba(248,113,113,0.12); }
+  .icon-blue { background: rgba(96,165,250,0.12); }
+  .icon-purple { background: rgba(167,139,250,0.12); }
+  .icon-orange { background: rgba(251,146,60,0.12); }
+  .icon-yellow { background: rgba(251,191,36,0.12); }
+  .icon-terracotta { background: rgba(194,122,90,0.15); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .badge-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .badge-terracotta { background: rgba(194,122,90,0.2); color: var(--terracotta-light); }
+  .badge-green { background: rgba(74,222,128,0.15); color: var(--green); }
+  .badge-red { background: rgba(248,113,113,0.15); color: var(--red); }
+  .badge-orange { background: rgba(251,146,60,0.15); color: var(--orange); }
+  .badge-blue { background: rgba(96,165,250,0.15); color: var(--blue); }
+
+  .decision {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .decision:last-child { border-bottom: none; }
+  .decision-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .decision-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--terracotta-light);
+  }
+
+  .content-list {
+    list-style: none;
+    padding: 0;
+  }
+  .content-list li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    color: var(--grey-light);
+    font-size: 0.9rem;
+  }
+  .content-list li::before {
+    content: '';
+    position: absolute;
+    left: 4px; top: 14px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    opacity: 0.6;
+  }
+  .content-list li strong { color: var(--white); }
+  .content-list li em { color: var(--terracotta-light); font-style: italic; }
+
+  blockquote {
+    border-left: 3px solid var(--terracotta);
+    padding: 12px 16px;
+    margin: 12px 0;
+    background: rgba(194,122,90,0.06);
+    border-radius: 0 10px 10px 0;
+    color: var(--terracotta-light);
+    font-style: italic;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  blockquote .author {
+    display: block;
+    color: var(--grey-dim);
+    font-size: 0.8rem;
+    margin-top: 6px;
+    font-style: normal;
+  }
+
+  .action-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+    color: var(--grey-light);
+  }
+  .action-item:last-child { border-bottom: none; }
+  .action-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border: 2px solid var(--grey-dim);
+    border-radius: 5px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .action-item input[type="checkbox"]:checked {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+  }
+  .action-item input[type="checkbox"]:checked::after {
+    content: '\2713';
+    position: absolute;
+    top: -1px; left: 3px;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .action-item input[type="checkbox"]:checked ~ .action-text {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .priority-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    margin-top: 8px;
+  }
+  .priority-1 { background: rgba(248,113,113,0.15); color: var(--red); }
+  .priority-2 { background: rgba(251,146,60,0.15); color: var(--orange); }
+  .priority-3 { background: rgba(251,191,36,0.15); color: var(--yellow); }
+
+  .next-session {
+    background: linear-gradient(135deg, rgba(194,122,90,0.12) 0%, rgba(194,122,90,0.04) 100%);
+    border: 1px solid rgba(194,122,90,0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 24px;
+    text-align: center;
+  }
+  .next-session h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--terracotta-light);
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  .next-session p { color: var(--grey-light); font-size: 0.9rem; }
+  .next-session .date {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--white);
+    margin: 8px 0;
+  }
+
+  .fathom-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(194,122,90,0.1);
+    border: 1px solid rgba(194,122,90,0.3);
+    border-radius: 10px;
+    color: var(--terracotta-light);
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+  }
+  .fathom-link:hover { background: rgba(194,122,90,0.2); }
+
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .score-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .score-item .score-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .score-item .score-label {
+    font-size: 0.7rem;
+    color: var(--grey-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+  .score-low { color: var(--red); }
+  .score-mid { color: var(--orange); }
+  .score-high { color: var(--green); }
+
+  .footer {
+    text-align: center;
+    padding: 30px 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    color: var(--grey-dim);
+    font-size: 0.8rem;
+  }
+  .footer a { color: var(--terracotta); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .header-inner { flex-direction: column; }
+    .header-stats { width: 100%; justify-content: center; }
+    .score-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <div class="brand">CS — Consulting Stratégique</div>
+      <h1>Session 1 — Feuille de route & Diagnostic</h1>
+      <div class="subtitle">Taïna THARSIS · Guadeloupe Explor · 26 mars 2026</div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-box">
+        <div class="stat-value">1</div>
+        <div class="stat-label">Session</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">80'</div>
+        <div class="stat-label">Durée</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">9</div>
+        <div class="stat-label">Actions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <a href="https://fathom.video/share/Fxzrytb-kirD_wigCxwejUDbbYJ7xVfB" target="_blank" class="fathom-link">
+    🎥 Voir l'enregistrement — 80 min
+  </a>
+
+  <!-- DIAGNOSTIC EXPRESS -->
+  <div class="card open">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <h2><span class="section-icon icon-terracotta">📊</span> Diagnostic express</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="score-grid">
+        <div class="score-item">
+          <div class="score-val score-low">2/10</div>
+          <div class="score-label">Stratégie</div>
+        </div>
+        <div class="score-item">
+          <div class="score-val score-low">1/5</div>
+          <div class="score-label">Documentation</div>
+        </div>
+        <div class="score-item">
+          <div class="score-val score-low">1/5</div>
+          <div class="score-label">Intégration outils</div>
+        </div>
+        <div class="score-item">
+          <div class="score-val score-low">1/5</div>
+          <div class="score-label">Autonomie équipe</div>
+        </div>
+        <div class="score-item">
+          <div class="score-val score-low">0%</div>
+          <div class="score-label">Automatisation</div>
+        </div>
+        <div class="score-item">
+          <div class="score-val score-low">10/90</div>
+          <div class="score-label">Dirigeant / Opérationnel</div>
+        </div>
+        <div class="score-item">
+          <div class="score-val score-high">10/10</div>
+          <div class="score-label">Prête au changement</div>
+        </div>
+        <div class="score-item">
+          <div class="score-val score-mid">80h</div>
+          <div class="score-label">Heures / semaine</div>
+        </div>
+      </div>
+      <p style="color:var(--grey-light);font-size:.85rem;margin-top:12px;text-align:center;">
+        CA actuel : <strong style="color:var(--white)">300 000 €</strong> → Objectif 12 mois : <strong style="color:var(--terracotta-light)">1 000 000 €</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- CELEBRATIONS -->
+  <div class="card open">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <h2><span class="section-icon icon-green">✅</span> Célébrations</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-body">
+      <ul class="content-list">
+        <li>Questionnaire d'onboarding rempli avec beaucoup de détails et de sincérité</li>
+        <li><strong>Décision d'investir</strong> dans un accompagnement structuré malgré la contrainte financière</li>
+        <li>A déjà commencé à déléguer : <em>comptabilité externalisée, escales aux Saintes déléguées cette saison</em></li>
+        <li><strong>Océan bleu identifié :</strong> tourisme adapté handicap — opportunité stratégique</li>
+        <li>Alternante marketing en place + guide assistant — l'équipe se structure</li>
+        <li>Prête au changement : <strong>10/10</strong></li>
+      </ul>
+      <blockquote>
+        "Je suis dans une phase où il faut investir. Je n'ai pas encore les rentrées qui vont arriver derrière et je suis persuadée que oui, ça va arriver."
+        <span class="author">— Taïna</span>
+      </blockquote>
+    </div>
+  </div>
+
+  <!-- BLOCAGES -->
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <h2><span class="section-icon icon-red">🔄</span> Blocages identifiés</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-body">
+      <ul class="content-list">
+        <li><strong>90% opérationnel / 10% dirigeant</strong> — tout repose sur Taïna depuis 10 ans</li>
+        <li><strong>80h/semaine</strong> en saison (Nov-Avril), quasi burn-out l'année dernière</li>
+        <li><strong>0% d'automatisation</strong> — facturation sur Excel, pas de CRM, pas de suivi centralisé</li>
+        <li><strong>Perte de prospects :</strong> demandes multicanal (WhatsApp, SMS, email, Insta, Facebook) non centralisées → oublis, temps de réponse trop long</li>
+        <li><strong>Process non documentés</strong> (score 1/5) — tout dans sa tête, impossible de transmettre</li>
+        <li>Emails pro atterrissent en <strong>spam</strong> — problème d'hébergement Gmail</li>
+        <li>Outils en doublon : Sage (à arrêter), Zeendoc (à réduire)</li>
+        <li>Perfectionnisme qui freine la délégation</li>
+      </ul>
+      <blockquote>
+        "Je perds des clients parce que parfois j'ai des demandes par SMS, des demandes qu'on m'envoie et je centralise nulle part. Donc après, des fois, j'oublie. Avant, je n'oubliais pas, mais maintenant, je commence à oublier."
+        <span class="author">— Taïna</span>
+      </blockquote>
+    </div>
+  </div>
+
+  <!-- DECISIONS -->
+  <div class="card open">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <h2><span class="section-icon icon-blue">🛠️</span> Décisions prises</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--terracotta)">1</span>
+          <h3>Contrat lancé — paiement par virement</h3>
+        </div>
+        <ul class="content-list">
+          <li>Premier versement immédiat (RIB à envoyer)</li>
+          <li>Échéancier pour les versements suivants</li>
+          <li>Extension possible de 6 à 9 mois au même tarif</li>
+        </ul>
+      </div>
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--blue)">2</span>
+          <h3>Claude comme IA de référence (pas ChatGPT)</h3>
+        </div>
+        <ul class="content-list">
+          <li>Taïna crée un compte Claude Pro (20$/mois)</li>
+          <li>Configuration via l'outil CS Digital Setup (beta)</li>
+          <li>Chaque employé pourra avoir son propre compte</li>
+        </ul>
+      </div>
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--orange)">3</span>
+          <h3>Chatbot WhatsApp pour les prestataires</h3>
+        </div>
+        <ul class="content-list">
+          <li>Solution prioritaire pour gérer les interactions récurrentes</li>
+          <li>Confirmation nombres excursions, alertes cas particuliers</li>
+          <li>À cartographier dans le parcours client</li>
+        </ul>
+      </div>
+      <div class="decision">
+        <div class="decision-header">
+          <span class="badge-num" style="background:var(--purple)">4</span>
+          <h3>Parcours client = premier livrable</h3>
+        </div>
+        <ul class="content-list">
+          <li>Cartographier tous les flux (BtoC DIP, BtoB Ponant/UCPA, séjours)</li>
+          <li>Identifier les points d'automatisation possibles</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS TAINA -->
+  <div class="card open">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <h2><span class="section-icon icon-orange">🎯</span> Tes actions</h2>
+      <span class="badge badge-orange">4 actions</span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="priority-label priority-1">🔴 Priorité 1 — Configurer Claude</div>
+      <div class="action-item" data-key="t1-1"><input type="checkbox"><span class="action-text">Créer un compte Claude Pro (plan payant 20$/mois)</span></div>
+      <div class="action-item" data-key="t1-2"><input type="checkbox"><span class="action-text">Compléter l'outil CS Digital Setup (beta) envoyé par Catherine (~1h)</span></div>
+      <div class="action-item" data-key="t1-3"><input type="checkbox"><span class="action-text">Configurer Claude avec les résultats</span></div>
+
+      <div class="priority-label priority-2">🟠 Priorité 2 — Tester Claude avec tes notes</div>
+      <div class="action-item" data-key="t2-1"><input type="checkbox"><span class="action-text">Scanner 2 pages de tes cahiers de notes (coaching/mindset)</span></div>
+      <div class="action-item" data-key="t2-2"><input type="checkbox"><span class="action-text">Les envoyer à Claude pour tester la retranscription</span></div>
+      <div class="action-item" data-key="t2-3"><input type="checkbox"><span class="action-text">Créer un projet séparé dans Claude pour analyser tes notes accumulées</span></div>
+
+      <div class="priority-label priority-3">🟡 Priorité 3 — Base de connaissances</div>
+      <div class="action-item" data-key="t3-1"><input type="checkbox"><span class="action-text">S'enregistrer lors des prochaines excursions (audio/vidéo) pour capturer ta connaissance de la Guadeloupe</span></div>
+
+      <div class="priority-label" style="background:rgba(74,222,128,0.15);color:var(--green);">💰 Paiement</div>
+      <div class="action-item" data-key="t4-1"><input type="checkbox"><span class="action-text">Effectuer le 1er virement dès réception du RIB</span></div>
+    </div>
+  </div>
+
+  <!-- ACTIONS CATHERINE -->
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <h2><span class="section-icon icon-purple">📝</span> Actions Catherine</h2>
+      <span class="badge badge-blue">2 actions</span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="action-item"><input type="checkbox"><span class="action-text">Travailler le parcours client Guadeloupe Explor</span></div>
+      <div class="action-item"><input type="checkbox"><span class="action-text">Regarder la meilleure solution Claude pour les employés</span></div>
+    </div>
+  </div>
+
+  <!-- MINDSET -->
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <h2><span class="section-icon icon-yellow">🧘</span> Mindset & Insights</h2>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-body">
+      <p style="color:var(--grey-light);font-size:.9rem;margin-bottom:16px;">
+        <strong style="color:var(--white)">Ce qui fonctionne :</strong> Énergie et motivation exceptionnelles. La saison touristique se termine → fenêtre idéale pour structurer. Le mouvement de délégation est déjà lancé.
+      </p>
+
+      <blockquote>
+        "Il faut que j'embauche quelqu'un qui soit motivé, impliqué, qui ait envie de faire des choses, que je sois plus claire aussi dans ce que je demande et plus présente."
+        <span class="author">— Taïna (leçon tirée de sa première embauche)</span>
+      </blockquote>
+
+      <blockquote>
+        "Je voudrais que tout soit formalisé, process et transmission claire de la vision à court et moyen terme, les valeurs. Que tout soit structuré comme dans ma tête mais à l'extérieur !"
+        <span class="author">— Taïna (baguette magique)</span>
+      </blockquote>
+
+      <blockquote>
+        "À un moment donné, il faut prendre un risque. J'ai une opportunité d'acheter un van supplémentaire. Je vais développer l'océan bleu qu'on a identifié qui est le handicap."
+        <span class="author">— Taïna (tourisme adapté handicap = océan bleu)</span>
+      </blockquote>
+    </div>
+  </div>
+
+  <!-- PROCHAINE SESSION -->
+  <div class="next-session">
+    <h3>📅 Prochaine session</h3>
+    <div class="date">Mardi 7 avril 2026</div>
+    <p>14h (France) · 8h (Guadeloupe)</p>
+    <p style="margin-top:12px"><strong style="color:var(--terracotta-light)">Focus :</strong> Cartographie du parcours client + premiers process à documenter</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Catherine Selosse · <a href="https://csbusiness.fr">CS — Consulting Stratégique</a></p>
+  <p style="margin-top:4px">Document confidentiel — Session du 26 mars 2026</p>
+</div>
+
+<script>
+// Save checkbox state
+document.querySelectorAll('.action-item input[type="checkbox"]').forEach(cb => {
+  const key = 'cr1-taina-' + cb.closest('.action-item').dataset.key;
+  if (key && localStorage.getItem(key) === 'true') cb.checked = true;
+  cb.addEventListener('change', () => {
+    if (key) localStorage.setItem(key, cb.checked);
+  });
+});
+</script>
+</body>
+</html>
