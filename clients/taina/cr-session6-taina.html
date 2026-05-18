@@ -13,11 +13,9 @@
     --bg-card: #1a1a1a;
     --white: #FFFFFF;
     --grey-light: #b0b0b0;
-    --grey-dim: #666666;
     --green: #4ade80;
     --red: #f87171;
     --orange: #fb923c;
-    --blue: #60a5fa;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--white); line-height: 1.7; }
@@ -31,42 +29,23 @@
   .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.35rem, 3.5vw, 1.9rem); font-weight: 700; line-height: 1.3; }
   .subtitle { font-size: 0.95rem; color: var(--grey-light); margin-top: 8px; }
   .main { max-width: 900px; margin: 0 auto; padding: 32px 24px 60px; }
-  .card {
-    background: var(--bg-card);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 16px;
-    margin-bottom: 16px;
-    overflow: hidden;
-  }
-  .card-head {
-    padding: 16px 20px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    color: var(--terracotta-light);
-  }
+  .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
+  .card-head { padding: 16px 20px; font-family: 'Playfair Display', serif; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--terracotta-light); }
   .card-body { padding: 18px 20px 22px; }
   .card-body ul { margin-left: 1.2rem; }
   .card-body li { margin-bottom: 8px; color: var(--grey-light); }
   .card-body li strong { color: var(--white); }
   .card-body h3 { font-size: 0.95rem; color: var(--terracotta); margin: 16px 0 8px; }
   .card-body h3:first-child { margin-top: 0; }
+  .card-body p { color: var(--grey-light); margin-bottom: 10px; }
   .tag { display: inline-block; font-size: 0.72rem; padding: 3px 10px; border-radius: 999px; margin-right: 6px; margin-bottom: 6px; }
   .tag-red { background: rgba(248,113,113,0.15); color: var(--red); }
-  .tag-green { background: rgba(74,222,128,0.12); color: var(--green); }
   .tag-orange { background: rgba(251,146,60,0.12); color: var(--orange); }
   .actions-client li { list-style: none; margin-left: 0; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
   .actions-client li::before { content: '☐ '; color: var(--terracotta); }
-  .quote {
-    border-left: 3px solid var(--terracotta);
-    padding: 12px 16px;
-    margin: 12px 0;
-    font-style: italic;
-    color: var(--grey-light);
-    background: rgba(194,122,90,0.06);
-    border-radius: 0 8px 8px 0;
-  }
+  .quote { border-left: 3px solid var(--terracotta); padding: 12px 16px; margin: 12px 0; font-style: italic; color: var(--grey-light); background: rgba(194,122,90,0.06); border-radius: 0 8px 8px 0; }
   .next { background: rgba(194,122,90,0.1); border-color: rgba(194,122,90,0.3); }
+  a { color: var(--terracotta-light); }
 </style>
 </head>
 <body>
@@ -74,7 +53,7 @@
 <header class="header">
   <div class="header-inner">
     <div class="brand">CS Consulting Stratégique</div>
-    <h1>Session 6 — Trésorerie, automatisation « Meurtre au Paradis » &amp; pilotage marketing</h1>
+    <h1>Session 6 — Automatisation excursions, e-mails &amp; pilotage marketing</h1>
     <p class="subtitle">Guadeloupe Explor · Taina Tharsis · 18 mai 2026</p>
   </div>
 </header>
@@ -85,11 +64,10 @@
     <div class="card-head">✅ Célébrations</div>
     <div class="card-body">
       <ul>
-        <li><strong>Portail client à jour</strong> — Taina a retrouvé l’espace client (correctifs déployés avant la séance).</li>
-        <li><strong>Claude QuotaTrip opérationnel</strong> — brouillons d’e-mails générés ; le gain de temps sur la rédaction est validé même si les réponses prospects restent à débloquer.</li>
-        <li><strong>Site internet</strong> — premier jet reçu, corrections en cours ; tunnel « Meurtre au Paradis » identifié.</li>
-        <li><strong>Clarté stratégique</strong> — priorité d’automatisation actée : <strong>Meurtre au Paradis</strong> en premier, puis croisières et excursions généralistes.</li>
-        <li><strong>Prise de conscience marketing</strong> — diagnostic Claude sur le calendrier éditorial (B2B sous-représenté vs 63&nbsp;% du CA).</li>
+        <li><strong>Portail client à jour</strong> — espace client retrouvé et opérationnel.</li>
+        <li><strong>Claude QuotaTrip</strong> — brouillons d’e-mails validés (« le mail qui se rédige tout seul, c’est parfait »).</li>
+        <li><strong>Priorité automation claire</strong> — Meurtre au Paradis en premier, puis Basse-Terre &amp; Grande-Terre (même tuyau, flag produit différent).</li>
+        <li><strong>Site &amp; tunnel MAP</strong> — premier jet en correction ; saison MAP à préparer (Meta ads).</li>
       </ul>
     </div>
   </div>
@@ -97,16 +75,14 @@
   <div class="card">
     <div class="card-head">🔄 Blocages identifiés</div>
     <div class="card-body">
-      <span class="tag tag-red">Trésorerie</span>
       <span class="tag tag-red">E-mails</span>
       <span class="tag tag-orange">Marketing</span>
       <ul>
-        <li><strong>Trésorerie tendue</strong> — avril toujours impayé mi-mai ; guides et transporteurs déjà facturés ; clients B2B en retard récurrent (2 ans).</li>
-        <li><strong>Petites factures sans effet</strong> — scinder les factures n’a pas accéléré les paiements, charge admin en plus.</li>
-        <li><strong>Délivrabilité e-mail</strong> — adresses @guadeloupe-explor (contact, info) en spam ; QuotaTrip : ~20 demandes traitées, zéro réponse aux offres.</li>
-        <li><strong>Regiondo</strong> — ~30&nbsp;€/mois + commissions, peu de flux direct ; pas de référencement actif GetYourGuide/Viator ; ROI quasi nul aujourd’hui.</li>
-        <li><strong>Assistante marketing</strong> — visuels soignés mais coquilles récurrentes, pas de KPI/UTM, Notion sous-utilisé, faible accountability.</li>
-        <li><strong>Instagram / CTA</strong> — liens peu actionnables, manque de call-to-action explicites en posts et stories.</li>
+        <li><strong>Encaissements clients B2B</strong> — retards récurrents ; tension trésorerie côté exploitation (guides/transporteurs payés avant encaissement).</li>
+        <li><strong>Délivrabilité</strong> — contact@ / info@ en spam ; QuotaTrip : peu de réponses aux offres (test WhatsApp à faire).</li>
+        <li><strong>Regiondo</strong> — coût vs usage réel ; pas de référencement actif sur les plateformes tierces.</li>
+        <li><strong>Assistante marketing</strong> — pas de KPI/UTM, coquilles récurrentes, Notion sous-utilisé.</li>
+        <li><strong>3 boîtes mail</strong> — automation cible sur <strong>contact@ + info@</strong> (rediriger tetarsis@ si besoin).</li>
       </ul>
     </div>
   </div>
@@ -114,20 +90,21 @@
   <div class="card">
     <div class="card-head">🛠️ Décisions prises</div>
     <div class="card-body">
-      <h3>1️⃣ Facturation accompagnement</h3>
-      <p style="color:var(--grey-light);margin-bottom:12px;">Avoir sur la facture globale actuelle, puis réémission en <strong>juillet</strong> sur la <strong>SARL</strong> de Catherine (TTC). Taina supprime la facture côté compta en attendant l’avoir ; paiement avril décalé en juin après déblocage des fonds.</p>
+      <h3>1️⃣ Automatisation — 3 excursions prioritaires</h3>
+      <p>Un seul parcours logique, 3 flags produit : <strong>Meurtre au Paradis</strong> (contact@), <strong>Basse-Terre</strong> (Nord/Sud, Murder Case), <strong>Grande-Terre</strong> (découverte). Cartographie : de l’e-mail entrant jusqu’à la clôture dossier + paiement prestataires (délais possibles +1 mois).</p>
+      <p style="margin-top:8px;"><a href="../parcours-automatisation-3-excursions.html">Voir le schéma détaillé (parcours 3 excursions)</a></p>
 
-      <h3>2️⃣ Automatisation prioritaire</h3>
-      <p style="color:var(--grey-light);margin-bottom:12px;">Parcours <strong>Meurtre au Paradis</strong> en premier (leads Facebook/Instagram → centralisation contact/info → qualification → proposition → RDV si besoin). Ensuite : 3 journées croisière + 4 excursions découverte.</p>
+      <h3>2️⃣ Paiement client MAP</h3>
+      <p><strong>100 % à la réservation</strong> (plus de 50 %) — besoin de trésorerie.</p>
 
       <h3>3️⃣ Marketing &amp; acquisition</h3>
-      <p style="color:var(--grey-light);margin-bottom:12px;">Exiger ROI et traçabilité (UTM, KPI par canal). Tester WhatsApp sur leads QuotaTrip. Envisager pub Meta ciblée 100–150&nbsp;€ sur Meurtre au Paradis. Piste référencement IA à explorer.</p>
+      <p>UTM + origine des leads ; test WhatsApp QuotaTrip ; pub Meta 100–150 € sur MAP ; référencement IA à explorer.</p>
 
       <h3>4️⃣ Regiondo</h3>
-      <p style="color:var(--grey-light);">Cadrage : garder comme « site de paiement » uniquement ou sortir — Catherine challenge la stratégie (coût vs alternatives).</p>
+      <p>Challenge stratégique via Claude (prompt fourni par Catherine — voir livrable séparé).</p>
 
-      <h3>5️⃣ Statut juridique Taina</h3>
-      <p style="color:var(--grey-light);">Passage SAS/SASU → EURL/SARL (seule) — à lancer avec la comptable.</p>
+      <h3>5️⃣ Prompts Claude</h3>
+      <p>Catherine envoie les prompts dictés en séance (Regiondo, leads/UTM, instructions projet MAP) pour les projets Claude de Taina.</p>
     </div>
   </div>
 
@@ -136,22 +113,21 @@
     <div class="card-body">
       <h3>⚡ Priorité 1 🔴</h3>
       <ul class="actions-client">
-        <li>Envoyer à Catherine : détails excursions (signatures + croisière), prestataires et tarifs</li>
-        <li>Envoyer les modèles d’e-mails de réponse et de suivi (base automatisation)</li>
-        <li>Tester réactivité QuotaTrip via WhatsApp sur les leads en attente</li>
+        <li>Envoyer détails excursions (MAP, Basse-Terre, Grande-Terre) : prestataires + tarifs</li>
+        <li>Envoyer modèles d’e-mails réponse &amp; suivi (base automation)</li>
+        <li>Tester QuotaTrip via WhatsApp sur les leads en attente</li>
+        <li>Injecter dans Claude les prompts reçus de Catherine (Regiondo + UTM)</li>
       </ul>
       <h3>⚡ Priorité 2 🟠</h3>
       <ul class="actions-client">
-        <li>Supprimer la facture Catherine en attente de l’avoir</li>
-        <li>Contacter Regiondo pour séparer offres croisière vs autres excursions</li>
-        <li>Relancer SAV imprimante (1 mois en réparation)</li>
-        <li>Prendre en main Notion (2 liens envoyés par Catherine)</li>
+        <li>Contacter Regiondo (séparation offres croisière vs autres)</li>
+        <li>Relancer SAV imprimante</li>
+        <li>Notion : regarder les 2 tutos envoyés par Catherine</li>
       </ul>
       <h3>⚡ Priorité 3 🟡</h3>
       <ul class="actions-client">
-        <li>Demander à la comptable le passage SAS → EURL</li>
-        <li>Utiliser Claude pour résumer les notes de randonnée (contenu)</li>
-        <li>Demander au webmaster le référencement sur les IA</li>
+        <li>Passage SAS → EURL avec la comptable</li>
+        <li>Claude : résumer notes de randonnée ; demander au webmaster référencement IA</li>
       </ul>
     </div>
   </div>
@@ -160,14 +136,13 @@
     <div class="card-head">📝 Actions Catherine</div>
     <div class="card-body">
       <ul class="actions-client">
-        <li>Avoir + refacturation juillet (SARL TTC)</li>
-        <li>Diagnostic délivrabilité e-mail (SPF, DKIM, DMARC, réputation)</li>
-        <li>Publier ce CR sur le portail (fait)</li>
-        <li>UTM + cartographie origine des leads</li>
-        <li>Challenge stratégie Regiondo + piste référencement IA</li>
-        <li>Process assistante + tableau de bord KPI (qualité, cadence éditoriale)</li>
+        <li>Envoyer à Taina le fichier prompts Claude (Regiondo, UTM, projet MAP)</li>
+        <li>Diagnostic délivrabilité e-mail (SPF, DKIM, DMARC)</li>
+        <li>Cartographie parcours + spec automation avec Michael (contact@ / info@)</li>
+        <li>UTM + origine des leads</li>
+        <li>Challenge Regiondo + référencement IA</li>
+        <li>Process &amp; KPI assistante marketing</li>
         <li>Vérifier CTA page Facebook</li>
-        <li>Automatisation parcours Meurtre au Paradis (puis croisières / excursions)</li>
       </ul>
     </div>
   </div>
@@ -175,9 +150,8 @@
   <div class="card">
     <div class="card-head">🧘 Mindset &amp; insights</div>
     <div class="card-body">
-      <div class="quote">« Aujourd’hui, juste avoir le mail qui se rédige tout seul dans Claude, c’est parfait. » — Taina (sur QuotaTrip)</div>
-      <p style="color:var(--grey-light);margin-top:12px;"><strong>Ce qui fonctionne :</strong> Claude pour correction, structuration, brouillons ; volonté de structurer malgré la pression trésorerie.</p>
-      <p style="color:var(--grey-light);margin-top:8px;"><strong>À ancrer :</strong> prioriser ce qui rapporte du temps ou de l’argent (automatisations, B2B, traçabilité) avant la perfection visuelle sans KPI.</p>
+      <div class="quote">« Aujourd’hui, juste avoir le mail qui se rédige tout seul dans Claude, c’est parfait. » — Taina</div>
+      <p style="margin-top:12px;"><strong>À ancrer :</strong> un process = un flag produit + les mêmes étapes jusqu’à la sortie du dossier ; mesurer d’où viennent les leads avant d’investir plus en com.</p>
     </div>
   </div>
 
@@ -185,7 +159,7 @@
     <div class="card-head">📅 Prochaine session</div>
     <div class="card-body">
       <p><strong>Date :</strong> jeudi 22 mai 2026 — 14h (heure Guadeloupe)</p>
-      <p style="margin-top:8px;color:var(--grey-light);"><strong>Focus :</strong> point d’avancement automatisation Meurtre au Paradis, retour diagnostic e-mails, premiers livrables UTM / KPI marketing.</p>
+      <p style="margin-top:8px;"><strong>Focus :</strong> avancement automation MAP, retour e-mails, premiers tests UTM.</p>
     </div>
   </div>
 
